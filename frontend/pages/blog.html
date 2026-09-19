@@ -1,4 +1,5 @@
 ﻿<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="canonical" href="https://gradmire.in/blog.html">
 <title>Gradmire — Study Abroad Blog</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400;700&display=swap">
@@ -83,7 +84,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .nav{background:rgba(10,13,22,.88);}}
 :root[data-theme="dark"] .nav{background:rgba(10,13,22,.88);}
 </style>
-<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/site.css?v=2">
 
 <nav class="nav" aria-label="Main navigation">
   <div class="nav-inner">
@@ -266,7 +267,11 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
   <div class="footer-bottom"><span class="footer-legal">© 2026 Gradmire. All rights reserved.</span><div style="display:flex;gap:1.5rem;"><a href="privacy.html" class="footer-legal">Privacy policy</a><a href="terms.html" class="footer-legal">Terms of use</a></div></div>
 </footer>
 <script>
-const obs=new IntersectionObserver(e=>e.forEach(el=>{if(el.isIntersecting){el.target.classList.add('on');obs.unobserve(el.target);}}),{threshold:.1});
+        // Pre-reveal elements already in viewport on page load
+        document.querySelectorAll('.reveal').forEach(el => {
+            const r = el.getBoundingClientRect();
+            if (r.top < window.innerHeight * 0.95) el.classList.add('on');
+        });const obs=new IntersectionObserver(e=>e.forEach(el=>{if(el.isIntersecting){el.target.classList.add('on');obs.unobserve(el.target);}}),{threshold:.1});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 document.querySelectorAll('.cat-chip').forEach(c=>c.addEventListener('click',()=>{document.querySelectorAll('.cat-chip').forEach(x=>x.classList.remove('active'));c.classList.add('active');}));
 </script>

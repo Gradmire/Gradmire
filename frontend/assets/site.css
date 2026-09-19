@@ -275,4 +275,60 @@
     .auth-form-wrap {
         max-width: 390px;
     }
+    /* Page-level hero: reduce top padding on tablet/mobile */
+    .page-hero {
+        padding-top: clamp(2rem, 5vw, 3.5rem);
+    }
+}
+
+@media (max-width: 640px) {
+    /* Nav: hide desktop links, show hamburger */
+    .nav-links,
+    .nav-btn {
+        display: none !important;
+    }
+    .nav-ham {
+        display: flex !important;
+    }
+    /* Page hero: compact top padding */
+    .page-hero {
+        padding-top: 2rem;
+        padding-bottom: .5rem;
+    }
+    .page-hero-title {
+        font-size: clamp(1.9rem, 8vw, 2.6rem);
+    }
+    /* Filter / tab bars: horizontal scroll */
+    .filter-bar,
+    .cat-bar,
+    .filter-chips {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        flex-wrap: nowrap;
+        padding-bottom: .25rem;
+    }
+    .filter-bar::-webkit-scrollbar,
+    .cat-bar::-webkit-scrollbar {
+        display: none;
+    }
+    /* Stat strips: 2 columns on mobile */
+    .stats-strip-inner {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.25rem;
+    }
+    /* Featured cards / feat-post: single column */
+    .feat-post,
+    .feat-card {
+        grid-template-columns: 1fr !important;
+    }
+    .feat-img-wrap {
+        height: 200px;
+    }
+    /* Consultation layout: single column */
+    .consult-wrap {
+        grid-template-columns: 1fr !important;
+        min-height: auto;
+        padding-top: 1.5rem;
+    }
 }

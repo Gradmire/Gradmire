@@ -1,4 +1,5 @@
 ﻿<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Scholarships for Indian Students Abroad 2026 — Gradmire</title>
 <meta name="description" content="Discover government and university scholarships for Indian students to study in the UK, USA, Canada, Australia, Germany and New Zealand. Deadlines, amounts and eligibility — updated for 2026-27.">
 <link rel="canonical" href="https://gradmire.in/scholarships.html">
@@ -93,7 +94,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .nav{background:rgba(10,13,22,.88);}}
 :root[data-theme="dark"] .nav{background:rgba(10,13,22,.88);}
 </style>
-<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/site.css?v=2">
 
 <nav class="nav" aria-label="Main navigation">
   <div class="nav-inner">
@@ -345,7 +346,11 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 </footer>
 
 <script>
-const obs=new IntersectionObserver(e=>e.forEach(el=>{if(el.isIntersecting){el.target.classList.add('on');obs.unobserve(el.target);}}),{threshold:.1});
+        // Pre-reveal elements already in viewport on page load
+        document.querySelectorAll('.reveal').forEach(el => {
+            const r = el.getBoundingClientRect();
+            if (r.top < window.innerHeight * 0.95) el.classList.add('on');
+        });const obs=new IntersectionObserver(e=>e.forEach(el=>{if(el.isIntersecting){el.target.classList.add('on');obs.unobserve(el.target);}}),{threshold:.1});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 document.querySelectorAll('.filter-chip').forEach(c=>c.addEventListener('click',()=>{document.querySelectorAll('.filter-chip').forEach(x=>x.classList.remove('active'));c.classList.add('active');}));
 </script>
