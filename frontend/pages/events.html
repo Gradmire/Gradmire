@@ -1,0 +1,383 @@
+<meta charset="UTF-8">
+<title>Gradmire — Events</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+:root{--bg:#F0F2F7;--surface:#FFFFFF;--surface-tint:#E8EBF4;--text-p:#0E1420;--text-s:#556270;--brand:#1A4870;--accent:#00A878;--accent-dim:rgba(0,168,120,.12);--border:rgba(14,20,32,.1);--sans:'Bricolage Grotesque',system-ui,sans-serif;--mono:'JetBrains Mono','Menlo',monospace;--r-sm:8px;--r-md:16px;--r-lg:24px;--w:1280px;--gutter:clamp(1.25rem,5vw,3rem);--sec:clamp(4rem,8vw,6rem);--ease:cubic-bezier(.16,1,.3,1);}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(0,168,120,.18);}}
+:root[data-theme="dark"]{--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(0,168,120,.18);}
+*,*::before,*::after{box-sizing:border-box;margin:0;}
+body{background:var(--bg);color:var(--text-p);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;}
+img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:100;background:rgba(240,242,247,.82);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid var(--border);height:68px;}
+.nav-inner{max-width:var(--w);margin:0 auto;padding:0 var(--gutter);height:100%;display:flex;align-items:center;gap:2.5rem;}
+.nav-logo{font-size:1.2rem;font-weight:800;letter-spacing:-.03em;color:var(--brand);}
+.nav-links{list-style:none;padding:0;display:flex;gap:2rem;flex:1;}
+.nav-links a{color:var(--text-s);font-size:.88rem;font-weight:500;transition:color .2s;}
+.nav-links a:hover{color:var(--text-p);}
+.nav-links a[aria-current]{color:var(--text-p);font-weight:700;}
+.nav-btn{display:inline-flex;align-items:center;padding:.55em 1.3em;border-radius:100px;font-family:var(--sans);font-size:.85rem;font-weight:600;background:var(--accent);color:#fff;border:none;cursor:pointer;white-space:nowrap;transition:background .2s,transform .15s;}
+.nav-btn:hover{background:#009066;}
+.nav-btn:active{transform:scale(.97);}
+.nav-ham{display:none;background:none;border:none;cursor:pointer;padding:.5rem;color:var(--text-p);}
+/* Hero */
+.page-hero{max-width:var(--w);margin:0 auto;padding:clamp(3rem,7vw,6rem) var(--gutter) 0;}
+.page-hero-tag{font-family:var(--mono);font-size:.75rem;text-transform:uppercase;letter-spacing:.14em;color:var(--accent);margin-bottom:.75rem;}
+.page-hero-title{font-size:clamp(2.2rem,5vw,4rem);font-weight:800;letter-spacing:-.035em;line-height:.95;margin-bottom:1rem;text-wrap:balance;}
+.page-hero-sub{color:var(--text-s);font-size:1rem;max-width:48ch;line-height:1.65;}
+/* Filter bar */
+.filter-wrap{max-width:var(--w);margin:2.5rem auto 0;padding:0 var(--gutter);}
+.filter-row{display:flex;gap:.65rem;flex-wrap:wrap;align-items:center;}
+.filter-select{padding:.5em 1.1em;border-radius:100px;border:1.5px solid var(--border);font-family:var(--sans);font-size:.85rem;font-weight:500;background:var(--surface);color:var(--text-s);cursor:pointer;outline:none;transition:border-color .2s;}
+.filter-select:focus{border-color:var(--accent);}
+.filter-chip{padding:.45em 1.1em;border-radius:100px;border:1.5px solid var(--border);font-family:var(--sans);font-size:.85rem;font-weight:500;background:var(--surface);color:var(--text-s);cursor:pointer;transition:border-color .2s,background .2s,color .2s;}
+.filter-chip.active{background:var(--brand);border-color:var(--brand);color:#fff;}
+/* Featured event */
+.feat-event{max-width:var(--w);margin:3rem auto 0;padding:0 var(--gutter);}
+.feat-card{border-radius:var(--r-lg);overflow:hidden;position:relative;background:var(--brand);min-height:320px;display:grid;grid-template-columns:1fr 1fr;}
+.feat-img{width:100%;height:100%;object-fit:cover;object-position:center;}
+.feat-body{padding:2.5rem;display:flex;flex-direction:column;justify-content:center;}
+.event-badge{display:inline-flex;align-items:center;gap:.4rem;padding:.3em .8em;border-radius:100px;font-family:var(--mono);font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;}
+.badge-live{background:rgba(239,68,68,.15);color:#EF4444;border:1px solid rgba(239,68,68,.3);}
+.badge-online{background:var(--accent-dim);color:var(--accent);border:1px solid rgba(0,168,120,.25);}
+.badge-inperson{background:rgba(77,143,191,.15);color:var(--brand);border:1px solid rgba(77,143,191,.25);}
+.feat-title{font-size:clamp(1.3rem,2.5vw,2rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:.75rem;}
+.feat-meta{font-size:.85rem;color:rgba(255,255,255,.65);line-height:1.6;margin-bottom:1.5rem;}
+/* Events grid */
+.events-section{max-width:var(--w);margin:3rem auto;padding:0 var(--gutter);}
+.events-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;}
+.event-card{background:var(--surface);border-radius:var(--r-md);overflow:hidden;border:1px solid var(--border);transition:transform .35s var(--ease),box-shadow .35s var(--ease);}
+.event-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(10,14,26,.1);}
+.event-card-img-wrap{position:relative;aspect-ratio:16/9;overflow:hidden;}
+.event-card-img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease);}
+.event-card:hover .event-card-img{transform:scale(1.05);}
+.event-card-date{position:absolute;top:.875rem;left:.875rem;background:var(--surface);border-radius:var(--r-sm);padding:.4rem .6rem;text-align:center;min-width:44px;}
+.event-date-day{font-family:var(--mono);font-size:1.2rem;font-weight:700;color:var(--brand);line-height:1;}
+.event-date-mon{font-family:var(--mono);font-size:.65rem;color:var(--text-s);text-transform:uppercase;letter-spacing:.08em;}
+.event-card-body{padding:1.25rem;}
+.event-card-mode{display:inline-flex;align-items:center;gap:.35rem;margin-bottom:.6rem;}
+.event-card-title{font-size:1rem;font-weight:700;letter-spacing:-.01em;line-height:1.25;margin-bottom:.5rem;}
+.event-card-desc{font-size:.83rem;color:var(--text-s);line-height:1.5;margin-bottom:1rem;}
+.event-card-footer{display:flex;align-items:center;justify-content:space-between;}
+.event-card-city{font-size:.78rem;color:var(--text-s);}
+.btn-reg{display:inline-flex;align-items:center;padding:.45em 1.1em;border-radius:100px;font-family:var(--sans);font-size:.8rem;font-weight:600;background:var(--accent);color:#fff;border:none;cursor:pointer;transition:background .2s,transform .15s;}
+.btn-reg:hover{background:#009066;}
+.btn-reg:active{transform:scale(.97);}
+/* Modal */
+.modal-backdrop{position:fixed;inset:0;background:rgba(10,14,26,.65);backdrop-filter:blur(4px);z-index:200;display:none;align-items:center;justify-content:center;padding:1.5rem;}
+.modal-backdrop.open{display:flex;}
+.modal{background:var(--surface);border-radius:var(--r-lg);padding:2.5rem;max-width:480px;width:100%;position:relative;}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;cursor:pointer;color:var(--text-s);font-size:1.2rem;line-height:1;}
+.modal-title{font-size:1.4rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.5rem;}
+.modal-sub{font-size:.875rem;color:var(--text-s);margin-bottom:1.5rem;line-height:1.5;}
+.form-field{margin-bottom:1rem;}
+.form-label{display:block;font-size:.83rem;font-weight:600;margin-bottom:.4rem;}
+.form-input{width:100%;padding:.7em 1em;border:1.5px solid var(--border);border-radius:var(--r-sm);font-family:var(--sans);font-size:.9rem;background:var(--bg);color:var(--text-p);outline:none;transition:border-color .2s,box-shadow .2s;}
+.form-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim);}
+.btn-submit-full{width:100%;padding:.8em;border-radius:100px;font-family:var(--sans);font-size:.95rem;font-weight:600;background:var(--accent);color:#fff;border:none;cursor:pointer;transition:background .2s,transform .15s;margin-top:.5rem;}
+.btn-submit-full:hover{background:#009066;}
+.btn-submit-full:active{transform:scale(.97);}
+/* Footer */
+.footer{background:var(--surface);border-top:1px solid var(--border);padding:clamp(3rem,6vw,5rem) var(--gutter) 2rem;}
+.footer-inner{max-width:var(--w);margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem;}
+.footer-brand{font-size:1.3rem;font-weight:800;letter-spacing:-.03em;color:var(--brand);display:block;margin-bottom:.75rem;}
+.footer-tagline{font-size:.875rem;color:var(--text-s);line-height:1.6;max-width:28ch;}
+.footer-col-title{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text-s);margin-bottom:1rem;}
+.footer-links{list-style:none;padding:0;display:flex;flex-direction:column;gap:.6rem;}
+.footer-links a{color:var(--text-s);font-size:.875rem;transition:color .2s;}
+.footer-links a:hover{color:var(--text-p);}
+.footer-bottom{max-width:var(--w);margin:0 auto;padding-top:2rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+.footer-legal{font-size:.8rem;color:var(--text-s);}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .65s var(--ease),transform .65s var(--ease);}
+.reveal.on{opacity:1;transform:translateY(0);}
+@media(max-width:960px){.feat-card{grid-template-columns:1fr;}.feat-img{height:200px;}.events-grid{grid-template-columns:1fr 1fr;}.footer-inner{grid-template-columns:1fr 1fr;}}
+@media(max-width:640px){.nav-links,.nav-btn{display:none;}.nav-ham{display:flex;}.events-grid{grid-template-columns:1fr;}.footer-inner{grid-template-columns:1fr;}}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .nav{background:rgba(10,13,22,.88);}}
+:root[data-theme="dark"] .nav{background:rgba(10,13,22,.88);}
+</style>
+<link rel="stylesheet" href="../assets/site.css">
+
+<nav class="nav" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><img src="../assets/gradmire-logo.png" alt="Gradmire" height="34" style="display:block;max-width:155px;"></a>
+    <ul class="nav-links" role="list">
+      <li><a href="destinations.html">Destinations</a></li>
+      <li><a href="find-courses.html">Courses</a></li>
+      <li><a href="find-universities.html">Universities</a></li>
+      <li><a href="scholarships.html">Scholarships</a></li>
+      <li><a href="events.html" aria-current="page">Events</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+    <div style="display:flex;gap:.75rem;align-items:center">
+      <a href="login.html" class="nav-btn" style="background:transparent;color:var(--text-p);border:1.5px solid var(--border)">Log in</a>
+      <a href="free-consultation.html" class="nav-btn">Free consultation</a>
+    </div>
+    <button class="nav-ham" aria-label="Open menu"><svg width="22" height="16" viewBox="0 0 22 16" fill="none"><rect y="0" width="22" height="2" rx="1" fill="currentColor"/><rect y="7" width="22" height="2" rx="1" fill="currentColor"/><rect y="14" width="22" height="2" rx="1" fill="currentColor"/></svg></button>
+  </div>
+</nav>
+
+<div class="page-hero reveal">
+  <div class="page-hero-tag">Upcoming Events</div>
+  <h1 class="page-hero-title">Meet us.<br>In person or online.</h1>
+  <p class="page-hero-sub">Education fairs, webinars, university open days, and scholarship sessions — free to attend. Register in under a minute.</p>
+</div>
+
+<div class="filter-wrap">
+  <div class="filter-row">
+    <select class="filter-select" aria-label="Filter by month">
+      <option>All months</option>
+      <option>January 2025</option>
+      <option>February 2025</option>
+      <option>March 2025</option>
+      <option>April 2025</option>
+    </select>
+    <select class="filter-select" aria-label="Filter by destination">
+      <option>All destinations</option>
+      <option>United Kingdom</option>
+      <option>USA</option>
+      <option>Canada</option>
+      <option>Australia</option>
+      <option>Germany</option>
+    </select>
+    <select class="filter-select" aria-label="Filter by city">
+      <option>All cities</option>
+      <option>Mumbai</option>
+      <option>Delhi</option>
+      <option>Bengaluru</option>
+      <option>Hyderabad</option>
+      <option>Pune</option>
+      <option>Chennai</option>
+    </select>
+    <button class="filter-chip active">All</button>
+    <button class="filter-chip">In-person</button>
+    <button class="filter-chip">Online</button>
+  </div>
+</div>
+
+<!-- Featured event -->
+<div class="feat-event reveal" style="transition-delay:.05s">
+  <div class="feat-card">
+    <img class="feat-img" src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=900&q=80" alt="Education fair">
+    <div class="feat-body">
+      <span class="event-badge badge-live">🔴 Featured</span>
+      <h2 class="feat-title">India's Largest UK University Fair 2025</h2>
+      <p class="feat-meta">📅 Saturday, 18 January 2025 · 10am – 5pm<br>📍 Taj Lands End, Mumbai<br>🎓 Meet reps from 60+ UK universities including Oxford, Imperial, LSE</p>
+      <button class="btn-reg" onclick="openModal('UK University Fair 2025')">Register free →</button>
+    </div>
+  </div>
+</div>
+
+<!-- Events grid -->
+<div class="events-section">
+  <div class="events-grid">
+
+    <div class="event-card reveal">
+      <div class="event-card-img-wrap">
+        <img class="event-card-img" src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" alt="Webinar">
+        <div class="event-card-date"><div class="event-date-day">24</div><div class="event-date-mon">Jan</div></div>
+      </div>
+      <div class="event-card-body">
+        <div class="event-card-mode"><span class="event-badge badge-online" style="margin:0">🖥 Online</span></div>
+        <div class="event-card-title">Scholarships for UK Study — Live Q&A with Priya Sharma</div>
+        <p class="event-card-desc">Learn about Chevening, Commonwealth and university-funded scholarships. Live Q&A at the end.</p>
+        <div class="event-card-footer">
+          <span class="event-card-city">🌐 Zoom · Free</span>
+          <button class="btn-reg" onclick="openModal('UK Scholarships Q&A')">Register</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="event-card reveal" style="transition-delay:.05s">
+      <div class="event-card-img-wrap">
+        <img class="event-card-img" src="https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=800&q=80" alt="Students">
+        <div class="event-card-date"><div class="event-date-day">1</div><div class="event-date-mon">Feb</div></div>
+      </div>
+      <div class="event-card-body">
+        <div class="event-card-mode"><span class="event-badge badge-inperson" style="margin:0">📍 In-person</span></div>
+        <div class="event-card-title">Canada Study Abroad Fair — Delhi</div>
+        <p class="event-card-desc">Meet admissions officers from University of Toronto, UBC, McGill and 15+ other Canadian universities.</p>
+        <div class="event-card-footer">
+          <span class="event-card-city">📍 Connaught Place, Delhi</span>
+          <button class="btn-reg" onclick="openModal('Canada Study Abroad Fair Delhi')">Register</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="event-card reveal" style="transition-delay:.1s">
+      <div class="event-card-img-wrap">
+        <img class="event-card-img" src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=800&q=80" alt="University campus">
+        <div class="event-card-date"><div class="event-date-day">8</div><div class="event-date-mon">Feb</div></div>
+      </div>
+      <div class="event-card-body">
+        <div class="event-card-mode"><span class="event-badge badge-online" style="margin:0">🖥 Online</span></div>
+        <div class="event-card-title">IELTS/PTE vs TOEFL — Which test is right for you?</div>
+        <p class="event-card-desc">Our test prep expert helps you choose the right English exam based on your target universities and timeline.</p>
+        <div class="event-card-footer">
+          <span class="event-card-city">🌐 Zoom · Free</span>
+          <button class="btn-reg" onclick="openModal('IELTS/PTE vs TOEFL Webinar')">Register</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="event-card reveal">
+      <div class="event-card-img-wrap">
+        <img class="event-card-img" src="https://images.unsplash.com/photo-1486299267070-83823f5448dd?auto=format&fit=crop&w=800&q=80" alt="London">
+        <div class="event-card-date"><div class="event-date-day">15</div><div class="event-date-mon">Feb</div></div>
+      </div>
+      <div class="event-card-body">
+        <div class="event-card-mode"><span class="event-badge badge-inperson" style="margin:0">📍 In-person</span></div>
+        <div class="event-card-title">UK University Fair — Bengaluru</div>
+        <p class="event-card-desc">25+ UK university representatives. Talk directly to admissions teams and pick up application fee waivers.</p>
+        <div class="event-card-footer">
+          <span class="event-card-city">📍 Koramangala, Bengaluru</span>
+          <button class="btn-reg" onclick="openModal('UK University Fair Bengaluru')">Register</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="event-card reveal" style="transition-delay:.05s">
+      <div class="event-card-img-wrap">
+        <img class="event-card-img" src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=800&q=80" alt="Australia">
+        <div class="event-card-date"><div class="event-date-day">22</div><div class="event-date-mon">Feb</div></div>
+      </div>
+      <div class="event-card-body">
+        <div class="event-card-mode"><span class="event-badge badge-inperson" style="margin:0">📍 In-person</span></div>
+        <div class="event-card-title">Australia & New Zealand Education Expo — Hyderabad</div>
+        <p class="event-card-desc">Group of Eight universities plus top NZ institutions. Student visa information and scholarship sessions included.</p>
+        <div class="event-card-footer">
+          <span class="event-card-city">📍 Banjara Hills, Hyderabad</span>
+          <button class="btn-reg" onclick="openModal('Australia NZ Education Expo Hyderabad')">Register</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="event-card reveal" style="transition-delay:.1s">
+      <div class="event-card-img-wrap">
+        <img class="event-card-img" src="https://images.unsplash.com/photo-1560969184-10fe8719e047?auto=format&fit=crop&w=800&q=80" alt="Germany Berlin">
+        <div class="event-card-date"><div class="event-date-day">1</div><div class="event-date-mon">Mar</div></div>
+      </div>
+      <div class="event-card-body">
+        <div class="event-card-mode"><span class="event-badge badge-online" style="margin:0">🖥 Online</span></div>
+        <div class="event-card-title">Studying in Germany for Free — Masterclass</div>
+        <p class="event-card-desc">Siddharth Nair walks through tuition-free programmes, blocked accounts, Anmeldung, and student visas for Germany.</p>
+        <div class="event-card-footer">
+          <span class="event-card-city">🌐 Zoom · Free</span>
+          <button class="btn-reg" onclick="openModal('Germany Masterclass Webinar')">Register</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="event-card reveal">
+      <div class="event-card-img-wrap">
+        <img class="event-card-img" src="https://images.unsplash.com/photo-1485871981521-5b1fd3805eee?auto=format&fit=crop&w=800&q=80" alt="New York">
+        <div class="event-card-date"><div class="event-date-day">8</div><div class="event-date-mon">Mar</div></div>
+      </div>
+      <div class="event-card-body">
+        <div class="event-card-mode"><span class="event-badge badge-inperson" style="margin:0">📍 In-person</span></div>
+        <div class="event-card-title">USA & Canada Study Abroad Fair — Pune</div>
+        <p class="event-card-desc">20+ North American university representatives. Financial aid sessions, application workshops, and one-on-one counselling slots.</p>
+        <div class="event-card-footer">
+          <span class="event-card-city">📍 Kothrud, Pune</span>
+          <button class="btn-reg" onclick="openModal('USA Canada Fair Pune')">Register</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="event-card reveal" style="transition-delay:.05s">
+      <div class="event-card-img-wrap">
+        <img class="event-card-img" src="https://images.unsplash.com/photo-1590089415462-6f0f8f99db5e?auto=format&fit=crop&w=800&q=80" alt="Ireland">
+        <div class="event-card-date"><div class="event-date-day">15</div><div class="event-date-mon">Mar</div></div>
+      </div>
+      <div class="event-card-body">
+        <div class="event-card-mode"><span class="event-badge badge-online" style="margin:0">🖥 Online</span></div>
+        <div class="event-card-title">Ireland: Tech Careers & Study Options — Live Panel</div>
+        <p class="event-card-desc">Panel of Indian students currently studying in Ireland. Hear about visas, living costs, and post-study work opportunities.</p>
+        <div class="event-card-footer">
+          <span class="event-card-city">🌐 Zoom · Free</span>
+          <button class="btn-reg" onclick="openModal('Ireland Study Panel')">Register</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="event-card reveal" style="transition-delay:.1s">
+      <div class="event-card-img-wrap">
+        <img class="event-card-img" src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=800&q=80" alt="Scholarship">
+        <div class="event-card-date"><div class="event-date-day">22</div><div class="event-date-mon">Mar</div></div>
+      </div>
+      <div class="event-card-body">
+        <div class="event-card-mode"><span class="event-badge badge-online" style="margin:0">🖥 Online</span></div>
+        <div class="event-card-title">Scholarship Application Masterclass — Chevening & Fulbright</div>
+        <p class="event-card-desc">Step-by-step guidance on writing your Chevening and Fulbright-Nehru essays. Includes live feedback on sample applications.</p>
+        <div class="event-card-footer">
+          <span class="event-card-city">🌐 Zoom · Free</span>
+          <button class="btn-reg" onclick="openModal('Scholarship Masterclass')">Register</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Registration modal -->
+<div class="modal-backdrop" id="modal" role="dialog" aria-modal="true" aria-label="Event registration">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()" aria-label="Close">✕</button>
+    <h2 class="modal-title" id="modal-title">Register for event</h2>
+    <p class="modal-sub" id="modal-sub">Fill in your details and we'll send a confirmation with the event link or venue details.</p>
+    <form id="reg-form" novalidate>
+      <div class="form-field">
+        <label class="form-label" for="reg-name">Full name</label>
+        <input class="form-input" type="text" id="reg-name" placeholder="Arjun Sharma" required>
+      </div>
+      <div class="form-field">
+        <label class="form-label" for="reg-email">Email address</label>
+        <input class="form-input" type="email" id="reg-email" placeholder="you@example.com" required>
+      </div>
+      <div class="form-field">
+        <label class="form-label" for="reg-phone">Phone number</label>
+        <input class="form-input" type="tel" id="reg-phone" placeholder="+91 98765 43210">
+      </div>
+      <div class="form-field">
+        <label class="form-label" for="reg-city">Your city</label>
+        <input class="form-input" type="text" id="reg-city" placeholder="Mumbai">
+      </div>
+      <button type="button" class="btn-submit-full" onclick="submitReg()">Confirm registration</button>
+    </form>
+    <div id="reg-confirm" style="display:none;text-align:center;padding:1.5rem 0;">
+      <div style="font-size:2rem;margin-bottom:.75rem;">✅</div>
+      <div style="font-weight:800;font-size:1.1rem;margin-bottom:.5rem;">You're registered!</div>
+      <div style="font-size:.875rem;color:var(--text-s);">A confirmation has been sent to your email. We'll see you there.</div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer" aria-label="Site footer">
+  <div class="footer-inner">
+    <div><span class="footer-brand"><img src="../assets/gradmire-logo.png" alt="Gradmire" height="28" style="display:block;max-width:140px;"></span><p class="footer-tagline">India's study-abroad counselling platform. Trusted since 2006.</p></div>
+    <div><div class="footer-col-title">Destinations</div><ul class="footer-links"><li><a href="study-in-uk.html">United Kingdom</a></li><li><a href="study-in-usa.html">USA</a></li><li><a href="study-in-canada.html">Canada</a></li><li><a href="study-in-australia.html">Australia</a></li><li><a href="study-in-germany.html">Germany</a></li><li><a href="study-in-ireland.html">Ireland</a></li><li><a href="study-in-newzealand.html">New Zealand</a></li><li><a href="study-in-italy.html">Italy</a></li></ul></div>
+    <div><div class="footer-col-title">Services</div><ul class="footer-links"><li><a href="find-courses.html">Course finder</a></li><li><a href="find-universities.html">Universities</a></li><li><a href="scholarships.html">Scholarships</a></li></ul></div>
+    <div><div class="footer-col-title">Company</div><ul class="footer-links"><li><a href="about.html">About us</a></li><li><a href="blog.html">Blog</a></li><li><a href="events.html">Events</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span class="footer-legal">© 2026 Gradmire. All rights reserved.</span><div style="display:flex;gap:1.5rem;"><a href="#" class="footer-legal">Privacy</a><a href="#" class="footer-legal">Terms</a></div></div>
+</footer>
+
+<script>
+const obs=new IntersectionObserver(e=>e.forEach(el=>{if(el.isIntersecting){el.target.classList.add('on');obs.unobserve(el.target);}}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+document.querySelectorAll('.filter-chip').forEach(c=>c.addEventListener('click',()=>{document.querySelectorAll('.filter-chip').forEach(x=>x.classList.remove('active'));c.classList.add('active');}));
+function openModal(name){
+  document.getElementById('modal-title').textContent='Register: '+name;
+  document.getElementById('modal-sub').textContent='Fill in your details and we\'ll send a confirmation with the event link or venue details.';
+  document.getElementById('reg-form').style.display='';
+  document.getElementById('reg-confirm').style.display='none';
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal(){document.getElementById('modal').classList.remove('open');}
+function submitReg(){
+  document.getElementById('reg-form').style.display='none';
+  document.getElementById('reg-confirm').style.display='block';
+}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target===document.getElementById('modal'))closeModal();});
+</script>
+
+
+<script src="../assets/site.js"></script>

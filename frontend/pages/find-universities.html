@@ -1,0 +1,356 @@
+<meta charset="UTF-8">
+<title>Gradmire — University Finder</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+:root{--bg:#F0F2F7;--surface:#FFFFFF;--surface-tint:#E8EBF4;--text-p:#0E1420;--text-s:#556270;--brand:#1A4870;--accent:#007A5A;--accent-dim:rgba(0,122,90,.12);--border:rgba(14,20,32,.1);--sans:'Bricolage Grotesque',system-ui,sans-serif;--mono:'JetBrains Mono','Menlo',monospace;--r-sm:8px;--r-md:16px;--r-lg:24px;--w:1280px;--gutter:clamp(1.25rem,5vw,3rem);--ease:cubic-bezier(.16,1,.3,1);}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(45,184,140,.18);}}
+:root[data-theme="dark"]{--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(45,184,140,.18);}
+*,*::before,*::after{box-sizing:border-box;margin:0;}
+body{background:var(--bg);color:var(--text-p);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;}
+img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:100;background:rgba(240,242,247,.82);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid var(--border);height:68px;}
+.nav-inner{max-width:var(--w);margin:0 auto;padding:0 var(--gutter);height:100%;display:flex;align-items:center;gap:2.5rem;}
+.nav-logo{font-size:1.2rem;font-weight:800;letter-spacing:-.03em;color:var(--brand);}
+.nav-links{list-style:none;padding:0;display:flex;gap:2rem;flex:1;}
+.nav-links a{color:var(--text-s);font-size:.88rem;font-weight:500;transition:color .2s;}
+.nav-links a:hover{color:var(--text-p);}
+.nav-links a[aria-current]{color:var(--text-p);font-weight:700;}
+.nav-btn{display:inline-flex;align-items:center;padding:.55em 1.3em;border-radius:100px;font-family:var(--sans);font-size:.85rem;font-weight:600;background:var(--accent);color:#fff;border:none;cursor:pointer;white-space:nowrap;transition:background .2s,transform .15s;}
+.nav-btn:hover{background:#006649;}
+.nav-btn:active{transform:scale(.97);}
+.nav-ham{display:none;background:none;border:none;cursor:pointer;padding:.5rem;color:var(--text-p);}
+/* Search hero */
+.search-hero{background:var(--brand);padding:clamp(3rem,6vw,5rem) var(--gutter);}
+.search-hero-inner{max-width:var(--w);margin:0 auto;}
+.search-hero-tag{font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;color:rgba(255,255,255,.5);margin-bottom:.75rem;}
+.search-hero-title{font-size:clamp(2rem,4.5vw,3.8rem);font-weight:800;color:#fff;letter-spacing:-.035em;line-height:.95;margin-bottom:2rem;text-wrap:balance;}
+.search-box{background:var(--surface);border-radius:var(--r-lg);padding:1.25rem 1.5rem;display:flex;align-items:center;gap:1rem;}
+.search-icon{color:var(--text-s);flex-shrink:0;}
+.search-input{flex:1;border:none;background:none;font-family:var(--sans);font-size:1.05rem;color:var(--text-p);outline:none;}
+.search-input::placeholder{color:var(--text-s);}
+.search-divider{width:1px;height:32px;background:var(--border);}
+.search-select{border:none;background:none;font-family:var(--sans);font-size:.9rem;color:var(--text-s);cursor:pointer;outline:none;padding:.2em .4em;}
+.search-btn{padding:.65em 1.6em;border-radius:100px;font-family:var(--sans);font-size:.9rem;font-weight:600;background:var(--accent);color:#fff;border:none;cursor:pointer;white-space:nowrap;transition:background .2s,transform .15s;}
+.search-btn:hover{background:#006649;}
+.search-btn:active{transform:scale(.97);}
+/* Tabs */
+.tabs-wrap{max-width:var(--w);margin:2rem auto 0;padding:0 var(--gutter);}
+.tabs{display:flex;gap:.5rem;border-bottom:2px solid var(--border);overflow-x:auto;}
+.tab-btn{padding:.65em 1.4em;font-family:var(--sans);font-size:.875rem;font-weight:600;border:none;background:none;color:var(--text-s);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:color .2s,border-color .2s;}
+.tab-btn.active{color:var(--brand);border-bottom-color:var(--brand);}
+.tab-btn:hover{color:var(--text-p);}
+/* Results */
+.results-wrap{max-width:var(--w);margin:2rem auto;padding:0 var(--gutter);}
+.results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;}
+.results-count{font-size:.9rem;color:var(--text-s);}
+.results-sort{padding:.4em .9em;border-radius:100px;border:1.5px solid var(--border);font-family:var(--sans);font-size:.83rem;background:var(--surface);color:var(--text-s);cursor:pointer;outline:none;}
+.uni-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;}
+.uni-card{background:var(--surface);border-radius:var(--r-md);overflow:hidden;border:1px solid var(--border);transition:transform .35s var(--ease),box-shadow .35s var(--ease);}
+.uni-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(10,14,26,.1);}
+.uni-card-img{aspect-ratio:16/9;overflow:hidden;position:relative;}
+.uni-card-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease);}
+.uni-card:hover .uni-card-img img{transform:scale(1.05);}
+.uni-card-country{position:absolute;top:.75rem;left:.75rem;background:rgba(240,242,247,.9);backdrop-filter:blur(8px);border-radius:100px;padding:.25em .7em;font-size:.72rem;font-weight:600;color:var(--text-p);}
+.uni-card-body{padding:1.25rem;}
+.uni-ranking{font-family:var(--mono);font-size:.72rem;color:var(--accent);margin-bottom:.35rem;}
+.uni-name{font-size:1rem;font-weight:800;letter-spacing:-.01em;line-height:1.2;margin-bottom:.3rem;}
+.uni-city{font-size:.82rem;color:var(--text-s);margin-bottom:.75rem;}
+.uni-stats{display:flex;gap:1.5rem;border-top:1px solid var(--border);padding-top:.875rem;}
+.uni-stat{font-size:.78rem;}
+.uni-stat-val{font-weight:700;color:var(--text-p);}
+.uni-stat-lbl{color:var(--text-s);margin-top:.1rem;}
+.uni-card-footer{padding:0 1.25rem 1.25rem;display:flex;gap:.5rem;}
+.btn-shortlist{flex:1;padding:.55em;border-radius:100px;font-family:var(--sans);font-size:.82rem;font-weight:600;border:1.5px solid var(--border);background:transparent;color:var(--text-p);cursor:pointer;transition:border-color .2s,transform .15s;}
+.btn-shortlist:hover{border-color:var(--accent);color:var(--accent);}
+.btn-shortlist:active{transform:scale(.97);}
+.btn-explore{flex:1;padding:.55em;border-radius:100px;font-family:var(--sans);font-size:.82rem;font-weight:600;background:var(--accent);color:#fff;border:none;cursor:pointer;transition:background .2s,transform .15s;}
+.btn-explore:hover{background:#006649;}
+.btn-explore:active{transform:scale(.97);}
+/* Footer */
+.footer{background:var(--surface);border-top:1px solid var(--border);padding:clamp(3rem,6vw,5rem) var(--gutter) 2rem;margin-top:4rem;}
+.footer-inner{max-width:var(--w);margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem;}
+.footer-brand{font-size:1.3rem;font-weight:800;letter-spacing:-.03em;color:var(--brand);display:block;margin-bottom:.75rem;}
+.footer-tagline{font-size:.875rem;color:var(--text-s);line-height:1.6;max-width:28ch;}
+.footer-col-title{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text-s);margin-bottom:1rem;}
+.footer-links{list-style:none;padding:0;display:flex;flex-direction:column;gap:.6rem;}
+.footer-links a{color:var(--text-s);font-size:.875rem;transition:color .2s;}
+.footer-links a:hover{color:var(--text-p);}
+.footer-bottom{max-width:var(--w);margin:0 auto;padding-top:2rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+.footer-legal{font-size:.8rem;color:var(--text-s);}
+@media(max-width:960px){.uni-grid{grid-template-columns:1fr 1fr;}.footer-inner{grid-template-columns:1fr 1fr;}}
+@media(max-width:640px){.nav-links,.nav-btn{display:none;}.nav-ham{display:flex;}.uni-grid{grid-template-columns:1fr;}.footer-inner{grid-template-columns:1fr;}}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .nav{background:rgba(10,13,22,.88);}}
+:root[data-theme="dark"] .nav{background:rgba(10,13,22,.88);}
+</style>
+<link rel="stylesheet" href="../assets/site.css">
+
+<nav class="nav" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><img src="../assets/gradmire-logo.png" alt="Gradmire" height="34" style="display:block;max-width:155px;"></a>
+    <ul class="nav-links" role="list">
+      <li><a href="destinations.html">Destinations</a></li>
+      <li><a href="find-courses.html">Courses</a></li>
+      <li><a href="find-universities.html" aria-current="page">Universities</a></li>
+      <li><a href="scholarships.html">Scholarships</a></li>
+      <li><a href="tools/roi-calculator.html">Tools</a></li>
+      <li><a href="tools/roi-calculator.html">Tools</a>
+  <a href="faq.html">FAQ</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+    <div style="display:flex;gap:.75rem;align-items:center">
+      <a href="login.html" class="nav-btn" style="background:transparent;color:var(--text-p);border:1.5px solid var(--border)">Log in</a>
+      <a href="free-consultation.html" class="nav-btn">Free consultation</a>
+    </div>
+    <button class="nav-ham" aria-label="Open menu"><svg width="22" height="16" viewBox="0 0 22 16" fill="none"><rect y="0" width="22" height="2" rx="1" fill="currentColor"/><rect y="7" width="22" height="2" rx="1" fill="currentColor"/><rect y="14" width="22" height="2" rx="1" fill="currentColor"/></svg></button>
+  </div>
+</nav>
+
+<div class="search-hero">
+  <div class="search-hero-inner">
+    <div class="search-hero-tag">University Finder</div>
+    <h1 class="search-hero-title">Search 1,000+ partner universities.</h1>
+    <div class="search-box">
+      <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="8.5" cy="8.5" r="5.75" stroke="currentColor" stroke-width="1.5"/><path d="M13 13l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <input class="search-input" type="text" placeholder="Search by university name or city…" autocomplete="off">
+      <div class="search-divider" aria-hidden="true"></div>
+      <select class="search-select" aria-label="Filter by country">
+        <option value="">Any country</option>
+        <option>United Kingdom</option>
+        <option>USA</option>
+        <option>Canada</option>
+        <option>Australia</option>
+        <option>Germany</option>
+        <option>Ireland</option>
+        <option>New Zealand</option>
+      </select>
+      <div class="search-divider" aria-hidden="true"></div>
+      <select class="search-select" aria-label="Filter by study level">
+        <option value="">Any level</option>
+        <option>Undergraduate</option>
+        <option>Postgraduate</option>
+        <option>PhD</option>
+      </select>
+      <button class="search-btn">Search</button>
+    </div>
+  </div>
+</div>
+
+<div class="tabs-wrap">
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab">All universities</button>
+    <button class="tab-btn" role="tab">🇬🇧 United Kingdom</button>
+    <button class="tab-btn" role="tab">🇺🇸 USA</button>
+    <button class="tab-btn" role="tab">🇨🇦 Canada</button>
+    <button class="tab-btn" role="tab">🇦🇺 Australia</button>
+    <button class="tab-btn" role="tab">🇩🇪 Germany</button>
+    <button class="tab-btn" role="tab">🇮🇪 Ireland</button>
+  </div>
+</div>
+
+<div class="results-wrap">
+  <div class="results-header">
+    <div class="results-count">Showing <strong>12</strong> of 1,240 universities</div>
+    <select class="results-sort" aria-label="Sort results">
+      <option>Sort: QS World Ranking</option>
+      <option>Sort: Acceptance rate</option>
+      <option>Sort: Tuition (low to high)</option>
+    </select>
+  </div>
+
+  <div class="uni-grid">
+
+    <div class="uni-card">
+      <div class="uni-card-img"><img src="https://images.unsplash.com/photo-1580537659466-0a9bfa916a54?auto=format&fit=crop&w=700&q=80" alt="University of Oxford"><span class="uni-card-country">🇬🇧 UK</span></div>
+      <div class="uni-card-body">
+        <div class="uni-ranking">QS World Ranking #3</div>
+        <div class="uni-name">University of Oxford</div>
+        <div class="uni-city">📍 Oxford, England</div>
+        <div class="uni-stats">
+          <div class="uni-stat"><div class="uni-stat-val">£29,700</div><div class="uni-stat-lbl">Avg tuition/yr</div></div>
+          <div class="uni-stat"><div class="uni-stat-val">12,000+</div><div class="uni-stat-lbl">Intl. students</div></div>
+          <div class="uni-stat"><div class="uni-stat-val">17.5%</div><div class="uni-stat-lbl">Accept. rate</div></div>
+        </div>
+      </div>
+      <div class="uni-card-footer">
+        <button class="btn-shortlist">♡ Save</button>
+        <button class="btn-explore">Explore →</button>
+      </div>
+    </div>
+
+    <div class="uni-card">
+      <div class="uni-card-img"><img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=700&q=80" alt="MIT campus"><span class="uni-card-country">🇺🇸 USA</span></div>
+      <div class="uni-card-body">
+        <div class="uni-ranking">QS World Ranking #1</div>
+        <div class="uni-name">Massachusetts Institute of Technology (MIT)</div>
+        <div class="uni-city">📍 Cambridge, Massachusetts</div>
+        <div class="uni-stats">
+          <div class="uni-stat"><div class="uni-stat-val">$57,590</div><div class="uni-stat-lbl">Tuition/yr</div></div>
+          <div class="uni-stat"><div class="uni-stat-val">3,900+</div><div class="uni-stat-lbl">Intl. students</div></div>
+          <div class="uni-stat"><div class="uni-stat-val">3.9%</div><div class="uni-stat-lbl">Accept. rate</div></div>
+        </div>
+      </div>
+      <div class="uni-card-footer">
+        <button class="btn-shortlist">♡ Save</button>
+        <button class="btn-explore">Explore →</button>
+      </div>
+    </div>
+
+    <div class="uni-card">
+      <div class="uni-card-img"><img src="https://images.unsplash.com/photo-1517090504586-fde19ea6066f?auto=format&fit=crop&w=700&q=80" alt="University of Toronto"><span class="uni-card-country">🇨🇦 Canada</span></div>
+      <div class="uni-card-body">
+        <div class="uni-ranking">QS World Ranking #25</div>
+        <div class="uni-name">University of Toronto</div>
+        <div class="uni-city">📍 Toronto, Ontario</div>
+        <div class="uni-stats">
+          <div class="uni-stat"><div class="uni-stat-val">CAD $35,000</div><div class="uni-stat-lbl">Avg tuition/yr</div></div>
+          <div class="uni-stat"><div class="uni-stat-val">25,000+</div><div class="uni-stat-lbl">Intl. students</div></div>
+          <div class="uni-stat"><div class="uni-stat-val">43%</div><div class="uni-stat-lbl">Accept. rate</div></div>
+        </div>
+      </div>
+      <div class="uni-card-footer">
+        <button class="btn-shortlist">♡ Save</button>
+        <button class="btn-explore">Explore →</button>
+      </div>
+    </div>
+
+    <div class="uni-card">
+      <div class="uni-card-img"><img src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=700&q=80" alt="University of Melbourne"><span class="uni-card-country">🇦🇺 Australia</span></div>
+      <div class="uni-card-body">
+        <div class="uni-ranking">QS World Ranking #14</div>
+        <div class="uni-name">University of Melbourne</div>
+        <div class="uni-city">📍 Melbourne, Victoria</div>
+        <div class="uni-stats">
+          <div class="uni-stat"><div class="uni-stat-val">AUD $38,000</div><div class="uni-stat-lbl">Avg tuition/yr</div></div>
+          <div class="uni-stat"><div class="uni-stat-val">18,000+</div><div class="uni-stat-lbl">Intl. students</div></div>
+          <div class="uni-stat"><div class="uni-stat-val">70%</div><div class="uni-stat-lbl">Accept. rate</div></div>
+        </div>
+      </div>
+      <div class="uni-card-footer">
+        <button class="btn-shortlist">♡ Save</button>
+        <button class="btn-explore">Explore →</button>
+      </div>
+    </div>
+
+    <div class="uni-card">
+      <div class="uni-card-img"><img src="https://images.unsplash.com/photo-1560969184-10fe8719e047?auto=format&fit=crop&w=700&q=80" alt="TU Munich"><span class="uni-card-country">🇩🇪 Germany</span></div>
+      <div class="uni-card-body">
+        <div class="uni-ranking">QS World Ranking #37</div>
+        <div class="uni-name">Technical University of Munich (TUM)</div>
+        <div class="uni-city">📍 Munich, Bavaria</div>
+        <div class="uni-stats">
+          <div class="uni-stat"><div class="uni-stat-val">€0 tuition</div><div class="uni-stat-lbl">+ semester fee</div></div>
+          <div class="uni-stat"><div class="uni-stat-val">12,000+</div><div class="uni-stat-lbl">Intl. students</div></div>
+          <div class="uni-stat"><div class="uni-stat-val">22%</div><div class="uni-stat-lbl">Accept. rate</div></div>
+        </div>
+      </div>
+      <div class="uni-card-footer">
+        <button class="btn-shortlist">♡ Save</button>
+        <button class="btn-explore">Explore →</button>
+      </div>
+    </div>
+
+    <div class="uni-card">
+      <div class="uni-card-img"><img src="https://images.unsplash.com/photo-1486299267070-83823f5448dd?auto=format&fit=crop&w=700&q=80" alt="UCL London"><span class="uni-card-country">🇬🇧 UK</span></div>
+      <div class="uni-card-body">
+        <div class="uni-ranking">QS World Ranking #9</div>
+        <div class="uni-name">University College London (UCL)</div>
+        <div class="uni-city">📍 London, England</div>
+        <div class="uni-stats">
+          <div class="uni-stat"><div class="uni-stat-val">£28,000</div><div class="uni-stat-lbl">Avg tuition/yr</div></div>
+          <div class="uni-stat"><div class="uni-stat-val">20,000+</div><div class="uni-stat-lbl">Intl. students</div></div>
+          <div class="uni-stat"><div class="uni-stat-val">63%</div><div class="uni-stat-lbl">Accept. rate</div></div>
+        </div>
+      </div>
+      <div class="uni-card-footer">
+        <button class="btn-shortlist">♡ Save</button>
+        <button class="btn-explore">Explore →</button>
+      </div>
+    </div>
+
+    <div class="uni-card">
+      <div class="uni-card-img"><img src="https://images.unsplash.com/photo-1488155665162-7fc8d8093d18?auto=format&fit=crop&w=700&q=80" alt="Trinity College Dublin"><span class="uni-card-country">🇮🇪 Ireland</span></div>
+      <div class="uni-card-body">
+        <div class="uni-ranking">QS World Ranking #87</div>
+        <div class="uni-name">Trinity College Dublin</div>
+        <div class="uni-city">📍 Dublin, Ireland</div>
+        <div class="uni-stats">
+          <div class="uni-stat"><div class="uni-stat-val">€18,800</div><div class="uni-stat-lbl">Avg tuition/yr</div></div>
+          <div class="uni-stat"><div class="uni-stat-val">8,500+</div><div class="uni-stat-lbl">Intl. students</div></div>
+          <div class="uni-stat"><div class="uni-stat-val">47%</div><div class="uni-stat-lbl">Accept. rate</div></div>
+        </div>
+      </div>
+      <div class="uni-card-footer">
+        <button class="btn-shortlist">♡ Save</button>
+        <button class="btn-explore">Explore →</button>
+      </div>
+    </div>
+
+    <div class="uni-card">
+      <div class="uni-card-img"><img src="https://images.unsplash.com/photo-1469521669194-babb45599def?auto=format&fit=crop&w=700&q=80" alt="New Zealand"><span class="uni-card-country">🇳🇿 New Zealand</span></div>
+      <div class="uni-card-body">
+        <div class="uni-ranking">QS World Ranking #68</div>
+        <div class="uni-name">University of Auckland</div>
+        <div class="uni-city">📍 Auckland, New Zealand</div>
+        <div class="uni-stats">
+          <div class="uni-stat"><div class="uni-stat-val">NZD $36,000</div><div class="uni-stat-lbl">Avg tuition/yr</div></div>
+          <div class="uni-stat"><div class="uni-stat-val">8,000+</div><div class="uni-stat-lbl">Intl. students</div></div>
+          <div class="uni-stat"><div class="uni-stat-val">60%</div><div class="uni-stat-lbl">Accept. rate</div></div>
+        </div>
+      </div>
+      <div class="uni-card-footer">
+        <button class="btn-shortlist">♡ Save</button>
+        <button class="btn-explore">Explore →</button>
+      </div>
+    </div>
+
+    <div class="uni-card">
+      <div class="uni-card-img"><img src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=700&q=80" alt="University campus"><span class="uni-card-country">🇬🇧 UK</span></div>
+      <div class="uni-card-body">
+        <div class="uni-ranking">QS World Ranking #22</div>
+        <div class="uni-name">University of Edinburgh</div>
+        <div class="uni-city">📍 Edinburgh, Scotland</div>
+        <div class="uni-stats">
+          <div class="uni-stat"><div class="uni-stat-val">£24,800</div><div class="uni-stat-lbl">Avg tuition/yr</div></div>
+          <div class="uni-stat"><div class="uni-stat-val">14,000+</div><div class="uni-stat-lbl">Intl. students</div></div>
+          <div class="uni-stat"><div class="uni-stat-val">43%</div><div class="uni-stat-lbl">Accept. rate</div></div>
+        </div>
+      </div>
+      <div class="uni-card-footer">
+        <button class="btn-shortlist">♡ Save</button>
+        <button class="btn-explore">Explore →</button>
+      </div>
+    </div>
+
+  </div>
+  <div style="text-align:center;margin-top:2.5rem;">
+    <button style="padding:.75em 2.5em;border-radius:100px;border:1.5px solid var(--border);background:var(--surface);font-family:var(--sans);font-size:.9rem;font-weight:600;cursor:pointer;color:var(--text-p);">Load more universities</button>
+  </div>
+</div>
+
+<footer class="footer" aria-label="Site footer">
+  <div class="footer-inner">
+    <div><span class="footer-brand"><img src="../assets/gradmire-logo.png" alt="Gradmire" height="28" style="display:block;max-width:140px;"></span><p class="footer-tagline">India's study-abroad counselling platform. Trusted since 2006.</p></div>
+    <div><div class="footer-col-title">Destinations</div><ul class="footer-links"><li><a href="study-in-uk.html">United Kingdom</a></li><li><a href="study-in-usa.html">USA</a></li><li><a href="study-in-canada.html">Canada</a></li><li><a href="study-in-australia.html">Australia</a></li><li><a href="study-in-germany.html">Germany</a></li><li><a href="study-in-ireland.html">Ireland</a></li><li><a href="study-in-newzealand.html">New Zealand</a></li><li><a href="study-in-italy.html">Italy</a></li></ul></div>
+    <div><div class="footer-col-title">Services</div><ul class="footer-links"><li><a href="find-courses.html">Course finder</a></li><li><a href="find-universities.html">Universities</a></li><li><a href="scholarships.html">Scholarships</a></li></ul></div>
+    <div><div class="footer-col-title">Company</div><ul class="footer-links"><li><a href="about.html">About us</a></li><li><a href="blog.html">Blog</a></li><li><a href="tools/roi-calculator.html">Tools</a></li>
+      <li><a href="tools/roi-calculator.html">Tools</a>
+  <a href="faq.html">FAQ</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span class="footer-legal">© 2026 Gradmire. All rights reserved.</span><div style="display:flex;gap:1.5rem;"><a href="#" class="footer-legal">Privacy</a><a href="#" class="footer-legal">Terms</a></div></div>
+</footer>
+
+<script>
+document.querySelectorAll('.tab-btn').forEach(btn => btn.addEventListener('click', () => {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}));
+document.querySelectorAll('.btn-shortlist').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (btn.textContent.includes('♡')) { btn.textContent = '♥ Saved'; btn.style.borderColor = 'var(--accent)'; btn.style.color = 'var(--accent)'; }
+    else { btn.textContent = '♡ Save'; btn.style.borderColor = ''; btn.style.color = ''; }
+  });
+});
+</script>
+
+
+<script src="../assets/site.js"></script>

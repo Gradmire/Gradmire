@@ -1,0 +1,1129 @@
+<meta charset="UTF-8">
+<title>ROI Calculator — Gradmire</title>
+<meta name="description" content="Calculate the real cost of studying abroad — tuition, living, IELTS, loan EMI — vs expected salary and break-even timeline.">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+     :root {
+        --bg: #F0F2F7;
+        --surface: #FFFFFF;
+        --surface-tint: #E8EBF4;
+        --text-p: #0E1420;
+        --text-s: #556270;
+        --brand: #1A4870;
+        --brand-deep: #0F2D4A;
+        --accent: #007A5A;
+        --accent-hover: #006649;
+        --accent-dim: rgba(0, 122, 90, .12);
+        --border: rgba(14, 20, 32, .1);
+        --sans: 'Bricolage Grotesque', system-ui, sans-serif;
+        --mono: 'JetBrains Mono', 'Menlo', monospace;
+        --r-sm: 8px;
+        --r-md: 16px;
+        --r-lg: 24px;
+        --w: 1280px;
+        --gutter: clamp(1.25rem, 5vw, 3rem);
+        --ease: cubic-bezier(.16, 1, .3, 1);
+    }
+    
+    @media(prefers-color-scheme:dark) {
+        :root:not([data-theme="light"]) {
+            --bg: #0A0D16;
+            --surface: #121825;
+            --surface-tint: #1A2136;
+            --text-p: #EEF1F8;
+            --text-s: #8893B8;
+            --brand: #4D8FBF;
+            --brand-deep: #1A4870;
+            --border: rgba(238, 241, 248, .1);
+            --accent: #2DB88C;
+            --accent-hover: #27A07B;
+            --accent-dim: rgba(45, 184, 140, .18);
+        }
+    }
+    
+    :root[data-theme="dark"] {
+        --bg: #0A0D16;
+        --surface: #121825;
+        --surface-tint: #1A2136;
+        --text-p: #EEF1F8;
+        --text-s: #8893B8;
+        --brand: #4D8FBF;
+        --brand-deep: #1A4870;
+        --border: rgba(238, 241, 248, .1);
+        --accent: #2DB88C;
+        --accent-hover: #27A07B;
+        --accent-dim: rgba(45, 184, 140, .18);
+    }
+    
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+        margin: 0;
+    }
+    
+    body {
+        background: var(--bg);
+        color: var(--text-p);
+        font-family: var(--sans);
+        font-size: 16px;
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
+        font-optical-sizing: auto;
+    }
+    
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+    
+    img {
+        max-width: 100%;
+        display: block;
+    }
+    /* Nav */
+    
+    .nav {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(240, 242, 247, .88);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border-bottom: 1px solid var(--border);
+        height: 68px;
+    }
+    
+    @media(prefers-color-scheme:dark) {
+        :root:not([data-theme="light"]) .nav {
+            background: rgba(10, 13, 22, .9);
+        }
+    }
+    
+    :root[data-theme="dark"] .nav {
+        background: rgba(10, 13, 22, .9);
+    }
+    
+    .nav-inner {
+        max-width: var(--w);
+        margin: 0 auto;
+        padding: 0 var(--gutter);
+        height: 100%;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
+    
+    .nav-logo img {
+        display: block;
+        max-width: 140px;
+        height: 34px;
+        object-fit: contain;
+    }
+    
+    .nav-links {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        gap: 1.75rem;
+        flex: 1;
+    }
+    
+    .nav-links a {
+        color: var(--text-s);
+        font-size: .86rem;
+        font-weight: 500;
+        transition: color .2s;
+    }
+    
+    .nav-links a:hover,
+    .nav-links a.active {
+        color: var(--text-p);
+    }
+    
+    .nav-btn {
+        display: inline-flex;
+        align-items: center;
+        padding: .5em 1.2em;
+        border-radius: 100px;
+        font-family: var(--sans);
+        font-size: .84rem;
+        font-weight: 600;
+        background: var(--accent);
+        color: #fff;
+        transition: background .2s;
+    }
+    
+    .nav-btn:hover {
+        background: var(--accent-hover);
+    }
+    
+    @media(max-width:860px) {
+        .nav-links {
+            display: none;
+        }
+    }
+    /* Tools subnav */
+    
+    .tools-nav {
+        border-bottom: 1px solid var(--border);
+        background: var(--surface);
+    }
+    
+    .tools-nav-inner {
+        max-width: var(--w);
+        margin: 0 auto;
+        padding: 0 var(--gutter);
+        display: flex;
+        gap: 0;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+    
+    .tools-nav-inner::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .tools-tab {
+        padding: .85rem 1.35rem;
+        font-size: .84rem;
+        font-weight: 600;
+        color: var(--text-s);
+        white-space: nowrap;
+        border-bottom: 2px solid transparent;
+        transition: color .2s, border-color .2s;
+    }
+    
+    .tools-tab:hover {
+        color: var(--text-p);
+    }
+    
+    .tools-tab.active {
+        color: var(--brand);
+        border-bottom-color: var(--brand);
+    }
+    /* Page header */
+    
+    .page-hero {
+        padding: 3.5rem var(--gutter) 0;
+        max-width: var(--w);
+        margin: 0 auto;
+    }
+    
+    .page-tag {
+        font-family: var(--mono);
+        font-size: .7rem;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: var(--accent);
+        background: var(--accent-dim);
+        padding: .3em .8em;
+        border-radius: 4px;
+        display: inline-block;
+        margin-bottom: 1rem;
+    }
+    
+    .page-title {
+        font-size: clamp(1.9rem, 3.5vw, 3rem);
+        font-weight: 800;
+        letter-spacing: -.03em;
+        line-height: 1.05;
+        margin-bottom: .65rem;
+    }
+    
+    .page-sub {
+        font-size: 1rem;
+        color: var(--text-s);
+        max-width: 55ch;
+        line-height: 1.6;
+    }
+    /* Tool layout */
+    
+    .tool-grid {
+        max-width: var(--w);
+        margin: 2.5rem auto 0;
+        padding: 0 var(--gutter) 5rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        align-items: start;
+    }
+    
+    @media(max-width:880px) {
+        .tool-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    /* Input panel */
+    
+    .input-panel {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--r-lg);
+        padding: 2rem;
+    }
+    
+    .panel-title {
+        font-size: .72rem;
+        font-family: var(--mono);
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: var(--text-s);
+        margin-bottom: 1.5rem;
+        padding-bottom: .75rem;
+        border-bottom: 1px solid var(--border);
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-label {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        font-size: .85rem;
+        font-weight: 600;
+        color: var(--text-p);
+        margin-bottom: .5rem;
+    }
+    
+    .form-label-val {
+        font-family: var(--mono);
+        font-size: .8rem;
+        color: var(--accent);
+        font-weight: 700;
+    }
+    
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: .75rem;
+    }
+    
+    input[type=range] {
+        width: 100%;
+        height: 4px;
+        border-radius: 2px;
+        background: var(--surface-tint);
+        outline: none;
+        -webkit-appearance: none;
+        appearance: none;
+        cursor: pointer;
+        margin: .25rem 0;
+    }
+    
+    input[type=range]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: var(--accent);
+        border: 2px solid var(--surface);
+        box-shadow: 0 0 0 2px var(--accent);
+        cursor: pointer;
+    }
+    
+    input[type=range]::-moz-range-thumb {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: var(--accent);
+        border: 2px solid var(--surface);
+        cursor: pointer;
+    }
+    
+    .input-field {
+        width: 100%;
+        padding: .55em .85em;
+        border: 1.5px solid var(--border);
+        border-radius: var(--r-sm);
+        background: var(--surface-tint);
+        color: var(--text-p);
+        font-family: var(--mono);
+        font-size: .9rem;
+        outline: none;
+        transition: border-color .2s;
+    }
+    
+    .input-field:focus {
+        border-color: var(--accent);
+    }
+    
+    .field-hint {
+        font-size: .75rem;
+        color: var(--text-s);
+        margin-top: .3rem;
+    }
+    
+    .country-pills {
+        display: flex;
+        gap: .5rem;
+        flex-wrap: wrap;
+    }
+    
+    .country-pill {
+        padding: .4em .9em;
+        border-radius: 100px;
+        font-size: .8rem;
+        font-weight: 600;
+        border: 1.5px solid var(--border);
+        background: transparent;
+        color: var(--text-s);
+        cursor: pointer;
+        transition: all .18s;
+    }
+    
+    .country-pill.sel {
+        background: var(--brand);
+        color: #fff;
+        border-color: var(--brand);
+    }
+    
+    .divider {
+        border: none;
+        border-top: 1px solid var(--border);
+        margin: 1.5rem 0;
+    }
+    
+    select.input-field {
+        cursor: pointer;
+    }
+    /* Results panel */
+    
+    .results-panel {
+        position: sticky;
+        top: 84px;
+    }
+    
+    .metric-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: .875rem;
+        margin-bottom: 1rem;
+    }
+    
+    .metric-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--r-md);
+        padding: 1.25rem 1.35rem;
+    }
+    
+    .metric-card.accent-card {
+        background: var(--brand-deep);
+        border-color: transparent;
+    }
+    
+    .metric-lbl {
+        font-size: .72rem;
+        font-family: var(--mono);
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        color: var(--text-s);
+        margin-bottom: .4rem;
+    }
+    
+    .accent-card .metric-lbl {
+        color: rgba(255, 255, 255, .5);
+    }
+    
+    .metric-val {
+        font-size: 1.65rem;
+        font-weight: 800;
+        font-family: var(--mono);
+        letter-spacing: -.03em;
+        color: var(--text-p);
+        line-height: 1;
+    }
+    
+    .accent-card .metric-val {
+        color: #fff;
+    }
+    
+    .metric-sub {
+        font-size: .75rem;
+        color: var(--text-s);
+        margin-top: .3rem;
+    }
+    
+    .accent-card .metric-sub {
+        color: rgba(255, 255, 255, .5);
+    }
+    
+    .metric-val.positive {
+        color: var(--accent);
+    }
+    
+    .metric-val.negative {
+        color: #D94040;
+    }
+    /* Cost breakdown bars */
+    
+    .breakdown {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--r-md);
+        padding: 1.35rem 1.5rem;
+    }
+    
+    .breakdown-title {
+        font-size: .72rem;
+        font-family: var(--mono);
+        letter-spacing: .07em;
+        text-transform: uppercase;
+        color: var(--text-s);
+        margin-bottom: 1.25rem;
+    }
+    
+    .bar-row {
+        margin-bottom: 1rem;
+    }
+    
+    .bar-meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: .8rem;
+        margin-bottom: .35rem;
+    }
+    
+    .bar-name {
+        color: var(--text-s);
+        font-weight: 500;
+    }
+    
+    .bar-amt {
+        font-family: var(--mono);
+        font-weight: 700;
+        color: var(--text-p);
+        font-size: .8rem;
+    }
+    
+    .bar-track {
+        height: 6px;
+        border-radius: 3px;
+        background: var(--surface-tint);
+        overflow: hidden;
+    }
+    
+    .bar-fill {
+        height: 100%;
+        border-radius: 3px;
+        transition: width .5s var(--ease);
+    }
+    
+    .bf-tuition {
+        background: var(--brand);
+    }
+    
+    .bf-living {
+        background: #3A7BD5;
+    }
+    
+    .bf-ielts {
+        background: #8B63C7;
+    }
+    
+    .bf-interest {
+        background: #D94040;
+    }
+    
+    .total-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border);
+        margin-top: .5rem;
+    }
+    
+    .total-lbl {
+        font-size: .85rem;
+        font-weight: 700;
+        color: var(--text-p);
+    }
+    
+    .total-amt {
+        font-family: var(--mono);
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: var(--brand);
+    }
+    /* Breakeven visual */
+    
+    .breakeven-bar {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--r-md);
+        padding: 1.35rem 1.5rem;
+        margin-top: .875rem;
+    }
+    
+    .be-track {
+        height: 10px;
+        border-radius: 5px;
+        background: var(--surface-tint);
+        position: relative;
+        overflow: hidden;
+        margin: 1rem 0 .5rem;
+    }
+    
+    .be-fill {
+        height: 100%;
+        border-radius: 5px;
+        background: linear-gradient(90deg, var(--accent), #3A7BD5);
+        transition: width .6s var(--ease);
+        max-width: 100%;
+    }
+    
+    .be-labels {
+        display: flex;
+        justify-content: space-between;
+        font-size: .72rem;
+        font-family: var(--mono);
+        color: var(--text-s);
+    }
+    /* Note */
+    
+    .disclaimer {
+        font-size: .75rem;
+        color: var(--text-s);
+        line-height: 1.55;
+        padding: 1rem 1.5rem;
+        background: var(--surface-tint);
+        border-radius: var(--r-sm);
+        margin-top: .875rem;
+    }
+    /* Footer */
+    
+    .footer {
+        background: var(--brand-deep);
+        padding: 3.5rem var(--gutter) 2rem;
+        margin-top: auto;
+    }
+    
+    .footer-inner {
+        max-width: var(--w);
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 2.5fr 1fr 1fr 1fr;
+        gap: 2.5rem;
+    }
+    
+    .footer-inner>div:not(:first-child) {
+        border-left: 1px solid rgba(255, 255, 255, .1);
+        padding-left: 2rem;
+    }
+    
+    .footer-brand {
+        font-size: 1.05rem;
+        font-weight: 800;
+        color: #fff;
+        letter-spacing: -.02em;
+        display: block;
+        margin-bottom: .6rem;
+    }
+    
+    .footer-tagline {
+        font-size: .85rem;
+        color: rgba(255, 255, 255, .5);
+        max-width: 28ch;
+        line-height: 1.55;
+    }
+    
+    .footer-col-title {
+        font-size: .7rem;
+        font-family: var(--mono);
+        font-weight: 700;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, .4);
+        margin-bottom: .9rem;
+    }
+    
+    .footer-links {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: .55rem;
+    }
+    
+    .footer-links a {
+        font-size: .85rem;
+        color: rgba(255, 255, 255, .6);
+        transition: color .2s;
+    }
+    
+    .footer-links a:hover {
+        color: #fff;
+    }
+    
+    .footer-bottom {
+        max-width: var(--w);
+        margin: 2rem auto 0;
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba(255, 255, 255, .1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .footer-legal {
+        font-size: .78rem;
+        color: rgba(255, 255, 255, .35);
+    }
+    
+    @media(max-width:800px) {
+        .footer-inner {
+            grid-template-columns: 1fr 1fr;
+        }
+        .footer-inner>div:not(:first-child) {
+            border-left: none;
+            padding-left: 0;
+        }
+    }
+    
+    @media(max-width:500px) {
+        .footer-inner {
+            grid-template-columns: 1fr;
+        }
+        .footer-bottom {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>
+<link rel="stylesheet" href="../../assets/site.css">
+
+<nav class="nav" aria-label="Main navigation">
+    <div class="nav-inner">
+        <a href="../index.html" class="nav-logo"><img src="../../assets/gradmire-logo.png" alt="Gradmire" height="34"></a>
+        <ul class="nav-links" role="list">
+            <li><a href="../destinations.html">Destinations</a></li>
+            <li><a href="../find-courses.html">Courses</a></li>
+            <li><a href="../find-universities.html">Universities</a></li>
+            <li><a href="roi-calculator.html" class="active">Tools</a></li>
+            <li><a href="../about.html">About</a></li>
+        </ul>
+        <a href="../free-consultation.html" class="nav-btn">Free consultation</a>
+    </div>
+</nav>
+
+<div class="tools-nav">
+    <div class="tools-nav-inner">
+        <a href="roi-calculator.html" class="tools-tab active">ROI Calculator</a>
+        <a href="deadline-tracker.html" class="tools-tab">Deadline Tracker</a>
+        <a href="comparator.html" class="tools-tab">Course Comparator</a>
+    </div>
+</div>
+
+<div class="page-hero">
+    <span class="page-tag">Planning tool</span>
+    <h1 class="page-title">What studying abroad actually costs you</h1>
+    <p class="page-sub">Calculate your total investment — tuition, living, IELTS, loan interest — and see how long before your salary abroad makes it worth it.</p>
+</div>
+
+<div class="tool-grid">
+    <!-- Inputs -->
+    <div class="input-panel">
+        <div class="panel-title">Your numbers</div>
+
+        <div class="form-group">
+            <div class="form-label">Destination country</div>
+            <div class="country-pills">
+                <button class="country-pill sel" data-country="uk">🇬🇧 UK</button>
+                <button class="country-pill" data-country="usa">🇺🇸 USA</button>
+                <button class="country-pill" data-country="canada">🇨🇦 Canada</button>
+                <button class="country-pill" data-country="australia">🇦🇺 Australia</button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="form-label">Program duration <span class="form-label-val" id="dur-val">1 year</span></div>
+            <input type="range" id="duration" min="1" max="4" step="1" value="1">
+            <div class="field-hint">MSc = 1yr in UK · MBA/MEng may be 1–2 yrs</div>
+        </div>
+
+        <div class="form-group">
+            <div class="form-label">Annual tuition <span class="form-label-val" id="tuition-val">₹30 L/yr</span></div>
+            <input type="range" id="tuition" min="5" max="120" step="1" value="30">
+            <div class="field-hint">In INR equivalent. UK MSc avg ₹28–45 L/yr</div>
+        </div>
+
+        <div class="form-group">
+            <div class="form-label">Annual living costs <span class="form-label-val" id="living-val">₹14 L/yr</span></div>
+            <input type="range" id="living" min="6" max="60" step="1" value="14">
+            <div class="field-hint">Rent, food, transport, utilities</div>
+        </div>
+
+        <div class="form-group">
+            <div class="form-label">IELTS + coaching (one-time) <span class="form-label-val" id="ielts-val">₹45,000</span></div>
+            <input type="range" id="ielts" min="15000" max="150000" step="5000" value="45000">
+        </div>
+
+        <hr class="divider">
+        <div class="panel-title">Loan details</div>
+
+        <div class="form-row">
+            <div class="form-group" style="margin-bottom:0">
+                <div class="form-label">Financed by loan <span class="form-label-val" id="loanpct-val">70%</span></div>
+                <input type="range" id="loanpct" min="0" max="100" step="5" value="70">
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+                <div class="form-label">Interest rate <span class="form-label-val" id="rate-val">10%</span></div>
+                <input type="range" id="rate" min="6" max="16" step="0.5" value="10">
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-top:1.25rem">
+            <div class="form-label">Repayment period <span class="form-label-val" id="repay-val">10 years</span></div>
+            <input type="range" id="repay" min="3" max="20" step="1" value="10">
+        </div>
+
+        <hr class="divider">
+        <div class="panel-title">Salary comparison</div>
+
+        <div class="form-group">
+            <div class="form-label">Expected monthly salary abroad <span class="form-label-val" id="salary-val">₹3.2 L/mo</span></div>
+            <input type="range" id="salary" min="50000" max="600000" step="10000" value="320000">
+            <div class="field-hint" id="salary-hint">~£3,000/mo — UK grad avg in 1st year</div>
+        </div>
+
+        <div class="form-group">
+            <div class="form-label">Current/expected India salary <span class="form-label-val" id="indiasalary-val">₹80,000/mo</span></div>
+            <input type="range" id="indiasalary" min="20000" max="300000" step="5000" value="80000">
+            <div class="field-hint">Used to calculate your opportunity cost</div>
+        </div>
+    </div>
+
+    <!-- Results -->
+    <div class="results-panel">
+        <div class="metric-grid">
+            <div class="metric-card accent-card">
+                <div class="metric-lbl">Total cost</div>
+                <div class="metric-val" id="r-total">₹0 L</div>
+                <div class="metric-sub">inc. loan interest</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-lbl">Monthly EMI</div>
+                <div class="metric-val" id="r-emi">₹0</div>
+                <div class="metric-sub">post-graduation</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-lbl">Break-even</div>
+                <div class="metric-val" id="r-breakeven">— mo</div>
+                <div class="metric-sub">months post-graduation</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-lbl">5-yr net gain</div>
+                <div class="metric-val positive" id="r-gain">₹0 L</div>
+                <div class="metric-sub">vs staying in India</div>
+            </div>
+        </div>
+
+        <div class="breakdown">
+            <div class="breakdown-title">Cost breakdown</div>
+            <div class="bar-row">
+                <div class="bar-meta"><span class="bar-name">Tuition</span><span class="bar-amt" id="b-tuition">₹30 L</span></div>
+                <div class="bar-track">
+                    <div class="bar-fill bf-tuition" id="bw-tuition" style="width:60%"></div>
+                </div>
+            </div>
+            <div class="bar-row">
+                <div class="bar-meta"><span class="bar-name">Living costs</span><span class="bar-amt" id="b-living">₹14 L</span></div>
+                <div class="bar-track">
+                    <div class="bar-fill bf-living" id="bw-living" style="width:28%"></div>
+                </div>
+            </div>
+            <div class="bar-row">
+                <div class="bar-meta"><span class="bar-name">IELTS &amp; coaching</span><span class="bar-amt" id="b-ielts">₹0.45 L</span></div>
+                <div class="bar-track">
+                    <div class="bar-fill bf-ielts" id="bw-ielts" style="width:1%"></div>
+                </div>
+            </div>
+            <div class="bar-row">
+                <div class="bar-meta"><span class="bar-name">Loan interest</span><span class="bar-amt" id="b-interest">₹0 L</span></div>
+                <div class="bar-track">
+                    <div class="bar-fill bf-interest" id="bw-interest" style="width:0%"></div>
+                </div>
+            </div>
+            <div class="total-row">
+                <span class="total-lbl">Total outlay</span>
+                <span class="total-amt" id="b-total">₹44.5 L</span>
+            </div>
+        </div>
+
+        <div class="breakeven-bar">
+            <div class="breakdown-title">Break-even progress (60 months)</div>
+            <div class="be-track">
+                <div class="be-fill" id="be-fill" style="width:0%"></div>
+            </div>
+            <div class="be-labels">
+                <span>Graduation</span>
+                <span id="be-label">—</span>
+                <span>5 years</span>
+            </div>
+        </div>
+
+        <div class="disclaimer">
+            Estimates only. Exchange rates fluctuate and salaries vary by employer and city. Use this as a planning range, not a guarantee. Consult a Gradmire counsellor for personalised projections.
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="footer-inner">
+        <div>
+            <span class="footer-brand"><img src="../../assets/gradmire-logo-white.png" alt="Gradmire" height="28" style="max-width:140px;" onerror="this.src='../../assets/gradmire-logo.png'"></span>
+            <p class="footer-tagline">India's study-abroad counselling platform. Trusted since 2006.</p>
+        </div>
+        <div>
+            <div class="footer-col-title">Tools</div>
+            <ul class="footer-links">
+                <li><a href="roi-calculator.html">ROI Calculator</a></li>
+                <li><a href="deadline-tracker.html">Deadline Tracker</a></li>
+                <li><a href="comparator.html">Course Comparator</a></li>
+            </ul>
+        </div>
+        <div>
+            <div class="footer-col-title">Destinations</div>
+            <ul class="footer-links">
+                <li><a href="../study-in-uk.html">United Kingdom</a></li>
+                <li><a href="../study-in-usa.html">USA</a></li>
+                <li><a href="../study-in-canada.html">Canada</a></li>
+                <li><a href="../study-in-australia.html">Australia</a></li>
+            </ul>
+        </div>
+        <div>
+            <div class="footer-col-title">Company</div>
+            <ul class="footer-links">
+                <li><a href="../about.html">About us</a></li>
+                <li><a href="../blog.html">Blog</a></li>
+                <li><a href="../free-consultation.html">Contact</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span class="footer-legal">© 2026 Gradmire. All rights reserved.</span>
+        <div style="display:flex;gap:1.5rem;flex-wrap:wrap">
+            <a href="#" class="footer-legal">Privacy policy</a>
+            <a href="#" class="footer-legal">Terms of use</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    const COUNTRIES = {
+        uk: {
+            label: 'UK (GBP)',
+            rate: 107,
+            tuition: 30,
+            living: 14,
+            salary: 320000,
+            hint: '~£3,000/mo — UK grad avg in 1st year'
+        },
+        usa: {
+            label: 'USA (USD)',
+            rate: 84,
+            tuition: 55,
+            living: 20,
+            salary: 450000,
+            hint: '~$5,400/mo — US grad avg in 1st year'
+        },
+        canada: {
+            label: 'Canada (CAD)',
+            rate: 63,
+            tuition: 28,
+            living: 16,
+            salary: 330000,
+            hint: '~CAD 5,200/mo — Canada grad avg'
+        },
+        australia: {
+            label: 'Australia (AUD)',
+            rate: 55,
+            tuition: 38,
+            living: 18,
+            salary: 370000,
+            hint: '~AUD 6,700/mo — Australia grad avg'
+        }
+    };
+
+    let country = 'uk';
+
+    function fL(n) {
+        return (n / 100000).toFixed(1).replace(/\.0$/, '');
+    }
+
+    function fLfull(n) {
+        return '₹' + fL(n) + ' L';
+    }
+
+    function fINR(n) {
+        return '₹' + n.toLocaleString('en-IN');
+    }
+
+    function val(id) {
+        return parseFloat(document.getElementById(id).value) || 0;
+    }
+
+    function calculate() {
+        const tuitionL = val('tuition'); // lakhs/yr
+        const livingL = val('living'); // lakhs/yr
+        const duration = val('duration'); // years
+        const ielts = val('ielts'); // INR
+        const loanPct = val('loanpct') / 100;
+        const rateAnnual = val('rate') / 100;
+        const repayYrs = val('repay');
+        const monthlySalary = val('salary'); // INR/mo abroad
+        const indiaMonthlySalary = val('indiasalary'); // INR/mo
+
+        // Costs in INR lakhs
+        const tuitionTotal = tuitionL * duration;
+        const livingTotal = livingL * duration;
+        const ieltsL = ielts / 100000;
+        const studyCost = tuitionTotal + livingTotal + ieltsL;
+
+        // Loan
+        const loanAmt = studyCost * loanPct; // lakhs
+        const loanAmtINR = loanAmt * 100000;
+        const rMo = rateAnnual / 12;
+        const n = repayYrs * 12;
+        let emiINR = 0,
+            totalRepayINR = 0,
+            interestL = 0;
+        if (loanAmt > 0 && rMo > 0) {
+            emiINR = loanAmtINR * rMo * Math.pow(1 + rMo, n) / (Math.pow(1 + rMo, n) - 1);
+            totalRepayINR = emiINR * n;
+            interestL = (totalRepayINR - loanAmtINR) / 100000;
+        } else if (loanAmt > 0) {
+            emiINR = loanAmtINR / n;
+            totalRepayINR = loanAmtINR;
+            interestL = 0;
+        }
+
+        const totalOutlayL = studyCost + interestL;
+
+        // Break-even
+        const netMonthlySurplus = monthlySalary - indiaMonthlySalary - emiINR;
+        let beMonths = null;
+        if (netMonthlySurplus > 0) {
+            const selfFundedCost = (studyCost - loanAmt) * 100000; // INR
+            beMonths = Math.ceil(selfFundedCost / netMonthlySurplus);
+        }
+
+        // 5-yr gain
+        const abroadTotal5yr = monthlySalary * 60 - totalRepayINR - (studyCost - loanAmt) * 100000;
+        const indiaTotal5yr = indiaMonthlySalary * 60;
+        const gain5yr = (abroadTotal5yr - indiaTotal5yr) / 100000; // lakhs
+
+        // Update results
+        document.getElementById('r-total').textContent = fLfull(totalOutlayL * 100000);
+        document.getElementById('r-emi').textContent = emiINR > 0 ? fINR(Math.round(emiINR)) : '—';
+        document.getElementById('r-breakeven').textContent = beMonths ? beMonths + ' mo' : '—';
+        const gainEl = document.getElementById('r-gain');
+        gainEl.textContent = fLfull(gain5yr * 100000);
+        gainEl.className = 'metric-val ' + (gain5yr >= 0 ? 'positive' : 'negative');
+
+        // Breakdown bars
+        const maxCost = Math.max(tuitionTotal, livingTotal, ieltsL, interestL, 0.1);
+        document.getElementById('b-tuition').textContent = fLfull(tuitionTotal * 100000);
+        document.getElementById('b-living').textContent = fLfull(livingTotal * 100000);
+        document.getElementById('b-ielts').textContent = fLfull(ieltsL * 100000);
+        document.getElementById('b-interest').textContent = fLfull(interestL * 100000);
+        document.getElementById('b-total').textContent = fLfull(totalOutlayL * 100000);
+        document.getElementById('bw-tuition').style.width = (tuitionTotal / totalOutlayL * 100) + '%';
+        document.getElementById('bw-living').style.width = (livingTotal / totalOutlayL * 100) + '%';
+        document.getElementById('bw-ielts').style.width = (ieltsL / totalOutlayL * 100) + '%';
+        document.getElementById('bw-interest').style.width = (interestL / totalOutlayL * 100) + '%';
+
+        // Breakeven progress
+        const bePct = beMonths ? Math.min(beMonths / 60 * 100, 100) : 0;
+        document.getElementById('be-fill').style.width = bePct + '%';
+        document.getElementById('be-label').textContent = beMonths ? 'Break-even: ' + beMonths + ' mo' : 'Surplus from day 1';
+    }
+
+    // Slider label updates
+    function bindSlider(id, format) {
+        const el = document.getElementById(id);
+        const lbl = document.getElementById(id.replace(/[^a-z]/g, '') + '-val') || document.querySelector('[id="' + id.replace(/[^a-z-]/g, '') + '-val"]');
+        el.addEventListener('input', function() {
+            if (lbl) lbl.textContent = format(this.value);
+            calculate();
+        });
+    }
+
+    function setupSliders() {
+        const dur = document.getElementById('duration');
+        const dval = document.getElementById('dur-val');
+        dur.addEventListener('input', function() {
+            dval.textContent = this.value + ' year' + (+this.value > 1 ? 's' : '');
+            calculate();
+        });
+
+        document.getElementById('tuition').addEventListener('input', function() {
+            document.getElementById('tuition-val').textContent = '₹' + this.value + ' L/yr';
+            calculate();
+        });
+        document.getElementById('living').addEventListener('input', function() {
+            document.getElementById('living-val').textContent = '₹' + this.value + ' L/yr';
+            calculate();
+        });
+        document.getElementById('ielts').addEventListener('input', function() {
+            const n = +this.value;
+            document.getElementById('ielts-val').textContent = n >= 100000 ? '₹' + (n / 100000).toFixed(1) + ' L' : '₹' + n.toLocaleString('en-IN');
+            calculate();
+        });
+        document.getElementById('loanpct').addEventListener('input', function() {
+            document.getElementById('loanpct-val').textContent = this.value + '%';
+            calculate();
+        });
+        document.getElementById('rate').addEventListener('input', function() {
+            document.getElementById('rate-val').textContent = this.value + '%';
+            calculate();
+        });
+        document.getElementById('repay').addEventListener('input', function() {
+            document.getElementById('repay-val').textContent = this.value + ' years';
+            calculate();
+        });
+        document.getElementById('salary').addEventListener('input', function() {
+            const n = +this.value;
+            document.getElementById('salary-val').textContent = '₹' + fL(n) + ' L/mo';
+            calculate();
+        });
+        document.getElementById('indiasalary').addEventListener('input', function() {
+            const n = +this.value;
+            document.getElementById('indiasalary-val').textContent = '₹' + n.toLocaleString('en-IN') + '/mo';
+            calculate();
+        });
+    }
+
+    function setupCountries() {
+        document.querySelectorAll('.country-pill').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.country-pill').forEach(b => b.classList.remove('sel'));
+                this.classList.add('sel');
+                country = this.dataset.country;
+                const c = COUNTRIES[country];
+                document.getElementById('tuition').value = c.tuition;
+                document.getElementById('tuition-val').textContent = '₹' + c.tuition + ' L/yr';
+                document.getElementById('living').value = c.living;
+                document.getElementById('living-val').textContent = '₹' + c.living + ' L/yr';
+                document.getElementById('salary').value = c.salary;
+                document.getElementById('salary-val').textContent = '₹' + fL(c.salary) + ' L/mo';
+                document.getElementById('salary-hint').textContent = c.hint;
+                calculate();
+            });
+        });
+    }
+
+    setupSliders();
+    setupCountries();
+    calculate();
+</script>
+<script src="../../assets/site.js"></script>

@@ -1,0 +1,364 @@
+<meta charset="UTF-8">
+<title>Gradmire — Study in the USA</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+:root{--bg:#F0F2F7;--surface:#FFFFFF;--surface-tint:#E8EBF4;--text-p:#0E1420;--text-s:#556270;--brand:#1A4870;--accent:#007A5A;--accent-dim:rgba(0,122,90,.12);--border:rgba(14,20,32,.1);--sans:'Bricolage Grotesque',system-ui,sans-serif;--mono:'JetBrains Mono','Menlo',monospace;--r-sm:8px;--r-md:16px;--r-lg:24px;--w:1200px;--gutter:clamp(1.25rem,5vw,3rem);--ease:cubic-bezier(.16,1,.3,1);}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(45,184,140,.18);}}
+:root[data-theme="dark"]{--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(45,184,140,.18);}
+*,*::before,*::after{box-sizing:border-box;margin:0;}
+body{background:var(--bg);color:var(--text-p);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;}
+img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:100;background:rgba(240,242,247,.82);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid var(--border);height:68px;}
+.nav-inner{max-width:var(--w);margin:0 auto;padding:0 var(--gutter);height:100%;display:flex;align-items:center;gap:2.5rem;}
+.nav-logo{font-size:1.2rem;font-weight:800;letter-spacing:-.03em;color:var(--brand);}
+.nav-links{list-style:none;padding:0;display:flex;gap:2rem;flex:1;}
+.nav-links a{color:var(--text-s);font-size:.88rem;font-weight:500;transition:color .2s;}
+.nav-links a:hover{color:var(--text-p);}
+.btn{display:inline-flex;align-items:center;padding:.55em 1.3em;border-radius:100px;font-family:var(--sans);font-size:.85rem;font-weight:600;background:var(--accent);color:#fff;border:none;cursor:pointer;white-space:nowrap;transition:background .2s,transform .15s;}
+.btn:hover{background:#006649;}.btn:active{transform:scale(.97);}
+.btn-ghost{background:transparent;color:var(--text-p);border:1.5px solid var(--border);}
+.btn-ghost:hover{background:var(--surface-tint);}
+.hero{position:relative;height:min(90vh,700px);overflow:hidden;display:flex;align-items:flex-end;}
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,14,26,.85) 0%,rgba(10,14,26,.3) 60%,transparent 100%);}
+.hero-body{position:relative;z-index:1;max-width:var(--w);margin:0 auto;padding:var(--gutter) var(--gutter) clamp(2.5rem,5vw,4.5rem);width:100%;}
+.hero-flag{font-size:2rem;margin-bottom:.75rem;}
+.hero-eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.05em;color:rgba(255,255,255,.5);margin-bottom:.75rem;}
+.hero-title{font-size:clamp(2.8rem,6.5vw,6rem);font-weight:800;color:#fff;letter-spacing:-.04em;line-height:.9;margin-bottom:1.5rem;text-wrap:balance;}
+.hero-stats{display:flex;flex-wrap:wrap;gap:2.5rem;}
+.hero-stat{color:#fff;}
+.hero-stat-val{font-size:clamp(1.8rem,3vw,2.5rem);font-weight:800;letter-spacing:-.03em;line-height:1;}
+.hero-stat-lbl{font-size:.78rem;color:rgba(255,255,255,.55);margin-top:.2rem;}
+.page-nav{position:sticky;top:68px;z-index:90;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;}
+.page-nav-inner{max-width:var(--w);margin:0 auto;padding:0 var(--gutter);display:flex;gap:0;}
+.page-nav-link{padding:.9em 1.2em;font-size:.84rem;font-weight:600;color:var(--text-s);white-space:nowrap;border-bottom:2px solid transparent;transition:color .2s,border-color .2s;cursor:pointer;}
+.page-nav-link:hover,.page-nav-link.active{color:var(--brand);border-bottom-color:var(--brand);}
+.section{max-width:var(--w);margin:0 auto;padding:clamp(3rem,6vw,5rem) var(--gutter);}
+.section-tag{font-family:var(--mono);font-size:.72rem;letter-spacing:.05em;color:var(--accent);margin-bottom:.75rem;}
+.section-title{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:800;letter-spacing:-.035em;line-height:1.1;margin-bottom:.75rem;text-wrap:balance;}
+.section-sub{color:var(--text-s);font-size:1.02rem;line-height:1.7;max-width:55ch;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start;margin-top:2.5rem;}
+.col-img{border-radius:var(--r-lg);overflow:hidden;aspect-ratio:4/3;}
+.col-img img{width:100%;height:100%;object-fit:cover;}
+.col-copy p{color:var(--text-s);margin-bottom:1.2rem;}
+.key-facts{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem;}
+.key-fact{background:var(--surface-tint);border-radius:var(--r-md);padding:1rem 1.25rem;}
+.key-fact-val{font-size:1.35rem;font-weight:800;letter-spacing:-.025em;color:var(--brand);}
+.key-fact-lbl{font-size:.8rem;color:var(--text-s);margin-top:.2rem;}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;margin-top:2rem;}
+.uni-thumb{border-radius:var(--r-md);overflow:hidden;position:relative;cursor:pointer;}
+.uni-thumb img{width:100%;aspect-ratio:4/3;object-fit:cover;transition:transform .45s var(--ease);}
+.uni-thumb:hover img{transform:scale(1.05);}
+.uni-thumb-name{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(10,14,26,.8));padding:.75rem;font-size:.82rem;font-weight:700;color:#fff;}
+.cost-section{background:var(--surface);border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--border);margin-top:2rem;}
+.cost-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border-bottom:1px solid var(--border);}
+.cost-row:last-child{border-bottom:none;}
+.cost-row.header{background:var(--surface-tint);}
+.cost-cell{padding:1rem 1.5rem;font-size:.9rem;}
+.cost-row.header .cost-cell{font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.07em;color:var(--text-s);}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:2rem;}
+.schol-card{background:var(--surface);border-radius:var(--r-md);padding:1.5rem;border:1px solid var(--border);}
+.schol-badge{display:inline-flex;padding:.25em .75em;border-radius:100px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;background:var(--accent-dim);color:var(--accent);margin-bottom:.75rem;}
+.schol-name{font-size:1.05rem;font-weight:800;letter-spacing:-.01em;margin-bottom:.4rem;}
+.schol-amount{font-size:1.4rem;font-weight:800;color:var(--brand);margin-bottom:.5rem;}
+.schol-desc{font-size:.84rem;color:var(--text-s);line-height:1.6;}
+.intake-card{background:var(--surface);border-radius:var(--r-md);padding:1.5rem;border:1px solid var(--border);}
+.intake-month{font-size:1.5rem;font-weight:800;letter-spacing:-.03em;color:var(--brand);}
+.intake-window{font-family:var(--mono);font-size:.72rem;color:var(--text-s);margin:.35rem 0 .75rem;}
+.intake-label{font-size:.82rem;color:var(--text-s);}
+.elig-card{background:var(--surface);border-radius:var(--r-md);padding:1.5rem;border:1px solid var(--border);}
+.elig-level{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:.75rem;}
+.elig-name{font-size:1.05rem;font-weight:800;margin-bottom:.5rem;}
+.elig-list{list-style:none;padding:0;display:flex;flex-direction:column;gap:.4rem;}
+.elig-list li{font-size:.88rem;color:var(--text-s);padding-left:1.25rem;position:relative;}
+.elig-list li::before{content:"→";position:absolute;left:0;color:var(--accent);font-size:.8rem;}
+.visa-steps{display:flex;flex-direction:column;gap:1rem;margin-top:2rem;}
+.visa-step{display:grid;grid-template-columns:3rem 1fr;gap:1.25rem;align-items:start;}
+.visa-num{width:3rem;height:3rem;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.9rem;font-weight:700;flex-shrink:0;}
+.visa-step-body{padding-top:.5rem;}
+.visa-step-title{font-weight:700;margin-bottom:.3rem;}
+.visa-step-desc{font-size:.88rem;color:var(--text-s);}
+.careers-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:2rem;}
+.career-tile{background:var(--surface-tint);border-radius:var(--r-md);padding:1.25rem;text-align:center;}
+.career-icon{font-size:1.6rem;margin-bottom:.5rem;}
+.career-name{font-size:.88rem;font-weight:700;}
+.city-card{border-radius:var(--r-md);overflow:hidden;position:relative;}
+.city-card img{width:100%;aspect-ratio:3/2;object-fit:cover;}
+.city-overlay{position:absolute;inset:0;background:linear-gradient(transparent 30%,rgba(10,14,26,.75));display:flex;flex-direction:column;justify-content:flex-end;padding:1.25rem;}
+.city-name{color:#fff;font-size:1.1rem;font-weight:800;}
+.city-meta{color:rgba(255,255,255,.65);font-size:.78rem;}
+.faqs{display:flex;flex-direction:column;gap:.5rem;margin-top:2rem;}
+.faq-item{background:var(--surface);border-radius:var(--r-md);border:1px solid var(--border);overflow:hidden;}
+.faq-q{padding:1.25rem 1.5rem;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:.95rem;transition:background .2s;background:none;border:none;width:100%;text-align:left;color:var(--text-p);font-family:var(--sans);}
+.faq-q:hover{background:var(--surface-tint);}
+.faq-q svg{flex-shrink:0;transition:transform .3s var(--ease);}
+.faq-item.open .faq-q svg{transform:rotate(45deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s var(--ease);}
+.faq-a-inner{padding:.25rem 1.5rem 1.25rem;color:var(--text-s);font-size:.9rem;line-height:1.7;}
+.faq-item.open .faq-a{max-height:500px;}
+.cta-strip{background:var(--brand);border-radius:var(--r-lg);margin:clamp(2rem,4vw,3.5rem) var(--gutter);padding:clamp(2.5rem,5vw,4rem) clamp(2rem,5vw,4rem);display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;}
+.cta-title{font-size:clamp(1.5rem,2.5vw,2rem);font-weight:800;color:#fff;letter-spacing:-.025em;}
+.cta-sub{color:rgba(255,255,255,.65);font-size:.9rem;margin-top:.35rem;}
+.footer{background:var(--surface);border-top:1px solid var(--border);padding:clamp(3rem,6vw,5rem) var(--gutter) 2rem;margin-top:4rem;}
+.footer-inner{max-width:var(--w);margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem;}
+.footer-brand{font-size:1.3rem;font-weight:800;letter-spacing:-.03em;color:var(--brand);display:block;margin-bottom:.75rem;}
+.footer-tagline{font-size:.875rem;color:var(--text-s);line-height:1.6;max-width:28ch;}
+.footer-col-title{font-size:.78rem;font-weight:700;color:var(--text-s);margin-bottom:1rem;}
+.footer-links{list-style:none;padding:0;display:flex;flex-direction:column;gap:.6rem;}
+.footer-links a{color:var(--text-s);font-size:.875rem;transition:color .2s;}
+.footer-links a:hover{color:var(--text-p);}
+.footer-bottom{max-width:var(--w);margin:0 auto;padding-top:2rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+.footer-legal{font-size:.8rem;color:var(--text-s);}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s var(--ease),transform .6s var(--ease);}
+.reveal.on{opacity:1;transform:translateY(0);}
+@media(max-width:960px){.two-col,.grid-4,.grid-3,.careers-grid{grid-template-columns:1fr 1fr;}.footer-inner{grid-template-columns:1fr 1fr;}}
+@media(max-width:640px){.nav-links,.btn{display:none;}.two-col,.grid-4,.grid-3,.careers-grid{grid-template-columns:1fr;}.cost-row{grid-template-columns:1fr;}.footer-inner{grid-template-columns:1fr;}}
+/* COURSES GRID */
+.course-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:2rem;}
+.course-card{display:block;background:var(--surface);border-radius:var(--r-md);padding:1.25rem 1.5rem;border:1px solid var(--border);transition:border-color .2s,background .2s;color:inherit;}
+.course-card:hover{border-color:var(--accent);background:var(--accent-dim);}
+.course-card-name{font-size:.92rem;font-weight:700;margin-bottom:.25rem;}
+.course-card-note{font-family:var(--mono);font-size:.71rem;color:var(--accent);}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px;}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .nav{background:rgba(10,13,22,.88);}}
+:root[data-theme="dark"] .nav{background:rgba(10,13,22,.88);}
+</style>
+<link rel="stylesheet" href="../assets/site.css">
+
+<nav class="nav"><div class="nav-inner">
+  <a href="index.html" class="nav-logo"><img src="../assets/gradmire-logo.png" alt="Gradmire" height="34" style="display:block;max-width:155px;"></a>
+  <ul class="nav-links" role="list">
+    <li><a href="destinations.html" aria-current="page">Destinations</a></li>
+    <li><a href="find-courses.html">Courses</a></li>
+    <li><a href="find-universities.html">Universities</a></li>
+    <li><a href="scholarships.html">Scholarships</a></li>
+    <li><a href="tools/roi-calculator.html">Tools</a></li>
+      <li><a href="tools/roi-calculator.html">Tools</a>
+  <a href="faq.html">FAQ</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+  <div style="display:flex;gap:.75rem;align-items:center">
+    <a href="login.html" class="btn btn-ghost">Log in</a>
+    <a href="free-consultation.html" class="btn">Free consultation</a>
+  </div>
+</div></nav>
+
+<section class="hero">
+  <img class="hero-img" src="https://images.unsplash.com/photo-1534430480872-3498386e7856?auto=format&fit=crop&w=1600&q=80" alt="New York City Times Square">
+  <div class="hero-overlay" aria-hidden="true"></div>
+  <div class="hero-body">
+    <div class="hero-flag">🇺🇸</div>
+    <div class="hero-eyebrow">Destination Guide</div>
+    <h1 class="hero-title">Study in the<br>United States</h1>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-val">200+</div><div class="hero-stat-lbl">Partner universities</div></div>
+      <div class="hero-stat"><div class="hero-stat-val">15k+</div><div class="hero-stat-lbl">Students placed</div></div>
+      <div class="hero-stat"><div class="hero-stat-val">3 yrs</div><div class="hero-stat-lbl">OPT work permit</div></div>
+    </div>
+  </div>
+</section>
+
+<nav class="page-nav"><div class="page-nav-inner">
+  <a class="page-nav-link active" href="#overview" data-section="overview">Overview</a>
+  <a class="page-nav-link" href="#courses" data-section="courses">Courses</a>
+  <a class="page-nav-link" href="#universities" data-section="universities">Universities</a>
+  <a class="page-nav-link" href="#cost" data-section="cost">Cost of Study</a>
+  <a class="page-nav-link" href="#scholarships" data-section="scholarships">Scholarships</a>
+  <a class="page-nav-link" href="#intakes" data-section="intakes">Intakes</a>
+  <a class="page-nav-link" href="#eligibility" data-section="eligibility">Eligibility</a>
+  <a class="page-nav-link" href="#exams" data-section="exams">Tests Required</a>
+  <a class="page-nav-link" href="#visa" data-section="visa">Visa (F-1)</a>
+  <a class="page-nav-link" href="#careers" data-section="careers">Careers</a>
+  <a class="page-nav-link" href="#cities" data-section="cities">Cities</a>
+  <a class="page-nav-link" href="#faq" data-section="faq">FAQs</a>
+</div></nav>
+
+<div id="overview" class="section reveal">
+  <div class="section-tag">Overview</div>
+  <h2 class="section-title">Why study in the USA?</h2>
+  <div class="two-col">
+    <div><div class="col-img"><img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=800&q=80" alt="MIT campus"></div></div>
+    <div class="col-copy">
+      <p>The United States hosts the world's largest international student population — over 1 million students from 200+ countries. Home to 9 of the world's top 10 universities (QS), a US degree carries unmatched global prestige, particularly in STEM, business, and research.</p>
+      <p>US universities offer unparalleled flexibility: choose your major, switch programmes, access need-based financial aid, and customise your academic journey like nowhere else. Research funding and campus facilities are in a league of their own.</p>
+      <p>Post-graduation, STEM OPT gives graduates 3 years to work in the US before transitioning to an H-1B, making it one of the best career launchpads globally for Indian engineers, scientists, and business professionals.</p>
+      <div class="key-facts">
+        <div class="key-fact"><div class="key-fact-val">4 yrs</div><div class="key-fact-lbl">Bachelor's duration</div></div>
+        <div class="key-fact"><div class="key-fact-val">1.5–2 yrs</div><div class="key-fact-lbl">Master's duration</div></div>
+        <div class="key-fact"><div class="key-fact-val">$25–65k</div><div class="key-fact-lbl">Annual tuition range</div></div>
+        <div class="key-fact"><div class="key-fact-val">#1</div><div class="key-fact-lbl">Research output globally</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BROWSE COURSES -->
+<div id="courses" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">Browse by subject</div>
+  <h2 class="section-title">Find the right USA course for you</h2>
+  <p class="section-sub">We match you to programmes by what you want to study — not just by ranking or location. Pick your subject to explore options.</p>
+  <div class="course-grid">
+    <a href="find-courses.html" class="course-card"><div class="course-card-name">Business &amp; Management</div><div class="course-card-note">MBA · MSc · BBA</div></a>
+    <a href="find-courses.html" class="course-card"><div class="course-card-name">Computer Science / AI</div><div class="course-card-note">MSc CS · Data Science · ML/AI</div></a>
+    <a href="find-courses.html" class="course-card"><div class="course-card-name">Engineering &amp; Technology</div><div class="course-card-note">MEng · BEng · MSc</div></a>
+    <a href="find-courses.html" class="course-card"><div class="course-card-name">Medicine &amp; Health Sciences</div><div class="course-card-note">MD · Nursing · Allied Health</div></a>
+    <a href="find-courses.html" class="course-card"><div class="course-card-name">Law</div><div class="course-card-note">LLM · LLB · Juris Doctor</div></a>
+    <a href="find-courses.html" class="course-card"><div class="course-card-name">Architecture &amp; Design</div><div class="course-card-note">BArch · MArch · MA Design</div></a>
+    <a href="find-courses.html" class="course-card"><div class="course-card-name">Economics &amp; Finance</div><div class="course-card-note">MSc Economics · BSc Finance</div></a>
+    <a href="find-courses.html" class="course-card"><div class="course-card-name">Psychology</div><div class="course-card-note">BSc · MSc · Conversion</div></a>
+  </div>
+</div>
+<div id="universities" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">Top Institutions</div>
+  <h2 class="section-title">Our partner universities</h2>
+  <div class="grid-4">
+    <div class="uni-thumb"><img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=500&q=80" alt="MIT"><div class="uni-thumb-name">MIT</div></div>
+    <div class="uni-thumb"><img src="https://images.unsplash.com/photo-1569880153113-76e33fc52d5f?auto=format&fit=crop&w=500&q=80" alt="Stanford"><div class="uni-thumb-name">Stanford University</div></div>
+    <div class="uni-thumb"><img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=500&q=80" alt="Harvard"><div class="uni-thumb-name">Harvard University</div></div>
+    <div class="uni-thumb"><img src="https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=500&q=80" alt="Carnegie Mellon"><div class="uni-thumb-name">Carnegie Mellon</div></div>
+    <div class="uni-thumb"><img src="https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=500&q=80" alt="University of Michigan"><div class="uni-thumb-name">Univ. of Michigan</div></div>
+    <div class="uni-thumb"><img src="https://images.unsplash.com/photo-1567057419565-4349c49d8a04?auto=format&fit=crop&w=500&q=80" alt="Columbia University"><div class="uni-thumb-name">Columbia University</div></div>
+    <div class="uni-thumb"><img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=500&q=80" alt="University of Illinois"><div class="uni-thumb-name">Univ. of Illinois</div></div>
+    <div class="uni-thumb"><img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=500&q=80" alt="Purdue University"><div class="uni-thumb-name">Purdue University</div></div>
+  </div>
+</div>
+
+<div id="cost" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">Cost of Study</div>
+  <h2 class="section-title">Budgeting for the USA</h2>
+  <div class="cost-section">
+    <div class="cost-row header"><div class="cost-cell">Expense</div><div class="cost-cell">Private universities</div><div class="cost-cell">Public universities</div></div>
+    <div class="cost-row"><div class="cost-cell" style="font-weight:600;">Undergraduate tuition</div><div class="cost-cell">$45,000–$65,000/yr</div><div class="cost-cell">$25,000–$40,000/yr</div></div>
+    <div class="cost-row"><div class="cost-cell" style="font-weight:600;">Graduate tuition</div><div class="cost-cell">$35,000–$60,000/yr</div><div class="cost-cell">$20,000–$35,000/yr</div></div>
+    <div class="cost-row"><div class="cost-cell" style="font-weight:600;">Accommodation</div><div class="cost-cell">$800–$1,800/mo</div><div class="cost-cell">$700–$1,400/mo</div></div>
+    <div class="cost-row"><div class="cost-cell" style="font-weight:600;">Food &amp; groceries</div><div class="cost-cell">$400–$700/mo</div><div class="cost-cell">$300–$500/mo</div></div>
+    <div class="cost-row"><div class="cost-cell" style="font-weight:600;color:var(--brand);">Estimated total/yr</div><div class="cost-cell" style="font-weight:700;color:var(--brand);">$58,000–$85,000</div><div class="cost-cell" style="font-weight:700;color:var(--brand);">$38,000–$60,000</div></div>
+  </div>
+</div>
+
+<div id="scholarships" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">Funding</div>
+  <h2 class="section-title">Scholarships for Indian students</h2>
+  <div class="grid-3">
+    <div class="schol-card"><div class="schol-badge">Government</div><div class="schol-name">Fulbright-Nehru Master's Fellowships</div><div class="schol-amount">Full funding</div><div class="schol-desc">Jointly funded by India and USA governments. Covers tuition, living, travel, health. For Indian professionals and scholars.</div></div>
+    <div class="schol-card"><div class="schol-badge">Need-based</div><div class="schol-name">MIT Need-Based Aid</div><div class="schol-amount">Up to $57,000/yr</div><div class="schol-desc">MIT meets 100% of demonstrated financial need for all admitted students, including international applicants.</div></div>
+    <div class="schol-card"><div class="schol-badge">Merit</div><div class="schol-name">Inlaks Shivdasani Foundation</div><div class="schol-amount">Up to $100,000</div><div class="schol-desc">For Indians under 30 pursuing Masters or PhD at top US/UK/European universities in any field.</div></div>
+  </div>
+  <div style="margin-top:1.5rem;"><a href="scholarships.html" class="btn">View all USA scholarships →</a></div>
+</div>
+
+<div id="intakes" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">Intake Calendar</div>
+  <h2 class="section-title">When can you start?</h2>
+  <div class="grid-3">
+    <div class="intake-card"><div class="intake-month">August / September</div><div class="intake-window">Applications: Sep–Jan (previous year)</div><div class="intake-label">Main intake for both undergraduate and graduate programmes. Most universities open applications in August–September of the preceding year.</div></div>
+    <div class="intake-card"><div class="intake-month">January</div><div class="intake-window">Applications: Jul–Oct</div><div class="intake-label">Spring intake. Available at many universities for graduate programmes. Fewer scholarships, but good availability. Useful for rolling admits.</div></div>
+    <div class="intake-card"><div class="intake-month">Summer (May)</div><div class="intake-window">Applications: Jan–Mar</div><div class="intake-label">Limited third intake for some online and accelerated programmes. Not available for undergraduate admissions.</div></div>
+  </div>
+</div>
+
+<div id="eligibility" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">Entry Requirements</div>
+  <h2 class="section-title">Eligibility criteria</h2>
+  <div class="two-col" style="margin-top:2rem;">
+    <div class="elig-card"><div class="elig-level">Undergraduate (UG)</div><div class="elig-name">Bachelor's Degree</div><ul class="elig-list"><li>Class XII with 80%+ (or equivalent SAT/ACT scores)</li><li>SAT: 1400+ (top universities expect 1500+)</li><li>ACT: 32+</li><li>TOEFL: 80–100 / IELTS: 6.5–7.0</li></ul></div>
+    <div class="elig-card"><div class="elig-level">Postgraduate (PG)</div><div class="elig-name">Master's / MBA / PhD</div><ul class="elig-list"><li>Bachelor's degree: 7.0 CGPA or 65%+</li><li>GRE: 310–330+ (for STEM/research); GMAT: 680+ (for MBA)</li><li>TOEFL: 90–100 / IELTS: 6.5–7.5</li><li>2–3 years work experience for MBA programmes</li></ul></div>
+  </div>
+</div>
+
+<div id="exams" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">Required Tests</div>
+  <h2 class="section-title">Tests needed for US universities</h2>
+  <div class="grid-3">
+    <div class="schol-card"><div class="schol-name">GRE (Graduate Record Exam)</div><div class="schol-amount" style="font-size:1rem;">Score: 310–330+</div><div class="schol-desc">Required for most MS and PhD programmes in STEM, social sciences, and humanities. Some universities have waived GRE temporarily.</div></div>
+    <div class="schol-card"><div class="schol-name">GMAT</div><div class="schol-amount" style="font-size:1rem;">Score: 680–750+</div><div class="schol-desc">Required for MBA programmes at top business schools (HBS, Wharton, Booth). Many schools now also accept GRE in lieu of GMAT.</div></div>
+    <div class="schol-card"><div class="schol-name">TOEFL iBT / IELTS</div><div class="schol-amount" style="font-size:1rem;">TOEFL 80–100 / IELTS 6.5+</div><div class="schol-desc">Mandatory English proficiency test. TOEFL more common for US universities. PTE also accepted at most schools.</div></div>
+    <div class="schol-card"><div class="schol-name">SAT / ACT</div><div class="schol-amount" style="font-size:1rem;">SAT 1400+ / ACT 32+</div><div class="schol-desc">Required for undergraduate admissions. Many universities went test-optional post-COVID, but strong scores still help competitive applications.</div></div>
+    <div class="schol-card"><div class="schol-name">Duolingo English Test</div><div class="schol-amount" style="font-size:1rem;">Score: 120+</div><div class="schol-desc">Online English test accepted by 3,000+ US institutions. Convenient home-based testing; results in 48 hours.</div></div>
+    <div class="schol-card"><div class="schol-name">LSAT (Law)</div><div class="schol-amount" style="font-size:1rem;">Score: 165+</div><div class="schol-desc">Required for JD Law programmes at American law schools. India's LLB graduates may qualify for LLM programmes without LSAT.</div></div>
+  </div>
+</div>
+
+<div id="visa" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">Student Visa</div>
+  <h2 class="section-title">F-1 Student visa process</h2>
+  <p class="section-sub">The F-1 is the most common US student visa. Here's how Indian students apply through the US Embassy in New Delhi, Mumbai, Chennai, Hyderabad, or Kolkata.</p>
+  <div class="visa-steps">
+    <div class="visa-step"><div class="visa-num">01</div><div class="visa-step-body"><div class="visa-step-title">Receive I-20 from university</div><div class="visa-step-desc">Once accepted, the university issues a Form I-20 (Certificate of Eligibility). This document is required to apply for the F-1 visa and register with SEVIS.</div></div></div>
+    <div class="visa-step"><div class="visa-num">02</div><div class="visa-step-body"><div class="visa-step-title">Pay SEVIS Fee (I-901)</div><div class="visa-step-desc">Pay the $350 SEVIS fee online at fmjfee.com. Keep the receipt — you'll need it for your visa interview.</div></div></div>
+    <div class="visa-step"><div class="visa-num">03</div><div class="visa-step-body"><div class="visa-step-title">Complete DS-160 Online Application</div><div class="visa-step-desc">Fill out the DS-160 form online at ceac.state.gov. Pay the visa application fee ($185). Schedule your interview at the nearest US Consulate.</div></div></div>
+    <div class="visa-step"><div class="visa-num">04</div><div class="visa-step-body"><div class="visa-step-title">Attend Visa Interview</div><div class="visa-step-desc">Bring: passport, I-20, SEVIS receipt, DS-160 confirmation, financial proof, offer letter, and academic transcripts. Show strong ties to India and clear study intent.</div></div></div>
+    <div class="visa-step"><div class="visa-num">05</div><div class="visa-step-body"><div class="visa-step-title">Apply for OPT After Graduation</div><div class="visa-step-desc">Apply for 1-year Optional Practical Training (OPT) after completing your degree. STEM graduates can extend for 2 additional years (total 3 years) to gain US work experience.</div></div></div>
+  </div>
+</div>
+
+<div id="careers" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">Post-Study Careers</div>
+  <h2 class="section-title">Career pathways in the USA</h2>
+  <p class="section-sub">STEM OPT opens 3 years in the US job market. Top sectors for Indian graduates:</p>
+  <div class="careers-grid">
+    <div class="career-tile"><div class="career-icon">💻</div><div class="career-name">Software Engineering</div></div>
+    <div class="career-tile"><div class="career-icon">🤖</div><div class="career-name">AI / Machine Learning</div></div>
+    <div class="career-tile"><div class="career-icon">🏦</div><div class="career-name">Investment Banking</div></div>
+    <div class="career-tile"><div class="career-icon">🔬</div><div class="career-name">Biotech / Pharma</div></div>
+    <div class="career-tile"><div class="career-icon">📊</div><div class="career-name">Data Science</div></div>
+    <div class="career-tile"><div class="career-icon">🏥</div><div class="career-name">Healthcare / Medicine</div></div>
+    <div class="career-tile"><div class="career-icon">🚀</div><div class="career-name">Startups / VC</div></div>
+    <div class="career-tile"><div class="career-icon">⚙️</div><div class="career-name">Product Management</div></div>
+  </div>
+</div>
+
+<div id="cities" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">Where to Study</div>
+  <h2 class="section-title">Popular student cities</h2>
+  <div class="grid-3">
+    <div class="city-card"><img src="https://images.unsplash.com/photo-1502920917128-1aa500764cbd?auto=format&fit=crop&w=700&q=80" alt="New York"><div class="city-overlay"><div class="city-name">New York City</div><div class="city-meta">Columbia, NYU, Fordham</div></div></div>
+    <div class="city-card"><img src="https://images.unsplash.com/photo-1469521669194-babb45599def?auto=format&fit=crop&w=700&q=80" alt="Boston"><div class="city-overlay"><div class="city-name">Boston</div><div class="city-meta">MIT, Harvard, BU, Northeastern</div></div></div>
+    <div class="city-card"><img src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=700&q=80" alt="San Francisco"><div class="city-overlay"><div class="city-name">San Francisco Bay Area</div><div class="city-meta">Stanford, UC Berkeley, UCSF</div></div></div>
+    <div class="city-card"><img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=700&q=80" alt="Chicago"><div class="city-overlay"><div class="city-name">Chicago</div><div class="city-meta">U Chicago, Northwestern, UIC</div></div></div>
+    <div class="city-card"><img src="https://images.unsplash.com/photo-1560969184-10fe8719e047?auto=format&fit=crop&w=700&q=80" alt="Pittsburgh"><div class="city-overlay"><div class="city-name">Pittsburgh</div><div class="city-meta">Carnegie Mellon, Pitt</div></div></div>
+    <div class="city-card"><img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=700&q=80" alt="Austin"><div class="city-overlay"><div class="city-name">Austin, Texas</div><div class="city-meta">UT Austin, Texas A&amp;M</div></div></div>
+  </div>
+</div>
+
+<div id="faq" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">FAQs</div>
+  <h2 class="section-title">Frequently asked questions</h2>
+  <div class="faqs">
+    <div class="faq-item"><button class="faq-q" aria-expanded="false">Is the F-1 visa hard to get for Indian students? <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="faq-a"><div class="faq-a-inner">F-1 visa approval rates for Indian students are generally high (80–90%) when you have a legitimate acceptance from a recognised university, sufficient financial proof, and clear academic intent. Gradmire counsellors prep you thoroughly for the visa interview.</div></div></div>
+    <div class="faq-item"><button class="faq-q" aria-expanded="false">What is STEM OPT and how does it benefit Indian students? <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="faq-a"><div class="faq-a-inner">STEM OPT is a 24-month extension of the standard 12-month OPT available to graduates in Science, Technology, Engineering, and Maths fields. Combined, STEM graduates can work in the US for 3 years on F-1 status, giving them time to find an employer willing to sponsor an H-1B visa.</div></div></div>
+    <div class="faq-item"><button class="faq-q" aria-expanded="false">Can I get funding / scholarships as an international student? <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="faq-a"><div class="faq-a-inner">Yes — particularly for PhD and some Master's programmes, funding through Teaching Assistantships (TA) and Research Assistantships (RA) is common. Many universities waive tuition and provide stipends for PhD students. At the undergrad level, need-based aid from top schools (MIT, Yale, Princeton) can cover 70–100% of costs.</div></div></div>
+    <div class="faq-item"><button class="faq-q" aria-expanded="false">How does the H-1B visa work after OPT? <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="faq-a"><div class="faq-a-inner">The H-1B is a US work visa for speciality occupations. After OPT, if your employer sponsors you, you can apply for H-1B, which is issued in a lottery (annual cap of 85,000). The wait and lottery makes it uncertain, which is why many Indian graduates also consider other immigration routes to permanent residency.</div></div></div>
+  </div>
+</div>
+
+<div style="max-width:var(--w);margin:0 auto;">
+  <div class="cta-strip">
+    <div><div class="cta-title">Ready to start your US journey?</div><div class="cta-sub">Get a free 30-minute consultation with a Gradmire USA specialist.</div></div>
+    <a href="free-consultation.html" class="btn" style="background:#fff;color:var(--brand);font-size:.95rem;padding:.75em 2em;">Book free consultation →</a>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div><span class="footer-brand"><img src="../assets/gradmire-logo.png" alt="Gradmire" height="28" style="display:block;max-width:140px;"></span><p class="footer-tagline">India's study-abroad counselling platform. Trusted since 2006.</p></div>
+    <div><div class="footer-col-title">Destinations</div><ul class="footer-links"><li><a href="study-in-uk.html">United Kingdom</a></li><li><a href="study-in-usa.html">USA</a></li><li><a href="study-in-canada.html">Canada</a></li><li><a href="study-in-australia.html">Australia</a></li><li><a href="study-in-germany.html">Germany</a></li><li><a href="study-in-ireland.html">Ireland</a></li><li><a href="study-in-newzealand.html">New Zealand</a></li><li><a href="study-in-italy.html">Italy</a></li></ul></div>
+    <div><div class="footer-col-title">Services</div><ul class="footer-links"><li><a href="find-courses.html">Course finder</a></li><li><a href="find-universities.html">Universities</a></li><li><a href="scholarships.html">Scholarships</a></li></ul></div>
+    <div><div class="footer-col-title">Company</div><ul class="footer-links"><li><a href="about.html">About us</a></li><li><a href="blog.html">Blog</a></li><li><a href="tools/roi-calculator.html">Tools</a></li>
+      <li><a href="tools/roi-calculator.html">Tools</a>
+  <a href="faq.html">FAQ</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span class="footer-legal">© 2026 Gradmire. All rights reserved.</span><div style="display:flex;gap:1.5rem;"><a href="#" class="footer-legal">Privacy</a><a href="#" class="footer-legal">Terms</a></div></div>
+</footer>
+
+<script>
+document.querySelectorAll('.faq-q').forEach(btn=>{btn.addEventListener('click',()=>{const item=btn.closest('.faq-item'),open=item.classList.contains('open');document.querySelectorAll('.faq-item.open').forEach(i=>{i.classList.remove('open');i.querySelector('.faq-q').setAttribute('aria-expanded','false');});if(!open){item.classList.add('open');btn.setAttribute('aria-expanded','true');}});});
+const sections=['overview','universities','cost','scholarships','intakes','eligibility','exams','visa','careers','cities','faq'];
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){document.querySelectorAll('.page-nav-link').forEach(l=>l.classList.remove('active'));const l=document.querySelector(`[data-section="${e.target.id}"]`);if(l)l.classList.add('active');}});},{rootMargin:'-20% 0px -70% 0px'});
+sections.forEach(id=>{const el=document.getElementById(id);if(el)obs.observe(el);});
+document.querySelectorAll('.page-nav-link').forEach(l=>{l.addEventListener('click',e=>{e.preventDefault();document.getElementById(l.dataset.section)?.scrollIntoView({behavior:'smooth',block:'start'});});});
+const ro=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');ro.unobserve(e.target);}});},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+</script>
+
+<script src="../assets/site.js"></script>
