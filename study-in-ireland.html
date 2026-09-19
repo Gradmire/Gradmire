@@ -1,0 +1,519 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study in Ireland | Gradmire</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+:root{--bg:#F0F2F7;--surface:#FFFFFF;--surface-tint:#E8EBF4;--text-p:#0E1420;--text-s:#556270;--brand:#1A4870;--accent:#007A5A;--accent-dim:rgba(0,122,90,.12);--border:rgba(14,20,32,.1);--sans:'Bricolage Grotesque',system-ui,sans-serif;--mono:'JetBrains Mono','Menlo',monospace;--r-md:16px;--r-lg:24px;--gutter:clamp(1.25rem,5vw,3rem);--ease:cubic-bezier(.16,1,.3,1);}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);}}
+:root[data-theme="dark"]{--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);}
+*,*::before,*::after{box-sizing:border-box;margin:0;}
+body{background:var(--bg);color:var(--text-p);font-family:var(--sans);-webkit-font-smoothing:antialiased;}
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;height:68px;background:rgba(240,242,247,.82);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 var(--gutter);}
+@media(prefers-color-scheme:dark){.nav{background:rgba(10,13,22,.82);}}
+.nav-logo{font-size:1.25rem;font-weight:800;letter-spacing:-.03em;color:var(--brand);text-decoration:none;}
+.nav-links{display:flex;gap:1.75rem;list-style:none;}
+.nav-links a{font-size:.88rem;font-weight:600;color:var(--text-s);text-decoration:none;transition:color .2s;}
+.nav-links a:hover{color:var(--text-p);}
+.nav-cta{display:inline-flex;align-items:center;padding:.5em 1.25em;border-radius:100px;background:var(--accent);color:#fff;font-size:.85rem;font-weight:700;text-decoration:none;transition:background .2s;}
+.nav-cta:hover{background:#006649;}
+@media(max-width:768px){.nav-links{display:none;}}
+.dest-hero{margin-top:68px;position:relative;min-height:520px;display:flex;align-items:flex-end;overflow:hidden;}
+.dest-hero-img{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1570875450638-044bca38ec92?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;}
+.dest-hero-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(10,13,22,.85) 0%,rgba(10,13,22,.4) 60%,rgba(10,13,22,.1) 100%);}
+.dest-hero-content{position:relative;z-index:1;padding:clamp(2rem,5vw,4rem) var(--gutter);width:100%;}
+.dest-eyebrow{font-family:var(--mono);font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.75rem;}
+.dest-hero-title{font-size:clamp(2rem,5vw,3.5rem);font-weight:800;letter-spacing:-.04em;color:#fff;line-height:1.05;margin-bottom:1.25rem;}
+.dest-hero-stats{display:flex;flex-wrap:wrap;gap:1.5rem;}
+.dest-stat{display:flex;flex-direction:column;gap:.2rem;}
+.dest-stat-val{font-family:var(--mono);font-size:1.4rem;font-weight:700;color:#fff;line-height:1;}
+.dest-stat-label{font-size:.78rem;color:rgba(255,255,255,.65);}
+.subnav{position:sticky;top:68px;z-index:80;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;}
+.subnav::-webkit-scrollbar{display:none;}
+.subnav-list{display:flex;gap:0;list-style:none;padding:0 var(--gutter);}
+.subnav-list a{display:block;padding:.85rem 1.1rem;font-size:.82rem;font-weight:600;color:var(--text-s);text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent;transition:color .2s,border-color .2s;}
+.subnav-list a:hover{color:var(--text-p);}
+.subnav-list a.active{color:var(--accent);border-bottom-color:var(--accent);}
+.section{padding:clamp(3rem,6vw,5rem) var(--gutter);}
+.section-alt{background:var(--surface);}
+.section-label{font-family:var(--mono);font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:.75rem;}
+.section-title{font-size:clamp(1.5rem,3vw,2.2rem);font-weight:800;letter-spacing:-.03em;margin-bottom:1rem;}
+.section-sub{font-size:.95rem;color:var(--text-s);line-height:1.7;max-width:65ch;margin-bottom:2rem;}
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:start;}
+@media(max-width:768px){.overview-grid{grid-template-columns:1fr;}}
+.overview-img{border-radius:var(--r-lg);overflow:hidden;aspect-ratio:4/3;}
+.overview-img img{width:100%;height:100%;object-fit:cover;}
+.key-facts{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem;}
+.key-fact{background:var(--surface-tint);border-radius:var(--r-md);padding:1rem;}
+.key-fact-val{font-family:var(--mono);font-size:1.1rem;font-weight:700;color:var(--brand);margin-bottom:.2rem;}
+.key-fact-label{font-size:.78rem;color:var(--text-s);}
+.uni-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;}
+.uni-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);overflow:hidden;text-decoration:none;color:var(--text-p);transition:transform .2s var(--ease),box-shadow .2s;}
+.uni-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.12);}
+.uni-card-img{aspect-ratio:3/2;overflow:hidden;}
+.uni-card-img img{width:100%;height:100%;object-fit:cover;}
+.uni-card-body{padding:.85rem;}
+.uni-card-rank{font-family:var(--mono);font-size:.72rem;font-weight:700;color:var(--accent);margin-bottom:.2rem;}
+.uni-card-name{font-size:.9rem;font-weight:700;line-height:1.3;}
+.cost-table{width:100%;border-collapse:collapse;font-size:.9rem;}
+.cost-table th{text-align:left;padding:.85rem 1rem;background:var(--surface-tint);font-weight:700;font-size:.8rem;letter-spacing:.04em;text-transform:uppercase;color:var(--text-s);}
+.cost-table td{padding:.85rem 1rem;border-top:1px solid var(--border);}
+.cost-table tr:hover td{background:var(--surface-tint);}
+.cost-total td{font-weight:700;background:var(--accent-dim)!important;color:var(--accent);}
+.scholarship-list{display:flex;flex-direction:column;gap:1rem;}
+.scholarship-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:1.25rem 1.5rem;display:flex;align-items:flex-start;gap:1.25rem;}
+.scholarship-icon{width:44px;height:44px;border-radius:50%;background:var(--accent-dim);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.scholarship-name{font-weight:700;margin-bottom:.3rem;}
+.scholarship-desc{font-size:.85rem;color:var(--text-s);line-height:1.6;}
+.scholarship-amount{font-family:var(--mono);font-size:.78rem;font-weight:700;color:var(--accent);margin-top:.4rem;}
+.intake-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;}
+.intake-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:1.25rem;text-align:center;}
+.intake-month{font-size:1.2rem;font-weight:800;color:var(--brand);margin-bottom:.4rem;}
+.intake-label{font-size:.78rem;color:var(--text-s);}
+.intake-main{border-color:var(--accent);background:var(--accent-dim);}
+.intake-main .intake-month{color:var(--accent);}
+.elig-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;}
+.elig-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:1.25rem;}
+.elig-level{font-family:var(--mono);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin-bottom:.5rem;}
+.elig-req{font-size:.85rem;color:var(--text-s);line-height:1.6;}
+.visa-steps{display:flex;flex-direction:column;gap:1px;background:var(--border);}
+.visa-step{display:flex;align-items:flex-start;gap:1.25rem;background:var(--surface);padding:1.25rem 1.5rem;}
+.visa-step-num{width:32px;height:32px;border-radius:50%;background:var(--brand);color:#fff;font-family:var(--mono);font-size:.8rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.visa-step-title{font-weight:700;margin-bottom:.3rem;}
+.visa-step-desc{font-size:.85rem;color:var(--text-s);line-height:1.6;}
+.career-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.75rem;}
+.career-chip{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:.85rem;text-align:center;font-size:.85rem;font-weight:600;}
+.career-icon{font-size:1.3rem;display:block;margin-bottom:.35rem;}
+.cities-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;}
+.city-card{position:relative;border-radius:var(--r-lg);overflow:hidden;aspect-ratio:4/3;text-decoration:none;}
+.city-card img{width:100%;height:100%;object-fit:cover;transition:transform .4s var(--ease);}
+.city-card:hover img{transform:scale(1.05);}
+.city-card-label{position:absolute;bottom:0;left:0;right:0;padding:.85rem;background:linear-gradient(to top,rgba(0,0,0,.7),transparent);color:#fff;font-weight:700;font-size:.9rem;}
+.faq-list{display:flex;flex-direction:column;gap:.5rem;}
+.faq-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);overflow:hidden;}
+.faq-q{width:100%;text-align:left;padding:1.1rem 1.25rem;background:transparent;border:none;cursor:pointer;font-family:var(--sans);font-size:.92rem;font-weight:700;color:var(--text-p);display:flex;justify-content:space-between;align-items:center;gap:1rem;}
+.faq-q-icon{font-size:1.1rem;transition:transform .3s var(--ease);flex-shrink:0;}
+.faq-item.open .faq-q-icon{transform:rotate(45deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s var(--ease);}
+.faq-a-inner{padding:0 1.25rem 1.1rem;font-size:.88rem;color:var(--text-s);line-height:1.7;}
+.cta-strip{background:var(--brand);padding:clamp(2.5rem,5vw,4rem) var(--gutter);text-align:center;}
+.cta-strip h2{font-size:clamp(1.5rem,3vw,2rem);font-weight:800;letter-spacing:-.03em;color:#fff;margin-bottom:.75rem;}
+.cta-strip p{color:rgba(255,255,255,.7);font-size:.95rem;margin-bottom:2rem;max-width:48ch;margin-left:auto;margin-right:auto;}
+.cta-strip .btn{display:inline-flex;align-items:center;gap:.4em;padding:.75em 2em;border-radius:100px;background:var(--accent);color:#fff;font-size:.95rem;font-weight:700;text-decoration:none;transition:background .2s;}
+.cta-strip .btn:hover{background:#006649;}
+footer{background:#0E1420;color:rgba(255,255,255,.7);padding:clamp(2rem,4vw,3.5rem) var(--gutter) 2rem;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2.5rem;margin-bottom:2.5rem;}
+@media(max-width:768px){.footer-grid{grid-template-columns:1fr 1fr;}}
+.footer-brand{font-size:1.2rem;font-weight:800;letter-spacing:-.03em;color:#fff;margin-bottom:.75rem;}
+.footer-tagline{font-size:.82rem;line-height:1.6;}
+.footer-heading{font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:.85rem;}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:.5rem;}
+.footer-links a{font-size:.85rem;color:rgba(255,255,255,.65);text-decoration:none;transition:color .2s;}
+.footer-links a:hover{color:#fff;}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.75rem;}
+.footer-legal{font-size:.78rem;}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .55s var(--ease),transform .55s var(--ease);}
+.reveal.on{opacity:1;transform:translateY(0);}
+/* COURSES GRID */
+.course-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:2rem;}
+.course-card{display:block;background:var(--surface);border-radius:var(--r-md);padding:1.25rem 1.5rem;border:1px solid var(--border);transition:border-color .2s,background .2s;color:inherit;}
+.course-card:hover{border-color:var(--accent);background:var(--accent-dim);}
+.course-card-name{font-size:.92rem;font-weight:700;margin-bottom:.25rem;}
+.course-card-note{font-family:var(--mono);font-size:.71rem;color:var(--accent);}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo"><img src="gradmire-logo.png" alt="Gradmire" height="34" style="display:block;max-width:155px;"></a>
+  <ul class="nav-links">
+    <li><a href="destinations.html">Destinations</a></li>
+    <li><a href="find-courses.html">Courses</a></li>
+    <li><a href="find-universities.html">Universities</a></li>
+    <li><a href="scholarships.html">Scholarships</a></li>
+    <li><a href="faq.html">FAQ</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+  <a href="gradmire.html" class="nav-cta">Free consultation</a>
+</nav>
+
+<section class="dest-hero">
+  <div class="dest-hero-img"></div>
+  <div class="dest-hero-content">
+    <div class="dest-eyebrow">🇮🇪 &nbsp;Study Destination</div>
+    <h1 class="dest-hero-title">Study in Ireland</h1>
+    <div class="dest-hero-stats">
+      <div class="dest-stat"><span class="dest-stat-val">30+</span><span class="dest-stat-label">Universities &amp; institutes</span></div>
+      <div class="dest-stat"><span class="dest-stat-val">8k+</span><span class="dest-stat-label">Indian students</span></div>
+      <div class="dest-stat"><span class="dest-stat-val">2 yrs</span><span class="dest-stat-label">Graduate stay-back visa</span></div>
+      <div class="dest-stat"><span class="dest-stat-val">EU Hub</span><span class="dest-stat-label">Tech, pharma &amp; finance HQs</span></div>
+    </div>
+  </div>
+</section>
+
+<nav class="subnav" aria-label="Page sections">
+  <ul class="subnav-list">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#courses">Courses</a></li>
+    <li><a href="#universities">Universities</a></li>
+    <li><a href="#cost">Cost</a></li>
+    <li><a href="#scholarships">Scholarships</a></li>
+    <li><a href="#intakes">Intakes</a></li>
+    <li><a href="#eligibility">Eligibility</a></li>
+    <li><a href="#visa">Visa</a></li>
+    <li><a href="#careers">Careers</a></li>
+    <li><a href="#cities">Cities</a></li>
+    <li><a href="#faqs">FAQs</a></li>
+  </ul>
+</nav>
+
+<section class="section" id="overview">
+  <div class="section-label">Why Ireland?</div>
+  <div class="overview-grid">
+    <div>
+      <h2 class="section-title">English-speaking EU — tech giants on your doorstep</h2>
+      <p class="section-sub">Ireland punches far above its weight as a study destination. Home to the European headquarters of Google, Meta, Apple, LinkedIn, Pfizer, and Goldman Sachs, Ireland gives graduates unparalleled access to world-class employers in a compact, English-speaking EU country. Trinity College Dublin is Ireland's premier university with a history dating to 1592. A 2-year graduate stay-back permit allows graduates to work and transition to employment permits.</p>
+      <div class="key-facts">
+        <div class="key-fact"><div class="key-fact-val">English</div><div class="key-fact-label">Language of instruction</div></div>
+        <div class="key-fact"><div class="key-fact-val">EU</div><div class="key-fact-label">Access to European job market</div></div>
+        <div class="key-fact"><div class="key-fact-val">2 yrs</div><div class="key-fact-label">Graduate stay-back visa</div></div>
+        <div class="key-fact"><div class="key-fact-val">800+</div><div class="key-fact-label">Multinational companies</div></div>
+      </div>
+    </div>
+    <div class="overview-img">
+      <img src="https://images.unsplash.com/photo-1651348317504-9513c52e155c?auto=format&fit=crop&w=800&q=80" alt="Trinity College Dublin" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- BROWSE COURSES -->
+<div id="courses" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">Browse by subject</div>
+  <h2 class="section-title">Find the right Ireland course for you</h2>
+  <p class="section-sub">We match you to programmes by what you want to study — not just by ranking or location. Pick your subject to explore options.</p>
+  <div class="course-grid">
+    <a href="find-courses.html" class="course-card"><div class="course-card-name">Business &amp; Management</div><div class="course-card-note">MBA · MSc · BBA</div></a>
+    <a href="find-courses.html" class="course-card"><div class="course-card-name">Computer Science / AI</div><div class="course-card-note">MSc CS · Data Science · ML/AI</div></a>
+    <a href="find-courses.html" class="course-card"><div class="course-card-name">Engineering &amp; Technology</div><div class="course-card-note">MEng · BEng · MSc</div></a>
+    <a href="find-courses.html" class="course-card"><div class="course-card-name">Medicine &amp; Health Sciences</div><div class="course-card-note">MD · Nursing · Allied Health</div></a>
+    <a href="find-courses.html" class="course-card"><div class="course-card-name">Law</div><div class="course-card-note">LLM · LLB · Juris Doctor</div></a>
+    <a href="find-courses.html" class="course-card"><div class="course-card-name">Architecture &amp; Design</div><div class="course-card-note">BArch · MArch · MA Design</div></a>
+    <a href="find-courses.html" class="course-card"><div class="course-card-name">Economics &amp; Finance</div><div class="course-card-note">MSc Economics · BSc Finance</div></a>
+    <a href="find-courses.html" class="course-card"><div class="course-card-name">Psychology</div><div class="course-card-note">BSc · MSc · Conversion</div></a>
+  </div>
+</div>
+<section class="section section-alt" id="universities">
+  <div class="section-label">Top Institutions</div>
+  <h2 class="section-title">Leading Irish Universities</h2>
+  <p class="section-sub">Ireland's universities are research-intensive and internationally ranked. The country's seven universities and 14 institutes of technology offer a wide range of programs, many industry-partnered with global firms based in Ireland.</p>
+  <div class="uni-grid">
+    <a href="#" class="uni-card reveal">
+      <div class="uni-card-img"><img src="https://images.unsplash.com/photo-1488155665162-7fc8d8093d18?auto=format&fit=crop&w=400&q=70" alt="Trinity College Dublin" loading="lazy"></div>
+      <div class="uni-card-body"><div class="uni-card-rank">QS #87 · Founded 1592</div><div class="uni-card-name">Trinity College Dublin</div></div>
+    </a>
+    <a href="#" class="uni-card reveal" style="transition-delay:.05s">
+      <div class="uni-card-img"><img src="https://images.unsplash.com/photo-1651348317504-9513c52e155c?auto=format&fit=crop&w=400&q=70" alt="UCD" loading="lazy"></div>
+      <div class="uni-card-body"><div class="uni-card-rank">QS #181 · Research-led</div><div class="uni-card-name">University College Dublin (UCD)</div></div>
+    </a>
+    <a href="#" class="uni-card reveal" style="transition-delay:.10s">
+      <div class="uni-card-img"><img src="https://images.unsplash.com/photo-1590089415225-401ed6f9db8e?auto=format&fit=crop&w=400&q=70" alt="UCC" loading="lazy"></div>
+      <div class="uni-card-body"><div class="uni-card-rank">QS #303 · Green Campus</div><div class="uni-card-name">University College Cork (UCC)</div></div>
+    </a>
+    <a href="#" class="uni-card reveal" style="transition-delay:.15s">
+      <div class="uni-card-img"><img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=400&q=70" alt="DCU" loading="lazy"></div>
+      <div class="uni-card-body"><div class="uni-card-rank">Young University Top 150</div><div class="uni-card-name">Dublin City University (DCU)</div></div>
+    </a>
+    <a href="#" class="uni-card reveal" style="transition-delay:.20s">
+      <div class="uni-card-img"><img src="https://images.unsplash.com/photo-1585334644725-e0b49aa6cdce?auto=format&fit=crop&w=400&q=70" alt="NUI Galway" loading="lazy"></div>
+      <div class="uni-card-body"><div class="uni-card-rank">QS #401–450</div><div class="uni-card-name">University of Galway (NUIG)</div></div>
+    </a>
+    <a href="#" class="uni-card reveal" style="transition-delay:.25s">
+      <div class="uni-card-img"><img src="https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?auto=format&fit=crop&w=400&q=70" alt="University of Limerick" loading="lazy"></div>
+      <div class="uni-card-body"><div class="uni-card-rank">Coop programs, STEM focus</div><div class="uni-card-name">University of Limerick (UL)</div></div>
+    </a>
+    <a href="#" class="uni-card reveal" style="transition-delay:.30s">
+      <div class="uni-card-img"><img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=400&q=70" alt="Maynooth" loading="lazy"></div>
+      <div class="uni-card-body"><div class="uni-card-rank">Founded 1795</div><div class="uni-card-name">Maynooth University</div></div>
+    </a>
+    <a href="#" class="uni-card reveal" style="transition-delay:.35s">
+      <div class="uni-card-img"><img src="https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=400&q=70" alt="TU Dublin" loading="lazy"></div>
+      <div class="uni-card-body"><div class="uni-card-rank">Largest TU in Ireland</div><div class="uni-card-name">Technological University Dublin</div></div>
+    </a>
+  </div>
+</section>
+
+<section class="section" id="cost">
+  <div class="section-label">Cost of Study</div>
+  <h2 class="section-title">Estimated Annual Budget</h2>
+  <p class="section-sub">Ireland is moderately priced compared to the UK — tuition is comparable but Dublin living costs are high. Cork and Galway offer significant savings over the capital.</p>
+  <div style="overflow-x:auto;border-radius:var(--r-lg);border:1px solid var(--border);">
+    <table class="cost-table">
+      <thead><tr><th>Expense</th><th>Dublin</th><th>Cork / Galway</th></tr></thead>
+      <tbody>
+        <tr><td>Tuition (postgraduate)</td><td>€10,000–22,000/yr</td><td>€9,000–18,000/yr</td></tr>
+        <tr><td>Tuition (undergraduate)</td><td>€12,000–25,000/yr</td><td>€10,000–20,000/yr</td></tr>
+        <tr><td>Accommodation</td><td>€900–1,600/mo</td><td>€600–1,000/mo</td></tr>
+        <tr><td>Food &amp; groceries</td><td>€300–400/mo</td><td>€250–350/mo</td></tr>
+        <tr><td>Transport</td><td>€100–150/mo</td><td>€50–100/mo</td></tr>
+        <tr><td>Health insurance</td><td>€500–700/yr</td><td>€500–700/yr</td></tr>
+        <tr class="cost-total"><td>Total estimate/year</td><td>€24,000–36,000</td><td>€18,000–27,000</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="section section-alt" id="scholarships">
+  <div class="section-label">Funding Your Studies</div>
+  <h2 class="section-title">Scholarships for Indian Students</h2>
+  <div class="scholarship-list">
+    <div class="scholarship-card reveal">
+      <div class="scholarship-icon">🏛️</div>
+      <div>
+        <div class="scholarship-name">Government of Ireland International Education Scholarship</div>
+        <div class="scholarship-desc">Full tuition waiver plus €10,000 living stipend for one year of postgraduate study. Awarded to 60 exceptional students globally. Highly prestigious and competitive.</div>
+        <div class="scholarship-amount">Full tuition + €10,000 stipend · 60 global awards</div>
+      </div>
+    </div>
+    <div class="scholarship-card reveal" style="transition-delay:.08s">
+      <div class="scholarship-icon">🎓</div>
+      <div>
+        <div class="scholarship-name">Trinity College Dublin — Global Excellence Award</div>
+        <div class="scholarship-desc">Merit-based scholarship for international postgraduate students across all disciplines. Awarded based on academic achievement and the potential for impact. Must apply within the admission deadline.</div>
+        <div class="scholarship-amount">Up to €5,000 tuition waiver · Trinity postgrad</div>
+      </div>
+    </div>
+    <div class="scholarship-card reveal" style="transition-delay:.16s">
+      <div class="scholarship-icon">🌱</div>
+      <div>
+        <div class="scholarship-name">UCD Global Excellence Award</div>
+        <div class="scholarship-desc">University College Dublin's merit scholarship for high-achieving international students. Automatically considered upon application — no separate application required. Especially strong for business and computer science.</div>
+        <div class="scholarship-amount">€3,000–€5,000 per year · Automatic consideration</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="intakes">
+  <div class="section-label">Application Cycles</div>
+  <h2 class="section-title">Intake Periods</h2>
+  <div class="intake-grid">
+    <div class="intake-card intake-main reveal">
+      <div class="intake-month">Sep–Oct</div>
+      <div style="font-weight:700;margin-bottom:.3rem;">Autumn Semester</div>
+      <div class="intake-label">Main intake · Apply Jan–Aug for September start</div>
+    </div>
+    <div class="intake-card reveal" style="transition-delay:.08s">
+      <div class="intake-month">Jan–Feb</div>
+      <div style="font-weight:700;margin-bottom:.3rem;">Spring Semester</div>
+      <div class="intake-label">Limited programs available · Apply Oct–Dec</div>
+    </div>
+    <div class="intake-card reveal" style="transition-delay:.16s">
+      <div class="intake-month">Rolling</div>
+      <div style="font-weight:700;margin-bottom:.3rem;">Private Colleges</div>
+      <div class="intake-label">Some English language and pathway colleges admit year-round</div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" id="eligibility">
+  <div class="section-label">Admission Requirements</div>
+  <h2 class="section-title">Eligibility Criteria</h2>
+  <div class="elig-grid">
+    <div class="elig-card reveal">
+      <div class="elig-level">Undergraduate</div>
+      <div class="elig-req">10+2 with 75%+ in relevant subjects. Some programs (medicine, dentistry) require additional entrance exams (HPAT-Ireland). Portfolio for design, architecture courses.</div>
+    </div>
+    <div class="elig-card reveal" style="transition-delay:.08s">
+      <div class="elig-level">Postgraduate</div>
+      <div class="elig-req">Bachelor's degree with minimum 60–65% (2:1 equivalent). Some programs require work experience or professional references. Science and engineering need relevant UG background.</div>
+    </div>
+    <div class="elig-card reveal" style="transition-delay:.16s">
+      <div class="elig-level">IELTS / English</div>
+      <div class="elig-req">IELTS 6.5 overall (6.0 in each band) for most programs. Trinity, UCD require 7.0+ for competitive courses. Indian students from English-medium institutions may qualify for waivers.</div>
+    </div>
+    <div class="elig-card reveal" style="transition-delay:.24s">
+      <div class="elig-level">PhD / Research</div>
+      <div class="elig-req">First-class or high honours bachelor's or master's degree. Research proposal required. Contact potential supervisors directly before applying. Funding from Science Foundation Ireland available.</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="visa">
+  <div class="section-label">Immigration</div>
+  <h2 class="section-title">Ireland Student Visa Process</h2>
+  <div class="visa-steps">
+    <div class="visa-step reveal">
+      <div class="visa-step-num">1</div>
+      <div><div class="visa-step-title">Receive Offer Letter from CORU/ISD Recognized Institution</div><div class="visa-step-desc">Secure your unconditional offer from an Irish institution listed on the ILEP (International Education Programme). Pay your first-year fees and secure accommodation — both are often required for the visa application.</div></div>
+    </div>
+    <div class="visa-step reveal">
+      <div class="visa-step-num">2</div>
+      <div><div class="visa-step-title">Apply for Irish Study Visa (Type D)</div><div class="visa-step-desc">Apply online at AVATS (Automated Visa Application Tracking System). Gather documents: offer letter, fee payment receipt, bank statements (€7,000+), travel insurance, passport-sized photos, and cover letter explaining your study plans.</div></div>
+    </div>
+    <div class="visa-step reveal">
+      <div class="visa-step-num">3</div>
+      <div><div class="visa-step-title">Biometric Appointment at VFS Ireland Centre</div><div class="visa-step-desc">Submit your documents and biometrics at the VFS Ireland Visa Application Centre in your city. Visa processing typically takes 6–8 weeks. Apply at least 8 weeks before your course start date.</div></div>
+    </div>
+    <div class="visa-step reveal">
+      <div class="visa-step-num">4</div>
+      <div><div class="visa-step-title">Register with GNIB / IRP on Arrival</div><div class="visa-step-desc">Within 90 days of arriving, register at the Garda National Immigration Bureau (GNIB) in Dublin or local Garda station elsewhere. You'll receive a Stamp 2 — your official student residence permit. Renewal annually.</div></div>
+    </div>
+    <div class="visa-step reveal">
+      <div class="visa-step-num">5</div>
+      <div><div class="visa-step-title">Graduate Stay-Back: Third Level Graduate Scheme</div><div class="visa-step-desc">On completing your degree: degree holders get 1 year, honours degree or master's get 2 years on Stamp 1G to seek employment. Once you find a job (€32,000+ salary), your employer applies for a General Employment Permit or Critical Skills Employment Permit.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" id="careers">
+  <div class="section-label">Career Prospects</div>
+  <h2 class="section-title">Thriving Sectors in Ireland</h2>
+  <div class="career-grid">
+    <div class="career-chip reveal"><span class="career-icon">💻</span>Big Tech (Google, Meta, Apple)</div>
+    <div class="career-chip reveal" style="transition-delay:.04s"><span class="career-icon">💊</span>Pharma (Pfizer, J&amp;J, MSD)</div>
+    <div class="career-chip reveal" style="transition-delay:.08s"><span class="career-icon">💰</span>Finance (Goldman, Citi)</div>
+    <div class="career-chip reveal" style="transition-delay:.12s"><span class="career-icon">🤖</span>AI &amp; Data Science</div>
+    <div class="career-chip reveal" style="transition-delay:.16s"><span class="career-icon">🏥</span>MedTech &amp; Healthcare</div>
+    <div class="career-chip reveal" style="transition-delay:.20s"><span class="career-icon">☁️</span>Cloud &amp; Cybersecurity</div>
+    <div class="career-chip reveal" style="transition-delay:.24s"><span class="career-icon">🎓</span>Education &amp; Research</div>
+    <div class="career-chip reveal" style="transition-delay:.28s"><span class="career-icon">📱</span>Product &amp; UX</div>
+  </div>
+</section>
+
+<section class="section" id="cities">
+  <div class="section-label">Student Cities</div>
+  <h2 class="section-title">Best Cities to Study In</h2>
+  <div class="cities-grid">
+    <a href="#" class="city-card reveal">
+      <img src="https://images.unsplash.com/photo-1549918864-48ac978761a4?auto=format&fit=crop&w=600&q=70" alt="Dublin" loading="lazy">
+      <div class="city-card-label">Dublin — Tech capital, vibrant culture</div>
+    </a>
+    <a href="#" class="city-card reveal" style="transition-delay:.06s">
+      <img src="https://images.unsplash.com/photo-1590089415225-401ed6f9db8e?auto=format&fit=crop&w=600&q=70" alt="Cork" loading="lazy">
+      <div class="city-card-label">Cork — Ireland's second city, food &amp; pharma</div>
+    </a>
+    <a href="#" class="city-card reveal" style="transition-delay:.12s">
+      <img src="https://images.unsplash.com/photo-1585334644725-e0b49aa6cdce?auto=format&fit=crop&w=600&q=70" alt="Galway" loading="lazy">
+      <div class="city-card-label">Galway — Wild Atlantic Way, arts hub</div>
+    </a>
+    <a href="#" class="city-card reveal" style="transition-delay:.18s">
+      <img src="https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?auto=format&fit=crop&w=600&q=70" alt="Limerick" loading="lazy">
+      <div class="city-card-label">Limerick — Affordable, great for engineering</div>
+    </a>
+    <a href="#" class="city-card reveal" style="transition-delay:.24s">
+      <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=600&q=70" alt="Maynooth" loading="lazy">
+      <div class="city-card-label">Maynooth — Quiet campus town near Dublin</div>
+    </a>
+    <a href="#" class="city-card reveal" style="transition-delay:.30s">
+      <img src="https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=600&q=70" alt="Waterford" loading="lazy">
+      <div class="city-card-label">Waterford — Oldest Irish city, low cost</div>
+    </a>
+  </div>
+</section>
+
+<section class="section section-alt" id="faqs">
+  <div class="section-label">Common Questions</div>
+  <h2 class="section-title">Frequently Asked Questions</h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-q">How long can I stay in Ireland after graduation?<span class="faq-q-icon">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">Under the Third Level Graduate Programme: ordinary degree = 1 year Stamp 1G, honours bachelor's or master's = 2 years Stamp 1G. During this time you can seek employment. Once you get a job offer meeting salary thresholds (€32,000+ for general employment, €50,000+ for Critical Skills), your employer sponsors your work permit.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">Can I work while studying in Ireland?<span class="faq-q-icon">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">Yes — students on Stamp 2 can work up to 20 hours per week during term time and 40 hours per week during vacation periods (June 1–September 30 and December 15–January 15). Ireland's minimum wage is €12.70/hour (2024). Campus jobs, retail, and hospitality are common options.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">Is Ireland a good choice compared to the UK post-Brexit?<span class="faq-q-icon">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">Ireland offers something unique — it's English-speaking and part of the EU. Unlike the UK (post-Brexit), an Irish work permit can lead to EU freedom of movement. Many global companies use their Irish offices as their European headquarters, creating abundant opportunities for international graduates. For those wanting EU access plus English language, Ireland is increasingly popular.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">What is the Critical Skills Employment Permit?<span class="faq-q-icon">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">The Critical Skills Employment Permit (CSEP) is the most favourable Irish work permit for high-skilled occupations — tech, engineering, healthcare, finance. Salary threshold is €50,000+ (€38,000+ for some IT roles). CSEP holders can bring dependents who can work freely, and are eligible for long-term residency (Stamp 4) after 2 years — a faster PR route than most countries.</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-strip">
+  <h2>Ready to study in Ireland?</h2>
+  <p>Our counsellors will guide you through Trinity and UCD applications, visa documentation, scholarship applications, and graduate visa planning.</p>
+  <a href="gradmire.html" class="btn">Book free consultation →</a>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand"><img src="gradmire-logo-white.png" alt="Gradmire" height="28" style="display:block;max-width:140px;"></div>
+      <div class="footer-tagline">India's most trusted study-abroad platform. Expert counselling for 50+ countries, zero bias.</div>
+    </div>
+    <div>
+      <div class="footer-heading">Destinations</div>
+      <ul class="footer-links">
+        <li><a href="study-in-uk.html">United Kingdom</a></li>
+        <li><a href="study-in-usa.html">USA</a></li>
+        <li><a href="study-in-canada.html">Canada</a></li>
+        <li><a href="study-in-australia.html">Australia</a></li>
+        <li><a href="study-in-germany.html">Germany</a></li>
+        <li><a href="study-in-ireland.html">Ireland</a></li>
+        <li><a href="study-in-newzealand.html">New Zealand</a></li>
+        <li><a href="study-in-italy.html">Italy</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Resources</div>
+      <ul class="footer-links">
+        <li><a href="find-courses.html">Find a course</a></li>
+        <li><a href="scholarships.html">Scholarships</a></li>
+        <li><a href="find-universities.html">Universities</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="blog.html">Blog</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Company</div>
+      <ul class="footer-links">
+        <li><a href="about.html">About</a></li>
+        <li><a href="gradmire.html">Free consultation</a></li>
+        <li><a href="dashboard.html">Student dashboard</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-legal">© 2026 Gradmire. All rights reserved. India's study-abroad counselling platform.</span>
+    <div style="display:flex;gap:1.25rem;">
+      <a href="#" class="footer-legal">Privacy policy</a>
+      <a href="#" class="footer-legal">Terms of use</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('.faq-q').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.parentElement;
+    const ans = item.querySelector('.faq-a');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(o => { o.classList.remove('open'); o.querySelector('.faq-a').style.maxHeight = '0'; });
+    if (!isOpen) { item.classList.add('open'); ans.style.maxHeight = ans.scrollHeight + 'px'; }
+  });
+});
+const ro = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); ro.unobserve(e.target); } }); }, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.subnav-list a');
+const so = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(a => a.classList.remove('active'));
+      const active = document.querySelector(`.subnav-list a[href="#${e.target.id}"]`);
+      if (active) { active.classList.add('active'); active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); }
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+sections.forEach(s => so.observe(s));
+</script>
+</body>
+</html>

@@ -1,0 +1,311 @@
+﻿<meta charset="UTF-8">
+<title>Gradmire — Study in Canada</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+:root{--bg:#F0F2F7;--surface:#FFFFFF;--surface-tint:#E8EBF4;--text-p:#0E1420;--text-s:#556270;--brand:#1A4870;--accent:#007A5A;--accent-dim:rgba(0,122,90,.12);--border:rgba(14,20,32,.1);--sans:'Bricolage Grotesque',system-ui,sans-serif;--mono:'JetBrains Mono','Menlo',monospace;--r-sm:8px;--r-md:16px;--r-lg:24px;--w:1200px;--gutter:clamp(1.25rem,5vw,3rem);--ease:cubic-bezier(.16,1,.3,1);}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(45,184,140,.18);}}
+:root[data-theme="dark"]{--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(45,184,140,.18);}
+*,*::before,*::after{box-sizing:border-box;margin:0;}
+body{background:var(--bg);color:var(--text-p);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;}
+img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:100;background:rgba(240,242,247,.82);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid var(--border);height:68px;}
+.nav-inner{max-width:var(--w);margin:0 auto;padding:0 var(--gutter);height:100%;display:flex;align-items:center;gap:2.5rem;}
+.nav-logo{font-size:1.2rem;font-weight:800;letter-spacing:-.03em;color:var(--brand);}
+.nav-links{list-style:none;padding:0;display:flex;gap:2rem;flex:1;}
+.nav-links a{color:var(--text-s);font-size:.88rem;font-weight:500;transition:color .2s;}
+.nav-links a:hover,.nav-links a[aria-current]{color:var(--text-p);}
+.btn{display:inline-flex;align-items:center;padding:.55em 1.3em;border-radius:100px;font-family:var(--sans);font-size:.85rem;font-weight:600;background:var(--accent);color:#fff;border:none;cursor:pointer;white-space:nowrap;transition:background .2s,transform .15s;}
+.btn:hover{background:#006649;}.btn:active{transform:scale(.97);}
+.btn-ghost{background:transparent;color:var(--text-p);border:1.5px solid var(--border);}
+.hero{position:relative;height:min(90vh,700px);overflow:hidden;display:flex;align-items:flex-end;}
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,14,26,.85) 0%,rgba(10,14,26,.3) 60%,transparent 100%);}
+.hero-body{position:relative;z-index:1;max-width:var(--w);margin:0 auto;padding:var(--gutter) var(--gutter) clamp(2.5rem,5vw,4.5rem);width:100%;}
+.hero-flag{font-size:2rem;margin-bottom:.75rem;}
+.hero-eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.05em;color:rgba(255,255,255,.5);margin-bottom:.75rem;}
+.hero-title{font-size:clamp(2.8rem,6.5vw,6rem);font-weight:800;color:#fff;letter-spacing:-.04em;line-height:.9;margin-bottom:1.5rem;text-wrap:balance;}
+.hero-stats{display:flex;flex-wrap:wrap;gap:2.5rem;}
+.hero-stat-val{font-size:clamp(1.8rem,3vw,2.5rem);font-weight:800;letter-spacing:-.03em;color:#fff;line-height:1;}
+.hero-stat-lbl{font-size:.78rem;color:rgba(255,255,255,.55);margin-top:.2rem;}
+.page-nav{position:sticky;top:68px;z-index:90;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;}
+.page-nav-inner{max-width:var(--w);margin:0 auto;padding:0 var(--gutter);display:flex;gap:0;}
+.page-nav-link{padding:.9em 1.2em;font-size:.84rem;font-weight:600;color:var(--text-s);white-space:nowrap;border-bottom:2px solid transparent;transition:color .2s,border-color .2s;cursor:pointer;}
+.page-nav-link:hover,.page-nav-link.active{color:var(--brand);border-bottom-color:var(--brand);}
+.section{max-width:var(--w);margin:0 auto;padding:clamp(3rem,6vw,5rem) var(--gutter);}
+.section-tag{font-family:var(--mono);font-size:.72rem;letter-spacing:.05em;color:var(--accent);margin-bottom:.75rem;}
+.section-title{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:800;letter-spacing:-.035em;line-height:1.1;margin-bottom:.75rem;text-wrap:balance;}
+.section-sub{color:var(--text-s);font-size:1.02rem;line-height:1.7;max-width:55ch;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start;margin-top:2.5rem;}
+.col-img{border-radius:var(--r-lg);overflow:hidden;aspect-ratio:4/3;}
+.col-img img{width:100%;height:100%;object-fit:cover;}
+.col-copy p{color:var(--text-s);margin-bottom:1.2rem;}
+.key-facts{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem;}
+.key-fact{background:var(--surface-tint);border-radius:var(--r-md);padding:1rem 1.25rem;}
+.key-fact-val{font-size:1.35rem;font-weight:800;letter-spacing:-.025em;color:var(--brand);}
+.key-fact-lbl{font-size:.8rem;color:var(--text-s);margin-top:.2rem;}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;margin-top:2rem;}
+.uni-thumb{border-radius:var(--r-md);overflow:hidden;position:relative;}
+.uni-thumb img{width:100%;aspect-ratio:4/3;object-fit:cover;transition:transform .45s var(--ease);}
+.uni-thumb:hover img{transform:scale(1.05);}
+.uni-thumb-name{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(10,14,26,.8));padding:.75rem;font-size:.82rem;font-weight:700;color:#fff;}
+.cost-section{background:var(--surface);border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--border);margin-top:2rem;}
+.cost-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border-bottom:1px solid var(--border);}
+.cost-row:last-child{border-bottom:none;}
+.cost-row.header{background:var(--surface-tint);}
+.cost-cell{padding:1rem 1.5rem;font-size:.9rem;}
+.cost-row.header .cost-cell{font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.07em;color:var(--text-s);}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:2rem;}
+.schol-card{background:var(--surface);border-radius:var(--r-md);padding:1.5rem;border:1px solid var(--border);}
+.schol-badge{display:inline-flex;padding:.25em .75em;border-radius:100px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;background:var(--accent-dim);color:var(--accent);margin-bottom:.75rem;}
+.schol-name{font-size:1.05rem;font-weight:800;margin-bottom:.4rem;}
+.schol-amount{font-size:1.3rem;font-weight:800;color:var(--brand);margin-bottom:.5rem;}
+.schol-desc{font-size:.84rem;color:var(--text-s);line-height:1.6;}
+.intake-card{background:var(--surface);border-radius:var(--r-md);padding:1.5rem;border:1px solid var(--border);}
+.intake-month{font-size:1.5rem;font-weight:800;letter-spacing:-.03em;color:var(--brand);}
+.intake-window{font-family:var(--mono);font-size:.72rem;color:var(--text-s);margin:.35rem 0 .75rem;}
+.intake-label{font-size:.82rem;color:var(--text-s);}
+.highlight-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:2rem;}
+.highlight-tile{background:var(--surface-tint);border-radius:var(--r-md);padding:1.25rem;text-align:center;}
+.highlight-icon{font-size:1.6rem;margin-bottom:.5rem;}
+.highlight-name{font-size:.88rem;font-weight:700;}
+.city-card{border-radius:var(--r-md);overflow:hidden;position:relative;}
+.city-card img{width:100%;aspect-ratio:3/2;object-fit:cover;}
+.city-overlay{position:absolute;inset:0;background:linear-gradient(transparent 30%,rgba(10,14,26,.75));display:flex;flex-direction:column;justify-content:flex-end;padding:1.25rem;}
+.city-name{color:#fff;font-size:1.1rem;font-weight:800;}
+.city-meta{color:rgba(255,255,255,.65);font-size:.78rem;}
+.visa-steps{display:flex;flex-direction:column;gap:1rem;margin-top:2rem;}
+.visa-step{display:grid;grid-template-columns:3rem 1fr;gap:1.25rem;align-items:start;}
+.visa-num{width:3rem;height:3rem;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.9rem;font-weight:700;flex-shrink:0;}
+.visa-step-body{padding-top:.5rem;}
+.visa-step-title{font-weight:700;margin-bottom:.3rem;}
+.visa-step-desc{font-size:.88rem;color:var(--text-s);}
+.faqs{display:flex;flex-direction:column;gap:.5rem;margin-top:2rem;}
+.faq-item{background:var(--surface);border-radius:var(--r-md);border:1px solid var(--border);overflow:hidden;}
+.faq-q{padding:1.25rem 1.5rem;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:.95rem;transition:background .2s;background:none;border:none;width:100%;text-align:left;color:var(--text-p);font-family:var(--sans);}
+.faq-q:hover{background:var(--surface-tint);}
+.faq-q svg{flex-shrink:0;transition:transform .3s var(--ease);}
+.faq-item.open .faq-q svg{transform:rotate(45deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s var(--ease);}
+.faq-a-inner{padding:.25rem 1.5rem 1.25rem;color:var(--text-s);font-size:.9rem;line-height:1.7;}
+.faq-item.open .faq-a{max-height:500px;}
+.cta-strip{background:var(--brand);border-radius:var(--r-lg);margin:clamp(2rem,4vw,3.5rem) var(--gutter);padding:clamp(2.5rem,5vw,4rem) clamp(2rem,5vw,4rem);display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;}
+.cta-title{font-size:clamp(1.5rem,2.5vw,2rem);font-weight:800;color:#fff;letter-spacing:-.025em;}
+.cta-sub{color:rgba(255,255,255,.65);font-size:.9rem;margin-top:.35rem;}
+.footer{background:var(--surface);border-top:1px solid var(--border);padding:clamp(3rem,6vw,5rem) var(--gutter) 2rem;margin-top:4rem;}
+.footer-inner{max-width:var(--w);margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem;}
+.footer-brand{font-size:1.3rem;font-weight:800;letter-spacing:-.03em;color:var(--brand);display:block;margin-bottom:.75rem;}
+.footer-tagline{font-size:.875rem;color:var(--text-s);line-height:1.6;max-width:28ch;}
+.footer-col-title{font-size:.78rem;font-weight:700;color:var(--text-s);margin-bottom:1rem;}
+.footer-links{list-style:none;padding:0;display:flex;flex-direction:column;gap:.6rem;}
+.footer-links a{color:var(--text-s);font-size:.875rem;transition:color .2s;}
+.footer-links a:hover{color:var(--text-p);}
+.footer-bottom{max-width:var(--w);margin:0 auto;padding-top:2rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+.footer-legal{font-size:.8rem;color:var(--text-s);}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s var(--ease),transform .6s var(--ease);}
+.reveal.on{opacity:1;transform:translateY(0);}
+@media(max-width:960px){.two-col,.grid-4,.grid-3,.highlight-row{grid-template-columns:1fr 1fr;}.footer-inner{grid-template-columns:1fr 1fr;}}
+@media(max-width:640px){.nav-links,.btn{display:none;}.two-col,.grid-4,.grid-3,.highlight-row,.cost-row{grid-template-columns:1fr;}.footer-inner{grid-template-columns:1fr;}}
+/* COURSES GRID */
+.course-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:2rem;}
+.course-card{display:block;background:var(--surface);border-radius:var(--r-md);padding:1.25rem 1.5rem;border:1px solid var(--border);transition:border-color .2s,background .2s;color:inherit;}
+.course-card:hover{border-color:var(--accent);background:var(--accent-dim);}
+.course-card-name{font-size:.92rem;font-weight:700;margin-bottom:.25rem;}
+.course-card-note{font-family:var(--mono);font-size:.71rem;color:var(--accent);}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px;}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .nav{background:rgba(10,13,22,.88);}}
+:root[data-theme="dark"] .nav{background:rgba(10,13,22,.88);}
+</style>
+
+<nav class="nav"><div class="nav-inner">
+  <a href="index.html" class="nav-logo"><img src="gradmire-logo.png" alt="Gradmire" height="34" style="display:block;max-width:155px;"></a>
+  <ul class="nav-links"><li><a href="destinations.html" aria-current="page">Destinations</a></li><li><a href="find-courses.html">Courses</a></li><li><a href="find-universities.html">Universities</a></li><li><a href="scholarships.html">Scholarships</a></li><li><a href="faq.html">FAQ</a></li><li><a href="about.html">About</a></li></ul>
+  <div style="display:flex;gap:.75rem;align-items:center"><a href="login.html" class="btn btn-ghost">Log in</a><a href="free-consultation.html" class="btn">Free consultation</a></div>
+</div></nav>
+
+<section class="hero">
+  <img class="hero-img" src="https://images.unsplash.com/photo-1517090504586-fde19ea6066f?auto=format&fit=crop&w=1600&q=80" alt="Toronto skyline">
+  <div class="hero-overlay"></div>
+  <div class="hero-body">
+    <div class="hero-flag">🇨🇦</div>
+    <div class="hero-eyebrow">Destination Guide</div>
+    <h1 class="hero-title">Study in<br>Canada</h1>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-val">120+</div><div class="hero-stat-lbl">Partner universities</div></div>
+      <div class="hero-stat"><div class="hero-stat-val">12k+</div><div class="hero-stat-lbl">Students placed</div></div>
+      <div class="hero-stat"><div class="hero-stat-val">3 yrs</div><div class="hero-stat-lbl">PGWP work permit</div></div>
+    </div>
+  </div>
+</section>
+
+<nav class="page-nav"><div class="page-nav-inner">
+  <a class="page-nav-link active" href="#overview" data-section="overview">Overview</a>
+  <a class="page-nav-link" href="#courses" data-section="courses">Courses</a>
+  <a class="page-nav-link" href="#universities" data-section="universities">Universities</a>
+  <a class="page-nav-link" href="#cost" data-section="cost">Cost of Study</a>
+  <a class="page-nav-link" href="#scholarships" data-section="scholarships">Scholarships</a>
+  <a class="page-nav-link" href="#intakes" data-section="intakes">Intakes</a>
+  <a class="page-nav-link" href="#visa" data-section="visa">Visa &amp; PGWP</a>
+  <a class="page-nav-link" href="#pr" data-section="pr">Pathway to PR</a>
+  <a class="page-nav-link" href="#cities" data-section="cities">Cities</a>
+  <a class="page-nav-link" href="#faq" data-section="faq">FAQs</a>
+</div></nav>
+
+<div id="overview" class="section reveal">
+  <div class="section-tag">Overview</div>
+  <h2 class="section-title">Why study in Canada?</h2>
+  <div class="two-col">
+    <div><div class="col-img"><img src="https://images.unsplash.com/photo-1517090504586-fde19ea6066f?auto=format&fit=crop&w=800&q=80" alt="University of Toronto"></div></div>
+    <div class="col-copy">
+      <p>Canada is consistently ranked one of the best countries for quality of life, safety, and multiculturalism — making it the #1 destination for Indian students seeking not just a degree, but a new life. The cost of studying and living is significantly lower than the USA or UK.</p>
+      <p>The Post-Graduation Work Permit (PGWP) allows graduates to work in Canada for up to 3 years after completing their programme. This, combined with the Express Entry immigration pathway, makes Canada the most accessible route to Permanent Residency for Indians compared to any other country.</p>
+      <p>Canada's universities are globally recognised, particularly in engineering, business, and AI research. Toronto and Montreal have emerged as major tech and startup hubs rivalling Silicon Valley.</p>
+      <div class="key-facts">
+        <div class="key-fact"><div class="key-fact-val">3–4 yrs</div><div class="key-fact-lbl">Bachelor's duration</div></div>
+        <div class="key-fact"><div class="key-fact-val">1–2 yrs</div><div class="key-fact-lbl">Master's duration</div></div>
+        <div class="key-fact"><div class="key-fact-val">CAD $18–40k</div><div class="key-fact-lbl">Annual tuition range</div></div>
+        <div class="key-fact"><div class="key-fact-val">#1</div><div class="key-fact-lbl">PR pathway for Indians</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BROWSE COURSES -->
+<div id="courses" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">Browse by subject</div>
+  <h2 class="section-title">Find the right Canada course for you</h2>
+  <p class="section-sub">We match you to programmes by what you want to study — not just by ranking or location. Pick your subject to explore options.</p>
+  <div class="course-grid">
+    <a href="find-courses.html" class="course-card"><div class="course-card-name">Business &amp; Management</div><div class="course-card-note">MBA · MSc · BBA</div></a>
+    <a href="find-courses.html" class="course-card"><div class="course-card-name">Computer Science / AI</div><div class="course-card-note">MSc CS · Data Science · ML/AI</div></a>
+    <a href="find-courses.html" class="course-card"><div class="course-card-name">Engineering &amp; Technology</div><div class="course-card-note">MEng · BEng · MSc</div></a>
+    <a href="find-courses.html" class="course-card"><div class="course-card-name">Medicine &amp; Health Sciences</div><div class="course-card-note">MD · Nursing · Allied Health</div></a>
+    <a href="find-courses.html" class="course-card"><div class="course-card-name">Law</div><div class="course-card-note">LLM · LLB · Juris Doctor</div></a>
+    <a href="find-courses.html" class="course-card"><div class="course-card-name">Architecture &amp; Design</div><div class="course-card-note">BArch · MArch · MA Design</div></a>
+    <a href="find-courses.html" class="course-card"><div class="course-card-name">Economics &amp; Finance</div><div class="course-card-note">MSc Economics · BSc Finance</div></a>
+    <a href="find-courses.html" class="course-card"><div class="course-card-name">Psychology</div><div class="course-card-note">BSc · MSc · Conversion</div></a>
+  </div>
+</div>
+<div id="universities" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">Top Institutions</div>
+  <h2 class="section-title">Our partner universities</h2>
+  <div class="grid-4">
+    <div class="uni-thumb"><img src="https://images.unsplash.com/photo-1517090504586-fde19ea6066f?auto=format&fit=crop&w=500&q=80" alt="University of Toronto"><div class="uni-thumb-name">University of Toronto</div></div>
+    <div class="uni-thumb"><img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=500&q=80" alt="UBC"><div class="uni-thumb-name">UBC, Vancouver</div></div>
+    <div class="uni-thumb"><img src="https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=500&q=80" alt="McGill"><div class="uni-thumb-name">McGill University</div></div>
+    <div class="uni-thumb"><img src="https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=500&q=80" alt="Waterloo"><div class="uni-thumb-name">University of Waterloo</div></div>
+    <div class="uni-thumb"><img src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=500&q=80" alt="Queen's University"><div class="uni-thumb-name">Queen's University</div></div>
+    <div class="uni-thumb"><img src="https://images.unsplash.com/photo-1580537659466-0a9bfa916a54?auto=format&fit=crop&w=500&q=80" alt="Western University"><div class="uni-thumb-name">Western University</div></div>
+    <div class="uni-thumb"><img src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=500&q=80" alt="Dalhousie"><div class="uni-thumb-name">Dalhousie University</div></div>
+    <div class="uni-thumb"><img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=500&q=80" alt="Simon Fraser"><div class="uni-thumb-name">Simon Fraser University</div></div>
+  </div>
+</div>
+
+<div id="cost" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">Cost of Study</div>
+  <h2 class="section-title">Budgeting for Canada</h2>
+  <div class="cost-section">
+    <div class="cost-row header"><div class="cost-cell">Expense</div><div class="cost-cell">Ontario / BC</div><div class="cost-cell">Other provinces</div></div>
+    <div class="cost-row"><div class="cost-cell" style="font-weight:600;">Undergraduate tuition</div><div class="cost-cell">CAD $28,000–$42,000/yr</div><div class="cost-cell">CAD $18,000–$28,000/yr</div></div>
+    <div class="cost-row"><div class="cost-cell" style="font-weight:600;">Graduate tuition</div><div class="cost-cell">CAD $20,000–$35,000/yr</div><div class="cost-cell">CAD $12,000–$22,000/yr</div></div>
+    <div class="cost-row"><div class="cost-cell" style="font-weight:600;">Accommodation</div><div class="cost-cell">CAD $1,000–$2,000/mo</div><div class="cost-cell">CAD $700–$1,400/mo</div></div>
+    <div class="cost-row"><div class="cost-cell" style="font-weight:600;">Food &amp; transport</div><div class="cost-cell">CAD $600–$900/mo</div><div class="cost-cell">CAD $400–$700/mo</div></div>
+    <div class="cost-row"><div class="cost-cell" style="font-weight:600;color:var(--brand);">Estimated total/yr</div><div class="cost-cell" style="font-weight:700;color:var(--brand);">CAD $48,000–$72,000</div><div class="cost-cell" style="font-weight:700;color:var(--brand);">CAD $30,000–$50,000</div></div>
+  </div>
+</div>
+
+<div id="scholarships" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">Funding</div>
+  <h2 class="section-title">Top scholarships for Indian students</h2>
+  <div class="grid-3">
+    <div class="schol-card"><div class="schol-badge">Government</div><div class="schol-name">Vanier Canada Graduate Scholarships</div><div class="schol-amount">CAD $50,000/yr</div><div class="schol-desc">For doctoral (PhD) students who demonstrate leadership skills and a high standard of scholarly achievement. Open to international students.</div></div>
+    <div class="schol-card"><div class="schol-badge">University</div><div class="schol-name">Lester B. Pearson International Scholarship</div><div class="schol-amount">Full tuition + living</div><div class="schol-desc">University of Toronto's most prestigious award for outstanding international students at the undergraduate level. Covers 4 years.</div></div>
+    <div class="schol-card"><div class="schol-badge">University</div><div class="schol-name">UBC International Leader of Tomorrow</div><div class="schol-amount">Up to full cost</div><div class="schol-desc">UBC's flagship international scholarship for outstanding undergrad students who demonstrate financial need and academic excellence.</div></div>
+  </div>
+  <div style="margin-top:1.5rem;"><a href="scholarships.html" class="btn">View all Canada scholarships →</a></div>
+</div>
+
+<div id="intakes" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">Intake Calendar</div>
+  <h2 class="section-title">When can you start?</h2>
+  <div class="grid-3">
+    <div class="intake-card"><div class="intake-month">September</div><div class="intake-window">Applications: Oct–Feb</div><div class="intake-label">Main intake. The vast majority of undergraduate and graduate programmes begin in September. Most in-demand for scholarships and campus housing.</div></div>
+    <div class="intake-card"><div class="intake-month">January</div><div class="intake-window">Applications: Jun–Sep</div><div class="intake-label">Winter intake. Available at most universities for graduate programmes. Fewer scholarships but good seat availability.</div></div>
+    <div class="intake-card"><div class="intake-month">May</div><div class="intake-window">Applications: Nov–Feb</div><div class="intake-label">Summer intake available at some universities for specific programmes, especially at college level (diplomas and certificates).</div></div>
+  </div>
+</div>
+
+<div id="visa" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">Student Visa &amp; PGWP</div>
+  <h2 class="section-title">Canada Student Permit + PGWP</h2>
+  <p class="section-sub">Canada's study permit is applied for online through IRCC. The PGWP afterwards is Canada's biggest draw for Indian students.</p>
+  <div class="visa-steps">
+    <div class="visa-step"><div class="visa-num">01</div><div class="visa-step-body"><div class="visa-step-title">Receive Letter of Acceptance (LOA)</div><div class="visa-step-desc">Your DLI (Designated Learning Institution) issues an LOA. You need this to apply for your study permit.</div></div></div>
+    <div class="visa-step"><div class="visa-num">02</div><div class="visa-step-body"><div class="visa-step-title">Apply Online via IRCC</div><div class="visa-step-desc">Apply at ircc.canada.ca. Fee: CAD $150. Processing time: 4–12 weeks. Biometrics required at the nearest VFS centre in India.</div></div></div>
+    <div class="visa-step"><div class="visa-num">03</div><div class="visa-step-body"><div class="visa-step-title">Provide Financial Proof</div><div class="visa-step-desc">Must show: first-year tuition + CAD $10,000 for living expenses + return flight. Documents: bank statements, scholarship letters, education loan sanction.</div></div></div>
+    <div class="visa-step"><div class="visa-num">04</div><div class="visa-step-body"><div class="visa-step-title">Arrive &amp; Activate Study Permit</div><div class="visa-step-desc">Your study permit letter is stamped into your passport on arrival by CBSA. You can work up to 24 hrs/week on campus (or off campus with eligible open work permit).</div></div></div>
+    <div class="visa-step"><div class="visa-num">05</div><div class="visa-step-body"><div class="visa-step-title">Apply for PGWP After Graduation</div><div class="visa-step-desc">Apply within 180 days of graduation. PGWP duration matches your programme length (max 3 years). No job offer needed. Work anywhere in Canada in any occupation.</div></div></div>
+  </div>
+</div>
+
+<div id="pr" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">Permanent Residency</div>
+  <h2 class="section-title">Pathway to Canadian PR</h2>
+  <p class="section-sub">Canada's immigration system is designed to retain international graduates. Here are the main PR pathways:</p>
+  <div class="highlight-row">
+    <div class="highlight-tile"><div class="highlight-icon">🚀</div><div class="highlight-name">Express Entry (CEC)</div></div>
+    <div class="highlight-tile"><div class="highlight-icon">🏔️</div><div class="highlight-name">Provincial Nominee Programme</div></div>
+    <div class="highlight-tile"><div class="highlight-icon">🎓</div><div class="highlight-name">Atlantic Immigration Program</div></div>
+    <div class="highlight-tile"><div class="highlight-icon">🌿</div><div class="highlight-name">Rural &amp; Northern Immigration</div></div>
+  </div>
+</div>
+
+<div id="cities" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">Where to Study</div>
+  <h2 class="section-title">Popular student cities</h2>
+  <div class="grid-3">
+    <div class="city-card"><img src="https://images.unsplash.com/photo-1517090504586-fde19ea6066f?auto=format&fit=crop&w=700&q=80" alt="Toronto"><div class="city-overlay"><div class="city-name">Toronto</div><div class="city-meta">UofT, Ryerson, York, OCAD</div></div></div>
+    <div class="city-card"><img src="https://images.unsplash.com/photo-1569880153113-76e33fc52d5f?auto=format&fit=crop&w=700&q=80" alt="Vancouver"><div class="city-overlay"><div class="city-name">Vancouver</div><div class="city-meta">UBC, SFU, BCIT</div></div></div>
+    <div class="city-card"><img src="https://images.unsplash.com/photo-1560969184-10fe8719e047?auto=format&fit=crop&w=700&q=80" alt="Montreal"><div class="city-overlay"><div class="city-name">Montreal</div><div class="city-meta">McGill, Concordia, Montreal</div></div></div>
+    <div class="city-card"><img src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=700&q=80" alt="Waterloo"><div class="city-overlay"><div class="city-name">Waterloo / Kitchener</div><div class="city-meta">Waterloo, Wilfrid Laurier</div></div></div>
+    <div class="city-card"><img src="https://images.unsplash.com/photo-1486299267070-83823f5448dd?auto=format&fit=crop&w=700&q=80" alt="Ottawa"><div class="city-overlay"><div class="city-name">Ottawa</div><div class="city-meta">uOttawa, Carleton</div></div></div>
+    <div class="city-card"><img src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=700&q=80" alt="Calgary"><div class="city-overlay"><div class="city-name">Calgary / Edmonton</div><div class="city-meta">UCalgary, UAlberta</div></div></div>
+  </div>
+</div>
+
+<div id="faq" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">FAQs</div>
+  <h2 class="section-title">Frequently asked questions</h2>
+  <div class="faqs">
+    <div class="faq-item"><button class="faq-q" aria-expanded="false">How long does it take to get Canadian PR after studying? <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="faq-a"><div class="faq-a-inner">A typical timeline: 2-year Master's + 2-year PGWP + 1 year Canadian work experience = eligible for Express Entry (CEC). From application to PR, it typically takes 6–12 months, so the total process from arrival to PR is 4–6 years for most Indian students.</div></div></div>
+    <div class="faq-item"><button class="faq-q" aria-expanded="false">Can I work while studying in Canada? <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="faq-a"><div class="faq-a-inner">Yes. International students can work up to 24 hours per week off campus during academic sessions and full time during scheduled breaks. Your study permit automatically includes this right from September 2024 onwards.</div></div></div>
+    <div class="faq-item"><button class="faq-q" aria-expanded="false">Is Canada cheaper than the USA or UK to study in? <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="faq-a"><div class="faq-a-inner">Generally yes — tuition is 30–50% lower than comparable US private universities, and living costs outside Toronto and Vancouver are significantly lower than London or New York. The CAD-INR exchange rate also makes it more manageable than USD or GBP.</div></div></div>
+    <div class="faq-item"><button class="faq-q" aria-expanded="false">Do I need IELTS for a Canada Student Permit? <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="faq-a"><div class="faq-a-inner">Most universities accept IELTS, TOEFL, PTE, or Duolingo. The study permit itself doesn't require an English test — only your university admission does. Minimum IELTS is typically 6.0–6.5 for UG and 6.5–7.0 for PG programmes.</div></div></div>
+  </div>
+</div>
+
+<div style="max-width:var(--w);margin:0 auto;">
+  <div class="cta-strip">
+    <div><div class="cta-title">Ready to start your Canada journey?</div><div class="cta-sub">Get a free 30-minute consultation with a Gradmire Canada specialist.</div></div>
+    <a href="free-consultation.html" class="btn" style="background:#fff;color:var(--brand);font-size:.95rem;padding:.75em 2em;">Book free consultation →</a>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div><span class="footer-brand"><img src="gradmire-logo.png" alt="Gradmire" height="28" style="display:block;max-width:140px;"></span><p class="footer-tagline">India's study-abroad counselling platform. Trusted since 2006.</p></div>
+    <div><div class="footer-col-title">Destinations</div><ul class="footer-links"><li><a href="study-in-uk.html">United Kingdom</a></li><li><a href="study-in-usa.html">USA</a></li><li><a href="study-in-canada.html">Canada</a></li><li><a href="study-in-australia.html">Australia</a></li><li><a href="study-in-germany.html">Germany</a></li><li><a href="study-in-ireland.html">Ireland</a></li><li><a href="study-in-newzealand.html">New Zealand</a></li><li><a href="study-in-italy.html">Italy</a></li></ul></div>
+    <div><div class="footer-col-title">Services</div><ul class="footer-links"><li><a href="find-courses.html">Course finder</a></li><li><a href="find-universities.html">Universities</a></li><li><a href="scholarships.html">Scholarships</a></li></ul></div>
+    <div><div class="footer-col-title">Company</div><ul class="footer-links"><li><a href="about.html">About us</a></li><li><a href="blog.html">Blog</a></li><li><a href="faq.html">FAQ</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span class="footer-legal">© 2026 Gradmire. All rights reserved.</span><div style="display:flex;gap:1.5rem;"><a href="#" class="footer-legal">Privacy</a><a href="#" class="footer-legal">Terms</a></div></div>
+</footer>
+
+<script>
+document.querySelectorAll('.faq-q').forEach(btn=>{btn.addEventListener('click',()=>{const item=btn.closest('.faq-item'),open=item.classList.contains('open');document.querySelectorAll('.faq-item.open').forEach(i=>{i.classList.remove('open');i.querySelector('.faq-q').setAttribute('aria-expanded','false');});if(!open){item.classList.add('open');btn.setAttribute('aria-expanded','true');}});});
+const sections=['overview','universities','cost','scholarships','intakes','visa','pr','cities','faq'];
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){document.querySelectorAll('.page-nav-link').forEach(l=>l.classList.remove('active'));const l=document.querySelector(`[data-section="${e.target.id}"]`);if(l)l.classList.add('active');}});},{rootMargin:'-20% 0px -70% 0px'});
+sections.forEach(id=>{const el=document.getElementById(id);if(el)obs.observe(el);});
+document.querySelectorAll('.page-nav-link').forEach(l=>{l.addEventListener('click',e=>{e.preventDefault();document.getElementById(l.dataset.section)?.scrollIntoView({behavior:'smooth',block:'start'});});});
+const ro=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');ro.unobserve(e.target);}});},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+</script>

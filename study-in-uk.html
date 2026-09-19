@@ -1,0 +1,683 @@
+﻿<meta charset="UTF-8">
+<title>Gradmire — Study in the UK</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+:root{--bg:#F0F2F7;--surface:#FFFFFF;--surface-tint:#E8EBF4;--text-p:#0E1420;--text-s:#556270;--brand:#1A4870;--accent:#007A5A;--accent-dim:rgba(0,122,90,.12);--border:rgba(14,20,32,.1);--sans:'Bricolage Grotesque',system-ui,sans-serif;--mono:'JetBrains Mono','Menlo',monospace;--r-sm:8px;--r-md:16px;--r-lg:24px;--w:1200px;--gutter:clamp(1.25rem,5vw,3rem);--ease:cubic-bezier(.16,1,.3,1);}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(45,184,140,.18);}}
+:root[data-theme="dark"]{--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(45,184,140,.18);}
+*,*::before,*::after{box-sizing:border-box;margin:0;}
+body{background:var(--bg);color:var(--text-p);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;}
+img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
+/* NAV */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:100;background:rgba(240,242,247,.82);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid var(--border);height:68px;}
+.nav-inner{max-width:var(--w);margin:0 auto;padding:0 var(--gutter);height:100%;display:flex;align-items:center;gap:2.5rem;}
+.nav-logo{font-size:1.2rem;font-weight:800;letter-spacing:-.03em;color:var(--brand);}
+.nav-links{list-style:none;padding:0;display:flex;gap:2rem;flex:1;}
+.nav-links a{color:var(--text-s);font-size:.88rem;font-weight:500;transition:color .2s;}
+.nav-links a:hover{color:var(--text-p);}
+.btn{display:inline-flex;align-items:center;padding:.55em 1.3em;border-radius:100px;font-family:var(--sans);font-size:.85rem;font-weight:600;background:var(--accent);color:#fff;border:none;cursor:pointer;white-space:nowrap;transition:background .2s,transform .15s;}
+.btn:hover{background:#006649;}.btn:active{transform:scale(.97);}
+.btn-ghost{background:transparent;color:var(--text-p);border:1.5px solid var(--border);}
+.btn-ghost:hover{background:var(--surface-tint);}
+/* HERO */
+.hero{position:relative;height:min(90vh,700px);overflow:hidden;display:flex;align-items:flex-end;}
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,14,26,.85) 0%,rgba(10,14,26,.3) 60%,transparent 100%);}
+.hero-body{position:relative;z-index:1;max-width:var(--w);margin:0 auto;padding:var(--gutter) var(--gutter) clamp(2.5rem,5vw,4.5rem);width:100%;}
+.hero-flag{font-size:2rem;margin-bottom:.75rem;}
+.hero-eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.05em;color:rgba(255,255,255,.5);margin-bottom:.75rem;}
+.hero-title{font-size:clamp(2.8rem,6.5vw,6rem);font-weight:800;color:#fff;letter-spacing:-.04em;line-height:.9;margin-bottom:1.5rem;text-wrap:balance;}
+.hero-stats{display:flex;flex-wrap:wrap;gap:2.5rem;}
+.hero-stat{color:#fff;}
+.hero-stat-val{font-size:clamp(1.8rem,3vw,2.5rem);font-weight:800;letter-spacing:-.03em;line-height:1;}
+.hero-stat-lbl{font-size:.78rem;color:rgba(255,255,255,.55);margin-top:.2rem;}
+/* STICKY IN-PAGE NAV */
+.page-nav{position:sticky;top:68px;z-index:90;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;}
+.page-nav-inner{max-width:var(--w);margin:0 auto;padding:0 var(--gutter);display:flex;gap:0;}
+.page-nav-link{padding:.9em 1.2em;font-size:.84rem;font-weight:600;color:var(--text-s);white-space:nowrap;border-bottom:2px solid transparent;transition:color .2s,border-color .2s;cursor:pointer;}
+.page-nav-link:hover,.page-nav-link.active{color:var(--brand);border-bottom-color:var(--brand);}
+/* CONTENT SECTIONS */
+.section{max-width:var(--w);margin:0 auto;padding:clamp(3rem,6vw,5rem) var(--gutter);}
+.section-tag{font-family:var(--mono);font-size:.72rem;letter-spacing:.05em;color:var(--accent);margin-bottom:.75rem;}
+.section-title{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:800;letter-spacing:-.035em;line-height:1.1;margin-bottom:.75rem;text-wrap:balance;}
+.section-sub{color:var(--text-s);font-size:1.02rem;line-height:1.7;max-width:55ch;}
+/* OVERVIEW */
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start;margin-top:2.5rem;}
+.overview-img{border-radius:var(--r-lg);overflow:hidden;aspect-ratio:4/3;}
+.overview-img img{width:100%;height:100%;object-fit:cover;}
+.overview-copy p{color:var(--text-s);margin-bottom:1.2rem;}
+.key-facts{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem;}
+.key-fact{background:var(--surface-tint);border-radius:var(--r-md);padding:1rem 1.25rem;}
+.key-fact-val{font-size:1.35rem;font-weight:800;letter-spacing:-.025em;color:var(--brand);}
+.key-fact-lbl{font-size:.8rem;color:var(--text-s);margin-top:.2rem;}
+/* UNIVERSITIES */
+.uni-scroll{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;margin-top:2rem;}
+.uni-thumb{border-radius:var(--r-md);overflow:hidden;position:relative;cursor:pointer;}
+.uni-thumb img{width:100%;aspect-ratio:4/3;object-fit:cover;transition:transform .45s var(--ease);}
+.uni-thumb:hover img{transform:scale(1.05);}
+.uni-thumb-name{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(10,14,26,.8));padding:.75rem;font-size:.82rem;font-weight:700;color:#fff;}
+/* COST TABLE */
+.cost-section{background:var(--surface);border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--border);margin-top:2rem;}
+.cost-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border-bottom:1px solid var(--border);}
+.cost-row:last-child{border-bottom:none;}
+.cost-row.header{background:var(--surface-tint);}
+.cost-cell{padding:1rem 1.5rem;font-size:.9rem;}
+.cost-row.header .cost-cell{font-weight:700;font-size:.8rem;color:var(--text-s);}
+/* SCHOLARSHIPS */
+.scholarship-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:2rem;}
+.schol-card{background:var(--surface);border-radius:var(--r-md);padding:1.5rem;border:1px solid var(--border);}
+.schol-badge{display:inline-flex;padding:.25em .75em;border-radius:100px;font-size:.72rem;font-weight:700;background:var(--accent-dim);color:var(--accent);margin-bottom:.75rem;}
+.schol-name{font-size:1.05rem;font-weight:800;letter-spacing:-.01em;margin-bottom:.4rem;}
+.schol-amount{font-size:1.4rem;font-weight:800;color:var(--brand);margin-bottom:.5rem;}
+.schol-desc{font-size:.84rem;color:var(--text-s);line-height:1.6;}
+/* INTAKES */
+.intakes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:2rem;}
+.intake-card{background:var(--surface);border-radius:var(--r-md);padding:1.5rem;border:1px solid var(--border);}
+.intake-month{font-size:1.5rem;font-weight:800;letter-spacing:-.03em;color:var(--brand);}
+.intake-window{font-family:var(--mono);font-size:.72rem;color:var(--text-s);margin:.35rem 0 .75rem;}
+.intake-label{font-size:.82rem;color:var(--text-s);}
+/* ELIGIBILITY */
+.elig-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2rem;}
+.elig-card{background:var(--surface);border-radius:var(--r-md);padding:1.5rem;border:1px solid var(--border);}
+.elig-level{font-size:.78rem;font-weight:700;color:var(--accent);margin-bottom:.75rem;}
+.elig-name{font-size:1.05rem;font-weight:800;margin-bottom:.5rem;}
+.elig-list{list-style:none;padding:0;display:flex;flex-direction:column;gap:.4rem;}
+.elig-list li{font-size:.88rem;color:var(--text-s);padding-left:1.25rem;position:relative;}
+.elig-list li::before{content:"→";position:absolute;left:0;color:var(--accent);font-size:.8rem;}
+/* VISA */
+.visa-steps{display:flex;flex-direction:column;gap:1rem;margin-top:2rem;}
+.visa-step{display:grid;grid-template-columns:3rem 1fr;gap:1.25rem;align-items:start;}
+.visa-num{width:3rem;height:3rem;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.9rem;font-weight:700;flex-shrink:0;}
+.visa-step-body{padding-top:.5rem;}
+.visa-step-title{font-weight:700;margin-bottom:.3rem;}
+.visa-step-desc{font-size:.88rem;color:var(--text-s);}
+/* EXAMS */
+.exam-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:2rem;}
+.exam-card{background:var(--surface);border-radius:var(--r-md);padding:1.25rem;border:1px solid var(--border);}
+.exam-name{font-size:1.1rem;font-weight:800;margin-bottom:.5rem;}
+.exam-score{font-family:var(--mono);font-size:.85rem;color:var(--accent);margin-bottom:.5rem;}
+.exam-note{font-size:.82rem;color:var(--text-s);}
+/* CAREERS */
+.careers-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:2rem;}
+.career-tile{background:var(--surface-tint);border-radius:var(--r-md);padding:1.25rem;text-align:center;}
+.career-icon{font-size:1.6rem;margin-bottom:.5rem;}
+.career-name{font-size:.88rem;font-weight:700;}
+/* CITIES */
+.cities-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:2rem;}
+.city-card{border-radius:var(--r-md);overflow:hidden;position:relative;}
+.city-card img{width:100%;aspect-ratio:3/2;object-fit:cover;}
+.city-overlay{position:absolute;inset:0;background:linear-gradient(transparent 30%,rgba(10,14,26,.75));display:flex;flex-direction:column;justify-content:flex-end;padding:1.25rem;}
+.city-name{color:#fff;font-size:1.1rem;font-weight:800;}
+.city-meta{color:rgba(255,255,255,.65);font-size:.78rem;}
+/* FAQs */
+.faqs{display:flex;flex-direction:column;gap:.5rem;margin-top:2rem;}
+.faq-item{background:var(--surface);border-radius:var(--r-md);border:1px solid var(--border);overflow:hidden;}
+.faq-q{padding:1.25rem 1.5rem;font-weight:700;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:.95rem;transition:background .2s;}
+.faq-q:hover{background:var(--surface-tint);}
+.faq-q svg{flex-shrink:0;transition:transform .3s var(--ease);}
+.faq-item.open .faq-q svg{transform:rotate(45deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s var(--ease);}
+.faq-a-inner{padding:.25rem 1.5rem 1.25rem;color:var(--text-s);font-size:.9rem;line-height:1.7;}
+.faq-item.open .faq-a{max-height:500px;}
+/* CTA */
+.cta-strip{background:var(--brand);border-radius:var(--r-lg);margin:clamp(2rem,4vw,3.5rem) var(--gutter);padding:clamp(2.5rem,5vw,4rem) clamp(2rem,5vw,4rem);display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;}
+.cta-title{font-size:clamp(1.5rem,2.5vw,2rem);font-weight:800;color:#fff;letter-spacing:-.025em;}
+.cta-sub{color:rgba(255,255,255,.65);font-size:.9rem;margin-top:.35rem;}
+/* FOOTER */
+.footer{background:var(--surface);border-top:1px solid var(--border);padding:clamp(3rem,6vw,5rem) var(--gutter) 2rem;margin-top:4rem;}
+.footer-inner{max-width:var(--w);margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem;}
+.footer-brand{font-size:1.3rem;font-weight:800;letter-spacing:-.03em;color:var(--brand);display:block;margin-bottom:.75rem;}
+.footer-tagline{font-size:.875rem;color:var(--text-s);line-height:1.6;max-width:28ch;}
+.footer-col-title{font-size:.78rem;font-weight:700;color:var(--text-s);margin-bottom:1rem;}
+.footer-links{list-style:none;padding:0;display:flex;flex-direction:column;gap:.6rem;}
+.footer-links a{color:var(--text-s);font-size:.875rem;transition:color .2s;}
+.footer-links a:hover{color:var(--text-p);}
+.footer-bottom{max-width:var(--w);margin:0 auto;padding-top:2rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+.footer-legal{font-size:.8rem;color:var(--text-s);}
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .5s cubic-bezier(.25,.46,.45,.94),transform .5s cubic-bezier(.25,.46,.45,.94);}
+.reveal.on{opacity:1;transform:translateY(0);}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px;}
+/* WHY STRIP */
+.why-strip{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:2rem var(--gutter);}
+.why-strip-inner{max-width:var(--w);margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;}
+.why-item{display:flex;flex-direction:column;}
+.why-item-bar{width:1.75rem;height:2px;background:var(--accent);margin-bottom:.65rem;}
+.why-item-title{font-size:.93rem;font-weight:700;margin-bottom:.3rem;}
+.why-item-desc{font-size:.83rem;color:var(--text-s);line-height:1.55;}
+/* COURSES GRID */
+.course-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:2rem;}
+.course-card{display:block;background:var(--surface);border-radius:var(--r-md);padding:1.25rem 1.5rem;border:1px solid var(--border);transition:border-color .2s,background .2s;color:inherit;}
+.course-card:hover{border-color:var(--accent);background:var(--accent-dim);}
+.course-card-name{font-size:.92rem;font-weight:700;margin-bottom:.25rem;}
+.course-card-note{font-family:var(--mono);font-size:.71rem;color:var(--accent);}
+/* DEADLINES */
+.deadline-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:1.5rem;}
+.deadline-card{background:var(--surface);border-radius:var(--r-md);padding:1.5rem;border:1px solid var(--border);}
+.deadline-prog{font-size:.88rem;font-weight:800;margin-bottom:.3rem;}
+.deadline-date{font-family:var(--mono);font-size:.76rem;color:var(--brand);margin-bottom:.5rem;}
+.deadline-desc{font-size:.82rem;color:var(--text-s);line-height:1.6;}
+.deadline-warn{background:rgba(245,158,11,.08);border-left:3px solid #F59E0B;border-radius:0 var(--r-sm) var(--r-sm) 0;padding:.875rem 1.25rem;margin-top:1.5rem;font-size:.84rem;color:var(--text-s);line-height:1.6;}
+.deadline-warn strong{color:var(--text-p);}
+/* ATAS NOTE */
+.atas-note{background:rgba(26,72,112,.07);border-left:3px solid var(--brand);border-radius:0 var(--r-sm) var(--r-sm) 0;padding:.875rem 1.25rem;margin-top:1.5rem;font-size:.84rem;color:var(--text-s);line-height:1.6;}
+.atas-note strong{color:var(--text-p);}
+/* CAREER SALARY */
+.career-salary{font-family:var(--mono);font-size:.69rem;color:var(--accent);margin-top:.25rem;}
+.career-employers{font-size:.69rem;color:var(--text-s);margin-top:.15rem;line-height:1.4;}
+@media(max-width:960px){.why-strip-inner,.course-grid{grid-template-columns:1fr 1fr;}.overview-grid,.uni-scroll,.scholarship-cards,.elig-grid,.intakes-grid,.exam-cards,.careers-grid,.cities-grid,.deadline-grid{grid-template-columns:1fr 1fr;}.footer-inner{grid-template-columns:1fr 1fr;}}
+@media(max-width:640px){.nav-links,.btn{display:none;}.why-strip-inner,.course-grid,.deadline-grid{grid-template-columns:1fr;}.overview-grid,.uni-scroll,.scholarship-cards,.elig-grid,.intakes-grid,.exam-cards,.careers-grid,.cities-grid,.cost-row{grid-template-columns:1fr;}.footer-inner{grid-template-columns:1fr;}}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .nav{background:rgba(10,13,22,.88);}}
+:root[data-theme="dark"] .nav{background:rgba(10,13,22,.88);}
+</style>
+
+<nav class="nav" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><img src="gradmire-logo.png" alt="Gradmire" height="34" style="display:block;max-width:155px;"></a>
+    <ul class="nav-links" role="list">
+      <li><a href="destinations.html" aria-current="page">Destinations</a></li>
+      <li><a href="find-courses.html">Courses</a></li>
+      <li><a href="find-universities.html">Universities</a></li>
+      <li><a href="scholarships.html">Scholarships</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+    <div style="display:flex;gap:.75rem;align-items:center">
+      <a href="login.html" class="btn btn-ghost">Log in</a>
+      <a href="free-consultation.html" class="btn">Free consultation</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" aria-label="Study in the UK hero">
+  <img class="hero-img" src="https://images.unsplash.com/photo-1486299267070-83823f5448dd?auto=format&fit=crop&w=1600&q=80" alt="London skyline with Big Ben">
+  <div class="hero-overlay" aria-hidden="true"></div>
+  <div class="hero-body">
+    <div class="hero-flag">🇬🇧</div>
+    <div class="hero-eyebrow">Destination Guide</div>
+    <h1 class="hero-title">Find your course.<br>Then find the UK<br>around it.</h1>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-val">150+</div><div class="hero-stat-lbl">Partner universities</div></div>
+      <div class="hero-stat"><div class="hero-stat-val">47k+</div><div class="hero-stat-lbl">Students placed</div></div>
+      <div class="hero-stat"><div class="hero-stat-val">2 yrs</div><div class="hero-stat-lbl">PSW visa post-study</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY THE UK -->
+<div class="why-strip" aria-label="Why study in the UK">
+  <div class="why-strip-inner">
+    <div class="why-item">
+      <div class="why-item-bar" aria-hidden="true"></div>
+      <div class="why-item-title">1-year Master's degrees</div>
+      <div class="why-item-desc">Save a year of time and money compared to the US or Canada.</div>
+    </div>
+    <div class="why-item">
+      <div class="why-item-bar" aria-hidden="true"></div>
+      <div class="why-item-title">Graduate Route visa</div>
+      <div class="why-item-desc">Up to 2 years post-study work. 3 years for PhD. No job offer needed.</div>
+    </div>
+    <div class="why-item">
+      <div class="why-item-bar" aria-hidden="true"></div>
+      <div class="why-item-title">4 of the world's top 10 universities</div>
+      <div class="why-item-desc">Oxford, Cambridge, UCL and Imperial all rank in the QS and THE top 10.</div>
+    </div>
+    <div class="why-item">
+      <div class="why-item-bar" aria-hidden="true"></div>
+      <div class="why-item-title">Industry-connected teaching</div>
+      <div class="why-item-desc">Strong placement years, employer networks and internship pathways.</div>
+    </div>
+  </div>
+</div>
+
+<!-- STICKY IN-PAGE NAV -->
+<nav class="page-nav" aria-label="Page sections">
+  <div class="page-nav-inner">
+    <a class="page-nav-link active" href="#overview" data-section="overview">Overview</a>
+    <a class="page-nav-link" href="#courses" data-section="courses">Courses</a>
+    <a class="page-nav-link" href="#universities" data-section="universities">Universities</a>
+    <a class="page-nav-link" href="#cost" data-section="cost">Cost of Study</a>
+    <a class="page-nav-link" href="#scholarships" data-section="scholarships">Scholarships</a>
+    <a class="page-nav-link" href="#intakes" data-section="intakes">Intakes</a>
+    <a class="page-nav-link" href="#eligibility" data-section="eligibility">Eligibility</a>
+    <a class="page-nav-link" href="#exams" data-section="exams">English Exams</a>
+    <a class="page-nav-link" href="#visa" data-section="visa">Visa</a>
+    <a class="page-nav-link" href="#careers" data-section="careers">Careers</a>
+    <a class="page-nav-link" href="#cities" data-section="cities">Cities</a>
+    <a class="page-nav-link" href="#faq" data-section="faq">FAQs</a>
+  </div>
+</nav>
+
+<!-- OVERVIEW -->
+<div id="overview" class="section reveal">
+  <div class="section-tag">Overview</div>
+  <h2 class="section-title">Why study in the UK?</h2>
+  <div class="overview-grid">
+    <div>
+      <div class="overview-img"><img src="https://images.unsplash.com/photo-1580537659466-0a9bfa916a54?auto=format&fit=crop&w=800&q=80" alt="Oxford University campus"></div>
+    </div>
+    <div class="overview-copy">
+      <p>The United Kingdom is home to some of the world's most prestigious universities — Oxford, Cambridge, UCL and Imperial consistently rank among the top 10 globally. A UK degree is internationally recognised and typically takes 3 years for a Bachelor's and 1 year for a Master's, saving both time and money compared to many other destinations.</p>
+      <p>Post-Brexit, Indian students remain the second-largest international cohort in the UK. The Graduate Immigration Route (the "Post-Study Work" visa) lets you live and work in the UK for 2 years after graduation — 3 years for PhD graduates.</p>
+      <p>The diverse, multicultural campus environment, world-class research output, and strong alumni networks make the UK a compelling choice for ambitious Indian students.</p>
+      <div class="key-facts">
+        <div class="key-fact"><div class="key-fact-val">2–4 yrs</div><div class="key-fact-lbl">Bachelors duration</div></div>
+        <div class="key-fact"><div class="key-fact-val">1 yr</div><div class="key-fact-lbl">Masters duration</div></div>
+        <div class="key-fact"><div class="key-fact-val">£20–40k</div><div class="key-fact-lbl">Annual tuition range</div></div>
+        <div class="key-fact"><div class="key-fact-val">Top 3</div><div class="key-fact-lbl">Globally ranked systems</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BROWSE UK COURSES -->
+<div id="courses" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">Browse by subject</div>
+  <h2 class="section-title">Find the right UK course for you</h2>
+  <p class="section-sub">We organise UK study by what you want to study — not just by ranking or country. Pick your subject and find programmes that fit.</p>
+  <div class="course-grid">
+    <a href="find-courses.html" class="course-card">
+      <div class="course-card-name">Business &amp; Management</div>
+      <div class="course-card-note">MBA · MSc · BBA</div>
+    </a>
+    <a href="find-courses.html" class="course-card">
+      <div class="course-card-name">Computer Science / AI</div>
+      <div class="course-card-note">MSc CS · Data Science · ML/AI</div>
+    </a>
+    <a href="find-courses.html" class="course-card">
+      <div class="course-card-name">Engineering &amp; Technology</div>
+      <div class="course-card-note">MEng · BEng · MSc</div>
+    </a>
+    <a href="find-courses.html" class="course-card">
+      <div class="course-card-name">Medicine &amp; Health Sciences</div>
+      <div class="course-card-note">MBBS · MBChB · Nursing</div>
+    </a>
+    <a href="find-courses.html" class="course-card">
+      <div class="course-card-name">Law</div>
+      <div class="course-card-note">LLM · LLB · Bar Courses</div>
+    </a>
+    <a href="find-courses.html" class="course-card">
+      <div class="course-card-name">Architecture &amp; Design</div>
+      <div class="course-card-note">BArch · MArch · MA Design</div>
+    </a>
+    <a href="find-courses.html" class="course-card">
+      <div class="course-card-name">Economics &amp; Finance</div>
+      <div class="course-card-note">MSc Economics · BSc Finance</div>
+    </a>
+    <a href="find-courses.html" class="course-card">
+      <div class="course-card-name">Psychology</div>
+      <div class="course-card-note">BSc · MSc · Conversion</div>
+    </a>
+  </div>
+</div>
+
+<!-- UNIVERSITIES -->
+<div id="universities" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">Top Institutions</div>
+  <h2 class="section-title">Our partner universities</h2>
+  <p class="section-sub">Gradmire has official partnerships with 150+ UK institutions, from the Russell Group to specialist colleges.</p>
+  <div class="uni-scroll">
+    <div class="uni-thumb">
+      <img src="https://images.unsplash.com/photo-1580537659466-0a9bfa916a54?auto=format&fit=crop&w=500&q=80" alt="University of Oxford">
+      <div class="uni-thumb-name">University of Oxford</div>
+    </div>
+    <div class="uni-thumb">
+      <img src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=500&q=80" alt="University of Cambridge">
+      <div class="uni-thumb-name">University of Cambridge</div>
+    </div>
+    <div class="uni-thumb">
+      <img src="https://images.unsplash.com/photo-1486299267070-83823f5448dd?auto=format&fit=crop&w=500&q=80" alt="UCL London">
+      <div class="uni-thumb-name">UCL, London</div>
+    </div>
+    <div class="uni-thumb">
+      <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=500&q=80" alt="Imperial College London">
+      <div class="uni-thumb-name">Imperial College London</div>
+    </div>
+    <div class="uni-thumb">
+      <img src="https://images.unsplash.com/photo-1567057419565-4349c49d8a04?auto=format&fit=crop&w=500&q=80" alt="University of Edinburgh">
+      <div class="uni-thumb-name">University of Edinburgh</div>
+    </div>
+    <div class="uni-thumb">
+      <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=500&q=80" alt="University of Manchester">
+      <div class="uni-thumb-name">University of Manchester</div>
+    </div>
+    <div class="uni-thumb">
+      <img src="https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=500&q=80" alt="King's College London">
+      <div class="uni-thumb-name">King's College London</div>
+    </div>
+    <div class="uni-thumb">
+      <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=500&q=80" alt="University of Warwick">
+      <div class="uni-thumb-name">University of Warwick</div>
+    </div>
+  </div>
+</div>
+
+<!-- COST OF STUDY -->
+<div id="cost" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">Cost of Study</div>
+  <h2 class="section-title">Budgeting for the UK</h2>
+  <p class="section-sub">Costs vary significantly between London and other cities. Plan for both tuition and living expenses when calculating your total budget.</p>
+  <div class="cost-section">
+    <div class="cost-row header"><div class="cost-cell">Expense</div><div class="cost-cell">London</div><div class="cost-cell">Other cities</div></div>
+    <div class="cost-row"><div class="cost-cell" style="font-weight:600;">Undergraduate tuition</div><div class="cost-cell">£18,000–£38,000/yr</div><div class="cost-cell">£14,000–£28,000/yr</div></div>
+    <div class="cost-row"><div class="cost-cell" style="font-weight:600;">Postgraduate tuition</div><div class="cost-cell">£20,000–£45,000/yr</div><div class="cost-cell">£16,000–£35,000/yr</div></div>
+    <div class="cost-row"><div class="cost-cell" style="font-weight:600;">Accommodation</div><div class="cost-cell">£900–£2,000/mo</div><div class="cost-cell">£500–£1,200/mo</div></div>
+    <div class="cost-row"><div class="cost-cell" style="font-weight:600;">Food &amp; groceries</div><div class="cost-cell">£400–£600/mo</div><div class="cost-cell">£300–£450/mo</div></div>
+    <div class="cost-row"><div class="cost-cell" style="font-weight:600;">Transport</div><div class="cost-cell">£120–£200/mo</div><div class="cost-cell">£60–£120/mo</div></div>
+    <div class="cost-row"><div class="cost-cell" style="font-weight:600;color:var(--brand);">Estimated total/yr</div><div class="cost-cell" style="font-weight:700;color:var(--brand);">£30,000–£55,000</div><div class="cost-cell" style="font-weight:700;color:var(--brand);">£22,000–£38,000</div></div>
+  </div>
+</div>
+
+<!-- SCHOLARSHIPS -->
+<div id="scholarships" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">Funding</div>
+  <h2 class="section-title">Top scholarships for Indian students</h2>
+  <div class="scholarship-cards">
+    <div class="schol-card">
+      <div class="schol-badge">Fully-funded</div>
+      <div class="schol-name">Chevening Scholarship</div>
+      <div class="schol-amount">Full funding</div>
+      <div class="schol-desc">UK government's global scholarship for one-year Master's programmes. Covers tuition, living, travel. Deadline: November each year.</div>
+    </div>
+    <div class="schol-card">
+      <div class="schol-badge">Partial</div>
+      <div class="schol-name">Gates Cambridge Scholarship</div>
+      <div class="schol-amount">Full cost</div>
+      <div class="schol-desc">For outstanding applicants from outside the UK pursuing postgraduate study at Cambridge. Highly competitive.</div>
+    </div>
+    <div class="schol-card">
+      <div class="schol-badge">University</div>
+      <div class="schol-name">Edinburgh Global Scholarship</div>
+      <div class="schol-amount">Up to £5,000</div>
+      <div class="schol-desc">Edinburgh University's international excellence scholarship for high-achieving international undergraduates and postgraduates.</div>
+    </div>
+  </div>
+  <div style="margin-top:1.5rem;"><a href="scholarships.html" class="btn" style="text-decoration:none;">View all UK scholarships →</a></div>
+</div>
+
+<!-- INTAKES -->
+<div id="intakes" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">Intake Calendar</div>
+  <h2 class="section-title">When can you start?</h2>
+  <div class="intakes-grid">
+    <div class="intake-card">
+      <div class="intake-month">September</div>
+      <div class="intake-window">Applications: Sep–Jan</div>
+      <div class="intake-label">Main intake. The vast majority of programmes admit for September. Applies to both undergraduate (UCAS) and postgraduate.</div>
+    </div>
+    <div class="intake-card">
+      <div class="intake-month">January</div>
+      <div class="intake-window">Applications: Aug–Nov</div>
+      <div class="intake-label">Available at select postgraduate programmes, particularly at modern universities and business schools. Limited seats.</div>
+    </div>
+    <div class="intake-card">
+      <div class="intake-month">May/June</div>
+      <div class="intake-window">Applications: Jan–Mar</div>
+      <div class="intake-label">Rare third intake available at a small number of universities for specific online and accelerated programmes.</div>
+    </div>
+  </div>
+  <h3 style="font-size:1rem;font-weight:700;letter-spacing:-.01em;margin:2.5rem 0 0;">Application deadlines by programme type</h3>
+  <div class="deadline-grid">
+    <div class="deadline-card">
+      <div class="deadline-prog">MBA</div>
+      <div class="deadline-date">Oct–Apr · rolling rounds</div>
+      <div class="deadline-desc">Most UK business schools run 4–5 intake rounds. Apply in Round 1 (Oct–Nov) for best scholarship consideration. Final rounds close around April.</div>
+    </div>
+    <div class="deadline-card">
+      <div class="deadline-prog">MSc (taught postgraduate)</div>
+      <div class="deadline-date">Apply Jan–March for Sep intake</div>
+      <div class="deadline-desc">Most programmes open applications in October and expect you to apply by January–March. Some close earlier once scholarship funding is allocated.</div>
+    </div>
+    <div class="deadline-card">
+      <div class="deadline-prog">Undergraduate (UCAS)</div>
+      <div class="deadline-date">15 January · 15 October for Oxbridge</div>
+      <div class="deadline-desc">Standard UCAS deadline: 15 January. Oxford, Cambridge, and all Medicine/Dentistry courses require applications by 15 October — no exceptions.</div>
+    </div>
+  </div>
+  <div class="deadline-warn"><strong>Heads up on competitive programmes:</strong> some highly competitive MSc programmes fill their cohort well before the official deadline. If you're targeting Oxford, Cambridge or a ranked business school, apply before December and have all materials ready.</div>
+</div>
+
+<!-- ELIGIBILITY -->
+<div id="eligibility" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">Entry Requirements</div>
+  <h2 class="section-title">Eligibility criteria</h2>
+  <div class="elig-grid">
+    <div class="elig-card">
+      <div class="elig-level">Undergraduate (UG)</div>
+      <div class="elig-name">Bachelor's Degree</div>
+      <ul class="elig-list">
+        <li>Class XII with 70–85% (science/commerce/arts depending on course)</li>
+        <li>IELTS: 6.0–7.0 overall (no band below 5.5)</li>
+        <li>UCAS points equivalent: 96–144 (varies by university)</li>
+        <li>SAT / AP considered for top universities</li>
+      </ul>
+    </div>
+    <div class="elig-card">
+      <div class="elig-level">Postgraduate (PG)</div>
+      <div class="elig-name">Master's / MBA</div>
+      <ul class="elig-list">
+        <li>Bachelor's degree: 55–70% (varies by course and university)</li>
+        <li>IELTS: 6.5–7.5 overall (common: 6.5)</li>
+        <li>GRE/GMAT required for MBA and some STEM MSc programmes</li>
+        <li>1–2 years work experience (preferred for MBA)</li>
+      </ul>
+    </div>
+    <div class="elig-card">
+      <div class="elig-level">Research (PhD)</div>
+      <div class="elig-name">PhD / MPhil / MRes</div>
+      <ul class="elig-list">
+        <li>Master's degree with a Merit or Distinction (60%+)</li>
+        <li>IELTS: 6.5–7.0 overall</li>
+        <li>Research proposal and supervisor contact required</li>
+        <li>Published work or strong research portfolio is a plus</li>
+      </ul>
+    </div>
+    <div class="elig-card">
+      <div class="elig-level">Pre-University</div>
+      <div class="elig-name">Foundation / Diploma</div>
+      <ul class="elig-list">
+        <li>Class X pass with 55%+ for Foundation Year</li>
+        <li>IELTS: 5.5 overall</li>
+        <li>Bridge to first-year undergraduate at partner university</li>
+        <li>Age requirement: 17+ at start of programme</li>
+      </ul>
+    </div>
+  </div>
+  <div class="atas-note"><strong>ATAS clearance for CS/AI and Engineering applicants:</strong> some computer science, AI/ML, advanced engineering, aerospace, and certain materials science courses require Academic Technology Approval Scheme (ATAS) clearance before your visa is issued. This can add 4–6 weeks to your timeline — plan for it early. Your Gradmire counsellor will confirm whether your specific course needs it.</div>
+</div>
+
+<!-- ENGLISH EXAMS -->
+<div id="exams" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">English Language</div>
+  <h2 class="section-title">Accepted English proficiency tests</h2>
+  <div class="exam-cards">
+    <div class="exam-card">
+      <div class="exam-name">IELTS Academic</div>
+      <div class="exam-score">Required: 6.0–7.5 overall</div>
+      <div class="exam-note">Most widely accepted. No band below 5.5 for UG; no band below 6.0 for PG at top universities.</div>
+    </div>
+    <div class="exam-card">
+      <div class="exam-name">PTE Academic</div>
+      <div class="exam-score">Required: 54–65+</div>
+      <div class="exam-note">Computer-based and fast results (48 hrs). Accepted by all UKVI-registered universities.</div>
+    </div>
+    <div class="exam-card">
+      <div class="exam-name">TOEFL iBT</div>
+      <div class="exam-score">Required: 79–100+</div>
+      <div class="exam-note">Accepted by most universities. Not accepted for UKVI but valid for admissions purposes.</div>
+    </div>
+    <div class="exam-card">
+      <div class="exam-name">Duolingo English Test</div>
+      <div class="exam-score">Required: 110–130</div>
+      <div class="exam-note">Online, home-based. Accepted by over 80 UK universities but not yet UKVI-approved.</div>
+    </div>
+    <div class="exam-card">
+      <div class="exam-name">Cambridge C1 Advanced</div>
+      <div class="exam-score">Required: C1 or C2 grade</div>
+      <div class="exam-note">No expiry. Excellent for students who studied in English-medium schools in India.</div>
+    </div>
+    <div class="exam-card">
+      <div class="exam-name">MOI Exemption</div>
+      <div class="exam-score">CBSE/ICSE 70%+</div>
+      <div class="exam-note">Some universities waive English tests if your undergraduate degree was taught entirely in English.</div>
+    </div>
+  </div>
+</div>
+
+<!-- VISA -->
+<div id="visa" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">Student Visa</div>
+  <h2 class="section-title">UK Student visa process</h2>
+  <p class="section-sub">The UK Student visa (formerly Tier 4) is applied for online. Gradmire's visa counsellors guide you through every step.</p>
+  <div class="visa-steps">
+    <div class="visa-step"><div class="visa-num">01</div><div class="visa-step-body"><div class="visa-step-title">Receive Unconditional Offer + CAS</div><div class="visa-step-desc">Your university issues a Confirmation of Acceptance for Studies (CAS) number once you hold an unconditional offer. The CAS is required to apply for the Student visa.</div></div></div>
+    <div class="visa-step"><div class="visa-num">02</div><div class="visa-step-body"><div class="visa-step-title">Complete Online Application</div><div class="visa-step-desc">Apply on GOV.UK up to 6 months before your course starts. Fee is £363. International health surcharge (IHS) of ~£776/yr also applies.</div></div></div>
+    <div class="visa-step"><div class="visa-num">03</div><div class="visa-step-body"><div class="visa-step-title">Biometrics &amp; Document Submission</div><div class="visa-step-desc">Book a VFS appointment in India for biometric enrolment and document submission. Core docs: CAS, financial evidence, English test, passport.</div></div></div>
+    <div class="visa-step"><div class="visa-num">04</div><div class="visa-step-body"><div class="visa-step-title">Visa Decision</div><div class="visa-step-desc">Standard processing: 3 weeks. Priority service (£500 extra) for 5 days. Apply at least 6–8 weeks before travel to be safe.</div></div></div>
+    <div class="visa-step"><div class="visa-num">05</div><div class="visa-step-body"><div class="visa-step-title">Arrive &amp; Collect BRP</div><div class="visa-step-desc">On arrival, collect your Biometric Residence Permit (BRP) from your university or nearest post office within 10 days. This is your official proof of right to study.</div></div></div>
+    <div class="visa-step"><div class="visa-num">06</div><div class="visa-step-body"><div class="visa-step-title">Apply for Graduate Route on Completion</div><div class="visa-step-desc">After graduation, switch to the Graduate Immigration Route to live and work in the UK for 2 years (3 for PhD). No job offer needed to apply.</div></div></div>
+  </div>
+</div>
+
+<!-- CAREERS -->
+<div id="careers" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">Post-Study Careers</div>
+  <h2 class="section-title">Career pathways in the UK</h2>
+  <p class="section-sub">The Graduate Immigration Route opens doors to the UK job market. Top sectors actively recruiting international graduates:</p>
+  <div class="careers-grid">
+    <div class="career-tile"><div class="career-icon">💻</div><div class="career-name">Technology &amp; AI</div><div class="career-salary">£35k–55k starting</div><div class="career-employers">Google · Meta · DeepMind · Revolut</div></div>
+    <div class="career-tile"><div class="career-icon">🏦</div><div class="career-name">Finance &amp; Banking</div><div class="career-salary">£38k–65k starting</div><div class="career-employers">Deloitte · EY · JP Morgan · Goldman</div></div>
+    <div class="career-tile"><div class="career-icon">🏥</div><div class="career-name">Healthcare &amp; NHS</div><div class="career-salary">£30k–45k starting</div><div class="career-employers">NHS · Bupa · GSK · AstraZeneca</div></div>
+    <div class="career-tile"><div class="career-icon">⚖️</div><div class="career-name">Law &amp; Consulting</div><div class="career-salary">£40k–70k starting</div><div class="career-employers">Magic Circle · Big Four · Clifford Chance</div></div>
+    <div class="career-tile"><div class="career-icon">🔬</div><div class="career-name">Pharma &amp; Research</div><div class="career-salary">£30k–50k starting</div><div class="career-employers">GSK · AstraZeneca · Pfizer · Wellcome</div></div>
+    <div class="career-tile"><div class="career-icon">📐</div><div class="career-name">Engineering</div><div class="career-salary">£32k–48k starting</div><div class="career-employers">Rolls-Royce · Arup · BAE · National Grid</div></div>
+    <div class="career-tile"><div class="career-icon">📊</div><div class="career-name">Data &amp; Analytics</div><div class="career-salary">£35k–55k starting</div><div class="career-employers">Amazon · Accenture · KPMG · Palantir</div></div>
+    <div class="career-tile"><div class="career-icon">🎨</div><div class="career-name">Creative Industries</div><div class="career-salary">£25k–40k starting</div><div class="career-employers">BBC · WPP · Publicis · Channel 4</div></div>
+  </div>
+</div>
+
+<!-- CITIES -->
+<div id="cities" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">Where to Study</div>
+  <h2 class="section-title">Popular student cities</h2>
+  <div class="cities-grid">
+    <div class="city-card">
+      <img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=700&q=80" alt="London">
+      <div class="city-overlay"><div class="city-name">London</div><div class="city-meta">40+ universities · 400,000 students</div></div>
+    </div>
+    <div class="city-card">
+      <img src="https://images.unsplash.com/photo-1567057419565-4349c49d8a04?auto=format&fit=crop&w=700&q=80" alt="Edinburgh">
+      <div class="city-overlay"><div class="city-name">Edinburgh</div><div class="city-meta">5 universities · 70,000 students</div></div>
+    </div>
+    <div class="city-card">
+      <img src="https://images.unsplash.com/photo-1560969184-10fe8719e047?auto=format&fit=crop&w=700&q=80" alt="Manchester">
+      <div class="city-overlay"><div class="city-name">Manchester</div><div class="city-meta">5 universities · 100,000 students</div></div>
+    </div>
+    <div class="city-card">
+      <img src="https://images.unsplash.com/photo-1580537659466-0a9bfa916a54?auto=format&fit=crop&w=700&q=80" alt="Oxford">
+      <div class="city-overlay"><div class="city-name">Oxford</div><div class="city-meta">2 universities · 25,000 students</div></div>
+    </div>
+    <div class="city-card">
+      <img src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=700&q=80" alt="Cambridge">
+      <div class="city-overlay"><div class="city-name">Cambridge</div><div class="city-meta">2 universities · 22,000 students</div></div>
+    </div>
+    <div class="city-card">
+      <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=700&q=80" alt="Birmingham">
+      <div class="city-overlay"><div class="city-name">Birmingham</div><div class="city-meta">5 universities · 80,000 students</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQs -->
+<div id="faq" class="section reveal" style="padding-top:0;">
+  <div class="section-tag">FAQs</div>
+  <h2 class="section-title">Frequently asked questions</h2>
+  <div class="faqs">
+    <div class="faq-item">
+      <button class="faq-q" aria-expanded="false">Can I work while studying in the UK? <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+      <div class="faq-a"><div class="faq-a-inner">Yes. Student visa holders can work up to 20 hours per week during term time and full-time during holidays. Restrictions depend on your institution's Highly Trusted Sponsor status.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" aria-expanded="false">How does the Graduate Route (PSW) visa work? <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+      <div class="faq-a"><div class="faq-a-inner">After completing your UK degree, you can apply for the Graduate Route visa, giving you 2 years (3 for PhDs) to live, work or look for work in the UK. No job offer is required, and you can switch to Skilled Worker visa if you find a sponsored role.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" aria-expanded="false">Do I need an IELTS to apply to UK universities? <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+      <div class="faq-a"><div class="faq-a-inner">Most universities accept IELTS, PTE Academic, TOEFL iBT, or Cambridge English certifications. Some universities waive the requirement if you completed your degree in English. Ask your Gradmire counsellor about your specific situation.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" aria-expanded="false">How much bank balance do I need for the UK Student visa? <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+      <div class="faq-a"><div class="faq-a-inner">You must show you can cover your first-year tuition fees plus £1,334/month for living costs (£1,023/month outside London) for up to 9 months. Funds must have been held in your account for 28 consecutive days before your application.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" aria-expanded="false">Can I get UK permanent residence (PR) after studying? <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+      <div class="faq-a"><div class="faq-a-inner">You can apply for Indefinite Leave to Remain (ILR) after 5 continuous years of lawful residence in the UK. Study years count toward this 5-year qualifying period if you switch to Skilled Worker or other immigration routes.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" aria-expanded="false">Is a UK degree valid in India? <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+      <div class="faq-a"><div class="faq-a-inner">Yes. UK degrees from recognised universities are widely accepted by Indian employers, government bodies, and for further education in India. The Association of Indian Universities (AIU) provides equivalency certificates if needed.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div style="max-width:var(--w);margin:0 auto;">
+  <div class="cta-strip">
+    <div>
+      <div class="cta-title">Ready to start your UK journey?</div>
+      <div class="cta-sub">Get a free 30-minute consultation with a Gradmire UK specialist.</div>
+    </div>
+    <a href="free-consultation.html" class="btn" style="background:#fff;color:var(--brand);font-size:.95rem;padding:.75em 2em;">Book free consultation →</a>
+  </div>
+</div>
+
+<footer class="footer" aria-label="Site footer">
+  <div class="footer-inner">
+    <div><span class="footer-brand"><img src="gradmire-logo.png" alt="Gradmire" height="28" style="display:block;max-width:140px;"></span><p class="footer-tagline">India's study-abroad counselling platform. Trusted since 2006.</p></div>
+    <div><div class="footer-col-title">Destinations</div><ul class="footer-links"><li><a href="study-in-uk.html">United Kingdom</a></li><li><a href="study-in-usa.html">USA</a></li><li><a href="study-in-canada.html">Canada</a></li><li><a href="study-in-australia.html">Australia</a></li><li><a href="study-in-germany.html">Germany</a></li><li><a href="study-in-ireland.html">Ireland</a></li><li><a href="study-in-newzealand.html">New Zealand</a></li><li><a href="study-in-italy.html">Italy</a></li></ul></div>
+    <div><div class="footer-col-title">Services</div><ul class="footer-links"><li><a href="find-courses.html">Course finder</a></li><li><a href="find-universities.html">Universities</a></li><li><a href="scholarships.html">Scholarships</a></li></ul></div>
+    <div><div class="footer-col-title">Company</div><ul class="footer-links"><li><a href="about.html">About us</a></li><li><a href="blog.html">Blog</a></li><li><a href="faq.html">FAQ</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span class="footer-legal">© 2026 Gradmire. All rights reserved.</span><div style="display:flex;gap:1.5rem;"><a href="#" class="footer-legal">Privacy</a><a href="#" class="footer-legal">Terms</a></div></div>
+</footer>
+
+<script>
+// FAQ accordion
+document.querySelectorAll('.faq-q').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.faq-item');
+    const open = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => { i.classList.remove('open'); i.querySelector('.faq-q').setAttribute('aria-expanded','false'); });
+    if (!open) { item.classList.add('open'); btn.setAttribute('aria-expanded','true'); }
+  });
+});
+
+// Sticky in-page nav active state
+const sections = ['overview','courses','universities','cost','scholarships','intakes','eligibility','exams','visa','careers','cities','faq'];
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      document.querySelectorAll('.page-nav-link').forEach(l => l.classList.remove('active'));
+      const link = document.querySelector(`[data-section="${entry.target.id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+sections.forEach(id => { const el = document.getElementById(id); if (el) observer.observe(el); });
+
+// Smooth scroll for page nav
+document.querySelectorAll('.page-nav-link').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const id = link.getAttribute('data-section');
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// Reveal on scroll
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); revealObserver.unobserve(e.target); } });
+}, { threshold: .1 });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+</script>
