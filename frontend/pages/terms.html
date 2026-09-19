@@ -4,329 +4,757 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400;700&display=swap">
 <style>
-:root{--bg:#F0F2F7;--surface:#FFFFFF;--surface-tint:#E8EBF4;--text-p:#0E1420;--text-s:#556270;--brand:#1A4870;--brand-deep:#0F2D4A;--accent:#007A5A;--accent-hover:#006649;--accent-dim:rgba(0,122,90,.12);--border:rgba(14,20,32,.1);--sans:'Bricolage Grotesque',system-ui,sans-serif;--mono:'JetBrains Mono','Menlo',monospace;--r-sm:8px;--r-md:16px;--r-lg:24px;--w:1280px;--gutter:clamp(1.25rem,5vw,3rem);--ease:cubic-bezier(.16,1,.3,1);}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--brand-deep:#1A4870;--border:rgba(238,241,248,.1);--accent:#2DB88C;--accent-hover:#27A07B;--accent-dim:rgba(45,184,140,.18);}}
-:root[data-theme="dark"]{--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--brand-deep:#1A4870;--border:rgba(238,241,248,.1);--accent:#2DB88C;--accent-hover:#27A07B;--accent-dim:rgba(45,184,140,.18);}
-*,*::before,*::after{box-sizing:border-box;margin:0;}
-body{background:var(--bg);color:var(--text-p);font-family:var(--sans);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;font-optical-sizing:auto;}
-a{color:var(--brand);text-decoration:none;}a:hover{text-decoration:underline;}
-img{max-width:100%;display:block;}
-.nav{position:sticky;top:0;z-index:100;background:rgba(240,242,247,.88);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid var(--border);height:68px;}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .nav{background:rgba(10,13,22,.9);}}
-:root[data-theme="dark"] .nav{background:rgba(10,13,22,.9);}
-.nav-inner{max-width:var(--w);margin:0 auto;padding:0 var(--gutter);height:100%;display:flex;align-items:center;gap:2rem;}
-.nav-links{list-style:none;padding:0;display:flex;gap:1.75rem;flex:1;}
-.nav-links a{color:var(--text-s);font-size:.86rem;font-weight:500;text-decoration:none;transition:color .2s;}
-.nav-links a:hover{color:var(--text-p);}
-.nav-btn{display:inline-flex;align-items:center;padding:.5em 1.2em;border-radius:100px;font-family:var(--sans);font-size:.84rem;font-weight:600;background:var(--accent);color:#fff;text-decoration:none;transition:background .2s;}
-.nav-btn:hover{background:var(--accent-hover);}
-@media(max-width:860px){.nav-links{display:none;}}
-.page-hero{background:var(--brand-deep);padding:5rem var(--gutter) 4rem;text-align:center;}
-.page-hero-tag{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:1rem;}
-.page-hero-title{font-size:clamp(2.2rem,4vw,3.5rem);font-weight:800;letter-spacing:-.04em;color:#fff;line-height:1.02;margin-bottom:.75rem;}
-.page-hero-sub{font-size:1rem;color:rgba(255,255,255,.6);max-width:55ch;margin:0 auto;line-height:1.6;}
-.layout{max-width:var(--w);margin:0 auto;padding:4rem var(--gutter) 6rem;display:grid;grid-template-columns:240px 1fr;gap:3.5rem;align-items:start;}
-@media(max-width:960px){.layout{grid-template-columns:1fr;}}
-.toc{position:sticky;top:88px;}
-@media(max-width:960px){.toc{display:none;}}
-.toc-title{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-s);margin-bottom:.85rem;}
-.toc-list{list-style:none;padding:0;display:flex;flex-direction:column;gap:.15rem;}
-.toc-list a{font-size:.84rem;color:var(--text-s);text-decoration:none;padding:.35rem .7rem;border-radius:6px;display:block;transition:all .2s;}
-.toc-list a:hover,.toc-list a.active{color:var(--brand);background:var(--accent-dim);}
-.prose{max-width:72ch;}
-.section{scroll-margin-top:96px;margin-bottom:3rem;}
-.section:last-child{margin-bottom:0;}
-.section-num{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem;}
-.section h2{font-size:1.35rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.9rem;color:var(--text-p);}
-.section p{color:var(--text-s);margin-bottom:.9rem;font-size:.95rem;line-height:1.7;}
-.section p:last-child{margin-bottom:0;}
-.section ul,.section ol{color:var(--text-s);padding-left:1.4rem;margin-bottom:.9rem;font-size:.95rem;}
-.section ul li,.section ol li{margin-bottom:.4rem;line-height:1.6;}
-.highlight-box{background:var(--accent-dim);border:1px solid rgba(0,122,90,.18);border-radius:var(--r-md);padding:1.25rem 1.5rem;margin-bottom:1.25rem;}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .highlight-box{border-color:rgba(45,184,140,.2);}}
-:root[data-theme="dark"] .highlight-box{border-color:rgba(45,184,140,.2);}
-.highlight-box p{color:var(--text-p) !important;margin-bottom:0 !important;font-size:.9rem !important;}
-.warning-box{background:rgba(217,64,64,.08);border:1px solid rgba(217,64,64,.18);border-radius:var(--r-md);padding:1.25rem 1.5rem;margin-bottom:1.25rem;}
-.warning-box p{color:var(--text-p) !important;margin-bottom:0 !important;font-size:.9rem !important;}
-.meta-bar{display:flex;gap:2rem;flex-wrap:wrap;margin-bottom:2.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border);}
-.meta-item{display:flex;flex-direction:column;gap:.15rem;}
-.meta-label{font-size:.72rem;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--text-s);}
-.meta-val{font-size:.9rem;font-weight:600;color:var(--text-p);}
-.contact-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:1.5rem;margin-top:.75rem;}
-.contact-card p{color:var(--text-p) !important;font-size:.9rem !important;margin-bottom:.3rem !important;}
-.contact-card p:last-child{margin-bottom:0 !important;}
-hr.divider{border:none;border-top:1px solid var(--border);margin:2rem 0;}
-.footer{background:var(--brand-deep);color:rgba(255,255,255,.7);padding:4rem var(--gutter) 2rem;}
-.footer-grid{max-width:var(--w);margin:0 auto;display:grid;grid-template-columns:220px 1fr 1fr 1fr;gap:3rem;padding-bottom:3rem;border-bottom:1px solid rgba(255,255,255,.08);}
-@media(max-width:860px){.footer-grid{grid-template-columns:1fr 1fr;}}
-@media(max-width:540px){.footer-grid{grid-template-columns:1fr;}}
-.footer-brand img{margin-bottom:1rem;}
-.footer-tagline{font-size:.85rem;line-height:1.6;max-width:26ch;}
-.footer-col-title{font-size:.72rem;font-family:var(--mono);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:1rem;}
-.footer-col ul{list-style:none;padding:0;display:flex;flex-direction:column;gap:.6rem;}
-.footer-col ul li a{color:rgba(255,255,255,.65);font-size:.88rem;text-decoration:none;transition:color .2s;}
-.footer-col ul li a:hover{color:#fff;}
-.footer-bottom{max-width:var(--w);margin:2rem auto 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
-.footer-legal{color:rgba(255,255,255,.35);font-size:.78rem;}
-.footer-legal a{color:rgba(255,255,255,.45);text-decoration:none;}
-.footer-legal a:hover{color:rgba(255,255,255,.7);}
+     :root {
+        --bg: #F0F2F7;
+        --surface: #FFFFFF;
+        --surface-tint: #E8EBF4;
+        --text-p: #0E1420;
+        --text-s: #556270;
+        --brand: #1A4870;
+        --brand-deep: #0F2D4A;
+        --accent: #007A5A;
+        --accent-hover: #006649;
+        --accent-dim: rgba(0, 122, 90, .12);
+        --border: rgba(14, 20, 32, .1);
+        --sans: 'Bricolage Grotesque', system-ui, sans-serif;
+        --mono: 'JetBrains Mono', 'Menlo', monospace;
+        --r-sm: 8px;
+        --r-md: 16px;
+        --r-lg: 24px;
+        --w: 1280px;
+        --gutter: clamp(1.25rem, 5vw, 3rem);
+        --ease: cubic-bezier(.16, 1, .3, 1);
+    }
+    
+    @media(prefers-color-scheme:dark) {
+        :root:not([data-theme="light"]) {
+            --bg: #0A0D16;
+            --surface: #121825;
+            --surface-tint: #1A2136;
+            --text-p: #EEF1F8;
+            --text-s: #8893B8;
+            --brand: #4D8FBF;
+            --brand-deep: #1A4870;
+            --border: rgba(238, 241, 248, .1);
+            --accent: #2DB88C;
+            --accent-hover: #27A07B;
+            --accent-dim: rgba(45, 184, 140, .18);
+        }
+    }
+    
+    :root[data-theme="dark"] {
+        --bg: #0A0D16;
+        --surface: #121825;
+        --surface-tint: #1A2136;
+        --text-p: #EEF1F8;
+        --text-s: #8893B8;
+        --brand: #4D8FBF;
+        --brand-deep: #1A4870;
+        --border: rgba(238, 241, 248, .1);
+        --accent: #2DB88C;
+        --accent-hover: #27A07B;
+        --accent-dim: rgba(45, 184, 140, .18);
+    }
+    
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+        margin: 0;
+    }
+    
+    body {
+        background: var(--bg);
+        color: var(--text-p);
+        font-family: var(--sans);
+        font-size: 16px;
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
+        font-optical-sizing: auto;
+    }
+    
+    a {
+        color: var(--brand);
+        text-decoration: none;
+    }
+    
+    a:hover {
+        text-decoration: underline;
+    }
+    
+    img {
+        max-width: 100%;
+        display: block;
+    }
+    
+    .nav {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(240, 242, 247, .88);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border-bottom: 1px solid var(--border);
+        height: 68px;
+    }
+    
+    @media(prefers-color-scheme:dark) {
+        :root:not([data-theme="light"]) .nav {
+            background: rgba(10, 13, 22, .9);
+        }
+    }
+    
+    :root[data-theme="dark"] .nav {
+        background: rgba(10, 13, 22, .9);
+    }
+    
+    .nav-inner {
+        max-width: var(--w);
+        margin: 0 auto;
+        padding: 0 var(--gutter);
+        height: 100%;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
+    
+    .nav-links {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        gap: 1.75rem;
+        flex: 1;
+    }
+    
+    .nav-links a {
+        color: var(--text-s);
+        font-size: .86rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: color .2s;
+    }
+    
+    .nav-links a:hover {
+        color: var(--text-p);
+    }
+    
+    .nav-btn {
+        display: inline-flex;
+        align-items: center;
+        padding: .5em 1.2em;
+        border-radius: 100px;
+        font-family: var(--sans);
+        font-size: .84rem;
+        font-weight: 600;
+        background: var(--accent);
+        color: #fff;
+        text-decoration: none;
+        transition: background .2s;
+    }
+    
+    .nav-btn:hover {
+        background: var(--accent-hover);
+    }
+    
+    @media(max-width:860px) {
+        .nav-links {
+            display: none;
+        }
+    }
+    
+    .page-hero {
+        background: var(--brand-deep);
+        padding: 5rem var(--gutter) 4rem;
+        text-align: center;
+    }
+    
+    .page-hero-tag {
+        font-family: var(--mono);
+        font-size: .7rem;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, .45);
+        margin-bottom: 1rem;
+    }
+    
+    .page-hero-title {
+        font-size: clamp(2.2rem, 4vw, 3.5rem);
+        font-weight: 800;
+        letter-spacing: -.04em;
+        color: #fff;
+        line-height: 1.02;
+        margin-bottom: .75rem;
+    }
+    
+    .page-hero-sub {
+        font-size: 1rem;
+        color: rgba(255, 255, 255, .6);
+        max-width: 55ch;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+    
+    .layout {
+        max-width: var(--w);
+        margin: 0 auto;
+        padding: 4rem var(--gutter) 6rem;
+        display: grid;
+        grid-template-columns: 240px 1fr;
+        gap: 3.5rem;
+        align-items: start;
+    }
+    
+    @media(max-width:960px) {
+        .layout {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    .toc {
+        position: sticky;
+        top: 88px;
+    }
+    
+    @media(max-width:960px) {
+        .toc {
+            display: none;
+        }
+    }
+    
+    .toc-title {
+        font-family: var(--mono);
+        font-size: .68rem;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: var(--text-s);
+        margin-bottom: .85rem;
+    }
+    
+    .toc-list {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: .15rem;
+    }
+    
+    .toc-list a {
+        font-size: .84rem;
+        color: var(--text-s);
+        text-decoration: none;
+        padding: .35rem .7rem;
+        border-radius: 6px;
+        display: block;
+        transition: all .2s;
+    }
+    
+    .toc-list a:hover,
+    .toc-list a.active {
+        color: var(--brand);
+        background: var(--accent-dim);
+    }
+    
+    .prose {
+        max-width: 72ch;
+    }
+    
+    .section {
+        scroll-margin-top: 96px;
+        margin-bottom: 3rem;
+    }
+    
+    .section:last-child {
+        margin-bottom: 0;
+    }
+    
+    .section-num {
+        font-family: var(--mono);
+        font-size: .68rem;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: .4rem;
+    }
+    
+    .section h2 {
+        font-size: 1.35rem;
+        font-weight: 800;
+        letter-spacing: -.02em;
+        margin-bottom: .9rem;
+        color: var(--text-p);
+    }
+    
+    .section p {
+        color: var(--text-s);
+        margin-bottom: .9rem;
+        font-size: .95rem;
+        line-height: 1.7;
+    }
+    
+    .section p:last-child {
+        margin-bottom: 0;
+    }
+    
+    .section ul,
+    .section ol {
+        color: var(--text-s);
+        padding-left: 1.4rem;
+        margin-bottom: .9rem;
+        font-size: .95rem;
+    }
+    
+    .section ul li,
+    .section ol li {
+        margin-bottom: .4rem;
+        line-height: 1.6;
+    }
+    
+    .highlight-box {
+        background: var(--accent-dim);
+        border: 1px solid rgba(0, 122, 90, .18);
+        border-radius: var(--r-md);
+        padding: 1.25rem 1.5rem;
+        margin-bottom: 1.25rem;
+    }
+    
+    @media(prefers-color-scheme:dark) {
+        :root:not([data-theme="light"]) .highlight-box {
+            border-color: rgba(45, 184, 140, .2);
+        }
+    }
+    
+    :root[data-theme="dark"] .highlight-box {
+        border-color: rgba(45, 184, 140, .2);
+    }
+    
+    .highlight-box p {
+        color: var(--text-p) !important;
+        margin-bottom: 0 !important;
+        font-size: .9rem !important;
+    }
+    
+    .warning-box {
+        background: rgba(217, 64, 64, .08);
+        border: 1px solid rgba(217, 64, 64, .18);
+        border-radius: var(--r-md);
+        padding: 1.25rem 1.5rem;
+        margin-bottom: 1.25rem;
+    }
+    
+    .warning-box p {
+        color: var(--text-p) !important;
+        margin-bottom: 0 !important;
+        font-size: .9rem !important;
+    }
+    
+    .meta-bar {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+        margin-bottom: 2.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border);
+    }
+    
+    .meta-item {
+        display: flex;
+        flex-direction: column;
+        gap: .15rem;
+    }
+    
+    .meta-label {
+        font-size: .72rem;
+        font-family: var(--mono);
+        letter-spacing: .07em;
+        text-transform: uppercase;
+        color: var(--text-s);
+    }
+    
+    .meta-val {
+        font-size: .9rem;
+        font-weight: 600;
+        color: var(--text-p);
+    }
+    
+    .contact-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--r-md);
+        padding: 1.5rem;
+        margin-top: .75rem;
+    }
+    
+    .contact-card p {
+        color: var(--text-p) !important;
+        font-size: .9rem !important;
+        margin-bottom: .3rem !important;
+    }
+    
+    .contact-card p:last-child {
+        margin-bottom: 0 !important;
+    }
+    
+    hr.divider {
+        border: none;
+        border-top: 1px solid var(--border);
+        margin: 2rem 0;
+    }
+    
+    .footer {
+        background: var(--brand-deep);
+        color: rgba(255, 255, 255, .7);
+        padding: 4rem var(--gutter) 2rem;
+    }
+    
+    .footer-grid {
+        max-width: var(--w);
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 220px 1fr 1fr 1fr;
+        gap: 3rem;
+        padding-bottom: 3rem;
+        border-bottom: 1px solid rgba(255, 255, 255, .08);
+    }
+    
+    @media(max-width:860px) {
+        .footer-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+    
+    @media(max-width:540px) {
+        .footer-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    .footer-brand img {
+        margin-bottom: 1rem;
+    }
+    
+    .footer-tagline {
+        font-size: .85rem;
+        line-height: 1.6;
+        max-width: 26ch;
+    }
+    
+    .footer-col-title {
+        font-size: .72rem;
+        font-family: var(--mono);
+        font-weight: 700;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, .35);
+        margin-bottom: 1rem;
+    }
+    
+    .footer-col ul {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: .6rem;
+    }
+    
+    .footer-col ul li a {
+        color: rgba(255, 255, 255, .65);
+        font-size: .88rem;
+        text-decoration: none;
+        transition: color .2s;
+    }
+    
+    .footer-col ul li a:hover {
+        color: #fff;
+    }
+    
+    .footer-bottom {
+        max-width: var(--w);
+        margin: 2rem auto 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .footer-legal {
+        color: rgba(255, 255, 255, .35);
+        font-size: .78rem;
+    }
+    
+    .footer-legal a {
+        color: rgba(255, 255, 255, .45);
+        text-decoration: none;
+    }
+    
+    .footer-legal a:hover {
+        color: rgba(255, 255, 255, .7);
+    }
 </style>
 
 <nav class="nav" aria-label="Main navigation">
-  <div class="nav-inner">
-    <a href="index.html" aria-label="Gradmire home">
-      <img src="../assets/gradmire-logo.png" alt="Gradmire" height="34" style="display:block;max-width:155px;">
-    </a>
-    <ul class="nav-links">
-      <li><a href="courses.html">Courses</a></li>
-      <li><a href="destinations.html">Destinations</a></li>
-      <li><a href="scholarships.html">Scholarships</a></li>
-      <li><a href="tools/roi-calculator.html">Tools</a></li>
-      <li><a href="faq.html">FAQ</a></li>
-    </ul>
-    <a href="free-consultation.html" class="nav-btn">Free Consultation</a>
-  </div>
+    <div class="nav-inner">
+        <a href="index.html" aria-label="Gradmire home">
+            <img src="../assets/gradmire-logo.png" alt="Gradmire" height="34" style="display:block;max-width:155px;">
+        </a>
+        <ul class="nav-links">
+            <li><a href="find-courses.html">Courses</a></li>
+            <li><a href="destinations.html">Destinations</a></li>
+            <li><a href="scholarships.html">Scholarships</a></li>
+            <li><a href="tools/roi-calculator.html">Tools</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+        </ul>
+        <a href="free-consultation.html" class="nav-btn">Free Consultation</a>
+    </div>
 </nav>
 
 <header class="page-hero">
-  <p class="page-hero-tag">Legal</p>
-  <h1 class="page-hero-title">Terms of Use</h1>
-  <p class="page-hero-sub">The agreement between you and Gradmire when you use our study-abroad guidance services.</p>
+    <p class="page-hero-tag">Legal</p>
+    <h1 class="page-hero-title">Terms of Use</h1>
+    <p class="page-hero-sub">The agreement between you and Gradmire when you use our study-abroad guidance services.</p>
 </header>
 
 <main>
-  <div class="layout">
-    <aside class="toc">
-      <p class="toc-title">On this page</p>
-      <ul class="toc-list" id="toc">
-        <li><a href="#acceptance">Acceptance</a></li>
-        <li><a href="#scope">Service scope</a></li>
-        <li><a href="#eligibility">Eligibility</a></li>
-        <li><a href="#no-guarantee">No admission guarantee</a></li>
-        <li><a href="#obligations">Your obligations</a></li>
-        <li><a href="#intellectual-property">Intellectual property</a></li>
-        <li><a href="#third-parties">Third-party links</a></li>
-        <li><a href="#liability">Limitation of liability</a></li>
-        <li><a href="#indemnity">Indemnity</a></li>
-        <li><a href="#governing-law">Governing law</a></li>
-        <li><a href="#changes">Changes to terms</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </aside>
+    <div class="layout">
+        <aside class="toc">
+            <p class="toc-title">On this page</p>
+            <ul class="toc-list" id="toc">
+                <li><a href="#acceptance">Acceptance</a></li>
+                <li><a href="#scope">Service scope</a></li>
+                <li><a href="#eligibility">Eligibility</a></li>
+                <li><a href="#no-guarantee">No admission guarantee</a></li>
+                <li><a href="#obligations">Your obligations</a></li>
+                <li><a href="#intellectual-property">Intellectual property</a></li>
+                <li><a href="#third-parties">Third-party links</a></li>
+                <li><a href="#liability">Limitation of liability</a></li>
+                <li><a href="#indemnity">Indemnity</a></li>
+                <li><a href="#governing-law">Governing law</a></li>
+                <li><a href="#changes">Changes to terms</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </aside>
 
-    <div class="prose">
-      <div class="meta-bar">
-        <div class="meta-item">
-          <span class="meta-label">Version</span>
-          <span class="meta-val">1.0</span>
+        <div class="prose">
+            <div class="meta-bar">
+                <div class="meta-item">
+                    <span class="meta-label">Version</span>
+                    <span class="meta-val">1.0</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Effective date</span>
+                    <span class="meta-val">1 October 2026</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Governing law</span>
+                    <span class="meta-val">India</span>
+                </div>
+            </div>
+
+            <section class="section" id="acceptance">
+                <p class="section-num">01</p>
+                <h2>Acceptance of terms</h2>
+                <div class="highlight-box">
+                    <p>By accessing gradmire.in or using any Gradmire service, you agree to be bound by these Terms of Use. If you do not agree, please do not use our website or services.</p>
+                </div>
+                <p>These Terms constitute a legally binding agreement between you and <strong>Gradmire Education Pvt. Ltd.</strong> ("Gradmire", "we", "us", "our"), a company incorporated under the Companies Act 2013. Our registered address is World Trade
+                    Tower, Barakhamba Lane, New Delhi – 110 001, India.</p>
+            </section>
+
+            <hr class="divider">
+
+            <section class="section" id="scope">
+                <p class="section-num">02</p>
+                <h2>Service scope</h2>
+                <p>Gradmire provides study-abroad guidance and advisory services to Indian students, including:</p>
+                <ul>
+                    <li>University shortlisting based on academic profile, budget, and preferences</li>
+                    <li>Application documentation review and guidance</li>
+                    <li>Visa process guidance (we do not act as a licensed immigration agent)</li>
+                    <li>Scholarship discovery and application support</li>
+                    <li>Online tools including the ROI Calculator, Deadline Tracker, and Course Comparator</li>
+                    <li>Consultation sessions (free and paid)</li>
+                    <li>Alumni network connections (subject to mutual consent of alumni)</li>
+                </ul>
+                <p>Gradmire is an education advisory service, <strong>not</strong> a recruitment agency, immigration adviser, or legal counsel. We do not make binding commitments on behalf of any university or visa authority.</p>
+            </section>
+
+            <hr class="divider">
+
+            <section class="section" id="eligibility">
+                <p class="section-num">03</p>
+                <h2>Eligibility</h2>
+                <p>You must be at least 18 years of age to independently use our services and enter into these Terms. Students below 18 may use our services with the consent and supervision of a parent or legal guardian, who accepts these Terms on the student's
+                    behalf.</p>
+                <p>By using our services, you confirm that: (a) you are 18 or older, or have parental/guardian consent; and (b) all information you provide is accurate and complete.</p>
+            </section>
+
+            <hr class="divider">
+
+            <section class="section" id="no-guarantee">
+                <p class="section-num">04</p>
+                <h2>No admission guarantee</h2>
+                <div class="warning-box">
+                    <p><strong>Important:</strong> Gradmire does not guarantee admission to any university, issuance of a visa, award of a scholarship, or any specific outcome from using our services.</p>
+                </div>
+                <p>University admissions depend on factors entirely outside our control, including a university's internal criteria, application volumes, policy changes, and individual assessment decisions. Any examples of past student placements are illustrative
+                    only and do not imply that similar outcomes will be achieved.</p>
+                <p>Our ROI Calculator and other tools provide estimates based on publicly available data and general assumptions. They are intended as guides only and should not be treated as financial advice.</p>
+            </section>
+
+            <hr class="divider">
+
+            <section class="section" id="obligations">
+                <p class="section-num">05</p>
+                <h2>Your obligations</h2>
+                <p>When using Gradmire services, you agree to:</p>
+                <ul>
+                    <li>Provide accurate, complete, and up-to-date information — including academic credentials, test scores, and financial capacity</li>
+                    <li>Not misrepresent your qualifications, identity, or any documents submitted through or with our assistance</li>
+                    <li>Not use our platform to scrape data, test automated tools, or reverse-engineer our services</li>
+                    <li>Not upload, submit, or share content that is unlawful, defamatory, or infringes third-party rights</li>
+                    <li>Comply with the terms of any university you apply to and any visa conditions you accept</li>
+                </ul>
+                <p>Breach of these obligations may result in termination of your access to our services without notice.</p>
+            </section>
+
+            <hr class="divider">
+
+            <section class="section" id="intellectual-property">
+                <p class="section-num">06</p>
+                <h2>Intellectual property</h2>
+                <p>All content on gradmire.in — including text, graphics, tool code, data compilations, branding, and the Gradmire logo — is the property of Gradmire Education Pvt. Ltd. and is protected under the Copyright Act 1957 and applicable intellectual
+                    property law.</p>
+                <p>You may view and print pages for your personal, non-commercial use only. You may not reproduce, redistribute, republish, sell, or create derivative works from our content without our prior written consent.</p>
+            </section>
+
+            <hr class="divider">
+
+            <section class="section" id="third-parties">
+                <p class="section-num">07</p>
+                <h2>Third-party links &amp; services</h2>
+                <p>Our website may contain links to university websites, scholarship portals, government immigration pages, and other third-party services. These links are provided for convenience only. Gradmire does not endorse, control, or take responsibility
+                    for the accuracy, terms, or privacy practices of any third-party website.</p>
+                <p>Your use of third-party services is governed by their own terms, and we encourage you to review them independently.</p>
+            </section>
+
+            <hr class="divider">
+
+            <section class="section" id="liability">
+                <p class="section-num">08</p>
+                <h2>Limitation of liability</h2>
+                <p>To the maximum extent permitted by applicable Indian law:</p>
+                <ul>
+                    <li>Gradmire's services are provided on an "as is" and "as available" basis. We make no warranties, express or implied, regarding accuracy, completeness, or fitness for a particular purpose</li>
+                    <li>Gradmire shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including loss of admission opportunity, visa refusal costs, or financial losses, arising from your use of our services</li>
+                    <li>Our total aggregate liability to you for any claim shall not exceed the amount of fees paid by you to Gradmire in the three months preceding the claim</li>
+                </ul>
+                <p>Nothing in these Terms limits liability for fraud, personal injury caused by negligence, or any liability that cannot be excluded under law.</p>
+            </section>
+
+            <hr class="divider">
+
+            <section class="section" id="indemnity">
+                <p class="section-num">09</p>
+                <h2>Indemnity</h2>
+                <p>You agree to indemnify, defend, and hold harmless Gradmire Education Pvt. Ltd. and its directors, employees, and agents from and against any claims, liabilities, damages, losses, or expenses (including legal fees) arising from:</p>
+                <ul>
+                    <li>Your breach of these Terms</li>
+                    <li>Any false or misleading information you have provided</li>
+                    <li>Your infringement of any third-party rights</li>
+                </ul>
+            </section>
+
+            <hr class="divider">
+
+            <section class="section" id="governing-law">
+                <p class="section-num">10</p>
+                <h2>Governing law &amp; disputes</h2>
+                <p>These Terms are governed by and construed in accordance with the laws of India. Any dispute arising from or relating to these Terms shall be subject to the exclusive jurisdiction of the courts in <strong>New Delhi, India</strong>.</p>
+                <p>We encourage you to contact us first to resolve any issue informally. You may also raise a complaint with our Grievance Officer (see <a href="grievance.html">Grievance page</a>).</p>
+            </section>
+
+            <hr class="divider">
+
+            <section class="section" id="changes">
+                <p class="section-num">11</p>
+                <h2>Changes to these terms</h2>
+                <p>We may update these Terms from time to time. We will post the revised Terms on this page with an updated effective date and, for material changes, notify registered users by email. Your continued use of our services after the effective
+                    date of a revision constitutes your acceptance of the revised Terms.</p>
+            </section>
+
+            <hr class="divider">
+
+            <section class="section" id="contact">
+                <p class="section-num">12</p>
+                <h2>Contact us</h2>
+                <p>For questions about these Terms, please contact:</p>
+                <div class="contact-card">
+                    <p><strong>Gradmire Education Pvt. Ltd.</strong></p>
+                    <p>World Trade Tower, Barakhamba Lane, New Delhi – 110 001</p>
+                    <p>Email: <a href="mailto:legal@gradmire.in">legal@gradmire.in</a></p>
+                    <p>General enquiries: <a href="contact.html">Contact page</a></p>
+                </div>
+            </section>
         </div>
-        <div class="meta-item">
-          <span class="meta-label">Effective date</span>
-          <span class="meta-val">1 October 2026</span>
-        </div>
-        <div class="meta-item">
-          <span class="meta-label">Governing law</span>
-          <span class="meta-val">India</span>
-        </div>
-      </div>
-
-      <section class="section" id="acceptance">
-        <p class="section-num">01</p>
-        <h2>Acceptance of terms</h2>
-        <div class="highlight-box">
-          <p>By accessing gradmire.in or using any Gradmire service, you agree to be bound by these Terms of Use. If you do not agree, please do not use our website or services.</p>
-        </div>
-        <p>These Terms constitute a legally binding agreement between you and <strong>Gradmire Education Pvt. Ltd.</strong> ("Gradmire", "we", "us", "our"), a company incorporated under the Companies Act 2013. Our registered address is World Trade Tower, Barakhamba Lane, New Delhi – 110 001, India.</p>
-      </section>
-
-      <hr class="divider">
-
-      <section class="section" id="scope">
-        <p class="section-num">02</p>
-        <h2>Service scope</h2>
-        <p>Gradmire provides study-abroad guidance and advisory services to Indian students, including:</p>
-        <ul>
-          <li>University shortlisting based on academic profile, budget, and preferences</li>
-          <li>Application documentation review and guidance</li>
-          <li>Visa process guidance (we do not act as a licensed immigration agent)</li>
-          <li>Scholarship discovery and application support</li>
-          <li>Online tools including the ROI Calculator, Deadline Tracker, and Course Comparator</li>
-          <li>Consultation sessions (free and paid)</li>
-          <li>Alumni network connections (subject to mutual consent of alumni)</li>
-        </ul>
-        <p>Gradmire is an education advisory service, <strong>not</strong> a recruitment agency, immigration adviser, or legal counsel. We do not make binding commitments on behalf of any university or visa authority.</p>
-      </section>
-
-      <hr class="divider">
-
-      <section class="section" id="eligibility">
-        <p class="section-num">03</p>
-        <h2>Eligibility</h2>
-        <p>You must be at least 18 years of age to independently use our services and enter into these Terms. Students below 18 may use our services with the consent and supervision of a parent or legal guardian, who accepts these Terms on the student's behalf.</p>
-        <p>By using our services, you confirm that: (a) you are 18 or older, or have parental/guardian consent; and (b) all information you provide is accurate and complete.</p>
-      </section>
-
-      <hr class="divider">
-
-      <section class="section" id="no-guarantee">
-        <p class="section-num">04</p>
-        <h2>No admission guarantee</h2>
-        <div class="warning-box">
-          <p><strong>Important:</strong> Gradmire does not guarantee admission to any university, issuance of a visa, award of a scholarship, or any specific outcome from using our services.</p>
-        </div>
-        <p>University admissions depend on factors entirely outside our control, including a university's internal criteria, application volumes, policy changes, and individual assessment decisions. Any examples of past student placements are illustrative only and do not imply that similar outcomes will be achieved.</p>
-        <p>Our ROI Calculator and other tools provide estimates based on publicly available data and general assumptions. They are intended as guides only and should not be treated as financial advice.</p>
-      </section>
-
-      <hr class="divider">
-
-      <section class="section" id="obligations">
-        <p class="section-num">05</p>
-        <h2>Your obligations</h2>
-        <p>When using Gradmire services, you agree to:</p>
-        <ul>
-          <li>Provide accurate, complete, and up-to-date information — including academic credentials, test scores, and financial capacity</li>
-          <li>Not misrepresent your qualifications, identity, or any documents submitted through or with our assistance</li>
-          <li>Not use our platform to scrape data, test automated tools, or reverse-engineer our services</li>
-          <li>Not upload, submit, or share content that is unlawful, defamatory, or infringes third-party rights</li>
-          <li>Comply with the terms of any university you apply to and any visa conditions you accept</li>
-        </ul>
-        <p>Breach of these obligations may result in termination of your access to our services without notice.</p>
-      </section>
-
-      <hr class="divider">
-
-      <section class="section" id="intellectual-property">
-        <p class="section-num">06</p>
-        <h2>Intellectual property</h2>
-        <p>All content on gradmire.in — including text, graphics, tool code, data compilations, branding, and the Gradmire logo — is the property of Gradmire Education Pvt. Ltd. and is protected under the Copyright Act 1957 and applicable intellectual property law.</p>
-        <p>You may view and print pages for your personal, non-commercial use only. You may not reproduce, redistribute, republish, sell, or create derivative works from our content without our prior written consent.</p>
-      </section>
-
-      <hr class="divider">
-
-      <section class="section" id="third-parties">
-        <p class="section-num">07</p>
-        <h2>Third-party links &amp; services</h2>
-        <p>Our website may contain links to university websites, scholarship portals, government immigration pages, and other third-party services. These links are provided for convenience only. Gradmire does not endorse, control, or take responsibility for the accuracy, terms, or privacy practices of any third-party website.</p>
-        <p>Your use of third-party services is governed by their own terms, and we encourage you to review them independently.</p>
-      </section>
-
-      <hr class="divider">
-
-      <section class="section" id="liability">
-        <p class="section-num">08</p>
-        <h2>Limitation of liability</h2>
-        <p>To the maximum extent permitted by applicable Indian law:</p>
-        <ul>
-          <li>Gradmire's services are provided on an "as is" and "as available" basis. We make no warranties, express or implied, regarding accuracy, completeness, or fitness for a particular purpose</li>
-          <li>Gradmire shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including loss of admission opportunity, visa refusal costs, or financial losses, arising from your use of our services</li>
-          <li>Our total aggregate liability to you for any claim shall not exceed the amount of fees paid by you to Gradmire in the three months preceding the claim</li>
-        </ul>
-        <p>Nothing in these Terms limits liability for fraud, personal injury caused by negligence, or any liability that cannot be excluded under law.</p>
-      </section>
-
-      <hr class="divider">
-
-      <section class="section" id="indemnity">
-        <p class="section-num">09</p>
-        <h2>Indemnity</h2>
-        <p>You agree to indemnify, defend, and hold harmless Gradmire Education Pvt. Ltd. and its directors, employees, and agents from and against any claims, liabilities, damages, losses, or expenses (including legal fees) arising from:</p>
-        <ul>
-          <li>Your breach of these Terms</li>
-          <li>Any false or misleading information you have provided</li>
-          <li>Your infringement of any third-party rights</li>
-        </ul>
-      </section>
-
-      <hr class="divider">
-
-      <section class="section" id="governing-law">
-        <p class="section-num">10</p>
-        <h2>Governing law &amp; disputes</h2>
-        <p>These Terms are governed by and construed in accordance with the laws of India. Any dispute arising from or relating to these Terms shall be subject to the exclusive jurisdiction of the courts in <strong>New Delhi, India</strong>.</p>
-        <p>We encourage you to contact us first to resolve any issue informally. You may also raise a complaint with our Grievance Officer (see <a href="grievance.html">Grievance page</a>).</p>
-      </section>
-
-      <hr class="divider">
-
-      <section class="section" id="changes">
-        <p class="section-num">11</p>
-        <h2>Changes to these terms</h2>
-        <p>We may update these Terms from time to time. We will post the revised Terms on this page with an updated effective date and, for material changes, notify registered users by email. Your continued use of our services after the effective date of a revision constitutes your acceptance of the revised Terms.</p>
-      </section>
-
-      <hr class="divider">
-
-      <section class="section" id="contact">
-        <p class="section-num">12</p>
-        <h2>Contact us</h2>
-        <p>For questions about these Terms, please contact:</p>
-        <div class="contact-card">
-          <p><strong>Gradmire Education Pvt. Ltd.</strong></p>
-          <p>World Trade Tower, Barakhamba Lane, New Delhi – 110 001</p>
-          <p>Email: <a href="mailto:legal@gradmire.in">legal@gradmire.in</a></p>
-          <p>General enquiries: <a href="contact.html">Contact page</a></p>
-        </div>
-      </section>
     </div>
-  </div>
 </main>
 
 <footer class="footer">
-  <div class="footer-grid">
-    <div class="footer-brand">
-      <img src="../assets/gradmire-logo-white.png" alt="Gradmire" height="28" style="max-width:140px;">
-      <p class="footer-tagline" style="margin-top:.85rem;">Transparent, trusted study-abroad guidance for Indian students.</p>
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <img src="../assets/gradmire-logo-white.png" alt="Gradmire" height="28" style="max-width:140px;">
+            <p class="footer-tagline" style="margin-top:.85rem;">Transparent, trusted study-abroad guidance for Indian students.</p>
+        </div>
+        <div class="footer-col">
+            <p class="footer-col-title">Explore</p>
+            <ul>
+                <li><a href="find-courses.html">Courses</a></li>
+                <li><a href="destinations.html">Destinations</a></li>
+                <li><a href="scholarships.html">Scholarships</a></li>
+                <li><a href="tools/roi-calculator.html">Tools</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <p class="footer-col-title">Company</p>
+            <ul>
+                <li><a href="about.html">About us</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="free-consultation.html">Free consultation</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <p class="footer-col-title">Legal</p>
+            <ul>
+                <li><a href="privacy.html">Privacy policy</a></li>
+                <li><a href="terms.html">Terms of use</a></li>
+                <li><a href="grievance.html">Grievance</a></li>
+            </ul>
+        </div>
     </div>
-    <div class="footer-col">
-      <p class="footer-col-title">Explore</p>
-      <ul>
-        <li><a href="courses.html">Courses</a></li>
-        <li><a href="destinations.html">Destinations</a></li>
-        <li><a href="scholarships.html">Scholarships</a></li>
-        <li><a href="tools/roi-calculator.html">Tools</a></li>
-      </ul>
+    <div class="footer-bottom">
+        <span class="footer-legal">© 2026 Gradmire Education Pvt. Ltd. All rights reserved.</span>
+        <div style="display:flex;gap:1.5rem;flex-wrap:wrap;">
+            <a href="privacy.html" class="footer-legal">Privacy policy</a>
+            <a href="terms.html" class="footer-legal">Terms of use</a>
+            <a href="grievance.html" class="footer-legal">Grievance</a>
+        </div>
     </div>
-    <div class="footer-col">
-      <p class="footer-col-title">Company</p>
-      <ul>
-        <li><a href="about.html">About us</a></li>
-        <li><a href="faq.html">FAQ</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="free-consultation.html">Free consultation</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <p class="footer-col-title">Legal</p>
-      <ul>
-        <li><a href="privacy.html">Privacy policy</a></li>
-        <li><a href="terms.html">Terms of use</a></li>
-        <li><a href="grievance.html">Grievance</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <span class="footer-legal">© 2026 Gradmire Education Pvt. Ltd. All rights reserved.</span>
-    <div style="display:flex;gap:1.5rem;flex-wrap:wrap;">
-      <a href="privacy.html" class="footer-legal">Privacy policy</a>
-      <a href="terms.html" class="footer-legal">Terms of use</a>
-      <a href="grievance.html" class="footer-legal">Grievance</a>
-    </div>
-  </div>
 </footer>
 
 <script>
-const sections = document.querySelectorAll('.section[id]');
-const tocLinks = document.querySelectorAll('.toc-list a');
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if(e.isIntersecting){
-      tocLinks.forEach(l => l.classList.remove('active'));
-      const active = document.querySelector('.toc-list a[href="#'+e.target.id+'"]');
-      if(active) active.classList.add('active');
-    }
-  });
-},{rootMargin:'-80px 0px -60% 0px'});
-sections.forEach(s => observer.observe(s));
+    const sections = document.querySelectorAll('.section[id]');
+    const tocLinks = document.querySelectorAll('.toc-list a');
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                tocLinks.forEach(l => l.classList.remove('active'));
+                const active = document.querySelector('.toc-list a[href="#' + e.target.id + '"]');
+                if (active) active.classList.add('active');
+            }
+        });
+    }, {
+        rootMargin: '-80px 0px -60% 0px'
+    });
+    sections.forEach(s => observer.observe(s));
 </script>
