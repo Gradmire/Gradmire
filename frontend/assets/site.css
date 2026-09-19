@@ -162,4 +162,48 @@
     .nav-mobile .site-theme-toggle {
         display: none;
     }
+    html, body {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+    .tabs, .faq-tabs, .page-nav, .subnav {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+    }
+    .page-nav-inner, .subnav-list {
+        width: max-content;
+        min-width: 100%;
+    }
+    .search-box {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: .75rem;
+        padding: 1rem;
+    }
+    .search-input {
+        grid-column: 1 / -1;
+        min-width: 0;
+    }
+    .search-divider {
+        display: none;
+    }
+    .search-select {
+        width: 100%;
+        min-width: 0;
+        padding: .7em .55em;
+        border: 1px solid var(--border);
+        border-radius: 9px;
+    }
+    .search-btn {
+        grid-column: 1 / -1;
+        width: 100%;
+    }
+    .course-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .course-card {
+        min-width: 0;
+    }
 }
