@@ -4,6 +4,7 @@ on:
   push:
     branches: [master]
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -37,7 +38,14 @@ jobs:
         run: |
           node backend/src/server.js > /tmp/gradmire-api.log 2>&1 &
           echo $! > /tmp/gradmire-api.pid
-          curl --fail --silent --show-error --retry 10 --retry-delay 1 http://127.0.0.1:4000/api/v1/health
+          curl --fail --silent --show-error --retry 10 --retry-connrefused --retry-delay 1 http://127.0.0.1:4000/api/v1/health
+
+      - name: Start frontend
+        run: |
+          python3 -m http.server 8080 --directory frontend > /tmp/gradmire-frontend.log 2>&1 &
+          echo $! > /tmp/gradmire-frontend.pid
+          curl --fail --silent --show-error --retry 10 --retry-connrefused --retry-delay 1 http://127.0.0.1:8080/pages/index.html
+          curl --fail --silent --show-error http://127.0.0.1:8080/assets/site.js
 
       - name: Test lead API
         run: |
@@ -52,4 +60,7 @@ jobs:
         run: |
           if [ -f /tmp/gradmire-api.pid ]; then
             kill "$(cat /tmp/gradmire-api.pid)" || true
+          fi
+          if [ -f /tmp/gradmire-frontend.pid ]; then
+            kill "$(cat /tmp/gradmire-frontend.pid)" || true
           fi
