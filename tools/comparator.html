@@ -1,0 +1,385 @@
+<meta charset="UTF-8">
+<title>Course Comparator — Gradmire</title>
+<meta name="description" content="Compare up to 3 universities side by side — tuition, IELTS requirements, post-study visa, ranking, and living costs.">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+:root{--bg:#F0F2F7;--surface:#FFFFFF;--surface-tint:#E8EBF4;--text-p:#0E1420;--text-s:#556270;--brand:#1A4870;--brand-deep:#0F2D4A;--accent:#007A5A;--accent-hover:#006649;--accent-dim:rgba(0,122,90,.12);--border:rgba(14,20,32,.1);--sans:'Bricolage Grotesque',system-ui,sans-serif;--mono:'JetBrains Mono','Menlo',monospace;--r-sm:8px;--r-md:16px;--r-lg:24px;--w:1280px;--gutter:clamp(1.25rem,5vw,3rem);--ease:cubic-bezier(.16,1,.3,1);}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--brand-deep:#1A4870;--border:rgba(238,241,248,.1);--accent:#2DB88C;--accent-hover:#27A07B;--accent-dim:rgba(45,184,140,.18);}}
+:root[data-theme="dark"]{--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--brand-deep:#1A4870;--border:rgba(238,241,248,.1);--accent:#2DB88C;--accent-hover:#27A07B;--accent-dim:rgba(45,184,140,.18);}
+*,*::before,*::after{box-sizing:border-box;margin:0;}
+body{background:var(--bg);color:var(--text-p);font-family:var(--sans);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;font-optical-sizing:auto;}
+a{color:inherit;text-decoration:none;}
+img{max-width:100%;display:block;}
+
+/* Nav */
+.nav{position:sticky;top:0;z-index:100;background:rgba(240,242,247,.88);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid var(--border);height:68px;}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .nav{background:rgba(10,13,22,.9);}}
+:root[data-theme="dark"] .nav{background:rgba(10,13,22,.9);}
+.nav-inner{max-width:var(--w);margin:0 auto;padding:0 var(--gutter);height:100%;display:flex;align-items:center;gap:2rem;}
+.nav-links{list-style:none;padding:0;display:flex;gap:1.75rem;flex:1;}
+.nav-links a{color:var(--text-s);font-size:.86rem;font-weight:500;transition:color .2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--text-p);}
+.nav-btn{display:inline-flex;align-items:center;padding:.5em 1.2em;border-radius:100px;font-family:var(--sans);font-size:.84rem;font-weight:600;background:var(--accent);color:#fff;transition:background .2s;}
+.nav-btn:hover{background:var(--accent-hover);}
+@media(max-width:860px){.nav-links{display:none;}}
+.tools-nav{border-bottom:1px solid var(--border);background:var(--surface);}
+.tools-nav-inner{max-width:var(--w);margin:0 auto;padding:0 var(--gutter);display:flex;overflow-x:auto;scrollbar-width:none;}
+.tools-nav-inner::-webkit-scrollbar{display:none;}
+.tools-tab{padding:.85rem 1.35rem;font-size:.84rem;font-weight:600;color:var(--text-s);white-space:nowrap;border-bottom:2px solid transparent;transition:color .2s,border-color .2s;}
+.tools-tab:hover{color:var(--text-p);}
+.tools-tab.active{color:var(--brand);border-bottom-color:var(--brand);}
+
+/* Page header */
+.page-hero{padding:3.5rem var(--gutter) 0;max-width:var(--w);margin:0 auto;}
+.page-tag{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);background:var(--accent-dim);padding:.3em .8em;border-radius:4px;display:inline-block;margin-bottom:1rem;}
+.page-title{font-size:clamp(1.9rem,3.5vw,3rem);font-weight:800;letter-spacing:-.03em;line-height:1.05;margin-bottom:.65rem;}
+.page-sub{font-size:1rem;color:var(--text-s);max-width:55ch;line-height:1.6;}
+
+/* Selector row */
+.selector-row{max-width:var(--w);margin:2.5rem auto 0;padding:0 var(--gutter);display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;}
+@media(max-width:740px){.selector-row{grid-template-columns:1fr;}}
+.slot{background:var(--surface);border:1.5px dashed var(--border);border-radius:var(--r-md);padding:1.25rem;position:relative;}
+.slot.has-course{border-style:solid;border-color:var(--border);}
+.slot-num{font-size:.7rem;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--text-s);margin-bottom:.75rem;}
+.slot-search{position:relative;}
+.slot-input{width:100%;padding:.65em 1em;border:1.5px solid var(--border);border-radius:var(--r-sm);background:var(--surface-tint);color:var(--text-p);font-family:var(--sans);font-size:.88rem;outline:none;transition:border-color .2s;}
+.slot-input:focus{border-color:var(--accent);}
+.slot-dropdown{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);z-index:50;max-height:280px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,.12);display:none;}
+.slot-dropdown.open{display:block;}
+.dd-item{padding:.7rem 1rem;font-size:.85rem;cursor:pointer;transition:background .12s;border-bottom:1px solid var(--border);}
+.dd-item:last-child{border-bottom:none;}
+.dd-item:hover{background:var(--surface-tint);}
+.dd-uni{font-weight:700;color:var(--text-p);}
+.dd-prog{font-size:.75rem;color:var(--text-s);margin-top:.1rem;}
+.dd-country{font-size:.7rem;font-family:var(--mono);color:var(--accent);margin-top:.1rem;}
+.slot-selected{display:none;}
+.slot.has-course .slot-search{display:none;}
+.slot.has-course .slot-selected{display:block;}
+.sel-name{font-size:.9rem;font-weight:700;color:var(--text-p);line-height:1.35;margin-bottom:.2rem;}
+.sel-uni{font-size:.82rem;color:var(--text-s);margin-bottom:.5rem;}
+.sel-tags{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.75rem;}
+.sel-tag{font-size:.7rem;font-family:var(--mono);padding:.2em .6em;border-radius:3px;background:var(--surface-tint);color:var(--text-s);}
+.sel-clear{font-size:.75rem;color:var(--text-s);background:none;border:1px solid var(--border);border-radius:4px;padding:.25em .7em;cursor:pointer;transition:all .15s;}
+.sel-clear:hover{color:var(--text-p);border-color:var(--text-s);}
+.empty-slot{text-align:center;padding:.5rem 0;color:var(--text-s);font-size:.82rem;}
+
+/* Comparison table */
+.compare-section{max-width:var(--w);margin:2rem auto 5rem;padding:0 var(--gutter);}
+.compare-table{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;}
+.ct-row{display:grid;grid-template-columns:200px repeat(3,1fr);border-bottom:1px solid var(--border);}
+.ct-row:last-child{border-bottom:none;}
+.ct-row.ct-header{background:var(--surface-tint);}
+.ct-cell{padding:1rem 1.25rem;display:flex;align-items:center;}
+.ct-row.ct-header .ct-cell{font-size:.72rem;font-family:var(--mono);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-s);}
+.ct-label{font-size:.85rem;font-weight:600;color:var(--text-s);}
+.ct-val{font-size:.88rem;color:var(--text-p);font-variant-numeric:tabular-nums;}
+.ct-val.best{color:var(--accent);font-weight:700;}
+.ct-val.worst{color:#D94040;}
+.ct-val .mono{font-family:var(--mono);}
+.ct-empty{color:var(--text-s);font-size:.82rem;font-style:italic;}
+.ct-row.alt{background:var(--surface-tint);}
+.visa-badge{display:inline-block;padding:.2em .6em;border-radius:3px;font-size:.72rem;font-family:var(--mono);font-weight:700;}
+.visa-good{background:var(--accent-dim);color:var(--accent);}
+.visa-ok{background:rgba(58,123,213,.12);color:#3A7BD5;}
+.visa-neutral{background:var(--surface-tint);color:var(--text-s);}
+.ielts-bar{display:flex;align-items:center;gap:.6rem;}
+.ib-track{width:60px;height:5px;border-radius:3px;background:var(--surface-tint);overflow:hidden;}
+.ib-fill{height:100%;border-radius:3px;}
+.ib-easy{background:var(--accent);}
+.ib-mid{background:#D9840D;}
+.ib-hard{background:#D94040;}
+.empty-compare{padding:3.5rem 2rem;text-align:center;color:var(--text-s);}
+.empty-compare p{font-size:.95rem;margin-top:.5rem;}
+@media(max-width:860px){.ct-row{grid-template-columns:140px repeat(3,1fr);}.ct-cell{padding:.75rem .9rem;}}
+@media(max-width:600px){.ct-row{display:flex;flex-direction:column;}.ct-row.ct-header{display:none;}}
+
+/* Footer */
+.footer{background:var(--brand-deep);padding:3.5rem var(--gutter) 2rem;}
+.footer-inner{max-width:var(--w);margin:0 auto;display:grid;grid-template-columns:2.5fr 1fr 1fr 1fr;gap:2.5rem;}
+.footer-inner>div:not(:first-child){border-left:1px solid rgba(255,255,255,.1);padding-left:2rem;}
+.footer-brand{font-size:1.05rem;font-weight:800;color:#fff;display:block;margin-bottom:.6rem;}
+.footer-tagline{font-size:.85rem;color:rgba(255,255,255,.5);max-width:28ch;line-height:1.55;}
+.footer-col-title{font-size:.7rem;font-family:var(--mono);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:.9rem;}
+.footer-links{list-style:none;padding:0;display:flex;flex-direction:column;gap:.55rem;}
+.footer-links a{font-size:.85rem;color:rgba(255,255,255,.6);transition:color .2s;}
+.footer-links a:hover{color:#fff;}
+.footer-bottom{max-width:var(--w);margin:2rem auto 0;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+.footer-legal{font-size:.78rem;color:rgba(255,255,255,.35);}
+@media(max-width:800px){.footer-inner{grid-template-columns:1fr 1fr;}.footer-inner>div:not(:first-child){border-left:none;padding-left:0;}}
+@media(max-width:500px){.footer-inner{grid-template-columns:1fr;}.footer-bottom{flex-direction:column;align-items:flex-start;}}
+</style>
+
+<nav class="nav" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo"><img src="../gradmire-logo.png" alt="Gradmire" height="34"></a>
+    <ul class="nav-links" role="list">
+      <li><a href="../destinations.html">Destinations</a></li>
+      <li><a href="../find-courses.html">Courses</a></li>
+      <li><a href="../find-universities.html">Universities</a></li>
+      <li><a href="roi-calculator.html" class="active">Tools</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+    <a href="../free-consultation.html" class="nav-btn">Free consultation</a>
+  </div>
+</nav>
+
+<div class="tools-nav">
+  <div class="tools-nav-inner">
+    <a href="roi-calculator.html" class="tools-tab">ROI Calculator</a>
+    <a href="deadline-tracker.html" class="tools-tab">Deadline Tracker</a>
+    <a href="comparator.html" class="tools-tab active">Course Comparator</a>
+  </div>
+</div>
+
+<div class="page-hero">
+  <span class="page-tag">Planning tool</span>
+  <h1 class="page-title">Compare courses side by side</h1>
+  <p class="page-sub">Add up to 3 programs to see tuition, IELTS requirements, post-study visa, and QS ranking — all in one view.</p>
+</div>
+
+<div class="selector-row" id="selector-row">
+  <div class="slot" id="slot-0" data-idx="0">
+    <div class="slot-num">Option 1</div>
+    <div class="slot-search">
+      <input class="slot-input" placeholder="Search university or program…" data-idx="0" autocomplete="off">
+      <div class="slot-dropdown" data-idx="0"></div>
+    </div>
+    <div class="slot-selected"></div>
+  </div>
+  <div class="slot" id="slot-1" data-idx="1">
+    <div class="slot-num">Option 2</div>
+    <div class="slot-search">
+      <input class="slot-input" placeholder="Search university or program…" data-idx="1" autocomplete="off">
+      <div class="slot-dropdown" data-idx="1"></div>
+    </div>
+    <div class="slot-selected"></div>
+  </div>
+  <div class="slot" id="slot-2" data-idx="2">
+    <div class="slot-num">Option 3</div>
+    <div class="slot-search">
+      <input class="slot-input" placeholder="Search university or program…" data-idx="2" autocomplete="off">
+      <div class="slot-dropdown" data-idx="2"></div>
+    </div>
+    <div class="slot-selected"></div>
+  </div>
+</div>
+
+<div class="compare-section">
+  <div class="compare-table" id="compare-table">
+    <div class="empty-compare">
+      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" style="margin:0 auto .75rem;opacity:.3"><rect x="4" y="8" width="14" height="24" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="22" y="8" width="14" height="24" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 16h6M8 20h6M8 24h4M26 16h6M26 20h6M26 24h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <p>Select at least 2 programs above to compare them.</p>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <span class="footer-brand"><img src="../gradmire-logo-white.png" alt="Gradmire" height="28" style="max-width:140px;" onerror="this.src='../gradmire-logo.png'"></span>
+      <p class="footer-tagline">India's study-abroad counselling platform. Trusted since 2006.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Tools</div>
+      <ul class="footer-links">
+        <li><a href="roi-calculator.html">ROI Calculator</a></li>
+        <li><a href="deadline-tracker.html">Deadline Tracker</a></li>
+        <li><a href="comparator.html">Course Comparator</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Destinations</div>
+      <ul class="footer-links">
+        <li><a href="../study-in-uk.html">United Kingdom</a></li>
+        <li><a href="../study-in-usa.html">USA</a></li>
+        <li><a href="../study-in-canada.html">Canada</a></li>
+        <li><a href="../study-in-australia.html">Australia</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Company</div>
+      <ul class="footer-links">
+        <li><a href="../about.html">About us</a></li>
+        <li><a href="../blog.html">Blog</a></li>
+        <li><a href="../free-consultation.html">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-legal">© 2026 Gradmire. All rights reserved.</span>
+    <div style="display:flex;gap:1.5rem;flex-wrap:wrap">
+      <a href="#" class="footer-legal">Privacy policy</a>
+      <a href="#" class="footer-legal">Terms of use</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const COURSES = [
+  // UK
+  {id:'ucl-cs',     country:'UK',  uni:'UCL',                   name:'MSc Computer Science',        qs:9,  tuitionK:38.1, currency:'GBP', ielts:7.0, visa:'2yr Graduate', living:'£1,400/mo', duration:'1 year',  start:'Sept 2027'},
+  {id:'imperial-ds',country:'UK',  uni:'Imperial College London',name:'MSc Data Science',            qs:6,  tuitionK:42.0, currency:'GBP', ielts:6.5, visa:'2yr Graduate', living:'£1,400/mo', duration:'1 year',  start:'Oct 2027'},
+  {id:'edinburgh-ai',country:'UK', uni:'University of Edinburgh',name:'MSc Artificial Intelligence', qs:15, tuitionK:33.8, currency:'GBP', ielts:6.5, visa:'2yr Graduate', living:'£1,000/mo', duration:'1 year',  start:'Sept 2027'},
+  {id:'lse-fin',    country:'UK',  uni:'LSE',                   name:'MSc Finance',                 qs:45, tuitionK:48.0, currency:'GBP', ielts:7.0, visa:'2yr Graduate', living:'£1,400/mo', duration:'1 year',  start:'Sept 2027'},
+  {id:'lbs-mba',    country:'UK',  uni:'London Business School', name:'MBA',                         qs:null, tuitionK:100, currency:'GBP', ielts:7.0, visa:'2yr Graduate', living:'£1,500/mo', duration:'15–21 mo',start:'Sept 2027'},
+  {id:'warwick-ba', country:'UK',  uni:'Warwick Business School',name:'MSc Business Analytics',     qs:67, tuitionK:29.5, currency:'GBP', ielts:6.5, visa:'2yr Graduate', living:'£900/mo',   duration:'1 year',  start:'Sept 2027'},
+  {id:'kcl-cyber',  country:'UK',  uni:"King's College London",  name:'MSc Cybersecurity',          qs:40, tuitionK:31.2, currency:'GBP', ielts:7.0, visa:'2yr Graduate', living:'£1,400/mo', duration:'1 year',  start:'Sept 2027'},
+  {id:'manchester-ai',country:'UK',uni:'University of Manchester',name:'MSc AI & Data Science',    qs:28, tuitionK:28.0, currency:'GBP', ielts:6.5, visa:'2yr Graduate', living:'£850/mo',   duration:'1 year',  start:'Sept 2027'},
+  {id:'bath-mba',   country:'UK',  uni:'University of Bath',    name:'MBA',                         qs:186,tuitionK:32.0, currency:'GBP', ielts:6.5, visa:'2yr Graduate', living:'£850/mo',   duration:'1 year',  start:'Sept 2027'},
+  {id:'bham-ds',    country:'UK',  uni:'University of Birmingham',name:'MSc Data Science',          qs:81, tuitionK:24.6, currency:'GBP', ielts:6.0, visa:'2yr Graduate', living:'£850/mo',   duration:'1 year',  start:'Sept 2027'},
+  // USA
+  {id:'mit-cs',     country:'USA', uni:'MIT',                   name:'MS Computer Science',         qs:1,  tuitionK:62.0, currency:'USD', ielts:7.0, visa:'OPT 3yr (STEM)', living:'$2,400/mo', duration:'1.5–2 yrs',start:'Fall 2027'},
+  {id:'stanford-cs',country:'USA', uni:'Stanford University',   name:'MS Computer Science',         qs:2,  tuitionK:62.4, currency:'USD', ielts:7.0, visa:'OPT 3yr (STEM)', living:'$2,600/mo', duration:'1–2 yrs',  start:'Fall 2027'},
+  {id:'cmu-cs',     country:'USA', uni:'Carnegie Mellon',       name:'MS Computer Science',         qs:5,  tuitionK:53.9, currency:'USD', ielts:7.0, visa:'OPT 3yr (STEM)', living:'$1,600/mo', duration:'1.5 yrs',  start:'Fall 2027'},
+  {id:'ucb-meng',   country:'USA', uni:'UC Berkeley',           name:'MEng Data Science',           qs:10, tuitionK:28.0, currency:'USD', ielts:7.0, visa:'OPT 3yr (STEM)', living:'$2,200/mo', duration:'1 year',   start:'Fall 2027'},
+  {id:'columbia-cs',country:'USA', uni:'Columbia University',   name:'MS Computer Science',         qs:12, tuitionK:58.0, currency:'USD', ielts:7.0, visa:'OPT 3yr (STEM)', living:'$2,500/mo', duration:'1.5 yrs',  start:'Fall 2027'},
+  {id:'utexas-cs',  country:'USA', uni:'UT Austin',             name:'MS Computer Science (Online)',qs:71, tuitionK:10.0, currency:'USD', ielts:6.5, visa:'N/A (Online)',   living:'N/A',       duration:'1.5 yrs',  start:'Fall 2027'},
+  // Canada
+  {id:'ubc-cs',     country:'Canada',uni:'UBC',                 name:'MSc Computer Science',        qs:34, tuitionK:35.0, currency:'CAD', ielts:6.5, visa:'3yr PGWP',      living:'CAD 2,000/mo',duration:'2 yrs',   start:'Jan 2027'},
+  {id:'toronto-cs', country:'Canada',uni:'University of Toronto',name:'MEng Computer Science',     qs:21, tuitionK:38.0, currency:'CAD', ielts:6.5, visa:'3yr PGWP',      living:'CAD 2,100/mo',duration:'1 year',  start:'Jan 2027'},
+  {id:'mcgill-cs',  country:'Canada',uni:'McGill University',   name:'MSc Computer Science',        qs:30, tuitionK:28.0, currency:'CAD', ielts:6.5, visa:'3yr PGWP',      living:'CAD 1,700/mo',duration:'2 yrs',   start:'Jan 2027'},
+  {id:'waterloo-me',country:'Canada',uni:'University of Waterloo',name:'MEng Systems Design',      qs:112,tuitionK:32.0, currency:'CAD', ielts:6.5, visa:'3yr PGWP',      living:'CAD 1,500/mo',duration:'1 year',  start:'Jan 2027'},
+  {id:'ubc-mba',    country:'Canada',uni:'UBC Sauder',          name:'MBA',                         qs:34, tuitionK:68.0, currency:'CAD', ielts:7.0, visa:'3yr PGWP',      living:'CAD 2,000/mo',duration:'15 mo',   start:'Sept 2027'},
+  // Australia
+  {id:'melb-eng',   country:'Australia',uni:'University of Melbourne',name:'Master of Engineering',qs:14, tuitionK:49.0, currency:'AUD', ielts:6.5, visa:'2yr PSW',       living:'AUD 2,200/mo',duration:'2 yrs',   start:'Feb 2027'},
+  {id:'monash-it',  country:'Australia',uni:'Monash University',name:'Master of Information Technology',qs:37,tuitionK:42.0,currency:'AUD',ielts:6.5,visa:'2yr PSW',       living:'AUD 1,900/mo',duration:'2 yrs',   start:'Feb 2027'},
+  {id:'anu-ds',     country:'Australia',uni:'ANU',              name:'Master of Data Science',      qs:30, tuitionK:48.0, currency:'AUD', ielts:6.5, visa:'2yr PSW',       living:'AUD 1,800/mo',duration:'2 yrs',   start:'Feb 2027'},
+  {id:'unsw-it',    country:'Australia',uni:'UNSW Sydney',      name:'Master of IT',                qs:19, tuitionK:45.0, currency:'AUD', ielts:6.5, visa:'2yr PSW',       living:'AUD 2,000/mo',duration:'2 yrs',   start:'Feb 2027'},
+  {id:'usyd-mba',   country:'Australia',uni:'University of Sydney',name:'MBA',                     qs:18, tuitionK:62.0, currency:'AUD', ielts:7.0, visa:'2yr PSW',       living:'AUD 2,000/mo',duration:'1.5 yrs', start:'Feb 2027'},
+];
+
+const selected = [null, null, null];
+
+function search(q, exclude){
+  q = q.toLowerCase().trim();
+  if(!q) return [];
+  return COURSES.filter(c=>{
+    if(exclude.includes(c.id)) return false;
+    return c.name.toLowerCase().includes(q) || c.uni.toLowerCase().includes(q) || c.country.toLowerCase().includes(q);
+  }).slice(0,8);
+}
+
+function countryFlag(c){
+  const flags = {UK:'🇬🇧',USA:'🇺🇸',Canada:'🇨🇦',Australia:'🇦🇺'};
+  return flags[c]||'';
+}
+
+function renderDropdown(idx, results){
+  const dd = document.querySelector(`.slot-dropdown[data-idx="${idx}"]`);
+  if(!results.length){ dd.classList.remove('open'); return; }
+  dd.innerHTML = results.map(c=>`<div class="dd-item" data-id="${c.id}">
+    <div class="dd-uni">${c.uni}</div>
+    <div class="dd-prog">${c.name}</div>
+    <div class="dd-country">${countryFlag(c.country)} ${c.country}</div>
+  </div>`).join('');
+  dd.classList.add('open');
+  dd.querySelectorAll('.dd-item').forEach(item=>{
+    item.addEventListener('click', ()=>{ selectCourse(idx, item.dataset.id); });
+  });
+}
+
+function selectCourse(idx, id){
+  const course = COURSES.find(c=>c.id===id);
+  if(!course) return;
+  selected[idx] = course;
+  const slot = document.getElementById('slot-'+idx);
+  slot.classList.add('has-course');
+  const dd = slot.querySelector('.slot-dropdown');
+  dd.classList.remove('open');
+  const selDiv = slot.querySelector('.slot-selected');
+  selDiv.innerHTML = `
+    <div class="sel-name">${course.name}</div>
+    <div class="sel-uni">${course.uni}</div>
+    <div class="sel-tags">
+      <span class="sel-tag">${countryFlag(course.country)} ${course.country}</span>
+      <span class="sel-tag">${course.currency} ${course.tuitionK}K/yr</span>
+      <span class="sel-tag">QS ${course.qs || 'N/A'}</span>
+      <span class="sel-tag">${course.duration}</span>
+    </div>
+    <button class="sel-clear" onclick="clearSlot(${idx})">Remove</button>`;
+  renderTable();
+}
+
+function clearSlot(idx){
+  selected[idx] = null;
+  const slot = document.getElementById('slot-'+idx);
+  slot.classList.remove('has-course');
+  slot.querySelector('.slot-input').value = '';
+  slot.querySelector('.slot-selected').innerHTML = '';
+  slot.querySelector('.slot-dropdown').classList.remove('open');
+  renderTable();
+}
+
+// Comparison helpers
+function bestOf(courses, fn, higher=false){
+  const vals = courses.map(fn).filter(v=>v!==null&&v!==undefined);
+  if(!vals.length) return null;
+  return higher ? Math.max(...vals) : Math.min(...vals);
+}
+
+function renderTable(){
+  const table = document.getElementById('compare-table');
+  const filled = selected.filter(Boolean);
+  if(filled.length < 2){
+    table.innerHTML = `<div class="empty-compare">
+      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" style="margin:0 auto .75rem;opacity:.3"><rect x="4" y="8" width="14" height="24" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="22" y="8" width="14" height="24" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 16h6M8 20h6M8 24h4M26 16h6M26 20h6M26 24h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <p>Select at least 2 programs above to compare them.</p>
+    </div>`;
+    return;
+  }
+
+  const bestQs = bestOf(selected.filter(Boolean), c=>c.qs); // lower qs = better
+  const bestTuition = bestOf(selected.filter(Boolean), c=>c.tuitionK); // lower = better
+  const bestIelts = bestOf(selected.filter(Boolean), c=>c.ielts); // lower = better
+
+  function cell(course, content){ return `<div class="ct-cell">${course ? content : '<span class="ct-empty">—</span>'}</div>`; }
+  function qsBadge(c){ if(!c||!c.qs) return '<span class="ct-empty">Unranked</span>'; const cls=c.qs===bestQs?'best':''; return `<span class="ct-val mono ${cls}">#${c.qs} QS</span>`; }
+  function tuitionBadge(c){ if(!c) return ''; const cls=c.tuitionK===bestTuition?'best':''; return `<span class="ct-val mono ${cls}">${c.currency} ${c.tuitionK.toFixed(0)}K/yr</span>`; }
+  function ieltsCell(c){ if(!c) return ''; const pct=(c.ielts-6)/2.5*100; const col=c.ielts<=6.5?'ib-easy':c.ielts<=7?'ib-mid':'ib-hard'; const cls=c.ielts===bestIelts?'best':''; return `<div class="ielts-bar"><span class="ct-val mono ${cls}">${c.ielts}</span><div class="ib-track"><div class="ib-fill ${col}" style="width:${pct}%"></div></div></div>`; }
+  function visaBadge(c){ if(!c) return ''; let cls='visa-neutral'; if(c.visa.includes('3yr')||c.visa.includes('PGWP')) cls='visa-good'; else if(c.visa.includes('2yr')) cls='visa-ok'; return `<span class="visa-badge ${cls}">${c.visa}</span>`; }
+
+  const rows = [
+    {label:'University',       alt:false, fn: c=>c?`<span class="ct-val" style="font-weight:700">${c.uni}</span>`:'' },
+    {label:'Program',          alt:true,  fn: c=>c?`<span class="ct-val">${c.name}</span>`:'' },
+    {label:'Country',          alt:false, fn: c=>c?`<span class="ct-val">${countryFlag(c.country)} ${c.country}</span>`:'' },
+    {label:'QS Ranking',       alt:true,  fn: qsBadge },
+    {label:'Tuition/year',     alt:false, fn: tuitionBadge },
+    {label:'Duration',         alt:true,  fn: c=>c?`<span class="ct-val">${c.duration}</span>`:'' },
+    {label:'IELTS min.',       alt:false, fn: ieltsCell },
+    {label:'Post-study visa',  alt:true,  fn: visaBadge },
+    {label:'Living costs',     alt:false, fn: c=>c?`<span class="ct-val" style="font-size:.82rem">${c.living}</span>`:'' },
+    {label:'Intake',           alt:true,  fn: c=>c?`<span class="ct-val">${c.start}</span>`:'' },
+  ];
+
+  const hdrCells = ['<div class="ct-cell"></div>'].concat(selected.map((c,i)=>`<div class="ct-cell"><span style="font-size:.72rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--text-s)">Option ${i+1}</span></div>`)).join('');
+
+  table.innerHTML = `<div class="ct-row ct-header">${hdrCells}</div>`
+    + rows.map(r=>`<div class="ct-row${r.alt?' alt':''}">
+      <div class="ct-cell"><span class="ct-label">${r.label}</span></div>
+      ${selected.map(c=>`<div class="ct-cell">${c?r.fn(c):'<span class="ct-empty">—</span>'}</div>`).join('')}
+    </div>`).join('');
+}
+
+// Wire up inputs
+document.querySelectorAll('.slot-input').forEach(input=>{
+  const idx = parseInt(input.dataset.idx);
+  input.addEventListener('input', function(){
+    const q = this.value;
+    const excludes = selected.filter(Boolean).map(c=>c.id);
+    const results = search(q, excludes);
+    renderDropdown(idx, results);
+  });
+  input.addEventListener('focus', function(){
+    if(this.value) { const excludes=selected.filter(Boolean).map(c=>c.id); renderDropdown(idx,search(this.value,excludes)); }
+  });
+});
+
+document.addEventListener('click', e=>{
+  if(!e.target.closest('.slot-search')){
+    document.querySelectorAll('.slot-dropdown').forEach(d=>d.classList.remove('open'));
+  }
+});
+
+renderTable();
+</script>

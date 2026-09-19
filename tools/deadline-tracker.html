@@ -1,0 +1,410 @@
+<meta charset="UTF-8">
+<title>Deadline Tracker — Gradmire</title>
+<meta name="description" content="Track application deadlines for universities in UK, USA, Canada and Australia. Never miss an intake date.">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+:root{--bg:#F0F2F7;--surface:#FFFFFF;--surface-tint:#E8EBF4;--text-p:#0E1420;--text-s:#556270;--brand:#1A4870;--brand-deep:#0F2D4A;--accent:#007A5A;--accent-hover:#006649;--accent-dim:rgba(0,122,90,.12);--border:rgba(14,20,32,.1);--sans:'Bricolage Grotesque',system-ui,sans-serif;--mono:'JetBrains Mono','Menlo',monospace;--r-sm:8px;--r-md:16px;--r-lg:24px;--w:1280px;--gutter:clamp(1.25rem,5vw,3rem);--ease:cubic-bezier(.16,1,.3,1);}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--brand-deep:#1A4870;--border:rgba(238,241,248,.1);--accent:#2DB88C;--accent-hover:#27A07B;--accent-dim:rgba(45,184,140,.18);}}
+:root[data-theme="dark"]{--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--brand-deep:#1A4870;--border:rgba(238,241,248,.1);--accent:#2DB88C;--accent-hover:#27A07B;--accent-dim:rgba(45,184,140,.18);}
+*,*::before,*::after{box-sizing:border-box;margin:0;}
+body{background:var(--bg);color:var(--text-p);font-family:var(--sans);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;font-optical-sizing:auto;}
+a{color:inherit;text-decoration:none;}
+img{max-width:100%;display:block;}
+
+/* Nav */
+.nav{position:sticky;top:0;z-index:100;background:rgba(240,242,247,.88);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid var(--border);height:68px;}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .nav{background:rgba(10,13,22,.9);}}
+:root[data-theme="dark"] .nav{background:rgba(10,13,22,.9);}
+.nav-inner{max-width:var(--w);margin:0 auto;padding:0 var(--gutter);height:100%;display:flex;align-items:center;gap:2rem;}
+.nav-links{list-style:none;padding:0;display:flex;gap:1.75rem;flex:1;}
+.nav-links a{color:var(--text-s);font-size:.86rem;font-weight:500;transition:color .2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--text-p);}
+.nav-btn{display:inline-flex;align-items:center;padding:.5em 1.2em;border-radius:100px;font-family:var(--sans);font-size:.84rem;font-weight:600;background:var(--accent);color:#fff;transition:background .2s;}
+.nav-btn:hover{background:var(--accent-hover);}
+@media(max-width:860px){.nav-links{display:none;}}
+.tools-nav{border-bottom:1px solid var(--border);background:var(--surface);}
+.tools-nav-inner{max-width:var(--w);margin:0 auto;padding:0 var(--gutter);display:flex;overflow-x:auto;scrollbar-width:none;}
+.tools-nav-inner::-webkit-scrollbar{display:none;}
+.tools-tab{padding:.85rem 1.35rem;font-size:.84rem;font-weight:600;color:var(--text-s);white-space:nowrap;border-bottom:2px solid transparent;transition:color .2s,border-color .2s;}
+.tools-tab:hover{color:var(--text-p);}
+.tools-tab.active{color:var(--brand);border-bottom-color:var(--brand);}
+
+/* Layout */
+.page-hero{padding:3.5rem var(--gutter) 0;max-width:var(--w);margin:0 auto;}
+.page-tag{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);background:var(--accent-dim);padding:.3em .8em;border-radius:4px;display:inline-block;margin-bottom:1rem;}
+.page-title{font-size:clamp(1.9rem,3.5vw,3rem);font-weight:800;letter-spacing:-.03em;line-height:1.05;margin-bottom:.65rem;}
+.page-sub{font-size:1rem;color:var(--text-s);max-width:55ch;line-height:1.6;}
+
+.main-grid{max-width:var(--w);margin:2.5rem auto 0;padding:0 var(--gutter) 5rem;display:grid;grid-template-columns:1fr 1.15fr;gap:2rem;align-items:start;}
+@media(max-width:900px){.main-grid{grid-template-columns:1fr;}}
+
+/* Browse panel */
+.browse-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;}
+.browse-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);}
+.panel-title{font-size:.72rem;font-family:var(--mono);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-s);}
+.search-box{display:flex;align-items:center;gap:.6rem;padding:.6rem .9rem;border:1.5px solid var(--border);border-radius:var(--r-sm);background:var(--surface-tint);margin-top:.85rem;}
+.search-box input{flex:1;background:none;border:none;outline:none;font-family:var(--sans);font-size:.88rem;color:var(--text-p);}
+.search-box input::placeholder{color:var(--text-s);}
+.search-icon{color:var(--text-s);flex-shrink:0;}
+.filter-chips{display:flex;gap:.4rem;flex-wrap:wrap;padding:.85rem 1.5rem;border-bottom:1px solid var(--border);}
+.chip{padding:.3em .85em;border-radius:100px;font-size:.76rem;font-weight:600;border:1.5px solid var(--border);background:transparent;color:var(--text-s);cursor:pointer;transition:all .15s;}
+.chip.active{background:var(--brand);color:#fff;border-color:var(--brand);}
+.program-list{max-height:560px;overflow-y:auto;scrollbar-width:thin;}
+.program-item{display:flex;align-items:flex-start;gap:.85rem;padding:1rem 1.5rem;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;}
+.program-item:last-child{border-bottom:none;}
+.program-item:hover{background:var(--surface-tint);}
+.program-item.tracked{background:var(--accent-dim);}
+.prog-checkbox{width:18px;height:18px;border-radius:4px;border:2px solid var(--border);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.program-item.tracked .prog-checkbox{background:var(--accent);border-color:var(--accent);}
+.prog-check-svg{display:none;}
+.program-item.tracked .prog-check-svg{display:block;}
+.prog-info{flex:1;min-width:0;}
+.prog-name{font-size:.88rem;font-weight:600;color:var(--text-p);line-height:1.3;margin-bottom:.2rem;}
+.prog-uni{font-size:.78rem;color:var(--text-s);}
+.prog-meta{display:flex;gap:.6rem;margin-top:.35rem;flex-wrap:wrap;}
+.prog-tag{font-size:.7rem;font-family:var(--mono);padding:.2em .55em;border-radius:3px;background:var(--surface-tint);color:var(--text-s);}
+.prog-deadline{font-size:.78rem;font-family:var(--mono);font-weight:700;margin-left:auto;flex-shrink:0;text-align:right;}
+.dl-soon{color:#D9840D;}
+.dl-urgent{color:#D94040;}
+.dl-upcoming{color:var(--accent);}
+.dl-passed{color:var(--text-s);text-decoration:line-through;}
+.empty-browse{padding:2rem;text-align:center;color:var(--text-s);font-size:.9rem;}
+
+/* Tracker panel */
+.tracker-panel{position:sticky;top:84px;}
+.tracker-header{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg) var(--r-lg) 0 0;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.track-count{font-family:var(--mono);font-size:.78rem;color:var(--text-s);background:var(--surface-tint);padding:.25em .7em;border-radius:100px;}
+.clear-btn{font-size:.78rem;color:var(--text-s);background:none;border:none;cursor:pointer;padding:.25em .5em;border-radius:4px;transition:color .2s;}
+.clear-btn:hover{color:var(--text-p);}
+.tracked-list{background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--r-lg) var(--r-lg);min-height:200px;}
+.track-item{padding:1.1rem 1.5rem;border-bottom:1px solid var(--border);position:relative;}
+.track-item:last-child{border-bottom:none;}
+.track-item-top{display:flex;justify-content:space-between;align-items:flex-start;gap:.75rem;}
+.track-name{font-size:.88rem;font-weight:700;color:var(--text-p);line-height:1.3;margin-bottom:.2rem;}
+.track-uni{font-size:.78rem;color:var(--text-s);}
+.track-right{text-align:right;flex-shrink:0;}
+.track-date{font-family:var(--mono);font-size:.82rem;font-weight:700;}
+.track-days{font-size:.72rem;margin-top:.15rem;}
+.track-remove{position:absolute;top:.85rem;right:1rem;background:none;border:none;color:var(--text-s);cursor:pointer;opacity:0;transition:opacity .15s;font-size:1.1rem;line-height:1;padding:.1rem;}
+.track-item:hover .track-remove{opacity:1;}
+.progress-bar{height:3px;border-radius:2px;background:var(--surface-tint);margin-top:.75rem;overflow:hidden;}
+.progress-fill{height:100%;border-radius:2px;transition:width .4s var(--ease);}
+.pf-urgent{background:#D94040;}
+.pf-soon{background:#D9840D;}
+.pf-upcoming{background:var(--accent);}
+.pf-passed{background:var(--border);}
+.empty-tracker{padding:3rem 1.5rem;text-align:center;}
+.empty-icon{font-size:2rem;margin-bottom:.75rem;opacity:.4;}
+.empty-text{font-size:.88rem;color:var(--text-s);line-height:1.55;}
+.legend{display:flex;gap:1rem;flex-wrap:wrap;padding:1rem 1.5rem;background:var(--surface-tint);border-radius:var(--r-sm);margin-top:1rem;}
+.legend-item{display:flex;align-items:center;gap:.4rem;font-size:.74rem;color:var(--text-s);}
+.legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.ld-urgent{background:#D94040;}.ld-soon{background:#D9840D;}.ld-upcoming{background:var(--accent);}.ld-passed{background:var(--border);}
+
+/* Footer */
+.footer{background:var(--brand-deep);padding:3.5rem var(--gutter) 2rem;}
+.footer-inner{max-width:var(--w);margin:0 auto;display:grid;grid-template-columns:2.5fr 1fr 1fr 1fr;gap:2.5rem;}
+.footer-inner>div:not(:first-child){border-left:1px solid rgba(255,255,255,.1);padding-left:2rem;}
+.footer-brand{font-size:1.05rem;font-weight:800;color:#fff;display:block;margin-bottom:.6rem;}
+.footer-tagline{font-size:.85rem;color:rgba(255,255,255,.5);max-width:28ch;line-height:1.55;}
+.footer-col-title{font-size:.7rem;font-family:var(--mono);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:.9rem;}
+.footer-links{list-style:none;padding:0;display:flex;flex-direction:column;gap:.55rem;}
+.footer-links a{font-size:.85rem;color:rgba(255,255,255,.6);transition:color .2s;}
+.footer-links a:hover{color:#fff;}
+.footer-bottom{max-width:var(--w);margin:2rem auto 0;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+.footer-legal{font-size:.78rem;color:rgba(255,255,255,.35);}
+@media(max-width:800px){.footer-inner{grid-template-columns:1fr 1fr;}.footer-inner>div:not(:first-child){border-left:none;padding-left:0;}}
+@media(max-width:500px){.footer-inner{grid-template-columns:1fr;}.footer-bottom{flex-direction:column;align-items:flex-start;}}
+</style>
+
+<nav class="nav" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo"><img src="../gradmire-logo.png" alt="Gradmire" height="34"></a>
+    <ul class="nav-links" role="list">
+      <li><a href="../destinations.html">Destinations</a></li>
+      <li><a href="../find-courses.html">Courses</a></li>
+      <li><a href="../find-universities.html">Universities</a></li>
+      <li><a href="roi-calculator.html" class="active">Tools</a></li>
+      <li><a href="../about.html">About</a></li>
+    </ul>
+    <a href="../free-consultation.html" class="nav-btn">Free consultation</a>
+  </div>
+</nav>
+
+<div class="tools-nav">
+  <div class="tools-nav-inner">
+    <a href="roi-calculator.html" class="tools-tab">ROI Calculator</a>
+    <a href="deadline-tracker.html" class="tools-tab active">Deadline Tracker</a>
+    <a href="comparator.html" class="tools-tab">Course Comparator</a>
+  </div>
+</div>
+
+<div class="page-hero">
+  <span class="page-tag">Planning tool</span>
+  <h1 class="page-title">Never miss an application deadline</h1>
+  <p class="page-sub">Track deadlines for courses you're interested in. Your list is saved to your browser — no account needed.</p>
+</div>
+
+<div class="main-grid">
+  <!-- Browse -->
+  <div class="browse-panel">
+    <div class="browse-header">
+      <div class="panel-title">Browse programs</div>
+      <div class="search-box">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <input type="text" id="search-input" placeholder="Search university or program…" aria-label="Search programs">
+      </div>
+    </div>
+    <div class="filter-chips" role="group" aria-label="Filter by country">
+      <button class="chip active" data-filter="all">All</button>
+      <button class="chip" data-filter="uk">🇬🇧 UK</button>
+      <button class="chip" data-filter="usa">🇺🇸 USA</button>
+      <button class="chip" data-filter="canada">🇨🇦 Canada</button>
+      <button class="chip" data-filter="australia">🇦🇺 Australia</button>
+    </div>
+    <div class="program-list" id="program-list" role="list"></div>
+  </div>
+
+  <!-- Tracker -->
+  <div class="tracker-panel">
+    <div class="tracker-header">
+      <div class="panel-title">My deadlines <span class="track-count" id="track-count">0 tracked</span></div>
+      <button class="clear-btn" id="clear-btn" onclick="clearAll()">Clear all</button>
+    </div>
+    <div class="tracked-list" id="tracked-list"></div>
+
+    <div class="legend">
+      <span class="legend-item"><span class="legend-dot ld-urgent"></span> &lt;30 days — urgent</span>
+      <span class="legend-item"><span class="legend-dot ld-soon"></span> 30–60 days — soon</span>
+      <span class="legend-item"><span class="legend-dot ld-upcoming"></span> &gt;60 days — upcoming</span>
+      <span class="legend-item"><span class="legend-dot ld-passed"></span> Passed</span>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <span class="footer-brand"><img src="../gradmire-logo-white.png" alt="Gradmire" height="28" style="max-width:140px;" onerror="this.src='../gradmire-logo.png'"></span>
+      <p class="footer-tagline">India's study-abroad counselling platform. Trusted since 2006.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Tools</div>
+      <ul class="footer-links">
+        <li><a href="roi-calculator.html">ROI Calculator</a></li>
+        <li><a href="deadline-tracker.html">Deadline Tracker</a></li>
+        <li><a href="comparator.html">Course Comparator</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Destinations</div>
+      <ul class="footer-links">
+        <li><a href="../study-in-uk.html">United Kingdom</a></li>
+        <li><a href="../study-in-usa.html">USA</a></li>
+        <li><a href="../study-in-canada.html">Canada</a></li>
+        <li><a href="../study-in-australia.html">Australia</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Company</div>
+      <ul class="footer-links">
+        <li><a href="../about.html">About us</a></li>
+        <li><a href="../blog.html">Blog</a></li>
+        <li><a href="../free-consultation.html">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-legal">© 2026 Gradmire. All rights reserved.</span>
+    <div style="display:flex;gap:1.5rem;flex-wrap:wrap">
+      <a href="#" class="footer-legal">Privacy policy</a>
+      <a href="#" class="footer-legal">Terms of use</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const TODAY = new Date('2026-09-19');
+
+const PROGRAMS = [
+  // UK — Sept 2027 intake
+  {id:'ucl-cs',    country:'uk', uni:'UCL',                  name:'MSc Computer Science',       intake:'Sept 2027', deadline:'2027-03-31', field:'CS & AI'},
+  {id:'imp-ds',    country:'uk', uni:'Imperial College',      name:'MSc Data Science',           intake:'Oct 2027',  deadline:'2027-04-30', field:'CS & AI'},
+  {id:'edin-ai',   country:'uk', uni:'University of Edinburgh',name:'MSc Artificial Intelligence',intake:'Sept 2027', deadline:'2027-04-30', field:'CS & AI'},
+  {id:'lse-fin',   country:'uk', uni:'LSE',                  name:'MSc Finance',                intake:'Sept 2027', deadline:'2027-05-15', field:'Business'},
+  {id:'lbs-mba',   country:'uk', uni:'London Business School',name:'MBA',                        intake:'Sept 2027', deadline:'2027-01-10', field:'Business'},
+  {id:'warwick-ba',country:'uk', uni:'Warwick Business School',name:'MSc Business Analytics',   intake:'Sept 2027', deadline:'2027-05-31', field:'Business'},
+  {id:'kcl-cyber', country:'uk', uni:"King's College London", name:'MSc Cybersecurity',         intake:'Sept 2027', deadline:'2027-03-15', field:'Engineering'},
+  {id:'man-ai',    country:'uk', uni:'University of Manchester',name:'MSc AI & Data Science',   intake:'Sept 2027', deadline:'2027-06-30', field:'CS & AI'},
+  {id:'soton-eng', country:'uk', uni:'Southampton',           name:'MSc Electronic Engineering',intake:'Sept 2027', deadline:'2027-06-01', field:'Engineering'},
+  {id:'bham-ds',   country:'uk', uni:'University of Birmingham',name:'MSc Data Science',        intake:'Sept 2027', deadline:'2027-07-01', field:'CS & AI'},
+  {id:'bath-mba',  country:'uk', uni:'University of Bath',   name:'MBA',                        intake:'Sept 2027', deadline:'2027-04-01', field:'Business'},
+  // UK — Jan 2027 intake
+  {id:'bristol-ds',country:'uk', uni:'University of Bristol', name:'MSc Data Science (Jan)',    intake:'Jan 2027',  deadline:'2026-10-15', field:'CS & AI'},
+  {id:'exeter-fin',country:'uk', uni:'University of Exeter', name:'MSc Finance (Jan)',          intake:'Jan 2027',  deadline:'2026-11-01', field:'Business'},
+  // USA — Fall 2027
+  {id:'mit-cs',    country:'usa',uni:'MIT',                   name:'MS Computer Science',       intake:'Fall 2027', deadline:'2026-12-15', field:'CS & AI'},
+  {id:'stan-cs',   country:'usa',uni:'Stanford',              name:'MS Computer Science',       intake:'Fall 2027', deadline:'2026-12-01', field:'CS & AI'},
+  {id:'cmu-cs',    country:'usa',uni:'Carnegie Mellon',       name:'MSCS',                      intake:'Fall 2027', deadline:'2026-12-01', field:'CS & AI'},
+  {id:'ucb-meng',  country:'usa',uni:'UC Berkeley',           name:'MEng Data Science',         intake:'Fall 2027', deadline:'2027-01-04', field:'Engineering'},
+  {id:'columbia-cs',country:'usa',uni:'Columbia University',  name:'MS Computer Science',       intake:'Fall 2027', deadline:'2027-02-15', field:'CS & AI'},
+  {id:'nyu-ds',    country:'usa',uni:'NYU Stern',             name:'MBA',                       intake:'Fall 2027', deadline:'2027-01-15', field:'Business'},
+  {id:'utexas-cs', country:'usa',uni:'UT Austin',             name:'MS Computer Science',       intake:'Fall 2027', deadline:'2026-12-15', field:'CS & AI'},
+  // Canada — Jan 2027 intake
+  {id:'ubc-cs',    country:'canada',uni:'UBC',               name:'MSc Computer Science',       intake:'Jan 2027',  deadline:'2026-09-30', field:'CS & AI'},
+  {id:'toronto-cs',country:'canada',uni:'University of Toronto',name:'MEng CS',                intake:'Jan 2027',  deadline:'2026-10-15', field:'CS & AI'},
+  {id:'mcgill-cs', country:'canada',uni:'McGill University', name:'MSc Computer Science',       intake:'Jan 2027',  deadline:'2026-10-31', field:'CS & AI'},
+  {id:'water-meng',country:'canada',uni:'University of Waterloo',name:'MEng Systems Design',   intake:'Jan 2027',  deadline:'2026-11-01', field:'Engineering'},
+  // Canada — Sept 2027 intake
+  {id:'ubc-mba',   country:'canada',uni:'UBC Sauder',        name:'MBA',                        intake:'Sept 2027', deadline:'2027-01-15', field:'Business'},
+  {id:'queen-mba', country:'canada',uni:"Queen's University", name:'MBA',                        intake:'Aug 2027',  deadline:'2027-03-01', field:'Business'},
+  // Australia — Feb 2027 intake
+  {id:'melb-eng',  country:'australia',uni:'University of Melbourne',name:'Master of Engineering',intake:'Feb 2027',deadline:'2026-10-15', field:'Engineering'},
+  {id:'monash-it', country:'australia',uni:'Monash University',name:'Master of IT',             intake:'Feb 2027',  deadline:'2026-11-30', field:'CS & AI'},
+  {id:'anu-ds',    country:'australia',uni:'ANU',             name:'Master of Data Science',    intake:'Feb 2027',  deadline:'2026-10-31', field:'CS & AI'},
+  {id:'unsw-cs',   country:'australia',uni:'UNSW Sydney',    name:'Master of IT',               intake:'Feb 2027',  deadline:'2026-11-01', field:'CS & AI'},
+  {id:'usyd-mba',  country:'australia',uni:'University of Sydney',name:'MBA',                   intake:'Feb 2027',  deadline:'2026-10-01', field:'Business'},
+  {id:'qut-ds',    country:'australia',uni:'QUT',             name:'Master of Data Science',    intake:'Feb 2027',  deadline:'2026-12-15', field:'CS & AI'},
+];
+
+let trackedIds = [];
+let filter = 'all';
+let searchQuery = '';
+
+function loadTracked(){
+  try{ trackedIds = JSON.parse(localStorage.getItem('gm_deadlines') || '[]'); } catch(e){ trackedIds = []; }
+}
+function saveTracked(){
+  try{ localStorage.setItem('gm_deadlines', JSON.stringify(trackedIds)); } catch(e){}
+}
+
+function daysUntil(dateStr){
+  const d = new Date(dateStr);
+  return Math.ceil((d - TODAY) / 86400000);
+}
+
+function deadlineStatus(days){
+  if(days < 0)   return {cls:'dl-passed',   pfx:'pf-passed',   label:'Passed'};
+  if(days < 30)  return {cls:'dl-urgent',   pfx:'pf-urgent',   label:days+' days left'};
+  if(days < 60)  return {cls:'dl-soon',     pfx:'pf-soon',     label:days+' days left'};
+  return              {cls:'dl-upcoming',  pfx:'pf-upcoming', label:days+' days left'};
+}
+
+function formatDate(str){
+  const d = new Date(str);
+  return d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+}
+
+function renderBrowse(){
+  const list = document.getElementById('program-list');
+  const q = searchQuery.toLowerCase();
+  const filtered = PROGRAMS.filter(p=>{
+    const matchCountry = filter === 'all' || p.country === filter;
+    const matchSearch = !q || p.name.toLowerCase().includes(q) || p.uni.toLowerCase().includes(q) || p.field.toLowerCase().includes(q);
+    return matchCountry && matchSearch;
+  });
+  if(!filtered.length){
+    list.innerHTML = '<div class="empty-browse">No programs match your search.</div>';
+    return;
+  }
+  list.innerHTML = filtered.map(p=>{
+    const tracked = trackedIds.includes(p.id);
+    const days = daysUntil(p.deadline);
+    const {cls, label} = deadlineStatus(days);
+    return `<div class="program-item${tracked?' tracked':''}" role="listitem" onclick="toggleTrack('${p.id}')" aria-pressed="${tracked}">
+      <div class="prog-checkbox" aria-hidden="true">
+        <svg class="prog-check-svg" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="prog-info">
+        <div class="prog-name">${p.name}</div>
+        <div class="prog-uni">${p.uni}</div>
+        <div class="prog-meta">
+          <span class="prog-tag">${p.country.toUpperCase()}</span>
+          <span class="prog-tag">${p.field}</span>
+          <span class="prog-tag">${p.intake}</span>
+        </div>
+      </div>
+      <div class="prog-deadline ${cls}">${formatDate(p.deadline)}<br><span style="font-size:.7rem;font-weight:400">${label}</span></div>
+    </div>`;
+  }).join('');
+}
+
+function renderTracker(){
+  const list = document.getElementById('tracked-list');
+  const count = document.getElementById('track-count');
+  count.textContent = trackedIds.length + ' tracked';
+  if(!trackedIds.length){
+    list.innerHTML = `<div class="empty-tracker">
+      <div class="empty-icon">📋</div>
+      <div class="empty-text">Click a program on the left to start tracking its deadline.</div>
+    </div>`;
+    return;
+  }
+  const sorted = trackedIds.map(id=>PROGRAMS.find(p=>p.id===id)).filter(Boolean)
+    .sort((a,b)=>new Date(a.deadline)-new Date(b.deadline));
+  list.innerHTML = sorted.map(p=>{
+    const days = daysUntil(p.deadline);
+    const {cls, pfx, label} = deadlineStatus(days);
+    const prog = days<0 ? 0 : Math.min(Math.max(1-days/365,0)*100, 100);
+    return `<div class="track-item">
+      <div class="track-item-top">
+        <div>
+          <div class="track-name">${p.name}</div>
+          <div class="track-uni">${p.uni} · ${p.country.toUpperCase()}</div>
+        </div>
+        <div class="track-right">
+          <div class="track-date ${cls}">${formatDate(p.deadline)}</div>
+          <div class="track-days ${cls}">${label}</div>
+        </div>
+      </div>
+      <div class="progress-bar"><div class="progress-fill ${pfx}" style="width:${prog}%"></div></div>
+      <button class="track-remove" onclick="removeTrack(event,'${p.id}')" aria-label="Remove ${p.name}">×</button>
+    </div>`;
+  }).join('');
+}
+
+function toggleTrack(id){
+  const idx = trackedIds.indexOf(id);
+  if(idx === -1) trackedIds.push(id);
+  else trackedIds.splice(idx,1);
+  saveTracked();
+  renderBrowse();
+  renderTracker();
+}
+
+function removeTrack(e, id){
+  e.stopPropagation();
+  trackedIds = trackedIds.filter(i=>i!==id);
+  saveTracked();
+  renderBrowse();
+  renderTracker();
+}
+
+function clearAll(){
+  if(!trackedIds.length) return;
+  trackedIds = [];
+  saveTracked();
+  renderBrowse();
+  renderTracker();
+}
+
+// Filters
+document.querySelectorAll('.chip').forEach(c=>{
+  c.addEventListener('click', function(){
+    document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
+    this.classList.add('active');
+    filter = this.dataset.filter;
+    renderBrowse();
+  });
+});
+
+document.getElementById('search-input').addEventListener('input', function(){
+  searchQuery = this.value;
+  renderBrowse();
+});
+
+loadTracked();
+renderBrowse();
+renderTracker();
+</script>

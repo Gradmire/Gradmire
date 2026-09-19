@@ -1,15 +1,5 @@
 ﻿<meta charset="UTF-8">
-<title>Gradmire - Study Abroad Counselling for Indian Students</title>
-<meta name="description" content="India's most trusted study-abroad platform. Expert counsellors for UK, USA, Canada, Australia and Europe. 47,000+ students placed. Free consultation.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://gradmire.com/">
-<meta property="og:title" content="Gradmire — Study Abroad Counselling for Indian Students">
-<meta property="og:description" content="India's most trusted study-abroad platform. 47,000+ students placed by expert counsellors for UK, USA, Canada, Australia and Europe. Free consultation.">
-<meta property="og:image" content="https://gradmire.com/og-cover.jpg">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Gradmire — Study Abroad Counselling">
-<meta name="twitter:description" content="47,000+ students placed. Expert counsellors for UK, USA, Canada, Australia and Europe.">
-<meta name="twitter:image" content="https://gradmire.com/og-cover.jpg">
+<title>Gradmire</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400;700&display=swap">
 
 <style>
@@ -21,8 +11,8 @@
   --text-p: #0E1420;
   --text-s: #556270;
   --brand: #1A4870;
+  --brand-deep: #1A4870;
   --accent: #007A5A;
-  --accent-hover: #006649;
   --accent-dim: rgba(0,122,90,.12);
   --border: rgba(14,20,32,.1);
   --sans: 'Bricolage Grotesque', system-ui, sans-serif;
@@ -31,73 +21,54 @@
   --w: 1280px;
   --gutter: clamp(1.25rem, 5vw, 3rem);
   --sec: clamp(5rem, 10vw, 8rem);
-  --ease: cubic-bezier(.16,1,.3,1);
-  --brand-deep: #0F2D4A;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #0A0D16; --surface: #121825; --surface-tint: #1A2136;
     --text-p: #EEF1F8; --text-s: #8893B8;
-    --brand: #4D8FBF; --brand-deep: #1A4870; --border: rgba(238,241,248,.1);
-    --accent: #2DB88C; --accent-hover: #27A07B;
+    --brand: #4D8FBF; --border: rgba(238,241,248,.1);
     --accent-dim: rgba(45,184,140,.18);
   }
 }
 :root[data-theme="dark"] {
   --bg: #0A0D16; --surface: #121825; --surface-tint: #1A2136;
   --text-p: #EEF1F8; --text-s: #8893B8;
-  --brand: #4D8FBF; --brand-deep: #1A4870; --border: rgba(238,241,248,.1);
-  --accent: #2DB88C; --accent-hover: #27A07B;
+  --brand: #4D8FBF; --border: rgba(238,241,248,.1);
   --accent-dim: rgba(45,184,140,.18);
-}
-@media (prefers-contrast: more) {
-  :root { --border: rgba(14,20,32,.3); }
 }
 
 /* ─── Base ───────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; }
-body { background: var(--bg); color: var(--text-p); font-family: var(--sans); font-size: 17px; line-height: 1.65; -webkit-font-smoothing: antialiased; font-optical-sizing: auto; }
+body { background: var(--bg); color: var(--text-p); font-family: var(--sans); font-size: 17px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
 img { max-width: 100%; display: block; }
 a { color: inherit; }
 
 /* ─── Nav ────────────────────────────────────────────── */
-.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 100; background: rgba(240,242,247,.82); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid transparent; box-shadow: none; height: 68px; transition: border-bottom-color .3s, box-shadow .3s; }
-.nav--scrolled { border-bottom-color: var(--border); box-shadow: 0 1px 0 var(--border); }
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 100; background: var(--bg); border-bottom: 1px solid var(--border); height: 68px; }
 .nav-inner { max-width: var(--w); margin: 0 auto; padding: 0 var(--gutter); height: 100%; display: flex; align-items: center; gap: 2.5rem; }
 .nav-logo { font-size: 1.2rem; font-weight: 800; letter-spacing: -.03em; color: var(--brand); text-decoration: none; flex-shrink: 0; }
 .nav-links { list-style: none; padding: 0; display: flex; gap: 2rem; flex: 1; }
 .nav-links a { color: var(--text-s); font-size: .88rem; font-weight: 500; text-decoration: none; transition: color .2s; }
 .nav-links a:hover { color: var(--text-p); }
-.nav-btn { display: inline-flex; align-items: center; padding: .55em 1.3em; border-radius: 100px; font-family: var(--sans); font-size: .85rem; font-weight: 600; background: var(--accent); color: #fff; text-decoration: none; border: none; cursor: pointer; white-space: nowrap; transition: background .2s; }
-.nav-btn:hover { background: var(--accent-hover); }
-.nav-btn:not(:active) { transition: background .2s, transform .35s var(--ease); }
+.nav-btn { display: inline-flex; align-items: center; padding: .55em 1.3em; border-radius: 100px; font-family: var(--sans); font-size: .85rem; font-weight: 600; background: var(--accent); color: #fff; text-decoration: none; border: none; cursor: pointer; white-space: nowrap; transition: background .2s, transform .15s; }
+.nav-btn:hover { background: #006649; }
 .nav-btn:active { transform: scale(.97); }
 .nav-ham { display: none; background: none; border: none; cursor: pointer; padding: .5rem; color: var(--text-p); }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .nav { background: rgba(10,13,22,.88); }
-}
-:root[data-theme="dark"] .nav { background: rgba(10,13,22,.88); }
 
-.nav-mobile { position: fixed; inset: 68px 0 0 0; z-index: 99; background: var(--bg); padding: 2rem var(--gutter); border-top: 1px solid var(--border); flex-direction: column; gap: 1.5rem; display: flex; opacity: 0; transform: translateY(-10px); pointer-events: none; transition: opacity .22s var(--ease), transform .28s var(--ease); }
-.nav-mobile.is-open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.nav-mobile { position: fixed; inset: 68px 0 0 0; z-index: 99; background: var(--bg); padding: 2rem var(--gutter); border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 1.5rem; }
 .nav-mobile a { font-size: 1.2rem; font-weight: 600; text-decoration: none; color: var(--text-p); }
 
 /* ─── Buttons ────────────────────────────────────────── */
-.btn { display: inline-flex; align-items: center; gap: .5em; padding: .7em 1.6em; border-radius: 10px; font-family: var(--sans); font-size: .95rem; font-weight: 600; text-decoration: none; border: none; cursor: pointer; white-space: nowrap; transition: background .2s, color .2s, border-color .2s; }
-.btn:not(:active) { transition: background .2s, color .2s, border-color .2s, transform .35s var(--ease); }
+.btn { display: inline-flex; align-items: center; gap: .5em; padding: .7em 1.6em; border-radius: 100px; font-family: var(--sans); font-size: .95rem; font-weight: 600; text-decoration: none; border: none; cursor: pointer; white-space: nowrap; transition: transform .15s, background .2s, color .2s, border-color .2s; }
 .btn:active { transform: scale(.97); }
 .btn-primary { background: var(--accent); color: #fff; }
-.btn-primary:hover { background: var(--accent-hover); }
+.btn-primary:hover { background: #006649; }
 .btn-outline { background: transparent; color: var(--text-p); border: 1.5px solid var(--border); }
 .btn-outline:hover { border-color: var(--text-p); }
 .btn-lg { padding: .85em 2em; font-size: 1rem; }
 
 /* ─── Hero ───────────────────────────────────────────── */
-.hero-wrap { min-height: 100dvh; display: flex; flex-direction: column; justify-content: center; padding-top: clamp(2.5rem, 6vh, 4rem); background: radial-gradient(ellipse 90% 80% at 72% 40%, rgba(26,72,112,.09) 0%, transparent 65%), var(--bg); }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .hero-wrap { background: radial-gradient(ellipse 90% 80% at 72% 40%, rgba(0,100,220,.12) 0%, transparent 60%), var(--bg); }
-}
-:root[data-theme="dark"] .hero-wrap { background: radial-gradient(ellipse 90% 80% at 72% 40%, rgba(0,100,220,.12) 0%, transparent 60%), var(--bg); }
+.hero-wrap { min-height: 100dvh; display: flex; flex-direction: column; justify-content: center; padding-top: clamp(2.5rem, 6vh, 4rem); }
 .hero { max-width: var(--w); margin: 0 auto; padding: 0 var(--gutter) clamp(3rem, 6vh, 5rem); display: grid; grid-template-columns: 55fr 45fr; gap: clamp(2rem, 5vw, 5rem); align-items: center; }
 .hero-headline { font-size: clamp(2.8rem, 5.5vw, 5.25rem); font-weight: 800; line-height: .98; letter-spacing: -.035em; text-wrap: balance; margin-bottom: 1.5rem; }
 .hero-headline .hl-accent { color: var(--accent); }
@@ -106,12 +77,8 @@ a { color: inherit; }
 .hero-sub { font-size: clamp(.95rem, 1.35vw, 1.05rem); color: var(--text-s); max-width: 42ch; line-height: 1.65; margin-bottom: 2.5rem; }
 .hero-actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
 
-/* Hero visual */
-.hero-visual { position: relative; aspect-ratio: 1/1; max-height: 72vh; }
-#globe-container { position: absolute; inset: 0; width: 100%; height: 100%; cursor: grab; }
-#globe-container:active { cursor: grabbing; }
-#globe-container canvas { display: block; }
-.hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+/* Hero visual: CSS composition (no external images needed) */
+.hero-visual { position: relative; border-radius: var(--r-lg); overflow: hidden; aspect-ratio: 4/5; max-height: 72vh; background: var(--brand-deep); }
 .hero-visual-inner { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; }
 .hero-vis-arc {
   position: absolute; top: -8%; right: -12%; width: 70%; aspect-ratio: 1;
@@ -138,17 +105,17 @@ a { color: inherit; }
 /* Grid of color tiles in upper hero-visual */
 .hero-tiles { position: absolute; top: 1.5rem; left: 1.5rem; right: 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
 .hero-tile { border-radius: var(--r-sm); padding: 1rem; }
-.ht-1 { background: rgba(0,168,120,.18); }
+.ht-1 { background: rgba(45,184,140,.18); }
 .ht-2 { background: rgba(255,255,255,.07); }
 .ht-3 { background: rgba(77,143,191,.2); aspect-ratio: 2/1; grid-column: span 2; }
 .hero-tile-num { font-family: var(--mono); font-size: 1.35rem; font-weight: 700; color: #fff; letter-spacing: -.03em; }
 .hero-tile-lbl { font-size: .72rem; color: rgba(255,255,255,.55); margin-top: .2rem; }
 
 /* ─── Evidence ───────────────────────────────────────── */
-.evidence { background: var(--brand); }
+.evidence { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 .evidence-inner { max-width: var(--w); margin: 0 auto; padding: 3.5rem var(--gutter); display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
-.stat-num { font-family: var(--mono); font-size: clamp(2.2rem, 3.8vw, 3.5rem); font-weight: 700; color: #fff; line-height: 1; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
-.stat-lbl { font-size: .875rem; color: rgba(255,255,255,.65); font-weight: 500; margin-top: .4rem; line-height: 1.35; }
+.stat-num { font-family: var(--mono); font-size: clamp(2.2rem, 3.8vw, 3.5rem); font-weight: 700; color: var(--brand); line-height: 1; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.stat-lbl { font-size: .875rem; color: var(--text-s); font-weight: 500; margin-top: .4rem; line-height: 1.35; }
 
 /* ─── Destinations ───────────────────────────────────── */
 .destinations { padding: var(--sec) var(--gutter); max-width: var(--w); margin: 0 auto; }
@@ -164,17 +131,92 @@ a { color: inherit; }
 .dest-cell:hover .dest-cell-bg { transform: scale(1.04); }
 .dest-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,14,26,.88) 0%, rgba(10,14,26,.38) 42%, transparent 68%); }
 .dest-name { position: absolute; bottom: 1.25rem; left: 1.25rem; font-size: clamp(1.5rem, 2.5vw, 2.2rem); font-weight: 800; color: #fff; letter-spacing: -.025em; line-height: 1; }
-/* Country backgrounds — real Unsplash photography */
-.bg-uk       { background-image: url('https://images.unsplash.com/photo-1486299267070-83823f5448dd?auto=format&fit=crop&w=1200&q=80'); background-size: cover; background-position: center; }
-.bg-usa      { background-image: url('https://images.unsplash.com/photo-1485871981521-5b1fd3805eee?auto=format&fit=crop&w=1200&q=80'); background-size: cover; background-position: center; }
-.bg-canada   { background-image: url('https://images.unsplash.com/photo-1517090504586-fde19ea6066f?auto=format&fit=crop&w=1200&q=80'); background-size: cover; background-position: center; }
-.bg-germany  { background-image: url('https://images.unsplash.com/photo-1560969184-10fe8719e047?auto=format&fit=crop&w=1200&q=80'); background-size: cover; background-position: center; }
-.bg-australia{ background-image: url('https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=1200&q=80'); background-size: cover; background-position: center; }
-.bg-ireland  { background-image: url('https://images.unsplash.com/photo-1570875450638-044bca38ec92?auto=format&fit=crop&w=1200&q=80'); background-size: cover; background-position: center; }
-.bg-italy    { background-image: url('https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=1200&q=80'); background-size: cover; background-position: center; }
-.bg-nz       { background-image: url('https://images.unsplash.com/photo-1469521669194-babb45599def?auto=format&fit=crop&w=1200&q=80'); background-size: cover; background-position: center top; }
+/* Country backgrounds — actual flag palettes */
 
-.dest-stat { grid-column: span 3; background: var(--brand-deep); display: flex; align-items: center; gap: 2.5rem; padding: 2rem 2.5rem; border-radius: var(--r-md); opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+/* UK: Union Jack — navy field, red St George cross + diagonal saltires */
+.bg-uk {
+  background: #012169;
+  background-image:
+    linear-gradient(45deg,  transparent calc(50% - 4%), rgba(200,16,46,.72) calc(50% - 4%), rgba(200,16,46,.72) calc(50% + 4%), transparent calc(50% + 4%)),
+    linear-gradient(-45deg, transparent calc(50% - 4%), rgba(200,16,46,.72) calc(50% - 4%), rgba(200,16,46,.72) calc(50% + 4%), transparent calc(50% + 4%)),
+    linear-gradient(0deg,   transparent calc(50% - 7%), rgba(200,16,46,.95) calc(50% - 7%), rgba(200,16,46,.95) calc(50% + 7%), transparent calc(50% + 7%)),
+    linear-gradient(90deg,  transparent calc(50% - 7%), rgba(200,16,46,.95) calc(50% - 7%), rgba(200,16,46,.95) calc(50% + 7%), transparent calc(50% + 7%));
+}
+
+/* USA: Stars & Stripes — red base, repeating white stripes, blue canton */
+.bg-usa {
+  background-color: #B22234;
+  background-image:
+    /* blue canton top-left ~35% wide × ~46% tall */
+    linear-gradient(90deg, #3C3B6E 0%, #3C3B6E 35%, transparent 35%),
+    /* 7 white stripes over red (13 stripes total, every other one white) */
+    repeating-linear-gradient(
+      180deg,
+      transparent 0%, transparent 7.69%,
+      rgba(255,255,255,.35) 7.69%, rgba(255,255,255,.35) 15.38%
+    );
+  background-size: 100% 46%, 100% 100%;
+  background-position: 0 0, 0 0;
+  background-repeat: no-repeat, repeat;
+}
+
+/* Canada: Maple Leaf — bold red | cream-white | bold red triband */
+.bg-canada {
+  background: linear-gradient(
+    90deg,
+    #BF0A30 0%, #BF0A30 28%,
+    #F0ECE0 28%, #F0ECE0 72%,
+    #BF0A30 72%, #BF0A30 100%
+  );
+}
+
+/* Australia: Southern Cross — deep Pacific navy with Union Jack red corner */
+.bg-australia {
+  background-color: #003087;
+  background-image:
+    linear-gradient(135deg, rgba(200,16,46,.45) 0%, transparent 42%),
+    linear-gradient(160deg, #003087 0%, #00006A 100%);
+}
+
+/* Germany: Bundesflagge — black | red | gold horizontal triband */
+.bg-germany {
+  background: linear-gradient(
+    180deg,
+    #1A1A1A 0%, #1A1A1A 33.3%,
+    #CC0000 33.3%, #CC0000 66.6%,
+    #FFCE00 66.6%, #FFCE00 100%
+  );
+}
+
+/* Italy: Il Tricolore — green | white | red vertical triband */
+.bg-italy {
+  background: linear-gradient(
+    90deg,
+    #009246 0%, #009246 33.3%,
+    #EDE9E2 33.3%, #EDE9E2 66.6%,
+    #CE2B37 66.6%, #CE2B37 100%
+  );
+}
+
+/* Ireland: Irish Tricolour — green | white | orange vertical triband */
+.bg-ireland {
+  background: linear-gradient(
+    90deg,
+    #169B62 0%, #169B62 33.3%,
+    #EDE9E2 33.3%, #EDE9E2 66.6%,
+    #FF883E 66.6%, #FF883E 100%
+  );
+}
+
+/* New Zealand: Southern Cross — deep navy, red star accent bottom-right */
+.bg-nz {
+  background-color: #00247D;
+  background-image:
+    linear-gradient(-135deg, rgba(204,20,43,.55) 0%, transparent 45%),
+    linear-gradient(160deg, #00247D 0%, #001B5E 100%);
+}
+
+.dest-stat { grid-column: span 3; background: var(--accent); display: flex; align-items: center; gap: 2.5rem; padding: 2rem 2.5rem; border-radius: var(--r-md); opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
 .dest-stat.on { opacity: 1; transform: translateY(0); }
 .dest-stat-num { font-family: var(--mono); font-size: clamp(2.2rem, 3.5vw, 3.25rem); font-weight: 700; color: #fff; letter-spacing: -.04em; line-height: 1; white-space: nowrap; }
 .dest-stat-lbl { font-size: .95rem; color: rgba(255,255,255,.88); font-weight: 500; line-height: 1.5; max-width: 36ch; }
@@ -186,21 +228,29 @@ a { color: inherit; }
 .journey-card:nth-child(1) { background: var(--bg); }
 .journey-card:nth-child(2) { background: var(--surface); }
 .journey-card:nth-child(3) { background: var(--surface-tint); }
-.journey-card:nth-child(4) { background: #0E1420; }
-.journey-card:nth-child(4) .journey-stage { color: rgba(255,255,255,.8); background: rgba(255,255,255,.1); }
-.journey-card:nth-child(4) .journey-title { color: #fff; }
-.journey-card:nth-child(4) .journey-text { color: rgba(255,255,255,.65); }
+.journey-card:nth-child(4) { background: var(--brand-deep); }
 .journey-inner { max-width: var(--w); margin: 0 auto; padding: 3rem var(--gutter); display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 5rem); align-items: center; width: 100%; }
-.journey-stage { font-family: var(--mono); font-size: .72rem; letter-spacing: .08em; color: var(--accent); text-transform: uppercase; display: inline-flex; align-items: center; background: var(--accent-dim); padding: .3em .75em; border-radius: 4px; margin-bottom: 1.25rem; }
+.journey-stage { font-family: var(--mono); font-size: .78rem; text-transform: uppercase; letter-spacing: .14em; color: var(--accent); display: block; margin-bottom: 1rem; }
 .journey-title { font-size: clamp(2.2rem, 4vw, 3.75rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.02; text-wrap: balance; margin-bottom: 1.25rem; }
 .journey-text { font-size: 1.05rem; color: var(--text-s); max-width: 40ch; line-height: 1.7; }
 .journey-card:nth-child(4) .journey-title { color: #fff; }
 .journey-card:nth-child(4) .journey-text { color: rgba(255,255,255,.7); }
 .journey-card:nth-child(4) .journey-stage { color: rgba(255,255,255,.5); }
-/* Journey visual */
-.journey-visual { border-radius: var(--r-lg); overflow: hidden; aspect-ratio: 4/3; position: relative; background: var(--surface-tint); }
-.journey-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.journey-visual-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,14,26,.5) 0%, transparent 50%); }
+/* Journey visual boxes (CSS, no images needed) */
+.journey-visual { border-radius: var(--r-lg); overflow: hidden; aspect-ratio: 4/3; position: relative; }
+.jv-1 { background: linear-gradient(135deg, #e8edf8 0%, #d4ddf0 100%); }
+.jv-2 { background: linear-gradient(135deg, #e8f4f0 0%, #c8e8df 100%); }
+.jv-3 { background: linear-gradient(135deg, #dce4f2 0%, #c8d4ec 100%); }
+.jv-4 { background: linear-gradient(135deg, #1e2d48 0%, #0e1a2e 100%); }
+.journey-visual-inner { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 1rem; padding: 2rem; }
+.jv-icon { font-family: var(--mono); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 700; color: var(--brand); opacity: .25; letter-spacing: -.05em; }
+.journey-card:nth-child(4) .jv-icon { color: rgba(255,255,255,.2); }
+.jv-lines { width: 100%; display: flex; flex-direction: column; gap: .5rem; }
+.jv-line { height: 8px; border-radius: 4px; background: var(--brand); opacity: .15; }
+.jv-line:nth-child(1) { width: 80%; }
+.jv-line:nth-child(2) { width: 60%; }
+.jv-line:nth-child(3) { width: 70%; }
+.journey-card:nth-child(4) .jv-line { background: rgba(255,255,255,.3); opacity: .3; }
 
 /* ─── Counsellors ────────────────────────────────────── */
 .counsellors { padding: var(--sec) 0; overflow: hidden; }
@@ -211,14 +261,23 @@ a { color: inherit; }
 /* Avatar: CSS monogram */
 .counsel-avatar { width: 100%; aspect-ratio: 3/4; border-radius: var(--r-md); display: flex; align-items: center; justify-content: center; margin-bottom: 1.1rem; position: relative; overflow: hidden; }
 .counsel-avatar-monogram { font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 800; color: #fff; letter-spacing: -.04em; opacity: .9; position: relative; z-index: 1; }
-.counsel-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+/* per-counsellor palette */
+.ca-priya { background: linear-gradient(145deg, #1A4870 0%, #0D2E50 100%); }
+.ca-rahul { background: linear-gradient(145deg, #2B1F4A 0%, #1A1234 100%); }
+.ca-anjali { background: linear-gradient(145deg, #0D3B2A 0%, #072515 100%); }
+.ca-siddharth { background: linear-gradient(145deg, #1E1E2A 0%, #111118 100%); }
+.ca-fatima { background: linear-gradient(145deg, #0D2E40 0%, #07182A 100%); }
+/* subtle abstract bg pattern via pseudo */
+.counsel-avatar::before { content: ''; position: absolute; inset: 0; border-radius: 50%; width: 60%; aspect-ratio: 1; top: 10%; left: 60%; border: 2px solid rgba(255,255,255,.1); }
+.counsel-avatar::after { content: ''; position: absolute; inset: 0; border-radius: 50%; width: 40%; aspect-ratio: 1; top: 50%; left: 10%; border: 1px solid rgba(255,255,255,.08); }
 .counsel-name { font-size: 1.05rem; font-weight: 700; letter-spacing: -.01em; }
-.counsel-spec { font-family: var(--mono); font-size: .68rem; color: var(--accent); font-weight: 700; margin-top: .4rem; letter-spacing: .06em; text-transform: uppercase; display: inline-block; background: var(--accent-dim); padding: .2em .6em; border-radius: 4px; }
+.counsel-spec { font-family: var(--mono); font-size: .75rem; color: var(--accent); font-weight: 700; margin-top: .3rem; }
 .counsel-bio { font-size: .875rem; color: var(--text-s); margin-top: .6rem; line-height: 1.55; }
 
 /* ─── Voices ─────────────────────────────────────────── */
-.voices { padding: calc(var(--sec) * 1.25) var(--gutter); max-width: var(--w); margin: 0 auto; }
-/* .voices-grid defined in new block */
+.voices { padding: var(--sec) var(--gutter); max-width: var(--w); margin: 0 auto; }
+.voices-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 5rem); align-items: start; margin-top: 3rem; }
+.voice:nth-child(2) { margin-top: 5rem; }
 .voice-q { font-size: clamp(1.1rem, 1.8vw, 1.35rem); font-weight: 600; line-height: 1.45; letter-spacing: -.01em; color: var(--text-p); margin-bottom: 1.5rem; }
 .voice-q::before { content: '\201C'; font-size: 2.8em; color: var(--accent); line-height: 0; vertical-align: -.38em; margin-right: .05em; }
 .voice-attr { display: flex; align-items: center; gap: .875rem; }
@@ -244,7 +303,7 @@ a { color: inherit; }
 .bento-hero .s-name { font-size: 1.1rem; font-weight: 700; color: #fff; margin-top: .5rem; }
 .bento-hero .s-desc { font-size: .875rem; color: rgba(255,255,255,.68); margin-top: .35rem; }
 .bento-cell { border-radius: var(--r-md); padding: 1.75rem; display: flex; flex-direction: column; justify-content: flex-end; }
-.bento-a { background: var(--brand); }
+.bento-a { background: var(--accent); }
 .bento-b { background: var(--surface-tint); }
 .bento-a .s-amount { font-family: var(--mono); font-size: clamp(1.5rem, 2.2vw, 2rem); font-weight: 700; color: #fff; letter-spacing: -.03em; line-height: 1; }
 .bento-a .s-name { font-size: .95rem; font-weight: 700; color: #fff; margin-top: .45rem; }
@@ -254,62 +313,33 @@ a { color: inherit; }
 .bento-b .s-desc { font-size: .8rem; color: var(--text-s); margin-top: .3rem; }
 
 /* ─── CTA ────────────────────────────────────────────── */
+.cta-sec { padding: var(--sec) var(--gutter); text-align: center; max-width: var(--w); margin: 0 auto; }
+.cta-hl { font-size: clamp(2.8rem, 6.5vw, 6rem); font-weight: 800; letter-spacing: -.04em; line-height: .95; text-wrap: balance; margin-bottom: 2rem; }
+.cta-hl .ca { color: var(--accent); }
+.cta-sub { font-family: var(--mono); font-size: .78rem; text-transform: uppercase; letter-spacing: .1em; color: var(--text-s); margin-bottom: 2.5rem; }
+.cta-avail { margin-top: 1.75rem; font-family: var(--mono); font-size: .78rem; letter-spacing: .06em; color: var(--text-s); display: flex; align-items: center; justify-content: center; gap: .5rem; }
 .avail-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; animation: pulse-dot 2.4s ease-in-out infinite; }
 @keyframes pulse-dot { 0%,100%{ opacity:1 } 50%{ opacity:.3 } }
 
 /* ─── Footer ─────────────────────────────────────────── */
-.footer { background: var(--brand-deep); padding: 3.5rem var(--gutter) 2rem; }
-.footer-inner { max-width: var(--w); margin: 0 auto; display: grid; grid-template-columns: 2.5fr 1fr 1fr 1fr; gap: 2.5rem; }
-.footer-inner > div:not(:first-child) { border-left: 1px solid rgba(255,255,255,.1); padding-left: 2rem; }
-.footer-brand { font-size: 1.15rem; font-weight: 800; color: #fff; letter-spacing: -.02em; display: block; margin-bottom: .7rem; }
-.footer-tagline { font-size: .875rem; color: rgba(255,255,255,.55); max-width: 28ch; line-height: 1.55; }
-.footer-col-title { font-size: .72rem; font-family: var(--mono); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: rgba(255,255,255,.45); margin-bottom: 1rem; }
+.footer { background: var(--surface); border-top: 1px solid var(--border); padding: 3.5rem var(--gutter) 2rem; }
+.footer-inner { max-width: var(--w); margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2.5rem; }
+.footer-brand { font-size: 1.15rem; font-weight: 800; color: var(--brand); letter-spacing: -.02em; display: block; margin-bottom: .7rem; }
+.footer-tagline { font-size: .875rem; color: var(--text-s); max-width: 28ch; line-height: 1.55; }
+.footer-col-title { font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--text-s); margin-bottom: .875rem; }
 .footer-links { list-style: none; padding: 0; display: flex; flex-direction: column; gap: .55rem; }
-.footer-links a { font-size: .875rem; color: rgba(255,255,255,.65); text-decoration: none; transition: color .2s; }
-.footer-links a:hover { color: #fff; }
-.footer-bottom { max-width: var(--w); margin: 2rem auto 0; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-.footer-legal { font-size: .8rem; color: rgba(255,255,255,.4); }
-
-/* ─── Dest cell as anchor ────────────────────────────── */
-a.dest-cell { text-decoration: none; display: block; }
-
-/* ─── Partners strip ─────────────────────────────────── */
-.partners { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 2.25rem var(--gutter); }
-.partners-inner { max-width: var(--w); margin: 0 auto; }
-.partners-label { font-size: .78rem; font-family: var(--mono); color: var(--text-s); text-align: left; letter-spacing: .07em; text-transform: uppercase; margin-bottom: 1.5rem; }
-.partners-logos { display: flex; align-items: center; justify-content: flex-start; flex-wrap: wrap; gap: 1rem 2rem; }
-.partner-chip { display: flex; align-items: center; gap: .6rem; }
-.partner-badge { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: .68rem; font-weight: 700; letter-spacing: .01em; flex-shrink: 0; }
-.partner-chip-name { font-size: .82rem; font-weight: 600; color: var(--text-s); white-space: nowrap; }
-.partner-name { font-size: .9rem; font-weight: 700; letter-spacing: -.01em; color: var(--text-s); opacity: .7; white-space: nowrap; transition: opacity .2s; }
-.partner-name:hover { opacity: 1; }
-
-/* ─── Voices (extra testimonial) ────────────────────── */
-.voices-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; margin-top: 3rem; }
-.voice { padding-top: 1.75rem; border-top: 2px solid var(--brand); }
-.voice:nth-child(2) { margin-top: 0; }
-.voice:nth-child(3) { margin-top: 0; }
-
-/* ─── CTA background ────────────────────────────────── */
-.cta-sec { padding: calc(var(--sec) * 1.35) var(--gutter); text-align: center; max-width: var(--w); margin: 0 auto; }
-.cta-wrap { background: var(--brand-deep); border-radius: var(--r-lg); padding: clamp(3.5rem, 7vw, 6rem) var(--gutter); margin: 0 auto; position: relative; }
-.cta-hl { font-size: clamp(2.8rem, 6.5vw, 6rem); font-weight: 800; letter-spacing: -.04em; line-height: .95; text-wrap: balance; margin-bottom: 2rem; color: #fff; }
-.cta-hl .ca { color: var(--accent); }
-.cta-sub { font-family: var(--mono); font-size: .82rem; letter-spacing: .02em; color: rgba(255,255,255,.55); margin-bottom: 2.5rem; }
-.cta-avail { margin-top: 1.75rem; font-family: var(--mono); font-size: .78rem; letter-spacing: .06em; color: rgba(255,255,255,.45); display: flex; align-items: center; justify-content: center; gap: .5rem; }
+.footer-links a { font-size: .875rem; color: var(--text-s); text-decoration: none; transition: color .2s; }
+.footer-links a:hover { color: var(--text-p); }
+.footer-bottom { max-width: var(--w); margin: 2rem auto 0; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+.footer-legal { font-size: .8rem; color: var(--text-s); }
 
 /* ─── Scroll reveal ──────────────────────────────────── */
-.reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s cubic-bezier(.25,.46,.45,.94), transform .5s cubic-bezier(.25,.46,.45,.94); }
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity .65s ease, transform .65s ease; }
 .reveal.on { opacity: 1; transform: translateY(0); }
-.reveal-slow { opacity: 0; transform: translateY(20px); transition: opacity .8s cubic-bezier(.25,.46,.45,.94), transform .8s cubic-bezier(.25,.46,.45,.94); }
-.reveal-slow.on { opacity: 1; transform: translateY(0); }
-
-/* ─── Focus visible ──────────────────────────────────── */
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
 
 /* ─── Reduced motion ─────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  .hero-word,.reveal,.reveal-slow,.dest-cell,.dest-stat { opacity:1!important; transform:none!important; transition:none!important; }
+  .hero-word,.reveal,.dest-cell,.dest-stat { opacity:1!important; transform:none!important; transition:none!important; }
   .dest-cell-bg { transition: none; }
   .avail-dot { animation: none; }
   .journey-card { transform: none!important; opacity:1!important; }
@@ -330,7 +360,6 @@ a.dest-cell { text-decoration: none; display: block; }
   .bento { grid-template-columns: 1fr; grid-template-rows: auto; }
   .bento-hero { grid-row: span 1; min-height: 280px; }
   .footer-inner { grid-template-columns: 1fr 1fr; }
-  .footer-inner > div:not(:first-child) { border-left: none; padding-left: 0; }
 }
 @media (max-width: 640px) {
   .nav-links,.nav-btn { display: none; }
@@ -340,9 +369,10 @@ a.dest-cell { text-decoration: none; display: block; }
   .dest-cell { aspect-ratio: 4/3; }
   .evidence-inner { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
   .footer-inner { grid-template-columns: 1fr; }
-  .footer-inner > div:not(:first-child) { border-left: none; padding-left: 0; }
   .footer-bottom { flex-direction: column; align-items: flex-start; }
 }
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .nav{background:rgba(10,13,22,.88);}}
+:root[data-theme="dark"] .nav{background:rgba(10,13,22,.88);}
 </style>
 
 <!-- NAV -->
@@ -350,35 +380,24 @@ a.dest-cell { text-decoration: none; display: block; }
   <div class="nav-inner">
     <a href="#" class="nav-logo"><img src="gradmire-logo.png" alt="Gradmire" height="34" style="display:block;max-width:155px;"></a>
     <ul class="nav-links" role="list">
-      <li><a href="destinations.html">Destinations</a></li>
-      <li><a href="find-courses.html">Courses</a></li>
-      <li><a href="find-universities.html">Universities</a></li>
-      <li><a href="scholarships.html">Scholarships</a></li>
-      <li><a href="tools/roi-calculator.html">Tools</a></li>
-      <li><a href="tools/roi-calculator.html">Tools</a>
-  <a href="faq.html">FAQ</a></li>
-      <li><a href="about.html">About</a></li>
+      <li><a href="#destinations">Destinations</a></li>
+      <li><a href="#process">How it works</a></li>
+      <li><a href="#team">Our team</a></li>
+      <li><a href="#scholarships">Scholarships</a></li>
     </ul>
-    <div style="display:flex;gap:.75rem;align-items:center">
-      <a href="login.html" class="nav-btn" style="background:transparent;color:var(--text-p);border:1.5px solid var(--border)">Log in</a>
-      <a href="free-consultation.html" class="nav-btn">Free consultation</a>
-    </div>
+    <a href="#cta" class="nav-btn">Book consultation</a>
     <button class="nav-ham" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
       <svg width="22" height="16" viewBox="0 0 22 16" fill="none" aria-hidden="true"><rect y="0" width="22" height="2" rx="1" fill="currentColor"/><rect y="7" width="22" height="2" rx="1" fill="currentColor"/><rect y="14" width="22" height="2" rx="1" fill="currentColor"/></svg>
     </button>
   </div>
 </nav>
 
-<div class="nav-mobile" id="mobile-nav" aria-label="Mobile navigation">
-  <a href="destinations.html">Destinations</a>
-  <a href="find-courses.html">Courses</a>
-  <a href="find-universities.html">Universities</a>
-  <a href="scholarships.html">Scholarships</a>
-  <a href="tools/roi-calculator.html">Tools</a>
-  <a href="faq.html">FAQ</a>
-  <a href="about.html">About</a>
-  <a href="login.html">Log in</a>
-  <a href="free-consultation.html" class="btn btn-primary" style="align-self:flex-start">Free consultation</a>
+<div class="nav-mobile" id="mobile-nav" hidden>
+  <a href="#destinations">Destinations</a>
+  <a href="#process">How it works</a>
+  <a href="#team">Our team</a>
+  <a href="#scholarships">Scholarships</a>
+  <a href="#cta" class="btn btn-primary" style="align-self:flex-start">Book free consultation</a>
 </div>
 
 <!-- HERO -->
@@ -388,12 +407,34 @@ a.dest-cell { text-decoration: none; display: block; }
       <h1 class="hero-headline" id="hero-hl">47,000 students placed. <span class="hl-accent">You're next.</span></h1>
       <p class="hero-sub">Expert counsellors for study-abroad applications to the UK, USA, Canada, Australia and Europe. Free consultation, no obligation.</p>
       <div class="hero-actions">
-        <a href="free-consultation.html" class="btn btn-primary btn-lg magnetic-cta">Book free consultation</a>
+        <a href="#cta" class="btn btn-primary btn-lg magnetic-cta">Book free consultation</a>
         <a href="#destinations" class="btn btn-outline btn-lg">Explore destinations</a>
       </div>
     </div>
     <div class="hero-visual" aria-hidden="true">
-      <div id="globe-container"></div>
+      <div class="hero-vis-arc"></div>
+      <div class="hero-vis-arc2"></div>
+      <div class="hero-vis-dot"></div>
+      <div class="hero-tiles">
+        <div class="hero-tile ht-1">
+          <div class="hero-tile-num">850+</div>
+          <div class="hero-tile-lbl">Partner universities</div>
+        </div>
+        <div class="hero-tile ht-2">
+          <div class="hero-tile-num">50+</div>
+          <div class="hero-tile-lbl">Countries</div>
+        </div>
+        <div class="hero-tile ht-3">
+          <div class="hero-tile-num">18 years</div>
+          <div class="hero-tile-lbl">of trusted counselling</div>
+        </div>
+      </div>
+      <div class="hero-vis-band"></div>
+      <div class="hero-vis-text">
+        <div class="hero-vis-label">Students placed this year</div>
+        <div class="hero-vis-stat">4,200+</div>
+        <div class="hero-vis-sublabel">across 50 countries</div>
+      </div>
     </div>
   </div>
 </section>
@@ -420,105 +461,61 @@ a.dest-cell { text-decoration: none; display: block; }
   </div>
 </div>
 
-<!-- PARTNERS -->
-<div class="partners" aria-label="Partner universities">
-  <div class="partners-inner">
-    <p class="partners-label">Students placed at top universities worldwide</p>
-    <div class="partners-logos" role="list">
-      <div class="partner-chip" role="listitem" title="University of Oxford">
-        <div class="partner-badge" style="background:#002147;color:#fff;">Ox</div>
-        <span class="partner-chip-name">Oxford</span>
-      </div>
-      <div class="partner-chip" role="listitem" title="Imperial College London">
-        <div class="partner-badge" style="background:#003E74;color:#fff;">IC</div>
-        <span class="partner-chip-name">Imperial</span>
-      </div>
-      <div class="partner-chip" role="listitem" title="University of Toronto">
-        <div class="partner-badge" style="background:#002A5C;color:#fff;">UT</div>
-        <span class="partner-chip-name">Toronto</span>
-      </div>
-      <div class="partner-chip" role="listitem" title="University of Melbourne">
-        <div class="partner-badge" style="background:#000F3C;color:#fff;">UM</div>
-        <span class="partner-chip-name">Melbourne</span>
-      </div>
-      <div class="partner-chip" role="listitem" title="TU Munich">
-        <div class="partner-badge" style="background:#0065BD;color:#fff;">TUM</div>
-        <span class="partner-chip-name">TU Munich</span>
-      </div>
-      <div class="partner-chip" role="listitem" title="NUS Singapore">
-        <div class="partner-badge" style="background:#003D7C;color:#fff;">NUS</div>
-        <span class="partner-chip-name">NUS</span>
-      </div>
-      <div class="partner-chip" role="listitem" title="McGill University">
-        <div class="partner-badge" style="background:#ED1B2F;color:#fff;">Mc</div>
-        <span class="partner-chip-name">McGill</span>
-      </div>
-      <div class="partner-chip" role="listitem" title="University of Edinburgh">
-        <div class="partner-badge" style="background:#041E42;color:#fff;">UE</div>
-        <span class="partner-chip-name">Edinburgh</span>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- DESTINATIONS -->
 <section class="destinations" id="destinations" aria-labelledby="dest-title">
-  <div class="sec-head reveal-slow" style="display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap;">
-    <div>
-      <h2 class="sec-title" id="dest-title">Study in 50+ countries.</h2>
-      <p class="sec-body">From the world's top-ranked universities to hidden gems that match your goals. We know every destination in detail.</p>
-    </div>
-    <a href="destinations.html" class="btn btn-outline" style="flex-shrink:0;margin-bottom:.25rem">View all destinations</a>
+  <div class="sec-head reveal">
+    <h2 class="sec-title" id="dest-title">Study in 50+ countries.</h2>
+    <p class="sec-body">From the world's top-ranked universities to hidden gems that match your goals. We know every destination in detail.</p>
   </div>
   <div class="dest-grid" role="list">
     <!-- col 1, rows 1–2: UK tall -->
-    <a href="study-in-uk.html" class="dest-cell" aria-label="Study in United Kingdom">
+    <div class="dest-cell" role="listitem" tabindex="0" aria-label="United Kingdom">
       <div class="dest-cell-bg bg-uk"></div>
       <div class="dest-overlay" aria-hidden="true"></div>
       <span class="dest-name">United Kingdom</span>
-    </a>
+    </div>
     <!-- col 2, row 1 -->
-    <a href="study-in-usa.html" class="dest-cell" aria-label="Study in USA">
+    <div class="dest-cell" role="listitem" tabindex="0" aria-label="USA">
       <div class="dest-cell-bg bg-usa"></div>
       <div class="dest-overlay" aria-hidden="true"></div>
       <span class="dest-name">USA</span>
-    </a>
+    </div>
     <!-- col 3, row 1 -->
-    <a href="study-in-canada.html" class="dest-cell" aria-label="Study in Canada">
+    <div class="dest-cell" role="listitem" tabindex="0" aria-label="Canada">
       <div class="dest-cell-bg bg-canada"></div>
       <div class="dest-overlay" aria-hidden="true"></div>
       <span class="dest-name">Canada</span>
-    </a>
+    </div>
     <!-- col 2, row 2 -->
-    <a href="study-in-germany.html" class="dest-cell" aria-label="Study in Germany">
+    <div class="dest-cell" role="listitem" tabindex="0" aria-label="Germany">
       <div class="dest-cell-bg bg-germany"></div>
       <div class="dest-overlay" aria-hidden="true"></div>
       <span class="dest-name">Germany</span>
-    </a>
+    </div>
     <!-- col 3, row 2 -->
-    <a href="study-in-australia.html" class="dest-cell" aria-label="Study in Australia">
+    <div class="dest-cell" role="listitem" tabindex="0" aria-label="Australia">
       <div class="dest-cell-bg bg-australia"></div>
       <div class="dest-overlay" aria-hidden="true"></div>
       <span class="dest-name">Australia</span>
-    </a>
+    </div>
     <!-- col 1, row 3 -->
-    <a href="study-in-ireland.html" class="dest-cell" aria-label="Study in Ireland">
+    <div class="dest-cell" role="listitem" tabindex="0" aria-label="Ireland">
       <div class="dest-cell-bg bg-ireland"></div>
       <div class="dest-overlay" aria-hidden="true"></div>
       <span class="dest-name">Ireland</span>
-    </a>
+    </div>
     <!-- col 2, row 3 -->
-    <a href="study-in-italy.html" class="dest-cell" aria-label="Study in Italy">
+    <div class="dest-cell" role="listitem" tabindex="0" aria-label="Italy">
       <div class="dest-cell-bg bg-italy"></div>
       <div class="dest-overlay" aria-hidden="true"></div>
       <span class="dest-name">Italy</span>
-    </a>
+    </div>
     <!-- col 3, row 3 -->
-    <a href="study-in-newzealand.html" class="dest-cell" aria-label="Study in New Zealand">
+    <div class="dest-cell" role="listitem" tabindex="0" aria-label="New Zealand">
       <div class="dest-cell-bg bg-nz"></div>
       <div class="dest-overlay" aria-hidden="true"></div>
       <span class="dest-name">New Zealand</span>
-    </a>
+    </div>
     <!-- row 4: full-width stat banner -->
     <div class="dest-stat" aria-label="47,000 plus students placed worldwide">
       <div class="dest-stat-num">47,000+</div>
@@ -529,7 +526,7 @@ a.dest-cell { text-decoration: none; display: block; }
 
 <!-- JOURNEY -->
 <section class="journey" id="process" aria-labelledby="journey-title">
-  <div class="journey-header reveal-slow">
+  <div class="journey-header reveal">
     <h2 class="sec-title" id="journey-title">Every step, we're with you.</h2>
     <p class="sec-body">A guided process from first conversation to your first day on campus.</p>
   </div>
@@ -537,52 +534,60 @@ a.dest-cell { text-decoration: none; display: block; }
     <div class="journey-card">
       <div class="journey-inner">
         <div>
-          <span class="journey-stage">Exploration</span>
+          <span class="journey-stage">Step 1 of 4</span>
           <h3 class="journey-title">Explore your options.</h3>
           <p class="journey-text">Your counsellor maps destinations, course options and intake windows that fit your academic profile, budget and goals. No generic advice - a plan built around you.</p>
         </div>
-        <div class="journey-visual" aria-hidden="true">
-          <img class="journey-photo" src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80" alt="Students in counselling session" loading="lazy">
-          <div class="journey-visual-overlay"></div>
+        <div class="journey-visual jv-1" aria-hidden="true">
+          <div class="journey-visual-inner">
+            <div class="jv-icon">01</div>
+            <div class="jv-lines"><div class="jv-line"></div><div class="jv-line"></div><div class="jv-line"></div></div>
+          </div>
         </div>
       </div>
     </div>
     <div class="journey-card">
       <div class="journey-inner">
         <div>
-          <span class="journey-stage">Shortlisting</span>
+          <span class="journey-stage">Step 2 of 4</span>
           <h3 class="journey-title">Build your shortlist.</h3>
           <p class="journey-text">Together you narrow down to 6-10 universities: reach schools, target schools and safe choices. Every pick is backed by our placement data and direct relationships with admissions teams.</p>
         </div>
-        <div class="journey-visual" aria-hidden="true">
-          <img class="journey-photo" src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=800&q=80" alt="Student researching universities" loading="lazy">
-          <div class="journey-visual-overlay"></div>
+        <div class="journey-visual jv-2" aria-hidden="true">
+          <div class="journey-visual-inner">
+            <div class="jv-icon">02</div>
+            <div class="jv-lines"><div class="jv-line"></div><div class="jv-line"></div><div class="jv-line"></div></div>
+          </div>
         </div>
       </div>
     </div>
     <div class="journey-card">
       <div class="journey-inner">
         <div>
-          <span class="journey-stage">Application</span>
+          <span class="journey-stage">Step 3 of 4</span>
           <h3 class="journey-title">Apply with confidence.</h3>
           <p class="journey-text">We manage every document, deadline and essay. Statement of purpose reviews, reference letter guidance, transcript verification - nothing slips. You focus on being ready; we handle the rest.</p>
         </div>
-        <div class="journey-visual" aria-hidden="true">
-          <img class="journey-photo" src="https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=800&q=80" alt="Student preparing application documents" loading="lazy">
-          <div class="journey-visual-overlay"></div>
+        <div class="journey-visual jv-3" aria-hidden="true">
+          <div class="journey-visual-inner">
+            <div class="jv-icon">03</div>
+            <div class="jv-lines"><div class="jv-line"></div><div class="jv-line"></div><div class="jv-line"></div></div>
+          </div>
         </div>
       </div>
     </div>
     <div class="journey-card">
       <div class="journey-inner">
         <div>
-          <span class="journey-stage">Arrival</span>
+          <span class="journey-stage">Step 4 of 4</span>
           <h3 class="journey-title">Arrive prepared.</h3>
           <p class="journey-text">Visa application support, pre-departure briefing, accommodation guidance, forex and insurance referrals. You land knowing exactly what comes next.</p>
         </div>
-        <div class="journey-visual" aria-hidden="true">
-          <img class="journey-photo" src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=800&q=80" alt="Student arriving at university campus" loading="lazy">
-          <div class="journey-visual-overlay"></div>
+        <div class="journey-visual jv-4" aria-hidden="true">
+          <div class="journey-visual-inner">
+            <div class="jv-icon" style="color:rgba(255,255,255,.2)">04</div>
+            <div class="jv-lines"><div class="jv-line"></div><div class="jv-line"></div><div class="jv-line"></div></div>
+          </div>
         </div>
       </div>
     </div>
@@ -598,31 +603,31 @@ a.dest-cell { text-decoration: none; display: block; }
   <div class="counsel-track-wrap" role="list" aria-label="Counsellor profiles">
     <div class="counsel-track">
       <div class="counsel-card" role="listitem">
-        <div class="counsel-avatar" aria-hidden="true"><img class="counsel-photo" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80" alt="Priya Sharma" loading="lazy"></div>
+        <div class="counsel-avatar ca-priya" aria-hidden="true"><span class="counsel-avatar-monogram">PS</span></div>
         <div class="counsel-name">Priya Sharma</div>
         <div class="counsel-spec">UK + Ireland</div>
         <p class="counsel-bio">9 years placing students at Russell Group and leading Irish universities. Former student advisor at University of Edinburgh.</p>
       </div>
       <div class="counsel-card" role="listitem">
-        <div class="counsel-avatar" aria-hidden="true"><img class="counsel-photo" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80" alt="Rahul Mehta" loading="lazy"></div>
+        <div class="counsel-avatar ca-rahul" aria-hidden="true"><span class="counsel-avatar-monogram">RM</span></div>
         <div class="counsel-name">Rahul Mehta</div>
         <div class="counsel-spec">USA + Canada</div>
         <p class="counsel-bio">Specialist in Ivy League, liberal arts and top Canadian institutions. 11 years of US admissions experience, based in Mumbai.</p>
       </div>
       <div class="counsel-card" role="listitem">
-        <div class="counsel-avatar" aria-hidden="true"><img class="counsel-photo" src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=400&q=80" alt="Anjali Patel" loading="lazy"></div>
+        <div class="counsel-avatar ca-anjali" aria-hidden="true"><span class="counsel-avatar-monogram">AP</span></div>
         <div class="counsel-name">Anjali Patel</div>
         <div class="counsel-spec">Australia + New Zealand</div>
         <p class="counsel-bio">Deep relationships with Group of Eight universities. Expert in post-study work visa pathways and scholarship applications.</p>
       </div>
       <div class="counsel-card" role="listitem">
-        <div class="counsel-avatar" aria-hidden="true"><img class="counsel-photo" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80" alt="Siddharth Nair" loading="lazy"></div>
+        <div class="counsel-avatar ca-siddharth" aria-hidden="true"><span class="counsel-avatar-monogram">SN</span></div>
         <div class="counsel-name">Siddharth Nair</div>
         <div class="counsel-spec">Germany + Europe</div>
         <p class="counsel-bio">Fluent in German. Navigates tuition-free and low-cost European programmes including TU9 and Grande Ecoles pathways.</p>
       </div>
       <div class="counsel-card" role="listitem">
-        <div class="counsel-avatar" aria-hidden="true"><img class="counsel-photo" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80" alt="Fatima Khan" loading="lazy"></div>
+        <div class="counsel-avatar ca-fatima" aria-hidden="true"><span class="counsel-avatar-monogram">FK</span></div>
         <div class="counsel-name">Fatima Khan</div>
         <div class="counsel-spec">Singapore + Asia</div>
         <p class="counsel-bio">NUS and NTU specialist with expertise in government scholarships and tech-focused programmes across Southeast Asia.</p>
@@ -633,14 +638,14 @@ a.dest-cell { text-decoration: none; display: block; }
 
 <!-- VOICES -->
 <section class="voices" aria-labelledby="voices-title">
-  <div class="sec-head reveal-slow">
+  <div class="sec-head reveal">
     <h2 class="sec-title" id="voices-title">What our students say.</h2>
   </div>
   <div class="voices-grid">
     <div class="voice reveal">
       <blockquote class="voice-q">I had three offers from UK universities within six weeks of my first session. My counsellor knew which professors matched my research interests before I did.</blockquote>
       <div class="voice-attr">
-        <img class="voice-avatar" src="https://images.unsplash.com/photo-1463453091185-61582044d556?auto=format&fit=crop&w=100&h=100&q=80" alt="Aryan Kapoor" style="border-radius:50%;object-fit:cover;flex-shrink:0;">
+        <div class="voice-avatar va-a" aria-hidden="true">AK</div>
         <div>
           <div class="voice-name">Aryan Kapoor</div>
           <div class="voice-detail">MSc Finance, London School of Economics</div>
@@ -650,20 +655,10 @@ a.dest-cell { text-decoration: none; display: block; }
     <div class="voice reveal" style="transition-delay:.12s">
       <blockquote class="voice-q">They found me a scholarship that cut my tuition by 40 percent. My parents stopped worrying the day we got the offer letter from Toronto.</blockquote>
       <div class="voice-attr">
-        <img class="voice-avatar" src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=100&h=100&q=80" alt="Diya Menon" style="border-radius:50%;object-fit:cover;flex-shrink:0;">
+        <div class="voice-avatar va-d" aria-hidden="true">DM</div>
         <div>
           <div class="voice-name">Diya Menon</div>
           <div class="voice-detail">BSc Computer Science, University of Toronto</div>
-        </div>
-      </div>
-    </div>
-    <div class="voice reveal" style="transition-delay:.22s">
-      <blockquote class="voice-q">Siddharth guided me through the APS verification and DAAD application. I got into TU Munich's engineering programme with a full scholarship. Zero tuition fees.</blockquote>
-      <div class="voice-attr">
-        <img class="voice-avatar" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&h=100&q=80" alt="Vikram Reddy" style="border-radius:50%;object-fit:cover;flex-shrink:0;">
-        <div>
-          <div class="voice-name">Vikram Reddy</div>
-          <div class="voice-detail">MEng Mechanical Engineering, TU Munich</div>
         </div>
       </div>
     </div>
@@ -673,14 +668,13 @@ a.dest-cell { text-decoration: none; display: block; }
 <!-- SCHOLARSHIPS -->
 <section class="scholarships" id="scholarships" aria-labelledby="schol-title">
   <div class="schol-inner">
-    <div class="sec-head reveal-slow">
+    <div class="sec-head reveal">
       <h2 class="sec-title" id="schol-title">Funding your degree.</h2>
       <p class="sec-body">We actively match students to scholarships. Over 4,800 students have received partial or full funding through our counselling process.</p>
     </div>
     <div class="bento">
       <div class="bento-hero reveal">
         <div class="bento-hero-inner" aria-hidden="true">
-          <img src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=800&q=80" alt="University graduation ceremony" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;">
           <div class="bh-arc1"></div><div class="bh-arc2"></div><div class="bh-bar"></div>
         </div>
         <div class="bento-hero-content">
@@ -704,15 +698,13 @@ a.dest-cell { text-decoration: none; display: block; }
 </section>
 
 <!-- CTA -->
-<section class="cta-sec" id="cta" aria-labelledby="cta-title" style="padding:var(--sec) var(--gutter);max-width:var(--w);margin:0 auto;">
-  <div class="cta-wrap reveal-slow">
-    <h2 class="cta-hl" id="cta-title">Start your <span class="ca">application</span> today.</h2>
-    <p class="cta-sub">Free consultation, no obligation. Your counsellor is a person, not a chatbot.</p>
-    <a href="free-consultation.html" class="btn btn-primary btn-lg magnetic-cta">Book your free session</a>
-    <div class="cta-avail" aria-live="polite">
-      <span class="avail-dot" aria-hidden="true"></span>
-      <span>Next available: Monday, 11am IST with Priya Sharma</span>
-    </div>
+<section class="cta-sec" id="cta" aria-labelledby="cta-title">
+  <h2 class="cta-hl reveal" id="cta-title">Start your <span class="ca">application</span> today.</h2>
+  <p class="cta-sub reveal" style="transition-delay:.08s">Free consultation. No obligation. Expert guidance.</p>
+  <a href="mailto:consult@gradmire.com" class="btn btn-primary btn-lg magnetic-cta reveal" style="transition-delay:.14s">Book your free session</a>
+  <div class="cta-avail reveal" style="transition-delay:.22s" aria-live="polite">
+    <span class="avail-dot" aria-hidden="true"></span>
+    <span>Next available: Monday, 11am IST with Priya Sharma</span>
   </div>
 </section>
 
@@ -720,7 +712,7 @@ a.dest-cell { text-decoration: none; display: block; }
 <footer class="footer" aria-label="Site footer">
   <div class="footer-inner">
     <div>
-      <span class="footer-brand"><img src="gradmire-logo-white.png" alt="Gradmire" height="28" style="display:block;max-width:140px;" onerror="this.src='gradmire-logo.png'"></span>
+      <span class="footer-brand"><img src="gradmire-logo.png" alt="Gradmire" height="28" style="display:block;max-width:140px;"></span>
       <p class="footer-tagline">India's study-abroad counselling platform. Trusted since 2006 by students and families across India.</p>
     </div>
     <div>
@@ -730,35 +722,33 @@ a.dest-cell { text-decoration: none; display: block; }
         <li><a href="study-in-usa.html">USA</a></li>
         <li><a href="study-in-canada.html">Canada</a></li>
         <li><a href="study-in-australia.html">Australia</a></li>
-        <li><a href="study-in-germany.html">Germany</a></li>
-        <li><a href="study-in-ireland.html">Ireland</a></li>
-        <li><a href="study-in-newzealand.html">New Zealand</a></li>
-        <li><a href="study-in-italy.html">Italy</a></li>
+        <li><a href="#">Germany</a></li>
+        <li><a href="#">Ireland</a></li>
       </ul>
     </div>
     <div>
       <div class="footer-col-title">Services</div>
       <ul class="footer-links" role="list">
-        <li><a href="find-courses.html">Course finder</a></li>
-        <li><a href="find-universities.html">University finder</a></li>
-        <li><a href="scholarships.html">Scholarships</a></li>
-        <li><a href="free-consultation.html">Visa support</a></li>
-        <li><a href="free-consultation.html">Test prep</a></li>
+        <li><a href="#">Course finder</a></li>
+        <li><a href="#">University finder</a></li>
+        <li><a href="#">Scholarships</a></li>
+        <li><a href="#">Visa support</a></li>
+        <li><a href="#">Test prep</a></li>
       </ul>
     </div>
     <div>
       <div class="footer-col-title">Company</div>
       <ul class="footer-links" role="list">
-        <li><a href="about.html">About us</a></li>
-        <li><a href="about.html">Our team</a></li>
-        <li><a href="about.html">Branches</a></li>
-        <li><a href="blog.html">Blog</a></li>
-        <li><a href="free-consultation.html">Contact</a></li>
+        <li><a href="#">About us</a></li>
+        <li><a href="#">Our team</a></li>
+        <li><a href="#">Branches</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Contact</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <span class="footer-legal">© 2026 Gradmire. All rights reserved.</span>
+    <span class="footer-legal">2024 Gradmire. All rights reserved.</span>
     <div style="display:flex;gap:1.5rem;flex-wrap:wrap">
       <a href="#" class="footer-legal" style="text-decoration:none">Privacy policy</a>
       <a href="#" class="footer-legal" style="text-decoration:none">Terms of use</a>
@@ -767,8 +757,6 @@ a.dest-cell { text-decoration: none; display: block; }
   </div>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/renderers/CSS2DRenderer.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
@@ -822,7 +810,7 @@ a.dest-cell { text-decoration: none; display: block; }
   const rObs = new IntersectionObserver(entries => {
     entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('on');rObs.unobserve(e.target);} });
   }, {threshold:.1});
-  document.querySelectorAll('.reveal,.reveal-slow').forEach(el => {
+  document.querySelectorAll('.reveal').forEach(el => {
     if(reduced) el.classList.add('on'); else rObs.observe(el);
   });
 
@@ -840,38 +828,19 @@ a.dest-cell { text-decoration: none; display: block; }
     document.querySelectorAll('.magnetic-cta').forEach(btn => {
       btn.addEventListener('mousemove', e => {
         const r=btn.getBoundingClientRect();
-        const x=(e.clientX-(r.left+r.width/2))*.28;
-        const y=(e.clientY-(r.top+r.height/2))*.28;
-        btn.style.transform=`translate(${x}px,${y}px)`;
-        btn.style.transition='transform .08s cubic-bezier(.16,1,.3,1)';
+        btn.style.cssText += `transform:translate(${(e.clientX-(r.left+r.width/2))*.28}px,${(e.clientY-(r.top+r.height/2))*.28}px);transition:transform .1s linear`;
       });
-      btn.addEventListener('mouseleave', () => {
-        btn.style.transform='translate(0,0)';
-        btn.style.transition='transform .45s cubic-bezier(.16,1,.3,1)';
-      });
+      btn.addEventListener('mouseleave', () => { btn.style.cssText += 'transform:translate(0,0);transition:transform .45s cubic-bezier(.16,1,.3,1)'; });
     });
-  }
-
-  /* ── Nav scroll materialise ─────────────────────────── */
-  const _heroSection = document.querySelector('.hero-wrap');
-  if(_heroSection){
-    const _nav = document.querySelector('.nav');
-    new IntersectionObserver(([e]) => {
-      _nav.classList.toggle('nav--scrolled', !e.isIntersecting);
-    }, { threshold: 0.05 }).observe(_heroSection);
   }
 
   /* ── Mobile nav ────────────────────────────────────── */
   const ham = document.querySelector('.nav-ham'), mob = document.getElementById('mobile-nav');
   if(ham&&mob){
     ham.addEventListener('click',()=>{
-      const open=mob.classList.toggle('is-open');
-      ham.setAttribute('aria-expanded',String(open));
+      const open=!mob.hidden; mob.hidden=open; ham.setAttribute('aria-expanded',String(!open));
     });
-    mob.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
-      mob.classList.remove('is-open');
-      ham.setAttribute('aria-expanded','false');
-    }));
+    mob.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{mob.hidden=true;ham.setAttribute('aria-expanded','false');}));
   }
 
   /* ── GSAP Sticky Stack ─────────────────────────────── */
@@ -886,176 +855,5 @@ a.dest-cell { text-decoration: none; display: block; }
       });
     });
   });
-})();
-
-/* ── 3D Globe (realistic Earth) ────────────────────────── */
-(function() {
-  const container = document.getElementById('globe-container');
-  if (!container || typeof THREE === 'undefined') return;
-
-  let W = container.offsetWidth || 500;
-  let H = container.offsetHeight || 500;
-
-  /* WebGL renderer */
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setSize(W, H);
-  container.appendChild(renderer.domElement);
-
-  /* CSS2D renderer for avatar labels */
-  const CSS2DRenderer = THREE.CSS2DRenderer || window.CSS2DRenderer;
-  const CSS2DObject   = THREE.CSS2DObject   || window.CSS2DObject;
-  let labelRenderer = null;
-  if (CSS2DRenderer) {
-    labelRenderer = new CSS2DRenderer();
-    labelRenderer.setSize(W, H);
-    Object.assign(labelRenderer.domElement.style, {
-      position: 'absolute', top: '0', left: '0',
-      pointerEvents: 'none', overflow: 'visible',
-    });
-    container.appendChild(labelRenderer.domElement);
-  }
-
-  const scene  = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 100);
-  camera.position.z = 2.8;
-
-  const globeGroup = new THREE.Group();
-  scene.add(globeGroup);
-
-  /* Earth sphere with real textures */
-  const tl = new THREE.TextureLoader();
-  const earthMat = new THREE.MeshPhongMaterial({
-    map:         tl.load('/earth-texture.jpg'),
-    specularMap: tl.load('/earth-specular.jpg'),
-    normalMap:   tl.load('/earth-normal.jpg'),
-    normalScale: new THREE.Vector2(0.05, 0.05),
-    specular:    new THREE.Color(0x444444),
-    shininess:   20,
-  });
-  globeGroup.add(new THREE.Mesh(new THREE.SphereGeometry(1, 64, 64), earthMat));
-
-  /* Atmosphere glow */
-  const atmMat = new THREE.MeshPhongMaterial({
-    color: 0x4da6ff, side: THREE.BackSide, transparent: true, opacity: 0.2,
-  });
-  scene.add(new THREE.Mesh(new THREE.SphereGeometry(1.09, 64, 64), atmMat));
-
-  /* Lights */
-  scene.add(new THREE.AmbientLight(0xffffff, 0.55));
-  const sun = new THREE.DirectionalLight(0xfff5e0, 1.1);
-  sun.position.set(5, 3, 5);
-  scene.add(sun);
-
-  /* Helpers */
-  function latlng(lat, lng, r) {
-    const phi   = (90 - lat) * Math.PI / 180;
-    const theta = (lng + 180) * Math.PI / 180;
-    return new THREE.Vector3(
-      -r * Math.sin(phi) * Math.cos(theta),
-      r * Math.cos(phi),
-      r * Math.sin(phi) * Math.sin(theta)
-    );
-  }
-
-  /* City markers with Aceternity avatar style */
-  const cities = [
-    { lat: 40.71, lng: -74.01,  label: 'New York',      src: 'https://assets.aceternity.com/avatars/1.webp' },
-    { lat: 51.51, lng: -0.13,   label: 'London',         src: 'https://assets.aceternity.com/avatars/2.webp' },
-    { lat: 35.68, lng: 139.65,  label: 'Tokyo',          src: 'https://assets.aceternity.com/avatars/3.webp' },
-    { lat: -33.87, lng: 151.21, label: 'Sydney',         src: 'https://assets.aceternity.com/avatars/4.webp' },
-    { lat: 48.86, lng: 2.35,    label: 'Paris',          src: 'https://assets.aceternity.com/avatars/5.webp' },
-    { lat: 28.61, lng: 77.21,   label: 'New Delhi',      src: 'https://assets.aceternity.com/avatars/6.webp' },
-    { lat: 55.76, lng: 37.62,   label: 'Moscow',         src: 'https://assets.aceternity.com/avatars/7.webp' },
-    { lat: -22.91, lng: -43.17, label: 'Rio',            src: 'https://assets.aceternity.com/avatars/8.webp' },
-    { lat: 31.23, lng: 121.47,  label: 'Shanghai',       src: 'https://assets.aceternity.com/avatars/9.webp' },
-    { lat: 25.20, lng: 55.27,   label: 'Dubai',          src: 'https://assets.aceternity.com/avatars/10.webp' },
-    { lat: -34.60, lng: -58.38, label: 'Buenos Aires',   src: 'https://assets.aceternity.com/avatars/11.webp' },
-    { lat: 1.35,  lng: 103.82,  label: 'Singapore',      src: 'https://assets.aceternity.com/avatars/12.webp' },
-    { lat: 37.57, lng: 126.98,  label: 'Seoul',          src: 'https://assets.aceternity.com/avatars/13.webp' },
-  ];
-
-  const pinMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
-  const labelObjs = [];
-  cities.forEach(c => {
-    const surfacePos = latlng(c.lat, c.lng, 1.01);
-    const labelPos   = latlng(c.lat, c.lng, 1.32);
-
-    /* White dot on globe surface */
-    const dot = new THREE.Mesh(new THREE.SphereGeometry(0.011, 8, 8), pinMat);
-    dot.position.copy(surfacePos);
-    globeGroup.add(dot);
-
-    /* Thin line: surface → avatar */
-    const lineGeo = new THREE.BufferGeometry().setFromPoints([surfacePos, labelPos]);
-    const lineMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.45 });
-    globeGroup.add(new THREE.Line(lineGeo, lineMat));
-
-    /* CSS2D avatar circle */
-    if (CSS2DObject) {
-      const wrap = document.createElement('div');
-      wrap.style.cssText = [
-        'width:26px;height:26px;border-radius:50%;overflow:hidden;',
-        'border:2px solid rgba(255,255,255,.85);',
-        'box-shadow:0 0 8px rgba(77,166,255,.5);',
-        'background:#1A4870;transition:opacity .35s;',
-      ].join('');
-      const img = document.createElement('img');
-      img.src = c.src;
-      img.alt = c.label;
-      img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
-      wrap.appendChild(img);
-      const obj = new CSS2DObject(wrap);
-      obj.position.copy(labelPos);
-      globeGroup.add(obj);
-      labelObjs.push(obj);
-    }
-  });
-
-  /* Drag-to-rotate */
-  let dragging = false, px = 0, py = 0, autoSpin = true;
-  renderer.domElement.addEventListener('pointerdown', e => {
-    dragging = true; autoSpin = false; px = e.clientX; py = e.clientY;
-  });
-  window.addEventListener('pointermove', e => {
-    if (!dragging) return;
-    globeGroup.rotation.y += (e.clientX - px) * 0.006;
-    globeGroup.rotation.x += (e.clientY - py) * 0.006;
-    px = e.clientX; py = e.clientY;
-  });
-  window.addEventListener('pointerup', () => {
-    dragging = false;
-    setTimeout(() => { autoSpin = true; }, 1800);
-  });
-
-  /* Render loop */
-  const _camDir = new THREE.Vector3();
-  const _markerWorld = new THREE.Vector3();
-  (function loop() {
-    requestAnimationFrame(loop);
-    if (autoSpin && !dragging) globeGroup.rotation.y += 0.002;
-    /* Depth-cull: smoothly fade markers on the back hemisphere */
-    if (labelObjs.length) {
-      camera.getWorldDirection(_camDir).negate();
-      labelObjs.forEach(obj => {
-        _markerWorld.copy(obj.position);
-        globeGroup.localToWorld(_markerWorld);
-        const dot = _markerWorld.normalize().dot(_camDir);
-        obj.element.style.opacity = Math.max(0, Math.min(1, dot / 0.18));
-      });
-    }
-    renderer.render(scene, camera);
-    if (labelRenderer) labelRenderer.render(scene, camera);
-  })();
-
-  /* Responsive resize */
-  new ResizeObserver(() => {
-    W = container.offsetWidth; H = container.offsetHeight;
-    if (!W || !H) return;
-    renderer.setSize(W, H);
-    if (labelRenderer) labelRenderer.setSize(W, H);
-    camera.aspect = W / H;
-    camera.updateProjectionMatrix();
-  }).observe(container);
 })();
 </script>
