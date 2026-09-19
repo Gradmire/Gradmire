@@ -262,9 +262,15 @@
 }
 
 @media (max-width: 900px) {
+    .auth-wrap {
+        grid-template-columns: 1fr;
+    }
     .auth-form-side {
         justify-content: flex-start;
-        padding: 1.5rem var(--gutter);
+        padding: 0;
+    }
+    .auth-form-inner {
+        padding: 1.75rem var(--gutter) calc(1.75rem + env(safe-area-inset-bottom,0px));
     }
     .auth-form-wrap {
         max-width: 390px;
