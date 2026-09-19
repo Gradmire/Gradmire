@@ -1,0 +1,55 @@
+name: Test Gradmire
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Validate backend JavaScript
+        run: npm run check --prefix backend
+
+      - name: Validate shared frontend JavaScript
+        run: node --check frontend/assets/site.js
+
+      - name: Validate frontend links and assets
+        run: node scripts/check-frontend-links.mjs
+
+      - name: Validate Vercel configuration
+        run: node -e "JSON.parse(require('fs').readFileSync('frontend/vercel.json', 'utf8'))"
+
+      - name: Start backend
+        run: |
+          node backend/src/server.js > /tmp/gradmire-api.log 2>&1 &
+          echo $! > /tmp/gradmire-api.pid
+          curl --fail --silent --show-error --retry 10 --retry-delay 1 http://127.0.0.1:4000/api/v1/health
+
+      - name: Test lead API
+        run: |
+          response=$(curl --fail --silent --show-error \
+            -X POST http://127.0.0.1:4000/api/v1/leads \
+            -H 'Content-Type: application/json' \
+            -d '{"firstName":"CI","email":"ci@example.com","phone":"+910000000000"}')
+          echo "$response" | grep -q 'ci@example.com'
+
+      - name: Stop backend
+        if: always()
+        run: |
+          if [ -f /tmp/gradmire-api.pid ]; then
+            kill "$(cat /tmp/gradmire-api.pid)" || true
+          fi
