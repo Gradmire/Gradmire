@@ -419,10 +419,35 @@
     .auth-form-side {
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        padding: 2.5rem clamp(1.5rem, 4vw, 4rem);
         overflow-y: auto;
     }
+    .auth-form-inner {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 2.5rem clamp(1.5rem,4vw,4rem);
+    }
+    /* Password show/hide */
+    .pwd-wrap { position: relative; }
+    .pwd-toggle {
+        position: absolute;
+        right: .75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--text-s);
+        padding: .25rem;
+        display: flex;
+        align-items: center;
+        line-height: 1;
+        transition: color .2s;
+    }
+    .pwd-toggle:hover { color: var(--text-p); }
+    .pwd-toggle .eye-off { display: none; }
+    .form-input.has-toggle { padding-right: 2.75rem; }
     
     .auth-form-wrap {
         max-width: 420px;
@@ -627,29 +652,47 @@
         color: var(--text-s);
     }
     
+    /* Mobile stats ribbon */
+    .auth-mobile-ribbon { display: none; }
     @media(max-width:900px) {
-        .auth-visual {
-            display: none;
+        .auth-visual { display: none; }
+        .auth-wrap { grid-template-columns: 1fr; }
+        .auth-form-side { padding: 0; }
+        .auth-form-inner { padding: 1.5rem var(--gutter) calc(2rem + env(safe-area-inset-bottom,0px)); }
+        .form-row { grid-template-columns: 1fr; }
+        .auth-mobile-ribbon {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 1px;
+            background: rgba(77,143,191,.15);
+            border-bottom: 1px solid rgba(77,143,191,.15);
+            margin-bottom: 1.75rem;
         }
-        .auth-wrap {
-            grid-template-columns: 1fr;
+        .auth-mobile-ribbon-cell {
+            padding: .85rem .5rem;
+            background: #070C18;
+            text-align: center;
         }
-        .auth-form-side {
-            padding: 2rem var(--gutter);
+        .auth-mobile-ribbon-num {
+            font-family: var(--mono);
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #EEF1F8;
+            letter-spacing: -.02em;
+            line-height: 1;
         }
-        .form-row {
-            grid-template-columns: 1fr;
+        .auth-mobile-ribbon-lbl {
+            font-family: var(--mono);
+            font-size: .56rem;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: rgba(77,143,191,.65);
+            margin-top: .25rem;
         }
     }
-    
     @media(max-width:640px) {
-        .nav-links,
-        .nav-btn {
-            display: none;
-        }
-        .nav-ham {
-            display: flex;
-        }
+        .nav-links, .nav-btn { display: none; }
+        .nav-ham { display: flex; }
     }
     
     @media(prefers-color-scheme:dark) {
@@ -673,8 +716,7 @@
             <li><a href="find-universities.html">Universities</a></li>
             <li><a href="scholarships.html">Scholarships</a></li>
             <li><a href="tools/roi-calculator.html">Tools</a></li>
-            <li><a href="tools/roi-calculator.html">Tools</a>
-                <a href="faq.html">FAQ</a></li>
+            <li><a href="faq.html">FAQ</a></li>
             <li><a href="about.html">About</a></li>
         </ul>
         <div style="display:flex;gap:.75rem;align-items:center">
@@ -734,6 +776,22 @@
         </div>
     </div>
     <div class="auth-form-side">
+        <!-- Mobile-only stat ribbon — replaces visual panel context on small screens -->
+        <div class="auth-mobile-ribbon" aria-hidden="true">
+            <div class="auth-mobile-ribbon-cell">
+                <div class="auth-mobile-ribbon-num">47K+</div>
+                <div class="auth-mobile-ribbon-lbl">Placed</div>
+            </div>
+            <div class="auth-mobile-ribbon-cell">
+                <div class="auth-mobile-ribbon-num">850+</div>
+                <div class="auth-mobile-ribbon-lbl">Universities</div>
+            </div>
+            <div class="auth-mobile-ribbon-cell">
+                <div class="auth-mobile-ribbon-num">18 yrs</div>
+                <div class="auth-mobile-ribbon-lbl">Experience</div>
+            </div>
+        </div>
+        <div class="auth-form-inner">
         <div class="auth-form-wrap">
             <div class="auth-form-tag">Get started free</div>
             <h1 class="auth-form-title">Create your account</h1>
@@ -785,7 +843,13 @@
                 </div>
                 <div class="form-field">
                     <label class="form-label" for="password">Password</label>
-                    <input class="form-input" type="password" id="password" name="password" placeholder="Min. 8 characters" autocomplete="new-password" required minlength="8">
+                    <div class="pwd-wrap">
+                        <input class="form-input has-toggle" type="password" id="password" name="password" placeholder="Min. 8 characters" autocomplete="new-password" required minlength="8">
+                        <button type="button" class="pwd-toggle" aria-label="Show password">
+                            <svg class="eye-on" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            <svg class="eye-off" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                        </button>
+                    </div><!-- /pwd-wrap -->
                     <div class="pwd-strength">
                         <div class="pwd-bar" id="pwd-bar"></div>
                     </div>
@@ -810,10 +874,21 @@
             <div style="font-size:.75rem;color:var(--text-s);text-align:center;margin-top:1rem;">By signing up you agree to our <a href="terms.html" style="color:var(--accent);text-decoration:none;">Terms of Use</a> and <a href="privacy.html" style="color:var(--accent);text-decoration:none;">Privacy Policy</a>.</div>
         </div>
         <div class="auth-footer-note">© 2026 Gradmire · India's study-abroad counselling platform</div>
+        </div><!-- /auth-form-inner -->
     </div>
 </div>
 
 <script>
+    document.querySelectorAll('.pwd-toggle').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const input = btn.closest('.pwd-wrap').querySelector('input');
+            const show = input.type === 'password';
+            input.type = show ? 'text' : 'password';
+            btn.querySelector('.eye-on').style.display = show ? 'none' : '';
+            btn.querySelector('.eye-off').style.display = show ? '' : 'none';
+            btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+        });
+    });
     const pwdInput = document.getElementById('password');
     const pwdBar = document.getElementById('pwd-bar');
     const pwdHint = document.getElementById('pwd-hint');
