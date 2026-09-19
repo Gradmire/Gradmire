@@ -162,17 +162,22 @@
     .nav-mobile .site-theme-toggle {
         display: none;
     }
-    html, body {
+    html,
+    body {
         max-width: 100%;
         overflow-x: hidden;
     }
-    .tabs, .faq-tabs, .page-nav, .subnav {
+    .tabs,
+    .faq-tabs,
+    .page-nav,
+    .subnav {
         width: 100%;
         max-width: 100%;
         overflow-x: auto;
         overscroll-behavior-x: contain;
     }
-    .page-nav-inner, .subnav-list {
+    .page-nav-inner,
+    .subnav-list {
         width: max-content;
         min-width: 100%;
     }

@@ -1,30 +1,355 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Privacy Policy | Gradmire</title>
-  <link rel="stylesheet" href="../assets/site.css">
-  <style>
-    main { max-width: 820px; margin: 0 auto; padding: 5rem var(--gutter); }
-    h1 { font-size: clamp(2.2rem, 5vw, 4rem); line-height: 1; margin-bottom: 1rem; }
-    h2 { margin: 2.5rem 0 .6rem; font-size: 1.35rem; }
-    p, li { color: var(--text-s); line-height: 1.75; }
-    ul { padding-left: 1.25rem; }
-  </style>
-</head>
-<body>
-  <main>
-    <p class="section-tag">Gradmire policy</p>
-    <h1>Privacy Policy</h1>
-    <p>Gradmire uses the information you share to respond to enquiries, provide counselling, and improve the study-abroad experience.</p>
-    <h2>Information we collect</h2>
-    <p>We may collect your name, contact details, study preferences, and messages when you contact us or request a consultation.</p>
-    <h2>How we use information</h2>
-    <ul><li>To respond to your enquiry and provide requested services.</li><li>To coordinate counselling and application support.</li><li>To send optional updates only where you have opted in.</li></ul>
-    <h2>Contact</h2>
-    <p>For privacy questions, contact <a href="mailto:counselling@gradmire.com">counselling@gradmire.com</a>.</p>
-  </main>
-  <script src="../assets/site.js"></script>
-</body>
-</html>
+<meta charset="UTF-8">
+<title>Privacy Policy — Gradmire</title>
+<meta name="description" content="Gradmire's Privacy Policy — how we collect, use, and protect your personal data under the DPDP Act 2023 and applicable Indian law.">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+:root{--bg:#F0F2F7;--surface:#FFFFFF;--surface-tint:#E8EBF4;--text-p:#0E1420;--text-s:#556270;--brand:#1A4870;--brand-deep:#0F2D4A;--accent:#007A5A;--accent-hover:#006649;--accent-dim:rgba(0,122,90,.12);--border:rgba(14,20,32,.1);--sans:'Bricolage Grotesque',system-ui,sans-serif;--mono:'JetBrains Mono','Menlo',monospace;--r-sm:8px;--r-md:16px;--r-lg:24px;--w:1280px;--gutter:clamp(1.25rem,5vw,3rem);--ease:cubic-bezier(.16,1,.3,1);}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--brand-deep:#1A4870;--border:rgba(238,241,248,.1);--accent:#2DB88C;--accent-hover:#27A07B;--accent-dim:rgba(45,184,140,.18);}}
+:root[data-theme="dark"]{--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--brand-deep:#1A4870;--border:rgba(238,241,248,.1);--accent:#2DB88C;--accent-hover:#27A07B;--accent-dim:rgba(45,184,140,.18);}
+*,*::before,*::after{box-sizing:border-box;margin:0;}
+body{background:var(--bg);color:var(--text-p);font-family:var(--sans);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;font-optical-sizing:auto;}
+a{color:var(--brand);text-decoration:none;}a:hover{text-decoration:underline;}
+img{max-width:100%;display:block;}
+.nav{position:sticky;top:0;z-index:100;background:rgba(240,242,247,.88);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid var(--border);height:68px;}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .nav{background:rgba(10,13,22,.9);}}
+:root[data-theme="dark"] .nav{background:rgba(10,13,22,.9);}
+.nav-inner{max-width:var(--w);margin:0 auto;padding:0 var(--gutter);height:100%;display:flex;align-items:center;gap:2rem;}
+.nav-links{list-style:none;padding:0;display:flex;gap:1.75rem;flex:1;}
+.nav-links a{color:var(--text-s);font-size:.86rem;font-weight:500;text-decoration:none;transition:color .2s;}
+.nav-links a:hover{color:var(--text-p);}
+.nav-btn{display:inline-flex;align-items:center;padding:.5em 1.2em;border-radius:100px;font-family:var(--sans);font-size:.84rem;font-weight:600;background:var(--accent);color:#fff;text-decoration:none;transition:background .2s;}
+.nav-btn:hover{background:var(--accent-hover);}
+@media(max-width:860px){.nav-links{display:none;}}
+.page-hero{background:var(--brand-deep);padding:5rem var(--gutter) 4rem;text-align:center;}
+.page-hero-tag{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:1rem;}
+.page-hero-title{font-size:clamp(2.2rem,4vw,3.5rem);font-weight:800;letter-spacing:-.04em;color:#fff;line-height:1.02;margin-bottom:.75rem;}
+.page-hero-sub{font-size:1rem;color:rgba(255,255,255,.6);max-width:55ch;margin:0 auto;line-height:1.6;}
+.layout{max-width:var(--w);margin:0 auto;padding:4rem var(--gutter) 6rem;display:grid;grid-template-columns:240px 1fr;gap:3.5rem;align-items:start;}
+@media(max-width:960px){.layout{grid-template-columns:1fr;}}
+.toc{position:sticky;top:88px;}
+@media(max-width:960px){.toc{display:none;}}
+.toc-title{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-s);margin-bottom:.85rem;}
+.toc-list{list-style:none;padding:0;display:flex;flex-direction:column;gap:.15rem;}
+.toc-list a{font-size:.84rem;color:var(--text-s);text-decoration:none;padding:.35rem .7rem;border-radius:6px;display:block;transition:all .2s;}
+.toc-list a:hover,.toc-list a.active{color:var(--brand);background:var(--accent-dim);}
+.prose{max-width:72ch;}
+.section{scroll-margin-top:96px;margin-bottom:3rem;}
+.section:last-child{margin-bottom:0;}
+.section-num{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem;}
+.section h2{font-size:1.35rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.9rem;color:var(--text-p);}
+.section p{color:var(--text-s);margin-bottom:.9rem;font-size:.95rem;line-height:1.7;}
+.section p:last-child{margin-bottom:0;}
+.section ul,.section ol{color:var(--text-s);padding-left:1.4rem;margin-bottom:.9rem;font-size:.95rem;}
+.section ul li,.section ol li{margin-bottom:.4rem;line-height:1.6;}
+.highlight-box{background:var(--accent-dim);border:1px solid rgba(0,122,90,.18);border-radius:var(--r-md);padding:1.25rem 1.5rem;margin-bottom:1.25rem;}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .highlight-box{border-color:rgba(45,184,140,.2);}}
+:root[data-theme="dark"] .highlight-box{border-color:rgba(45,184,140,.2);}
+.highlight-box p{color:var(--text-p) !important;margin-bottom:0 !important;font-size:.9rem !important;}
+.meta-bar{display:flex;gap:2rem;flex-wrap:wrap;margin-bottom:2.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border);}
+.meta-item{display:flex;flex-direction:column;gap:.15rem;}
+.meta-label{font-size:.72rem;font-family:var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--text-s);}
+.meta-val{font-size:.9rem;font-weight:600;color:var(--text-p);}
+.contact-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:1.5rem;margin-top:.75rem;}
+.contact-card p{color:var(--text-p) !important;font-size:.9rem !important;margin-bottom:.3rem !important;}
+.contact-card p:last-child{margin-bottom:0 !important;}
+hr.divider{border:none;border-top:1px solid var(--border);margin:2rem 0;}
+/* Footer */
+.footer{background:var(--brand-deep);color:rgba(255,255,255,.7);padding:4rem var(--gutter) 2rem;}
+.footer-grid{max-width:var(--w);margin:0 auto;display:grid;grid-template-columns:220px 1fr 1fr 1fr;gap:3rem;padding-bottom:3rem;border-bottom:1px solid rgba(255,255,255,.08);}
+@media(max-width:860px){.footer-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:540px){.footer-grid{grid-template-columns:1fr;}}
+.footer-brand img{margin-bottom:1rem;}
+.footer-tagline{font-size:.85rem;line-height:1.6;max-width:26ch;}
+.footer-col-title{font-size:.72rem;font-family:var(--mono);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:1rem;}
+.footer-col ul{list-style:none;padding:0;display:flex;flex-direction:column;gap:.6rem;}
+.footer-col ul li a{color:rgba(255,255,255,.65);font-size:.88rem;text-decoration:none;transition:color .2s;}
+.footer-col ul li a:hover{color:#fff;}
+.footer-bottom{max-width:var(--w);margin:2rem auto 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+.footer-legal{color:rgba(255,255,255,.35);font-size:.78rem;}
+.footer-legal a{color:rgba(255,255,255,.45);text-decoration:none;}
+.footer-legal a:hover{color:rgba(255,255,255,.7);}
+</style>
+
+<nav class="nav" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="index.html" aria-label="Gradmire home">
+      <img src="../assets/gradmire-logo.png" alt="Gradmire" height="34" style="display:block;max-width:155px;">
+    </a>
+    <ul class="nav-links">
+      <li><a href="courses.html">Courses</a></li>
+      <li><a href="destinations.html">Destinations</a></li>
+      <li><a href="scholarships.html">Scholarships</a></li>
+      <li><a href="tools/roi-calculator.html">Tools</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+    </ul>
+    <a href="free-consultation.html" class="nav-btn">Free Consultation</a>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <p class="page-hero-tag">Legal</p>
+  <h1 class="page-hero-title">Privacy Policy</h1>
+  <p class="page-hero-sub">How we collect, use, and protect your personal data — in plain language, compliant with the DPDP Act 2023.</p>
+</header>
+
+<main>
+  <div class="layout">
+    <!-- TOC sidebar -->
+    <aside class="toc">
+      <p class="toc-title">On this page</p>
+      <ul class="toc-list" id="toc">
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#data-collected">Data we collect</a></li>
+        <li><a href="#purpose">Purpose of processing</a></li>
+        <li><a href="#sharing">Sharing & disclosure</a></li>
+        <li><a href="#retention">Retention</a></li>
+        <li><a href="#rights">Your rights</a></li>
+        <li><a href="#minors">Children & minors</a></li>
+        <li><a href="#cookies">Cookies</a></li>
+        <li><a href="#security">Security</a></li>
+        <li><a href="#changes">Policy changes</a></li>
+        <li><a href="#contact">Contact DPO</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main content -->
+    <div class="prose">
+      <div class="meta-bar">
+        <div class="meta-item">
+          <span class="meta-label">Version</span>
+          <span class="meta-val">1.0</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Effective date</span>
+          <span class="meta-val">1 October 2026</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Jurisdiction</span>
+          <span class="meta-val">India (DPDP Act 2023)</span>
+        </div>
+      </div>
+
+      <section class="section" id="overview">
+        <p class="section-num">01</p>
+        <h2>Overview</h2>
+        <div class="highlight-box">
+          <p>Gradmire Education Pvt. Ltd. ("Gradmire", "we", "us") is committed to protecting your personal data. This policy explains what we collect, why, how long we keep it, and the rights you can exercise at any time.</p>
+        </div>
+        <p>This Privacy Policy applies to gradmire.in and all related services. By using our website or submitting a form, you acknowledge that you have read and understood this policy. This policy is issued in compliance with the <strong>Digital Personal Data Protection (DPDP) Act, 2023</strong> and the Information Technology Act, 2000.</p>
+      </section>
+
+      <hr class="divider">
+
+      <section class="section" id="data-collected">
+        <p class="section-num">02</p>
+        <h2>Data we collect</h2>
+        <p>We collect personal data only to the extent required to provide our services. The categories are:</p>
+        <ul>
+          <li><strong>Identity data</strong> — name, date of birth (when relevant for eligibility checks)</li>
+          <li><strong>Contact data</strong> — email address, mobile number, city/state</li>
+          <li><strong>Academic data</strong> — exam scores (IELTS, TOEFL, GRE, GMAT), degree level, subject of study, graduation year</li>
+          <li><strong>Financial data</strong> — fee budget range (no payment card data is collected by us)</li>
+          <li><strong>Technical data</strong> — IP address, browser type, device OS, referring URL, pages visited, session duration (collected via server logs and analytics)</li>
+          <li><strong>Communications data</strong> — messages sent via our enquiry form, WhatsApp, or email</li>
+          <li><strong>Preferences data</strong> — destination countries and course types of interest</li>
+        </ul>
+        <p>We do not collect sensitive personal data (as defined under DPDP Act 2023 Schedule I), except where you voluntarily provide disability or medical information solely for the purpose of disability-related scholarships, with your explicit consent.</p>
+      </section>
+
+      <hr class="divider">
+
+      <section class="section" id="purpose">
+        <p class="section-num">03</p>
+        <h2>Purpose of processing</h2>
+        <p>We process your personal data only for clearly defined purposes. We do not sell your data to third parties under any circumstances.</p>
+        <ul>
+          <li><strong>Service delivery</strong> — preparing university shortlists, application guidance, visa documentation support</li>
+          <li><strong>Communication</strong> — responding to your enquiries, scheduling consultations, sending application reminders</li>
+          <li><strong>Platform improvement</strong> — understanding how our tools (ROI Calculator, Deadline Tracker) are used so we can improve them</li>
+          <li><strong>Legal compliance</strong> — maintaining records required under Indian company law and the DPDP Act 2023</li>
+          <li><strong>Marketing (with consent only)</strong> — newsletters, scholarship alerts, and webinar invitations — only if you have opted in</li>
+        </ul>
+        <p>We rely on the following lawful bases: (a) your <strong>consent</strong> for marketing communications; (b) <strong>contractual necessity</strong> for service delivery; (c) <strong>legitimate interest</strong> for platform analytics; and (d) <strong>legal obligation</strong> for compliance records.</p>
+      </section>
+
+      <hr class="divider">
+
+      <section class="section" id="sharing">
+        <p class="section-num">04</p>
+        <h2>Sharing &amp; disclosure</h2>
+        <p>We share your data only in these circumstances:</p>
+        <ul>
+          <li><strong>Partner universities and institutions</strong> — with your explicit consent before any application is submitted on your behalf</li>
+          <li><strong>Service providers</strong> — cloud hosting (data stored in India or EEA-compliant jurisdictions), CRM, email delivery, and analytics. These providers are bound by data processing agreements and may not use your data for their own purposes</li>
+          <li><strong>Legal authorities</strong> — where required by a court order or Government directive under applicable Indian law</li>
+        </ul>
+        <p>We never sell, rent, or exchange personal data with advertising platforms, data brokers, or any third party for commercial gain.</p>
+      </section>
+
+      <hr class="divider">
+
+      <section class="section" id="retention">
+        <p class="section-num">05</p>
+        <h2>Retention</h2>
+        <p>We retain personal data only as long as necessary for the stated purpose or as required by law:</p>
+        <ul>
+          <li><strong>Active users</strong> — for the duration of your engagement with Gradmire and 3 years thereafter</li>
+          <li><strong>Marketing data</strong> — until you withdraw consent or request deletion</li>
+          <li><strong>Legal/tax records</strong> — 7 years as required by the Companies Act, 2013</li>
+          <li><strong>Technical logs</strong> — 90 days, then automatically purged</li>
+        </ul>
+        <p>After the retention period expires, data is securely deleted or anonymised so that it can no longer be linked to you.</p>
+      </section>
+
+      <hr class="divider">
+
+      <section class="section" id="rights">
+        <p class="section-num">06</p>
+        <h2>Your rights (Data Principals)</h2>
+        <p>Under the DPDP Act 2023, you have the following rights as a Data Principal:</p>
+        <ul>
+          <li><strong>Right to access</strong> — obtain a summary of the personal data we hold about you and our processing activities</li>
+          <li><strong>Right to correction</strong> — request that inaccurate or incomplete data be corrected or completed</li>
+          <li><strong>Right to erasure</strong> — request deletion of your personal data, subject to legitimate retention requirements</li>
+          <li><strong>Right to grievance redressal</strong> — raise a complaint with our Grievance Officer (see contact below) and, if unresolved, to the Data Protection Board of India</li>
+          <li><strong>Right to nominate</strong> — nominate another individual to exercise rights on your behalf in the event of your incapacity or death</li>
+          <li><strong>Right to withdraw consent</strong> — withdraw consent for marketing or any consent-based processing at any time without affecting prior processing</li>
+        </ul>
+        <p>To exercise any right, email <a href="mailto:privacy@gradmire.in">privacy@gradmire.in</a>. We will respond within <strong>30 days</strong>. Where verification is needed, we may ask you to confirm your identity.</p>
+      </section>
+
+      <hr class="divider">
+
+      <section class="section" id="minors">
+        <p class="section-num">07</p>
+        <h2>Children &amp; minors</h2>
+        <p>Our services are primarily aimed at students aged 18 and above. However, we recognise that some students who are minors (below 18 years) may seek study-abroad guidance.</p>
+        <p>In compliance with Section 9 of the DPDP Act 2023:</p>
+        <ul>
+          <li>We do not knowingly collect personal data from individuals below 18 without <strong>verifiable parental or guardian consent</strong></li>
+          <li>Where we have reason to believe that a user is a minor, we will pause processing and request parental consent before proceeding</li>
+          <li>Parents or guardians may contact <a href="mailto:privacy@gradmire.in">privacy@gradmire.in</a> to review, correct, or request deletion of a minor's data</li>
+          <li>We do not process minor data for behavioural tracking, targeted advertising, or profiling</li>
+        </ul>
+      </section>
+
+      <hr class="divider">
+
+      <section class="section" id="cookies">
+        <p class="section-num">08</p>
+        <h2>Cookies &amp; tracking</h2>
+        <p>We use the following categories of cookies:</p>
+        <ul>
+          <li><strong>Strictly necessary</strong> — session management and security (cannot be opted out)</li>
+          <li><strong>Functional</strong> — remembering your preferences (deadline tracker data, dark-mode setting, last-used calculator inputs)</li>
+          <li><strong>Analytics (opt-in)</strong> — aggregated, anonymised usage statistics to improve the platform. We use privacy-respecting analytics tools that do not identify individual users</li>
+        </ul>
+        <p>We do not use third-party advertising cookies or cross-site tracking cookies.</p>
+      </section>
+
+      <hr class="divider">
+
+      <section class="section" id="security">
+        <p class="section-num">09</p>
+        <h2>Security</h2>
+        <p>We implement appropriate technical and organisational safeguards to protect your data against unauthorised access, loss, or destruction. Measures include:</p>
+        <ul>
+          <li>HTTPS (TLS 1.2+) encryption in transit</li>
+          <li>Access controls limiting who within Gradmire can view personal data</li>
+          <li>Regular security reviews of third-party processors</li>
+        </ul>
+        <p>In the event of a personal data breach that is likely to result in risk to your rights, we will notify the Data Protection Board of India and affected individuals within <strong>72 hours</strong> of becoming aware of the breach.</p>
+      </section>
+
+      <hr class="divider">
+
+      <section class="section" id="changes">
+        <p class="section-num">10</p>
+        <h2>Policy changes</h2>
+        <p>We may update this policy from time to time to reflect changes in law or our practices. When we make material changes, we will:</p>
+        <ul>
+          <li>Update the effective date at the top of this page</li>
+          <li>Display a notice on our homepage for 30 days</li>
+          <li>Email registered users if the changes affect their rights</li>
+        </ul>
+        <p>Continued use of our services after the effective date constitutes acceptance of the revised policy.</p>
+      </section>
+
+      <hr class="divider">
+
+      <section class="section" id="contact">
+        <p class="section-num">11</p>
+        <h2>Contact our Data Protection Officer</h2>
+        <p>For any privacy-related questions, data subject requests, or complaints, please contact our Data Protection Officer / Grievance Officer:</p>
+        <div class="contact-card">
+          <p><strong>Gradmire Education Pvt. Ltd.</strong></p>
+          <p>Attn: Data Protection Officer</p>
+          <p>World Trade Tower, Barakhamba Lane, New Delhi – 110 001</p>
+          <p>Email: <a href="mailto:privacy@gradmire.in">privacy@gradmire.in</a></p>
+          <p>Response time: within 30 days</p>
+        </div>
+        <p style="margin-top:1rem;">If your concern is not resolved to your satisfaction, you may escalate to the <strong>Data Protection Board of India</strong> once it becomes operational under the DPDP Act 2023.</p>
+      </section>
+    </div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <img src="../assets/gradmire-logo-white.png" alt="Gradmire" height="28" style="max-width:140px;">
+      <p class="footer-tagline" style="margin-top:.85rem;">Transparent, trusted study-abroad guidance for Indian students.</p>
+    </div>
+    <div class="footer-col">
+      <p class="footer-col-title">Explore</p>
+      <ul>
+        <li><a href="courses.html">Courses</a></li>
+        <li><a href="destinations.html">Destinations</a></li>
+        <li><a href="scholarships.html">Scholarships</a></li>
+        <li><a href="tools/roi-calculator.html">Tools</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <p class="footer-col-title">Company</p>
+      <ul>
+        <li><a href="about.html">About us</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="free-consultation.html">Free consultation</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <p class="footer-col-title">Legal</p>
+      <ul>
+        <li><a href="privacy.html">Privacy policy</a></li>
+        <li><a href="terms.html">Terms of use</a></li>
+        <li><a href="grievance.html">Grievance</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-legal">© 2026 Gradmire Education Pvt. Ltd. All rights reserved.</span>
+    <div style="display:flex;gap:1.5rem;flex-wrap:wrap;">
+      <a href="privacy.html" class="footer-legal">Privacy policy</a>
+      <a href="terms.html" class="footer-legal">Terms of use</a>
+      <a href="grievance.html" class="footer-legal">Grievance</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const sections = document.querySelectorAll('.section[id]');
+const tocLinks = document.querySelectorAll('.toc-list a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      tocLinks.forEach(l => l.classList.remove('active'));
+      const active = document.querySelector('.toc-list a[href="#'+e.target.id+'"]');
+      if(active) active.classList.add('active');
+    }
+  });
+},{rootMargin:'-80px 0px -60% 0px'});
+sections.forEach(s => observer.observe(s));
+</script>
