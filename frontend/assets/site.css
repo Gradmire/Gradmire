@@ -408,23 +408,23 @@
     }
 
     .hero-title {
-        font-size: clamp(2.35rem, 11vw, 3.8rem);
-        line-height: .96;
-        margin-bottom: 1.25rem;
+        font-size: clamp(2.8rem, 12vw, 4rem);
+        line-height: .91;
+        margin-bottom: 1rem;
     }
 
     .hero-stats {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: .75rem;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
     }
 
     .hero-stat-val {
-        font-size: 1.35rem;
+        font-size: 1.5rem;
     }
 
     .hero-stat-lbl {
-        font-size: .68rem;
+        font-size: .7rem;
     }
 
     .why-strip-inner {

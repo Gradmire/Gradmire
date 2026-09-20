@@ -1622,25 +1622,38 @@
         .nav-ham {
             display: flex;
         }
-        /* Hero mobile */
-        .hero-wrap {
-            padding-top: 2rem;
-        }
+        /* Hero mobile — editorial, text-first, no globe */
         .hero-visual {
-            aspect-ratio: 4/3;
-            max-height: 60vw;
-            border-radius: 24px;
+            display: none;
+        }
+        .hero-wrap {
+            min-height: calc(100dvh - 68px);
+            padding-top: 2.5rem;
+            padding-bottom: 3rem;
         }
         .hero-headline {
-            font-size: clamp(2rem, 9vw, 2.8rem);
+            font-size: clamp(3rem, 13vw, 4.5rem);
+            line-height: .91;
+            letter-spacing: -.04em;
+            margin-bottom: 1.1rem;
         }
         .hero-sub {
-            font-size: .95rem;
-            margin-bottom: 1.5rem;
+            font-size: 1rem;
+            max-width: 100%;
+            margin-bottom: 2rem;
+        }
+        .hero-actions {
+            flex-direction: column;
+            align-items: stretch;
+            gap: .65rem;
+        }
+        .hero-actions .btn-lg {
+            justify-content: center;
+            text-align: center;
         }
         .btn-lg {
-            padding: .72em 1.4em;
-            font-size: .92rem;
+            padding: .85em 1.4em;
+            font-size: .95rem;
         }
         /* Destinations grid */
         .dest-grid {
@@ -2464,20 +2477,20 @@
             });
             globeGroup.add(new THREE.Line(lineGeo, lineMat));
 
-            /* Circular pin, anchored just above the university location. */
+            /* University text-badge pin (no student photos) */
             if (CSS2DObject) {
                 const wrap = document.createElement('div');
                 wrap.style.cssText = [
-                    'width:26px;height:26px;border-radius:50%;overflow:hidden;',
-                    'border:2px solid rgba(255,255,255,.9);',
-                    'box-shadow:0 0 8px rgba(77,166,255,.55);',
-                    `background:${c.color};transition:opacity .35s;`,
+                    'display:inline-block;padding:3px 8px;border-radius:6px;',
+                    `background:${c.color};`,
+                    'color:#fff;font-size:9px;font-weight:700;',
+                    'font-family:system-ui,sans-serif;white-space:nowrap;',
+                    'letter-spacing:.06em;text-transform:uppercase;',
+                    'box-shadow:0 2px 10px rgba(0,0,0,.45);',
+                    'border:1.5px solid rgba(255,255,255,.65);',
+                    'transition:opacity .35s;',
                 ].join('');
-                const img = document.createElement('img');
-                img.src = c.src;
-                img.alt = `${c.label} university marker`;
-                img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
-                wrap.appendChild(img);
+                wrap.textContent = c.label;
                 const obj = new CSS2DObject(wrap);
                 obj.position.copy(labelPos);
                 globeGroup.add(obj);
