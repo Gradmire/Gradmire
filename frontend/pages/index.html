@@ -414,6 +414,8 @@
         position: relative;
         aspect-ratio: 1/1;
         max-height: 72vh;
+        overflow: hidden;
+        border-radius: 50%;
     }
     
     #globe-container {
@@ -1309,12 +1311,13 @@
         background: var(--surface);
         border-top: 1px solid var(--border);
         border-bottom: 1px solid var(--border);
-        padding: 2.25rem var(--gutter);
+        padding: clamp(2rem, 4vw, 3rem) var(--gutter);
     }
     
     .partners-inner {
         max-width: var(--w);
         margin: 0 auto;
+        overflow: hidden;
     }
     
     .partners-label {
@@ -1324,21 +1327,45 @@
         text-align: left;
         letter-spacing: .07em;
         text-transform: uppercase;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.25rem;
     }
     
     .partners-logos {
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        flex-wrap: wrap;
-        gap: 1rem 2rem;
+        flex-wrap: nowrap;
+        gap: 1rem 1.5rem;
+        width: max-content;
+        animation: partner-marquee 32s linear infinite;
+    }
+
+    @keyframes partner-marquee {
+        from {
+            transform: translateX(-50%);
+        }
+        to {
+            transform: translateX(0);
+        }
     }
     
     .partner-chip {
         display: flex;
         align-items: center;
         gap: .6rem;
+        min-width: 132px;
+        padding: .55rem .7rem;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--bg);
+        flex: 0 0 150px;
+        transition: border-color .2s, transform .2s, background .2s;
+    }
+
+    .partner-chip:hover {
+        border-color: var(--accent);
+        background: var(--surface);
+        transform: translateY(-2px);
     }
     
     .partner-badge {
@@ -1359,6 +1386,15 @@
         font-size: .82rem;
         font-weight: 600;
         color: var(--text-s);
+        white-space: nowrap;
+    }
+
+    .partner-chip-school {
+        display: block;
+        margin-top: .1rem;
+        font-size: .62rem;
+        color: var(--text-s);
+        opacity: .75;
         white-space: nowrap;
     }
     
@@ -1593,6 +1629,7 @@
         .hero-visual {
             aspect-ratio: 4/3;
             max-height: 60vw;
+            border-radius: 24px;
         }
         .hero-headline {
             font-size: clamp(2rem, 9vw, 2.8rem);
@@ -1631,6 +1668,26 @@
         .footer-bottom {
             flex-direction: column;
             align-items: flex-start;
+        }
+
+        .partners-logos {
+            gap: .65rem;
+        }
+
+        .partner-chip {
+            flex-basis: 150px;
+            padding: .5rem;
+        }
+
+        .partner-chip-name {
+            font-size: .74rem;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .partners-logos {
+            animation: none;
+            transform: none;
         }
     }
 </style>
@@ -1717,35 +1774,35 @@
         <div class="partners-logos" role="list">
             <div class="partner-chip" role="listitem" title="University of Oxford">
                 <div class="partner-badge" style="background:#002147;color:#fff;">Ox</div>
-                <span class="partner-chip-name">Oxford</span>
+                <span><span class="partner-chip-name">Oxford</span><span class="partner-chip-school">United Kingdom</span></span>
             </div>
             <div class="partner-chip" role="listitem" title="Imperial College London">
                 <div class="partner-badge" style="background:#003E74;color:#fff;">IC</div>
-                <span class="partner-chip-name">Imperial</span>
+                <span><span class="partner-chip-name">Imperial</span><span class="partner-chip-school">United Kingdom</span></span>
             </div>
             <div class="partner-chip" role="listitem" title="University of Toronto">
                 <div class="partner-badge" style="background:#002A5C;color:#fff;">UT</div>
-                <span class="partner-chip-name">Toronto</span>
+                <span><span class="partner-chip-name">Toronto</span><span class="partner-chip-school">Canada</span></span>
             </div>
             <div class="partner-chip" role="listitem" title="University of Melbourne">
                 <div class="partner-badge" style="background:#000F3C;color:#fff;">UM</div>
-                <span class="partner-chip-name">Melbourne</span>
+                <span><span class="partner-chip-name">Melbourne</span><span class="partner-chip-school">Australia</span></span>
             </div>
             <div class="partner-chip" role="listitem" title="TU Munich">
                 <div class="partner-badge" style="background:#0065BD;color:#fff;">TUM</div>
-                <span class="partner-chip-name">TU Munich</span>
+                <span><span class="partner-chip-name">TU Munich</span><span class="partner-chip-school">Germany</span></span>
             </div>
             <div class="partner-chip" role="listitem" title="NUS Singapore">
                 <div class="partner-badge" style="background:#003D7C;color:#fff;">NUS</div>
-                <span class="partner-chip-name">NUS</span>
+                <span><span class="partner-chip-name">NUS</span><span class="partner-chip-school">Singapore</span></span>
             </div>
             <div class="partner-chip" role="listitem" title="McGill University">
                 <div class="partner-badge" style="background:#ED1B2F;color:#fff;">Mc</div>
-                <span class="partner-chip-name">McGill</span>
+                <span><span class="partner-chip-name">McGill</span><span class="partner-chip-school">Canada</span></span>
             </div>
             <div class="partner-chip" role="listitem" title="University of Edinburgh">
                 <div class="partner-badge" style="background:#041E42;color:#fff;">UE</div>
-                <span class="partner-chip-name">Edinburgh</span>
+                <span><span class="partner-chip-name">Edinburgh</span><span class="partner-chip-school">United Kingdom</span></span>
             </div>
         </div>
     </div>
@@ -2070,6 +2127,16 @@
     (function() {
         const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+        const partnerTrack = document.querySelector('.partners-logos');
+        if (partnerTrack && !partnerTrack.dataset.looped) {
+            partnerTrack.dataset.looped = 'true';
+            [...partnerTrack.children].forEach(card => {
+                const clone = card.cloneNode(true);
+                clone.setAttribute('aria-hidden', 'true');
+                partnerTrack.appendChild(clone);
+            });
+        }
+
         /* ── Hero word reveal ──────────────────────────────── */
         const hl = document.getElementById('hero-hl');
         if (hl) {
@@ -2298,110 +2365,107 @@
             );
         }
 
-        /* City markers with Aceternity avatar style */
-        const cities = [{
+        /* University markers stay close to the globe surface so they cannot clip at the visual edge. */
+        const universities = [{
             lat: 40.71,
             lng: -74.01,
-            label: 'New York',
-            src: 'https://assets.aceternity.com/avatars/1.webp'
+            label: 'NYU',
+            color: '#9B2335'
         }, {
             lat: 51.51,
             lng: -0.13,
-            label: 'London',
-            src: 'https://assets.aceternity.com/avatars/2.webp'
+            label: 'UCL',
+            color: '#003E74'
         }, {
             lat: 35.68,
             lng: 139.65,
-            label: 'Tokyo',
-            src: 'https://assets.aceternity.com/avatars/3.webp'
+            label: 'UTokyo',
+            color: '#8B1E3F'
         }, {
             lat: -33.87,
             lng: 151.21,
-            label: 'Sydney',
-            src: 'https://assets.aceternity.com/avatars/4.webp'
+            label: 'USYD',
+            color: '#E64626'
         }, {
             lat: 48.86,
             lng: 2.35,
-            label: 'Paris',
-            src: 'https://assets.aceternity.com/avatars/5.webp'
+            label: 'PSL',
+            color: '#1A4870'
         }, {
             lat: 28.61,
             lng: 77.21,
-            label: 'New Delhi',
-            src: 'https://assets.aceternity.com/avatars/6.webp'
+            label: 'IIT',
+            color: '#B87333'
         }, {
             lat: 55.76,
             lng: 37.62,
-            label: 'Moscow',
-            src: 'https://assets.aceternity.com/avatars/7.webp'
+            label: 'HSE',
+            color: '#007A5A'
         }, {
             lat: -22.91,
             lng: -43.17,
-            label: 'Rio',
-            src: 'https://assets.aceternity.com/avatars/8.webp'
+            label: 'PUC',
+            color: '#2E6F95'
         }, {
             lat: 31.23,
             lng: 121.47,
-            label: 'Shanghai',
-            src: 'https://assets.aceternity.com/avatars/9.webp'
+            label: 'SJTU',
+            color: '#C8102E'
         }, {
             lat: 25.20,
             lng: 55.27,
-            label: 'Dubai',
-            src: 'https://assets.aceternity.com/avatars/10.webp'
+            label: 'AUD',
+            color: '#6C4F3D'
         }, {
             lat: -34.60,
             lng: -58.38,
-            label: 'Buenos Aires',
-            src: 'https://assets.aceternity.com/avatars/11.webp'
+            label: 'UBA',
+            color: '#0072B1'
         }, {
             lat: 1.35,
             lng: 103.82,
-            label: 'Singapore',
-            src: 'https://assets.aceternity.com/avatars/12.webp'
+            label: 'NUS',
+            color: '#EF7C00'
         }, {
             lat: 37.57,
             lng: 126.98,
-            label: 'Seoul',
-            src: 'https://assets.aceternity.com/avatars/13.webp'
+            label: 'SNU',
+            color: '#005BAC'
         }, ];
 
         const pinMat = new THREE.MeshBasicMaterial({
             color: 0xffffff
         });
         const labelObjs = [];
-        cities.forEach(c => {
+        universities.forEach(c => {
             const surfacePos = latlng(c.lat, c.lng, 1.01);
-            const labelPos = latlng(c.lat, c.lng, 1.32);
+            const labelPos = latlng(c.lat, c.lng, 1.12);
 
-            /* White dot on globe surface */
-            const dot = new THREE.Mesh(new THREE.SphereGeometry(0.011, 8, 8), pinMat);
+            /* University pin on the globe surface */
+            const dot = new THREE.Mesh(new THREE.SphereGeometry(0.018, 10, 10), new THREE.MeshBasicMaterial({ color: c.color }));
             dot.position.copy(surfacePos);
             globeGroup.add(dot);
 
-            /* Thin line: surface → avatar */
             const lineGeo = new THREE.BufferGeometry().setFromPoints([surfacePos, labelPos]);
             const lineMat = new THREE.LineBasicMaterial({
                 color: 0xffffff,
                 transparent: true,
-                opacity: 0.45
+                opacity: 0.55
             });
             globeGroup.add(new THREE.Line(lineGeo, lineMat));
 
-            /* CSS2D avatar circle */
+            /* Compact university badge, anchored just above the pin. */
             if (CSS2DObject) {
                 const wrap = document.createElement('div');
                 wrap.style.cssText = [
-                    'width:26px;height:26px;border-radius:50%;overflow:hidden;',
-                    'border:2px solid rgba(255,255,255,.85);',
-                    'box-shadow:0 0 8px rgba(77,166,255,.5);',
-                    'background:#1A4870;transition:opacity .35s;',
+                    'padding:3px 5px;border-radius:5px;',
+                    'border:1px solid rgba(255,255,255,.85);',
+                    'box-shadow:0 2px 8px rgba(10,20,40,.28);',
+                    `background:${c.color};color:#fff;`,
+                    'font:700 8px JetBrains Mono,monospace;letter-spacing:.02em;',
+                    'white-space:nowrap;transition:opacity .35s;',
                 ].join('');
-                const img = document.createElement('img');
-                img.src = c.src;
-                img.alt = c.label;
-                img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
-                wrap.appendChild(img);
+                wrap.textContent = c.label;
                 const obj = new CSS2DObject(wrap);
                 obj.position.copy(labelPos);
                 globeGroup.add(obj);

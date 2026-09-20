@@ -64,10 +64,29 @@
     }
 
     function setupNavigation() {
+        const nav = document.querySelector('.nav');
+        const navInner = nav ? nav.querySelector('.nav-inner') : null;
+        const navTarget = navInner || nav;
+        if (navTarget && !navTarget.querySelector('.nav-ham')) {
+            const ham = document.createElement('button');
+            ham.className = 'nav-ham';
+            ham.type = 'button';
+            ham.setAttribute('aria-label', 'Open menu');
+            ham.setAttribute('aria-expanded', 'false');
+            ham.innerHTML = '<svg width="22" height="16" viewBox="0 0 22 16" fill="none" aria-hidden="true"><rect y="0" width="22" height="2" rx="1" fill="currentColor"/><rect y="7" width="22" height="2" rx="1" fill="currentColor"/><rect y="14" width="22" height="2" rx="1" fill="currentColor"/></svg>';
+            navTarget.appendChild(ham);
+        }
+
         const links = document.querySelector('.nav-links');
         if (links) links.innerHTML = navItems.join('');
 
-        const mobile = document.querySelector('.nav-mobile');
+        let mobile = document.querySelector('.nav-mobile');
+        if (nav && !mobile) {
+            mobile = document.createElement('div');
+            mobile.className = 'nav-mobile';
+            mobile.setAttribute('aria-label', 'Mobile navigation');
+            nav.insertAdjacentElement('afterend', mobile);
+        }
         if (mobile) {
             mobile.innerHTML = `<ul class="nav-mobile-links" role="list">${mobileItems.join('')}</ul>`;
         }
