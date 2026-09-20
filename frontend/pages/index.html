@@ -1655,17 +1655,24 @@
             padding: .85em 1.4em;
             font-size: .95rem;
         }
-        /* Destinations grid */
+        /* Destinations grid: true single column on mobile */
         .dest-grid {
             grid-template-columns: 1fr;
             grid-template-rows: none;
+            grid-auto-rows: auto;
         }
         .dest-cell:nth-child(1) {
             grid-column: span 1;
+            grid-row: span 1;
             aspect-ratio: 4/3;
         }
         .dest-cell {
             aspect-ratio: 4/3;
+        }
+        .dest-stat {
+            grid-column: span 1;
+            flex-direction: column;
+            gap: .35rem;
         }
         .evidence-inner {
             grid-template-columns: 1fr 1fr;
