@@ -2370,72 +2370,82 @@
             lat: 40.71,
             lng: -74.01,
             label: 'NYU',
-            color: '#9B2335'
+            color: '#9B2335',
+            src: 'https://assets.aceternity.com/avatars/1.webp'
         }, {
             lat: 51.51,
             lng: -0.13,
             label: 'UCL',
-            color: '#003E74'
+            color: '#003E74',
+            src: 'https://assets.aceternity.com/avatars/2.webp'
         }, {
             lat: 35.68,
             lng: 139.65,
             label: 'UTokyo',
-            color: '#8B1E3F'
+            color: '#8B1E3F',
+            src: 'https://assets.aceternity.com/avatars/3.webp'
         }, {
             lat: -33.87,
             lng: 151.21,
             label: 'USYD',
-            color: '#E64626'
+            color: '#E64626',
+            src: 'https://assets.aceternity.com/avatars/4.webp'
         }, {
             lat: 48.86,
             lng: 2.35,
             label: 'PSL',
-            color: '#1A4870'
+            color: '#1A4870',
+            src: 'https://assets.aceternity.com/avatars/5.webp'
         }, {
             lat: 28.61,
             lng: 77.21,
             label: 'IIT',
-            color: '#B87333'
+            color: '#B87333',
+            src: 'https://assets.aceternity.com/avatars/6.webp'
         }, {
             lat: 55.76,
             lng: 37.62,
             label: 'HSE',
-            color: '#007A5A'
+            color: '#007A5A',
+            src: 'https://assets.aceternity.com/avatars/7.webp'
         }, {
             lat: -22.91,
             lng: -43.17,
             label: 'PUC',
-            color: '#2E6F95'
+            color: '#2E6F95',
+            src: 'https://assets.aceternity.com/avatars/8.webp'
         }, {
             lat: 31.23,
             lng: 121.47,
             label: 'SJTU',
-            color: '#C8102E'
+            color: '#C8102E',
+            src: 'https://assets.aceternity.com/avatars/9.webp'
         }, {
             lat: 25.20,
             lng: 55.27,
             label: 'AUD',
-            color: '#6C4F3D'
+            color: '#6C4F3D',
+            src: 'https://assets.aceternity.com/avatars/10.webp'
         }, {
             lat: -34.60,
             lng: -58.38,
             label: 'UBA',
-            color: '#0072B1'
+            color: '#0072B1',
+            src: 'https://assets.aceternity.com/avatars/11.webp'
         }, {
             lat: 1.35,
             lng: 103.82,
             label: 'NUS',
-            color: '#EF7C00'
+            color: '#EF7C00',
+            src: 'https://assets.aceternity.com/avatars/12.webp'
         }, {
             lat: 37.57,
             lng: 126.98,
             label: 'SNU',
-            color: '#005BAC'
+            color: '#005BAC',
+            src: 'https://assets.aceternity.com/avatars/13.webp'
         }, ];
 
-        const pinMat = new THREE.MeshBasicMaterial({
-            color: 0xffffff
-        });
         const labelObjs = [];
         universities.forEach(c => {
             const surfacePos = latlng(c.lat, c.lng, 1.01);
@@ -2454,18 +2464,20 @@
             });
             globeGroup.add(new THREE.Line(lineGeo, lineMat));
 
-            /* Compact university badge, anchored just above the pin. */
+            /* Circular pin, anchored just above the university location. */
             if (CSS2DObject) {
                 const wrap = document.createElement('div');
                 wrap.style.cssText = [
-                    'padding:3px 5px;border-radius:5px;',
-                    'border:1px solid rgba(255,255,255,.85);',
-                    'box-shadow:0 2px 8px rgba(10,20,40,.28);',
-                    `background:${c.color};color:#fff;`,
-                    'font:700 8px JetBrains Mono,monospace;letter-spacing:.02em;',
-                    'white-space:nowrap;transition:opacity .35s;',
+                    'width:26px;height:26px;border-radius:50%;overflow:hidden;',
+                    'border:2px solid rgba(255,255,255,.9);',
+                    'box-shadow:0 0 8px rgba(77,166,255,.55);',
+                    `background:${c.color};transition:opacity .35s;`,
                 ].join('');
-                wrap.textContent = c.label;
+                const img = document.createElement('img');
+                img.src = c.src;
+                img.alt = `${c.label} university marker`;
+                img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
+                wrap.appendChild(img);
                 const obj = new CSS2DObject(wrap);
                 obj.position.copy(labelPos);
                 globeGroup.add(obj);
