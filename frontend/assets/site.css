@@ -133,6 +133,10 @@
     cursor: pointer;
 }
 
+.nav-mobile {
+    display: none;
+}
+
 .nav-mobile .nav-dropdown-menu {
     position: static;
     display: block;
