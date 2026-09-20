@@ -139,7 +139,7 @@
 
 .nav-mobile .nav-dropdown-menu {
     position: static;
-    display: block;
+    display: none;
     min-width: 0;
     padding: .15rem 0 .35rem .85rem;
     border: 0;
@@ -149,6 +149,14 @@
     pointer-events: auto;
     transform: none;
     background: transparent;
+}
+
+.nav-mobile .nav-dropdown-menu.show {
+    display: block;
+    position: static;
+    transform: none;
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .nav-mobile .nav-dropdown>button {
@@ -631,4 +639,38 @@
     .schol-deadline {
         flex-shrink: 0;
     }
+}
+
+/* ── Bootstrap Dropdown integration ─────────────────────────── */
+/* Bootstrap JS adds .show when opened via click/keyboard        */
+.nav-dropdown-menu.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, 0);
+}
+
+/* Chevron rotates when Bootstrap sets aria-expanded="true" */
+.nav-dropdown > button[aria-expanded="true"] .nav-dropdown-chevron {
+    transform: rotate(180deg);
+}
+
+/* "View all" link accent */
+.nav-view-all {
+    color: var(--brand) !important;
+    font-weight: 600;
+}
+
+/* Mobile dropdown items: tighter spacing inside collapsed groups */
+.nav-mobile .nav-dropdown-menu a.dropdown-item {
+    padding: .4rem 0;
+    font-size: 1rem;
+    border-radius: 0;
+}
+
+/* Mobile: dropdown toggle button matches other mobile nav links */
+.nav-mobile .nav-dropdown > button {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    width: 100%;
 }

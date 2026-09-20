@@ -4,25 +4,38 @@
     const pagePrefix = isToolPage ? '../' : '';
     const page = (name) => `${pagePrefix}${name}`;
 
+    const chevron = '<svg class="nav-dropdown-chevron" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="m2.25 4.5 3.75 3 3.75-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
     const navItems = [
-        `<li><a href="${page('destinations.html')}">Destinations</a></li>`,
-        `<li><a href="${page('find-courses.html')}">Courses</a></li>`,
-        `<li><a href="${page('find-universities.html')}">Universities</a></li>`,
-        `<li><a href="${page('scholarships.html')}">Scholarships</a></li>`,
         `<li class="nav-dropdown">
-      <button type="button" aria-haspopup="true">Explore
-        <svg class="nav-dropdown-chevron" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="m2.25 4.5 3.75 3 3.75-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-      <div class="nav-dropdown-menu" role="menu">
-        <span class="nav-dropdown-label">Tools</span>
-        <a href="${page('tools/roi-calculator.html')}" role="menuitem">ROI calculator</a>
-        <a href="${page('tools/comparator.html')}" role="menuitem">University comparator</a>
-        <a href="${page('tools/deadline-tracker.html')}" role="menuitem">Deadline tracker</a>
-        <span class="nav-dropdown-label">More</span>
-        <a href="${page('events.html')}" role="menuitem">Events</a>
-        <a href="${page('faq.html')}" role="menuitem">FAQ</a>
+      <button type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false" aria-haspopup="true">Destinations ${chevron}</button>
+      <div class="nav-dropdown-menu dropdown-menu" role="menu">
+        <span class="nav-dropdown-label">Popular</span>
+        <a href="${page('study-in-uk.html')}" class="dropdown-item" role="menuitem">United Kingdom</a>
+        <a href="${page('study-in-usa.html')}" class="dropdown-item" role="menuitem">United States</a>
+        <a href="${page('study-in-canada.html')}" class="dropdown-item" role="menuitem">Canada</a>
+        <a href="${page('study-in-australia.html')}" class="dropdown-item" role="menuitem">Australia</a>
+        <span class="nav-dropdown-label">Europe</span>
+        <a href="${page('study-in-germany.html')}" class="dropdown-item" role="menuitem">Germany</a>
+        <a href="${page('study-in-ireland.html')}" class="dropdown-item" role="menuitem">Ireland</a>
+        <a href="${page('study-in-italy.html')}" class="dropdown-item" role="menuitem">Italy</a>
+        <a href="${page('study-in-newzealand.html')}" class="dropdown-item" role="menuitem">New Zealand</a>
+        <a href="${page('destinations.html')}" class="dropdown-item nav-view-all" role="menuitem">View all destinations →</a>
       </div>
     </li>`,
+        `<li class="nav-dropdown">
+      <button type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false" aria-haspopup="true">Courses ${chevron}</button>
+      <div class="nav-dropdown-menu dropdown-menu" role="menu">
+        <a href="${page('find-courses.html')}" class="dropdown-item" role="menuitem">Find Courses</a>
+        <a href="${page('find-universities.html')}" class="dropdown-item" role="menuitem">Find Universities</a>
+        <a href="${page('scholarships.html')}" class="dropdown-item" role="menuitem">Scholarships</a>
+        <span class="nav-dropdown-label">Tools</span>
+        <a href="${page('tools/roi-calculator.html')}" class="dropdown-item" role="menuitem">ROI Calculator</a>
+        <a href="${page('tools/comparator.html')}" class="dropdown-item" role="menuitem">Course Comparator</a>
+        <a href="${page('tools/deadline-tracker.html')}" class="dropdown-item" role="menuitem">Deadline Tracker</a>
+      </div>
+    </li>`,
+        `<li><a href="${page('faq.html')}">FAQ</a></li>`,
         `<li><a href="${page('about.html')}">About</a></li>`
     ];
 
@@ -78,7 +91,14 @@
         }
 
         const links = document.querySelector('.nav-links');
-        if (links) links.innerHTML = navItems.join('');
+        if (links) {
+            links.innerHTML = navItems.join('');
+            if (typeof bootstrap !== 'undefined') {
+                links.querySelectorAll('[data-bs-toggle="dropdown"]').forEach(el => {
+                    new bootstrap.Dropdown(el, { display: 'static' });
+                });
+            }
+        }
 
         let mobile = document.querySelector('.nav-mobile');
         if (nav && !mobile) {
@@ -89,6 +109,11 @@
         }
         if (mobile) {
             mobile.innerHTML = `<ul class="nav-mobile-links" role="list">${mobileItems.join('')}</ul>`;
+            if (typeof bootstrap !== 'undefined') {
+                mobile.querySelectorAll('[data-bs-toggle="dropdown"]').forEach(el => {
+                    new bootstrap.Dropdown(el, { display: 'static' });
+                });
+            }
         }
 
         const ham = document.querySelector('.nav-ham');
