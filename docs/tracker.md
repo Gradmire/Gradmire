@@ -187,3 +187,14 @@ Metrics snapshot (leads, bookings, conversion %):
 **Accuracy note:** country work-permission and wage panels are dated 8 October 2026 and link to official authorities. Statutory floors are labelled as legal floors rather than typical student pay; Italy/Finland pay is described without implying a national statutory minimum. Official visa checklists remain controlling and should be rechecked before a user submits an application. Existing sample course/scholarship listings elsewhere in the static site still require ongoing content-owner verification.
 
 **Scope boundary:** this delivery covers frontend/UI and static content only. The broader roadmap’s CMS, API, search infrastructure, CRM, analytics and production-readiness tasks remain tracked separately and are not marked complete by this work.
+
+
+## October 2026 follow-up — routing and Germany imagery QA
+
+**Completed:** repaired duplicate Tools/FAQ markup and empty placeholder links across the site; made blog preview, dashboard, service, and login-support links route to relevant live pages or in-page targets; unified the standalone landing-page mobile menu with the shared controller; and added contextual Contact-form prefill for visa, test-prep, and account-help deep links.
+
+**Germany page:** replaced the mismatched university/city images with 14 verified, optimized local derivatives, corrected institution alt text, and documented source licenses/attributions. Browser verification confirmed all 15 image usages load, all 14 credits are present, and the Career Prospects grid is correctly separated from the employer strip.
+
+**Validation:** frontend link checker, shared JavaScript syntax check, whitespace check, source-level link/navigation audit, and local fragment audit passed. Browser QA passed across all nine destination pages at 390px and 320px, including keyboard menu close/focus return and reduced-motion behavior; additional checks covered Course Finder query aliases, Contact topic prefill, dashboard anchors, blog routes, and the standalone landing menu. No production deployment was checked in this pass.
+
+**Status:** feature branch `feature/gradmire-destination-ux-oct-2026` is ready for GitHub PR creation to `master`. Sample catalogue coverage remains limited for some Course Finder subjects, and dedicated blog-detail pages remain a separate content task.

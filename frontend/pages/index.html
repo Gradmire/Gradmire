@@ -1,4 +1,7 @@
-﻿<meta charset="UTF-8">
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Gradmire - Study Abroad Counselling for Indian Students</title>
 <meta name="description" content="India's most trusted study-abroad platform. Expert counsellors for UK, USA, Canada, Australia and Europe. 47,000+ students placed. Free consultation.">
@@ -413,17 +416,23 @@
     .hero-visual {
         position: relative;
         aspect-ratio: 1/1;
-        max-height: 72vh;
-        overflow: hidden;
+        width: min(100%, 580px);
+        max-height: min(72vh, 580px);
+        overflow: visible;
         border-radius: 50%;
+        isolation: isolate;
     }
     
     #globe-container {
         position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
+        inset: 5%;
+        width: 90%;
+        height: 90%;
+        overflow: hidden;
+        border-radius: 50%;
+        background: radial-gradient(circle at 35% 28%, rgba(84, 160, 221, .2), rgba(9, 17, 34, .92) 68%);
         cursor: grab;
+        touch-action: pan-y;
     }
     
     #globe-container:active {
@@ -432,6 +441,69 @@
     
     #globe-container canvas {
         display: block;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        z-index: 1;
+    }
+
+    .globe-fallback {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: url('../assets/earth-texture.jpg') center / cover no-repeat, radial-gradient(circle at 34% 28%, #64a5ca, #16364c 68%, #0a1220 100%);
+        box-shadow: inset 18px 4px 32px rgba(1, 8, 20, .5), inset -20px -8px 28px rgba(1, 8, 20, .62), 0 0 52px rgba(47, 163, 218, .22);
+        opacity: .9;
+    }
+
+    #globe-container.globe-ready .globe-fallback { opacity: 0; visibility: hidden; }
+    #globe-container.globe-fallback-only canvas { display: none; }
+
+    .globe-orbit {
+        position: absolute;
+        z-index: 2;
+        inset: 2%;
+        border: 1px solid rgba(107, 199, 236, .35);
+        border-radius: 50%;
+        pointer-events: none;
+        transform-style: preserve-3d;
+    }
+    .globe-orbit--one { transform: rotateX(66deg) rotateZ(-22deg); animation: globe-orbit-roll-one 54s linear infinite; }
+    .globe-orbit--two { inset: 7%; border-color: rgba(255, 255, 255, .16); transform: rotateX(66deg) rotateZ(54deg); animation: globe-orbit-roll-two 72s linear infinite reverse; }
+    @keyframes globe-orbit-roll-one {
+        from { transform: rotateX(66deg) rotateZ(-22deg); }
+        to { transform: rotateX(66deg) rotateZ(338deg); }
+    }
+    @keyframes globe-orbit-roll-two {
+        from { transform: rotateX(66deg) rotateZ(54deg); }
+        to { transform: rotateX(66deg) rotateZ(414deg); }
+    }
+    .globe-meta-chip {
+        position: absolute;
+        z-index: 3;
+        top: 9%;
+        right: -2%;
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        padding: .58rem .8rem;
+        border: 1px solid rgba(255, 255, 255, .22);
+        border-radius: 999px;
+        background: rgba(14, 24, 39, .76);
+        color: rgba(255, 255, 255, .94);
+        font: 700 .67rem/1 var(--mono);
+        letter-spacing: .07em;
+        text-transform: uppercase;
+        box-shadow: 0 8px 28px rgba(1, 8, 20, .24);
+        backdrop-filter: blur(14px);
+    }
+    .globe-meta-chip::before { content: ''; width: .45rem; height: .45rem; border-radius: 50%; background: #48d5a5; box-shadow: 0 0 12px rgba(72, 213, 165, .75); }
+
+    @media (max-width: 1024px) {
+        .hero-visual { width: min(76vw, 500px); max-height: none; margin: 0 auto; }
+    }
+    @media (max-width: 900px) {
+        .hero-visual { width: min(78vw, 440px); aspect-ratio: 1; max-height: none; }
     }
     
     .hero-img {
@@ -1699,10 +1771,7 @@
         .hero {
             grid-template-columns: 1fr;
         }
-        .hero-visual {
-            aspect-ratio: 16/9;
-            max-height: 50vh;
-        }
+        .hero-visual { aspect-ratio: 1; max-height: none; }
         .dest-grid {
             grid-template-columns: 1fr 1fr;
             grid-auto-rows: 210px;
@@ -1762,10 +1831,7 @@
             gap: 2rem;
             padding-bottom: 0;
         }
-        .hero-visual {
-            aspect-ratio: 3/2;
-            max-height: 48vw;
-        }
+        .hero-visual { aspect-ratio: 1; width: min(78vw, 440px); max-height: none; margin: 0 auto; }
         .hero-headline {
             font-size: clamp(2.4rem, 7vw, 3.6rem);
         }
@@ -1779,14 +1845,18 @@
         .nav-ham {
             display: flex;
         }
-        /* Hero mobile — editorial, text-first, no globe */
+        /* Hero mobile — keep the globe visible, but secondary to the message. */
         .hero-visual {
-            display: none;
+            display: block;
+            width: min(78vw, 330px);
+            max-height: none;
+            margin: .8rem auto 0;
+            aspect-ratio: 1;
         }
         .hero-wrap {
-            min-height: calc(100dvh - 68px);
-            padding-top: 2.5rem;
-            padding-bottom: 3rem;
+            min-height: auto;
+            padding-top: 2rem;
+            padding-bottom: 2.5rem;
         }
         .hero-headline {
             font-size: clamp(3rem, 13vw, 4.5rem);
@@ -1823,6 +1893,9 @@
         .hero-trust-row {
             gap: .35rem;
         }
+        .globe-meta-chip { top: 8%; right: -1%; padding: .48rem .62rem; font-size: .58rem; }
+        .globe-orbit--one { inset: 1%; }
+        .globe-orbit--two { inset: 6%; }
         /* Destinations grid: true single column on mobile */
         .dest-grid {
             grid-template-columns: 1fr;
@@ -1923,6 +1996,8 @@
     .dest-cell { isolation:isolate; transition:opacity .6s ease,transform .6s ease,box-shadow .32s ease; }
     .dest-cell:hover,.dest-cell:focus-visible { box-shadow:0 18px 40px rgba(14,20,32,.18),inset 0 0 0 1px rgba(255,255,255,.6); }
     .dest-cell-bg { will-change:transform; }
+    .dest-cell[data-spotlight]::after { content:""; position:absolute; z-index:2; inset:0; border-radius:inherit; background:radial-gradient(240px circle at var(--spot-x,50%) var(--spot-y,50%),rgba(89,221,185,.22),transparent 76%); opacity:0; transition:opacity .22s ease; pointer-events:none; mix-blend-mode:screen; }
+    .dest-cell[data-spotlight]:hover::after,.dest-cell[data-spotlight]:focus-visible::after { opacity:1; }
     .dest-name { transition:transform .35s cubic-bezier(.16,1,.3,1); }
     .dest-cell:hover .dest-name,.dest-cell:focus-visible .dest-name { transform:translateY(-3px); }
 
@@ -1974,16 +2049,20 @@
       .partner-chip,.dest-cell,.dest-cell-bg,.dest-name,.journey-photo,.tool-card,.voice,.home-faq-list details,.home-faq-list summary::after { transition:none!important; }
       .dest-cell:hover,.dest-cell:focus-visible,.tool-card:hover,.voice:hover,.home-faq-list details:hover { transform:none; }
       .spotlight-card::before { display:none; }
+      .globe-orbit { animation:none!important; }
     }
 
 </style>
-<link rel="stylesheet" href="../assets/site.css?v=4">
+<link rel="stylesheet" href="../assets/site.css?v=7">
+
+</head>
+<body>
 
 <!-- NAV -->
 <div class="page-progress" aria-hidden="true"><span class="page-progress-bar"></span></div>
 <nav class="nav" aria-label="Main navigation">
     <div class="nav-inner">
-        <a href="#" class="nav-logo"><img src="../assets/gradmire-logo.png" alt="Gradmire" height="34" style="display:block;max-width:155px;"></a>
+        <a href="index.html" class="nav-logo"><img src="../assets/gradmire-logo.png" alt="Gradmire" height="34" style="display:block;max-width:155px;"></a>
         <ul class="nav-links" role="list">
             <li><a href="destinations.html">Destinations</a></li>
             <li><a href="find-courses.html">Courses</a></li>
@@ -2033,7 +2112,12 @@
             </div>
         </div>
         <div class="hero-visual" aria-hidden="true">
-            <div id="globe-container"></div>
+            <div class="globe-orbit globe-orbit--one"></div>
+            <div class="globe-orbit globe-orbit--two"></div>
+            <div id="globe-container">
+                <div class="globe-fallback"></div>
+            </div>
+            <span class="globe-meta-chip">9 study destinations</span>
         </div>
     </div>
 </section>
@@ -2139,54 +2223,54 @@
     </div>
     <div class="dest-grid" role="list">
         <!-- col 1, rows 1–2: UK tall -->
-        <a href="study-in-uk.html" class="dest-cell" aria-label="Study in United Kingdom">
+        <a href="study-in-uk.html" class="dest-cell" data-spotlight aria-label="Study in United Kingdom">
             <div class="dest-cell-bg bg-uk"></div>
             <div class="dest-overlay" aria-hidden="true"></div>
             <span class="dest-name">United Kingdom</span><span class="dest-meta">Typical master’s: 1–2 years · Bachelor’s: 3–4 years</span>
         </a>
         <!-- col 2, row 1 -->
-        <a href="study-in-usa.html" class="dest-cell" aria-label="Study in USA">
+        <a href="study-in-usa.html" class="dest-cell" data-spotlight aria-label="Study in USA">
             <div class="dest-cell-bg bg-usa"></div>
             <div class="dest-overlay" aria-hidden="true"></div>
             <span class="dest-name">USA</span><span class="dest-meta">Typical master’s: 1–2 years · Bachelor’s: 3–4 years</span>
         </a>
         <!-- col 3, row 1 -->
-        <a href="study-in-canada.html" class="dest-cell" aria-label="Study in Canada">
+        <a href="study-in-canada.html" class="dest-cell" data-spotlight aria-label="Study in Canada">
             <div class="dest-cell-bg bg-canada"></div>
             <div class="dest-overlay" aria-hidden="true"></div>
             <span class="dest-name">Canada</span><span class="dest-meta">Typical master’s: 1–2 years · Bachelor’s: 3–4 years</span>
         </a>
         <!-- col 2, row 2 -->
-        <a href="study-in-germany.html" class="dest-cell" aria-label="Study in Germany">
+        <a href="study-in-germany.html" class="dest-cell" data-spotlight aria-label="Study in Germany">
             <div class="dest-cell-bg bg-germany"></div>
             <div class="dest-overlay" aria-hidden="true"></div>
             <span class="dest-name">Germany</span><span class="dest-meta">Typical master’s: 1–2 years · Bachelor’s: 3–4 years</span>
         </a>
         <!-- col 3, row 2 -->
-        <a href="study-in-australia.html" class="dest-cell" aria-label="Study in Australia">
+        <a href="study-in-australia.html" class="dest-cell" data-spotlight aria-label="Study in Australia">
             <div class="dest-cell-bg bg-australia"></div>
             <div class="dest-overlay" aria-hidden="true"></div>
             <span class="dest-name">Australia</span><span class="dest-meta">Typical master’s: 1–2 years · Bachelor’s: 3–4 years</span>
         </a>
         <!-- col 1, row 3 -->
-        <a href="study-in-ireland.html" class="dest-cell" aria-label="Study in Ireland">
+        <a href="study-in-ireland.html" class="dest-cell" data-spotlight aria-label="Study in Ireland">
             <div class="dest-cell-bg bg-ireland"></div>
             <div class="dest-overlay" aria-hidden="true"></div>
             <span class="dest-name">Ireland</span><span class="dest-meta">Typical master’s: 1–2 years · Bachelor’s: 3–4 years</span>
         </a>
         <!-- col 2, row 3 -->
-        <a href="study-in-italy.html" class="dest-cell" aria-label="Study in Italy">
+        <a href="study-in-italy.html" class="dest-cell" data-spotlight aria-label="Study in Italy">
             <div class="dest-cell-bg bg-italy"></div>
             <div class="dest-overlay" aria-hidden="true"></div>
             <span class="dest-name">Italy</span><span class="dest-meta">Typical master’s: 1–2 years · Bachelor’s: 3–4 years</span>
         </a>
         <!-- col 3, row 3 -->
-        <a href="study-in-newzealand.html" class="dest-cell" aria-label="Study in New Zealand">
+        <a href="study-in-newzealand.html" class="dest-cell" data-spotlight aria-label="Study in New Zealand">
             <div class="dest-cell-bg bg-nz"></div>
             <div class="dest-overlay" aria-hidden="true"></div>
             <span class="dest-name">New Zealand</span><span class="dest-meta">Typical master’s: 1–2 years · Bachelor’s: 3–4 years</span>
         </a>
-        <a href="study-in-finland.html" class="dest-cell" aria-label="Study in Finland">
+        <a href="study-in-finland.html" class="dest-cell" data-spotlight aria-label="Study in Finland">
             <div class="dest-cell-bg bg-finland"></div>
             <div class="dest-overlay" aria-hidden="true"></div>
             <span class="dest-name">Finland</span><span class="dest-meta">Master’s: typically 2 years · Bachelor’s: typically 3 years</span>
@@ -2498,6 +2582,19 @@
                     const rect = card.getBoundingClientRect();
                     card.style.setProperty('--spot-x', `${Math.round(event.clientX - rect.left)}px`);
                     card.style.setProperty('--spot-y', `${Math.round(event.clientY - rect.top)}px`);
+                    if (card.classList.contains('dest-cell')) {
+                        const image = card.querySelector('.dest-cell-bg');
+                        if (image) {
+                            const x = (event.clientX - rect.left) / Math.max(rect.width, 1) - .5;
+                            const y = (event.clientY - rect.top) / Math.max(rect.height, 1) - .5;
+                            image.style.transform = `scale(1.045) perspective(900px) rotateX(${(-y * 3).toFixed(2)}deg) rotateY(${(x * 3).toFixed(2)}deg)`;
+                        }
+                    }
+                });
+                card.addEventListener('pointerleave', () => {
+                    card.style.removeProperty('--spot-x');
+                    card.style.removeProperty('--spot-y');
+                    card.querySelector('.dest-cell-bg')?.style.removeProperty('transform');
                 });
             });
         }
@@ -2674,17 +2771,24 @@
     /* ── 3D Globe (realistic Earth) ────────────────────────── */
     (function() {
         const container = document.getElementById('globe-container');
-        if (!container || typeof THREE === 'undefined') return;
+        if (!container) return;
+        if (typeof THREE === 'undefined') {
+            container.classList.add('globe-fallback-only');
+            return;
+        }
 
         let W = container.offsetWidth || 500;
         let H = container.offsetHeight || 500;
 
         /* WebGL renderer */
-        const renderer = new THREE.WebGLRenderer({
-            antialias: true,
-            alpha: true
-        });
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        let renderer;
+        try {
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'low-power' });
+        } catch (error) {
+            container.classList.add('globe-fallback-only');
+            return;
+        }
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.innerWidth < 700 ? 1.5 : 2));
         renderer.setSize(W, H);
         container.appendChild(renderer.domElement);
 
@@ -2699,6 +2803,7 @@
                 position: 'absolute',
                 top: '0',
                 left: '0',
+                zIndex: '2',
                 pointerEvents: 'none',
                 overflow: 'visible',
             });
@@ -2714,8 +2819,9 @@
 
         /* Earth sphere with real textures */
         const tl = new THREE.TextureLoader();
+        const earthTexture = tl.load('../assets/earth-texture.jpg', () => container.classList.add('globe-ready'), undefined, () => container.classList.add('globe-fallback-only'));
         const earthMat = new THREE.MeshPhongMaterial({
-            map: tl.load('../assets/earth-texture.jpg'),
+            map: earthTexture,
             specularMap: tl.load('../assets/earth-specular.jpg'),
             normalMap: tl.load('../assets/earth-normal.jpg'),
             normalScale: new THREE.Vector2(0.05, 0.05),
@@ -2870,28 +2976,38 @@
         });
 
         /* Drag-to-rotate */
+        const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
         let dragging = false,
             px = 0,
             py = 0,
-            autoSpin = true;
+            autoSpin = !motionPreference.matches,
+            needsRender = true;
         renderer.domElement.addEventListener('pointerdown', e => {
+            if (e.pointerType === 'mouse' && e.button !== 0) return;
             dragging = true;
             autoSpin = false;
             px = e.clientX;
             py = e.clientY;
+            needsRender = true;
         });
         window.addEventListener('pointermove', e => {
             if (!dragging) return;
             globeGroup.rotation.y += (e.clientX - px) * 0.006;
-            globeGroup.rotation.x += (e.clientY - py) * 0.006;
+            globeGroup.rotation.x = THREE.MathUtils.clamp(globeGroup.rotation.x + (e.clientY - py) * 0.006, -0.85, 0.85);
             px = e.clientX;
             py = e.clientY;
+            needsRender = true;
         });
         window.addEventListener('pointerup', () => {
             dragging = false;
             setTimeout(() => {
-                autoSpin = true;
+                autoSpin = !motionPreference.matches;
             }, 1800);
+            needsRender = true;
+        });
+        motionPreference.addEventListener?.('change', event => {
+            autoSpin = !event.matches;
+            needsRender = true;
         });
 
         /* Render loop */
@@ -2899,7 +3015,12 @@
         const _markerWorld = new THREE.Vector3();
         (function loop() {
             requestAnimationFrame(loop);
-            if (autoSpin && !dragging) globeGroup.rotation.y += 0.002;
+            if (document.hidden) return;
+            if (autoSpin && !dragging) {
+                globeGroup.rotation.y += 0.0018;
+                needsRender = true;
+            }
+            if (!needsRender) return;
             /* Depth-cull: smoothly fade markers on the back hemisphere */
             if (labelObjs.length) {
                 camera.getWorldDirection(_camDir).negate();
@@ -2912,6 +3033,7 @@
             }
             renderer.render(scene, camera);
             if (labelRenderer) labelRenderer.render(scene, camera);
+            needsRender = false;
         })();
 
         /* Responsive resize */
@@ -2923,9 +3045,13 @@
             if (labelRenderer) labelRenderer.setSize(W, H);
             camera.aspect = W / H;
             camera.updateProjectionMatrix();
+            needsRender = true;
         }).observe(container);
     })();
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../assets/site.js"></script>
+<script src="../assets/site.js?v=7"></script>
+
+</body>
+</html>

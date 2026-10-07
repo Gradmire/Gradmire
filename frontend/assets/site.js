@@ -30,7 +30,9 @@
         dropdown('MBBS Abroad', `${destinations.filter(([name]) => name !== 'Finland').map(([name]) => link(`${page('find-courses.html')}?course=${encodeURIComponent('Medicine')}`, `${name} · Medicine / MBBS`)).join('')}${link(page('destinations.html'), 'Explore destinations →')}`),
         dropdown('Student Services', `${link(page('free-consultation.html'), 'Free counselling')}${link(page('free-consultation.html'), 'Test preparation')}${link(page('free-consultation.html'), 'Visa assistance')}${link(page('free-consultation.html'), 'Application assistance')}${link(page('find-courses.html'), 'Course selection guidance')}`),
         dropdown('Scholarships', `<span class="nav-dropdown-label">Explore by country</span>${destinations.map(([name, slug]) => link(scholarshipPage(slug), `Scholarships in ${name}`)).join('')}${link(page('scholarships.html'), 'All scholarships →')}`),
-        dropdown('Student Tools', `${link(page('find-courses.html'), 'Course finder')}${link(page('tools/roi-calculator.html'), 'Study cost calculator')}${link(page('tools/comparator.html'), 'Course comparator')}${link(page('tools/deadline-tracker.html'), 'Deadline tracker')}${link(page('tools/grade-converter.html'), 'GPA / CGPA / SGPA converter')}`)
+        dropdown('Student Tools', `${link(page('find-courses.html'), 'Course finder')}${link(page('tools/roi-calculator.html'), 'Study cost calculator')}${link(page('tools/comparator.html'), 'Course comparator')}${link(page('tools/deadline-tracker.html'), 'Deadline tracker')}${link(page('tools/grade-converter.html'), 'GPA / CGPA / SGPA converter')}`),
+        `<li class="nav-primary-link"><a href="${page('faq.html')}">FAQ</a></li>`,
+        `<li class="nav-primary-link"><a href="${page('about.html')}">About</a></li>`
     ];
 
     function icon(kind) {
@@ -55,7 +57,7 @@
         toggle.innerHTML = `${icon('sun')}${icon('moon')}`;
         toggle.addEventListener('click', () => {
             const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
-            localStorage.setItem('gradmire-theme', next);
+            try { localStorage.setItem('gradmire-theme', next); } catch (_) {}
             applyTheme(next);
         });
         const navInner = document.querySelector('.nav-inner');
@@ -110,23 +112,41 @@
         mobile.innerHTML = `<ul class="nav-mobile-links" role="list">${navItems.join('')}
           <li><a href="${page('free-consultation.html')}" class="btn btn-primary">Book free consultation</a></li>
         </ul>`;
+        mobile.id = mobile.id || 'mobile-nav';
+        mobile.setAttribute('role', 'navigation');
+        mobile.setAttribute('aria-label', 'Mobile navigation');
+        mobile.setAttribute('aria-hidden', 'true');
+        mobile.setAttribute('inert', '');
         setupDropdowns(nav, false);
         setupDropdowns(mobile, true);
 
         const ham = nav.querySelector('.nav-ham');
-        ham.addEventListener('click', () => {
-            const open = mobile.classList.toggle('is-open');
+        ham.setAttribute('aria-controls', mobile.id);
+        ham.setAttribute('aria-expanded', 'false');
+        const setMobileOpen = (open) => {
+            mobile.classList.toggle('is-open', open);
+            ham.classList.toggle('is-open', open);
+            mobile.setAttribute('aria-hidden', String(!open));
+            if (open) mobile.removeAttribute('inert');
+            else mobile.setAttribute('inert', '');
             ham.setAttribute('aria-expanded', String(open));
             ham.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+            document.body.classList.toggle('nav-open', open);
+        };
+        ham.addEventListener('click', () => {
+            setMobileOpen(!mobile.classList.contains('is-open'));
         });
         mobile.addEventListener('click', (event) => {
-            if (event.target.closest('a')) {
-                mobile.classList.remove('is-open');
-                ham.setAttribute('aria-expanded', 'false');
-                ham.setAttribute('aria-label', 'Open menu');
+            if (event.target.closest('a')) setMobileOpen(false);
+        });
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && mobile.classList.contains('is-open')) {
+                setMobileOpen(false);
+                ham.focus();
             }
         });
         document.addEventListener('click', (event) => {
+            if (mobile.classList.contains('is-open') && !nav.contains(event.target) && !mobile.contains(event.target)) setMobileOpen(false);
             if (!nav.contains(event.target)) {
                 nav.querySelectorAll('.nav-dropdown.is-open').forEach((item) => {
                     item.classList.remove('is-open');
@@ -136,7 +156,8 @@
         });
     }
 
-    const savedTheme = localStorage.getItem('gradmire-theme') || 'light';
+    let savedTheme = 'light';
+    try { savedTheme = localStorage.getItem('gradmire-theme') || 'light'; } catch (_) {}
     applyTheme(savedTheme);
     setupNavigation();
     setupThemeToggle();

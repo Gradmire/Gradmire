@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -125,23 +125,24 @@ footer{background:#0E1420;color:rgba(255,255,255,.7);padding:clamp(2rem,4vw,3.5r
 .course-card-note{font-family:var(--mono);font-size:.71rem;color:var(--accent);}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px;}
 </style>
-<link rel="stylesheet" href="../assets/site.css?v=4">
+<link rel="stylesheet" href="../assets/site.css?v=7">
 </head>
-<body>
+<body class="destination-page">
 
-<nav class="nav">
-  <a href="index.html" class="nav-logo"><img src="../assets/gradmire-logo.png" alt="Gradmire" height="34" style="display:block;max-width:155px;"></a>
-  <ul class="nav-links">
-    <li><a href="destinations.html">Destinations</a></li>
-    <li><a href="find-courses.html">Courses</a></li>
-    <li><a href="find-universities.html">Universities</a></li>
-    <li><a href="scholarships.html">Scholarships</a></li>
-    <li><a href="tools/roi-calculator.html">Tools</a></li>
-      <li><a href="tools/roi-calculator.html">Tools</a>
-  <a href="faq.html">FAQ</a></li>
-    <li><a href="about.html">About</a></li>
-  </ul>
-  <a href="gradmire.html" class="nav-cta">Free consultation</a>
+<nav class="nav destination-nav" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><img src="../assets/gradmire-logo.png" alt="Gradmire" height="34" loading="eager"></a>
+    <ul class="nav-links" role="list">
+      <li><a href="destinations.html">Destinations</a></li>
+      <li><a href="find-courses.html">Courses</a></li>
+      <li><a href="find-universities.html">Universities</a></li>
+      <li><a href="scholarships.html">Scholarships</a></li>
+      <li><a href="tools/roi-calculator.html">Tools</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+    <a href="free-consultation.html" class="nav-btn">Book free consultation</a>
+  </div>
 </nav>
 
 <section class="dest-hero">
@@ -168,8 +169,8 @@ footer{background:#0E1420;color:rgba(255,255,255,.7);padding:clamp(2rem,4vw,3.5r
     <li><a href="#intakes">Intakes</a></li>
     <li><a href="#eligibility">Eligibility</a></li>
     <li><a href="#visa">Visa</a></li>
-    <li><a href="#careers">Careers</a>
-  <a class="page-nav-link" href="#part-time-work" data-section="part-time-work">Part-time work</a></li>
+    <li><a href="#careers">Careers</a></li>
+    <li><a href="#part-time-work">Part-time work</a></li>
     <li><a href="#cities">Cities</a></li>
     <li><a href="#faqs">FAQs</a></li>
   </ul>
@@ -200,14 +201,14 @@ footer{background:#0E1420;color:rgba(255,255,255,.7);padding:clamp(2rem,4vw,3.5r
   <h2 class="section-title">Find the right Italy course for you</h2>
   <p class="section-sub">We match you to programmes by what you want to study — not just by ranking or location. Pick your subject to explore options.</p>
   <div class="course-grid">
-    <a href="find-courses.html" class="course-card"><div class="course-card-name">Business &amp; Management</div><div class="course-card-note">MBA · MSc · BBA</div></a>
-    <a href="find-courses.html" class="course-card"><div class="course-card-name">Computer Science / AI</div><div class="course-card-note">MSc CS · Data Science · ML/AI</div></a>
-    <a href="find-courses.html" class="course-card"><div class="course-card-name">Engineering &amp; Technology</div><div class="course-card-note">MEng · BEng · MSc</div></a>
-    <a href="find-courses.html" class="course-card"><div class="course-card-name">Medicine &amp; Health Sciences</div><div class="course-card-note">MD · Nursing · Allied Health</div></a>
-    <a href="find-courses.html" class="course-card"><div class="course-card-name">Law</div><div class="course-card-note">LLM · LLB · Juris Doctor</div></a>
-    <a href="find-courses.html" class="course-card"><div class="course-card-name">Architecture &amp; Design</div><div class="course-card-note">BArch · MArch · MA Design</div></a>
-    <a href="find-courses.html" class="course-card"><div class="course-card-name">Economics &amp; Finance</div><div class="course-card-note">MSc Economics · BSc Finance</div></a>
-    <a href="find-courses.html" class="course-card"><div class="course-card-name">Psychology</div><div class="course-card-note">BSc · MSc · Conversion</div></a>
+    <a href="find-courses.html?course=business" class="course-card"><div class="course-card-name">Business &amp; Management</div><div class="course-card-note">MBA · MSc · BBA</div></a>
+    <a href="find-courses.html?course=computer+science" class="course-card"><div class="course-card-name">Computer Science / AI</div><div class="course-card-note">MSc CS · Data Science · ML/AI</div></a>
+    <a href="find-courses.html?course=engineering" class="course-card"><div class="course-card-name">Engineering &amp; Technology</div><div class="course-card-note">MEng · BEng · MSc</div></a>
+    <a href="find-courses.html?course=medicine" class="course-card"><div class="course-card-name">Medicine &amp; Health Sciences</div><div class="course-card-note">MD · Nursing · Allied Health</div></a>
+    <a href="find-courses.html?course=law" class="course-card"><div class="course-card-name">Law</div><div class="course-card-note">LLM · LLB · Juris Doctor</div></a>
+    <a href="find-courses.html?course=design" class="course-card"><div class="course-card-name">Architecture &amp; Design</div><div class="course-card-note">BArch · MArch · MA Design</div></a>
+    <a href="find-courses.html?course=economics" class="course-card"><div class="course-card-name">Economics &amp; Finance</div><div class="course-card-note">MSc Economics · BSc Finance</div></a>
+    <a href="find-courses.html?course=psychology" class="course-card"><div class="course-card-name">Psychology</div><div class="course-card-note">BSc · MSc · Conversion</div></a>
   </div>
 </div>
 <section class="section section-alt" id="universities">
@@ -215,38 +216,38 @@ footer{background:#0E1420;color:rgba(255,255,255,.7);padding:clamp(2rem,4vw,3.5r
   <h2 class="section-title">Leading Italian Universities</h2>
   <p class="section-sub">Italy's public universities are subsidized and highly affordable. Politecnico di Milano stands out globally for design, architecture, and engineering — Europe's #1 design school. Bocconi is ranked among the world's top business schools.</p>
   <div class="uni-grid">
-    <a href="#" class="uni-card reveal">
+    <article class="uni-card reveal">
       <div class="uni-card-img"><img src="https://images.unsplash.com/photo-1529260830199-42c24126f198?auto=format&fit=crop&w=400&q=70" alt="Bologna" loading="lazy"></div>
       <div class="uni-card-body"><div class="uni-card-rank">QS #154 · Founded 1088</div><div class="uni-card-name">University of Bologna</div></div>
-    </a>
-    <a href="#" class="uni-card reveal" style="transition-delay:.05s">
+    </article>
+    <article class="uni-card reveal" style="transition-delay:.05s">
       <div class="uni-card-img"><img src="https://images.unsplash.com/photo-1534445867742-43195f401b6c?auto=format&fit=crop&w=400&q=70" alt="Sapienza Rome" loading="lazy"></div>
       <div class="uni-card-body"><div class="uni-card-rank">QS #171 · Largest in Europe</div><div class="uni-card-name">Sapienza University of Rome</div></div>
-    </a>
-    <a href="#" class="uni-card reveal" style="transition-delay:.10s">
+    </article>
+    <article class="uni-card reveal" style="transition-delay:.10s">
       <div class="uni-card-img"><img src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=400&q=70" alt="Politecnico Milano" loading="lazy"></div>
       <div class="uni-card-body"><div class="uni-card-rank">QS #123 · #1 Design School</div><div class="uni-card-name">Politecnico di Milano</div></div>
-    </a>
-    <a href="#" class="uni-card reveal" style="transition-delay:.15s">
+    </article>
+    <article class="uni-card reveal" style="transition-delay:.15s">
       <div class="uni-card-img"><img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=400&q=70" alt="Bocconi" loading="lazy"></div>
       <div class="uni-card-body"><div class="uni-card-rank">FT Global MBA Top 15</div><div class="uni-card-name">Bocconi University</div></div>
-    </a>
-    <a href="#" class="uni-card reveal" style="transition-delay:.20s">
+    </article>
+    <article class="uni-card reveal" style="transition-delay:.20s">
       <div class="uni-card-img"><img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=400&q=70" alt="University of Padua" loading="lazy"></div>
       <div class="uni-card-body"><div class="uni-card-rank">QS #301–350 · Founded 1222</div><div class="uni-card-name">University of Padua</div></div>
-    </a>
-    <a href="#" class="uni-card reveal" style="transition-delay:.25s">
+    </article>
+    <article class="uni-card reveal" style="transition-delay:.25s">
       <div class="uni-card-img"><img src="https://images.unsplash.com/photo-1498307833015-e7b400441eb8?auto=format&fit=crop&w=400&q=70" alt="University of Milan" loading="lazy"></div>
       <div class="uni-card-body"><div class="uni-card-rank">QS #301–350 · Research Focus</div><div class="uni-card-name">University of Milan</div></div>
-    </a>
-    <a href="#" class="uni-card reveal" style="transition-delay:.30s">
+    </article>
+    <article class="uni-card reveal" style="transition-delay:.30s">
       <div class="uni-card-img"><img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=400&q=70" alt="Politecnico Turin" loading="lazy"></div>
       <div class="uni-card-body"><div class="uni-card-rank">QS #301–350 · Engineering</div><div class="uni-card-name">Politecnico di Torino</div></div>
-    </a>
-    <a href="#" class="uni-card reveal" style="transition-delay:.35s">
+    </article>
+    <article class="uni-card reveal" style="transition-delay:.35s">
       <div class="uni-card-img"><img src="https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=400&q=70" alt="Florence" loading="lazy"></div>
       <div class="uni-card-body"><div class="uni-card-rank">Arts &amp; Architecture Focus</div><div class="uni-card-name">University of Florence</div></div>
-    </a>
+    </article>
   </div>
 </section>
 
@@ -390,11 +391,17 @@ footer{background:#0E1420;color:rgba(255,255,255,.7);padding:clamp(2rem,4vw,3.5r
     <div class="career-chip reveal" style="transition-delay:.16s"><span class="career-icon">🍷</span>Food &amp; Hospitality</div>
     <div class="career-chip reveal" style="transition-delay:.20s"><span class="career-icon">🏛️</span>Arts &amp; Heritage</div>
     <div class="career-chip reveal" style="transition-delay:.24s"><span class="career-icon">🔬</span>Pharma &amp; Biotech</div>
-    <section class="career-recruiter-strip" aria-label="Recruiters mentioned in career sectors for Italy">
+
+<div class="career-chip reveal" style="transition-delay:.28s"><span class="career-icon">🚀</span>Startups (Milan tech scene)</div>
+  </div>
+</section>
+
+<section class="career-recruiter-strip" aria-label="Recruiters mentioned in career sectors for Italy">
   <div class="career-recruiter-heading"><span class="section-tag">Career connections</span><h3>Employers across Italy career sectors</h3></div>
   <div class="career-marquee" role="list"><div class="career-marquee-track"><span class="career-employer" role="listitem">Amazon</span><span class="career-employer" role="listitem">Deloitte</span><span class="career-employer" role="listitem">Accenture</span><span class="career-employer" role="listitem">Capgemini</span></div><div class="career-marquee-track" aria-hidden="true"><span class="career-employer" role="listitem">Amazon</span><span class="career-employer" role="listitem">Deloitte</span><span class="career-employer" role="listitem">Accenture</span><span class="career-employer" role="listitem">Capgemini</span></div></div>
   <p class="career-recruiter-note">Illustrative employers named in the career sectors above; vacancies and eligibility vary by role and location.</p>
 </section>
+
 <section id="part-time-work" class="section part-time-section" aria-labelledby="part-time-title">
   <div class="section-tag">Student life · Part-time work</div>
   <h2 class="section-title" id="part-time-title">Part-time work in Italy</h2>
@@ -403,38 +410,35 @@ footer{background:#0E1420;color:rgba(255,255,255,.7);padding:clamp(2rem,4vw,3.5r
   <p class="work-permission-note"><strong>Student work permission (8 October 2026):</strong> For non-EU students with an Italian study residence permit, employment is limited to 20 hours per week and 1,040 hours in any 52-week period. Confirm that your permit allows the work and check current immigration guidance.</p>
 <p class="part-time-source-note">Pay guide: Published University of Milan student-work scheme rates; not a national minimum wage or representative market rate. Italy has no statutory national minimum wage; applicable collective agreements and contract terms matter. <strong>Official sources:</strong> <a href="https://home-affairs.ec.europa.eu/policies/migration-and-asylum/eu-immigration-portal/student-italy_en" target="_blank" rel="noopener noreferrer">student work rules</a> · <a href="https://www.unimi.it/en/study/traineeships-and-work/lavorare-durante-gli-studi/collaborazioni-studentesche/student-collaborations-200-hours" target="_blank" rel="noopener noreferrer">wage guidance</a> · <a href="https://www.eurofound.europa.eu/en/countries/italy/minimum-wage" target="_blank" rel="noopener noreferrer">additional details</a>. Checked 8 October 2026.</p>
 </section>
-<div class="career-chip reveal" style="transition-delay:.28s"><span class="career-icon">🚀</span>Startups (Milan tech scene)</div>
-  </div>
-</section>
 
 <section class="section" id="cities">
   <div class="section-label">Student Cities</div>
   <h2 class="section-title">Best Cities to Study In</h2>
   <div class="cities-grid">
-    <a href="#" class="city-card reveal">
+    <article class="city-card reveal">
       <img src="https://images.unsplash.com/photo-1534445867742-43195f401b6c?auto=format&fit=crop&w=600&q=70" alt="Milan" loading="lazy">
       <div class="city-card-label">Milan — Design &amp; finance capital, Politecnico &amp; Bocconi</div>
-    </a>
-    <a href="#" class="city-card reveal" style="transition-delay:.06s">
+    </article>
+    <article class="city-card reveal" style="transition-delay:.06s">
       <img src="https://images.unsplash.com/photo-1529260830199-42c24126f198?auto=format&fit=crop&w=600&q=70" alt="Rome" loading="lazy">
       <div class="city-card-label">Rome — The Eternal City, Sapienza University</div>
-    </a>
-    <a href="#" class="city-card reveal" style="transition-delay:.12s">
+    </article>
+    <article class="city-card reveal" style="transition-delay:.12s">
       <img src="https://images.unsplash.com/photo-1498307833015-e7b400441eb8?auto=format&fit=crop&w=600&q=70" alt="Bologna" loading="lazy">
       <div class="city-card-label">Bologna — World's oldest university, food capital</div>
-    </a>
-    <a href="#" class="city-card reveal" style="transition-delay:.18s">
+    </article>
+    <article class="city-card reveal" style="transition-delay:.18s">
       <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=600&q=70" alt="Florence" loading="lazy">
       <div class="city-card-label">Florence — Art, architecture, Renaissance heritage</div>
-    </a>
-    <a href="#" class="city-card reveal" style="transition-delay:.24s">
+    </article>
+    <article class="city-card reveal" style="transition-delay:.24s">
       <img src="https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=600&q=70" alt="Turin" loading="lazy">
       <div class="city-card-label">Turin — Politecnico, Fiat, affordable &amp; vibrant</div>
-    </a>
-    <a href="#" class="city-card reveal" style="transition-delay:.30s">
+    </article>
+    <article class="city-card reveal" style="transition-delay:.30s">
       <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=600&q=70" alt="Naples" loading="lazy">
       <div class="city-card-label">Naples — Federico II university, ultra-affordable</div>
-    </a>
+    </article>
   </div>
 </section>
 
@@ -493,8 +497,7 @@ footer{background:#0E1420;color:rgba(255,255,255,.7);padding:clamp(2rem,4vw,3.5r
         <li><a href="scholarships.html">Scholarships</a></li>
         <li><a href="find-universities.html">Universities</a></li>
         <li><a href="tools/roi-calculator.html">Tools</a></li>
-      <li><a href="tools/roi-calculator.html">Tools</a>
-  <a href="faq.html">FAQ</a></li>
+        <li><a href="faq.html">FAQ</a></li>
         <li><a href="blog.html">Blog</a></li>
       </ul>
     </div>
@@ -542,6 +545,6 @@ const so = new IntersectionObserver(entries => {
 sections.forEach(s => so.observe(s));
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../assets/site.js"></script>
+<script src="../assets/site.js?v=7"></script>
 </body>
 </html>
