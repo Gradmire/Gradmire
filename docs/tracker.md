@@ -174,3 +174,14 @@ Next week plan:
 Metrics snapshot (leads, bookings, conversion %):
 - 
 ```
+
+
+## October 2026 — Website UI and destination-content delivery
+
+**Frontend work delivered in this repository:** shared responsive hover-safe navigation with mobile menus; destination cards now expose programme-duration notes; navigation/footers are grouped into destinations, services, tools, and company; homepage testimonials and FAQs are surfaced; course filters and the scholarship destination selector were improved; a GPA/CGPA/SGPA converter was added; and Italy/Finland scholarship guidance was added.
+
+**Destination coverage:** added a sourced Finland country page and updated the homepage/all-destinations directory. Existing destination pages now include career-sector/employer examples, visa document guidance, part-time work rules, pay context and official source links. For Australia and Canada, legacy visa and post-study copy was replaced where it contained stale work-hour, fee, duration or guaranteed-PR claims.
+
+**Accuracy note:** country work-permission and wage panels are dated 8 October 2026 and link to official authorities. Statutory floors are labelled as legal floors rather than typical student pay; Italy/Finland pay is described without implying a national statutory minimum. Official visa checklists remain controlling and should be rechecked before a user submits an application. Existing sample course/scholarship listings elsewhere in the static site still require ongoing content-owner verification.
+
+**Scope boundary:** this delivery covers frontend/UI and static content only. The broader roadmap’s CMS, API, search infrastructure, CRM, analytics and production-readiness tasks remain tracked separately and are not marked complete by this work.

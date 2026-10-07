@@ -90,8 +90,9 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 @media(max-width:640px){.nav-links,.nav-btn{display:none;}.nav-ham{display:flex;}.search-bar{grid-template-columns:1fr;}.course-card{grid-template-columns:1fr;}.footer-inner{grid-template-columns:1fr;}}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .nav{background:rgba(10,13,22,.88);}}
 :root[data-theme="dark"] .nav{background:rgba(10,13,22,.88);}
+.course-data-note{margin:0 0 1rem;padding:.8rem 1rem;border-left:3px solid var(--accent);background:var(--surface-tint);border-radius:0 10px 10px 0;color:var(--text-s);font-size:.82rem;} .course-card[hidden]{display:none!important;}
 </style>
-<link rel="stylesheet" href="../assets/site.css?v=2">
+<link rel="stylesheet" href="../assets/site.css?v=4">
 
 <nav class="nav" aria-label="Main navigation">
   <div class="nav-inner">
@@ -146,7 +147,9 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
           <option>Australia</option>
           <option>Germany</option>
           <option>Ireland</option>
+          <option>Italy</option>
           <option>New Zealand</option>
+          <option>Finland</option>
         </select>
       </div>
       <button class="search-btn" onclick="runSearch()">Search →</button>
@@ -160,44 +163,41 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
     <div class="sidebar-title">Filters</div>
     <div class="filter-group">
       <div class="filter-group-title">Destination</div>
-      <label class="filter-option"><input type="checkbox" data-filter="dest" value="uk" checked> United Kingdom <span class="filter-option-count">1,240</span></label>
+      <label class="filter-option"><input type="checkbox" data-filter="dest" value="uk"> United Kingdom <span class="filter-option-count">1,240</span></label>
       <label class="filter-option"><input type="checkbox" data-filter="dest" value="usa"> USA <span class="filter-option-count">3,800</span></label>
       <label class="filter-option"><input type="checkbox" data-filter="dest" value="canada"> Canada <span class="filter-option-count">940</span></label>
       <label class="filter-option"><input type="checkbox" data-filter="dest" value="australia"> Australia <span class="filter-option-count">820</span></label>
       <label class="filter-option"><input type="checkbox" data-filter="dest" value="germany"> Germany <span class="filter-option-count">650</span></label>
       <label class="filter-option"><input type="checkbox" data-filter="dest" value="ireland"> Ireland <span class="filter-option-count">310</span></label>
+      <label class="filter-option"><input type="checkbox" data-filter="dest" value="italy"> Italy</label>
+      <label class="filter-option"><input type="checkbox" data-filter="dest" value="newzealand"> New Zealand</label>
+      <label class="filter-option"><input type="checkbox" data-filter="dest" value="finland"> Finland</label>
     </div>
     <div class="filter-group">
       <div class="filter-group-title">Study level</div>
-      <label class="filter-option"><input type="checkbox" data-filter="level" value="ug" checked> Undergraduate <span class="filter-option-count">2,100</span></label>
-      <label class="filter-option"><input type="checkbox" data-filter="level" value="pg" checked> Postgraduate <span class="filter-option-count">1,900</span></label>
+      <label class="filter-option"><input type="checkbox" data-filter="level" value="ug"> Undergraduate <span class="filter-option-count">2,100</span></label>
+      <label class="filter-option"><input type="checkbox" data-filter="level" value="pg"> Postgraduate <span class="filter-option-count">1,900</span></label>
       <label class="filter-option"><input type="checkbox" data-filter="level" value="phd"> PhD / Research <span class="filter-option-count">430</span></label>
       <label class="filter-option"><input type="checkbox" data-filter="level" value="found"> Foundation <span class="filter-option-count">280</span></label>
     </div>
     <div class="filter-group">
-      <div class="filter-group-title">Intake</div>
-      <label class="filter-option"><input type="checkbox" data-filter="intake" value="jan25" checked> January 2025 <span class="filter-option-count">840</span></label>
-      <label class="filter-option"><input type="checkbox" data-filter="intake" value="sep25" checked> September 2025 <span class="filter-option-count">2,400</span></label>
-      <label class="filter-option"><input type="checkbox" data-filter="intake" value="jan26"> January 2026 <span class="filter-option-count">620</span></label>
+      <div class="filter-group-title">Subject area</div>
+      <label class="filter-option"><input type="checkbox" data-filter="subject" value="business"> Business &amp; management</label>
+      <label class="filter-option"><input type="checkbox" data-filter="subject" value="computing"> Computer science &amp; data</label>
+      <label class="filter-option"><input type="checkbox" data-filter="subject" value="engineering"> Engineering</label>
+      <label class="filter-option"><input type="checkbox" data-filter="subject" value="medicine"> Health &amp; medicine</label>
     </div>
-    <div class="filter-group">
-      <div class="filter-group-title">Annual tuition</div>
-      <label class="filter-option"><input type="checkbox" data-filter="fee" value="low"> Under £15,000 <span class="filter-option-count">680</span></label>
-      <label class="filter-option"><input type="checkbox" data-filter="fee" value="mid" checked> £15k – £25k <span class="filter-option-count">1,420</span></label>
-      <label class="filter-option"><input type="checkbox" data-filter="fee" value="high"> £25k+ <span class="filter-option-count">560</span></label>
-    </div>
-    <button style="width:100%;padding:.6em;border-radius:100px;border:1.5px solid var(--border);background:none;font-family:var(--sans);font-size:.83rem;cursor:pointer;color:var(--text-s);margin-top:.5rem;">Clear all filters</button>
+    <button id="clear-course-filters" type="button" style="width:100%;padding:.6em;border-radius:100px;border:1.5px solid var(--border);background:none;font-family:var(--sans);font-size:.83rem;cursor:pointer;color:var(--text-s);margin-top:.5rem;">Clear all filters</button>
   </aside>
 
   <!-- Results -->
   <main>
+    <p class="course-data-note">Sample course listings for discovery. Rankings, fees, intakes and entry requirements can change; confirm details with each university.</p>
     <div class="results-header">
-      <div class="results-count" id="results-count">Showing <strong>12</strong> of 4,760 courses</div>
+      <div class="results-count" id="results-count" aria-live="polite">Choose a course, destination or study level to refine these sample listings.</div>
       <select class="results-sort" aria-label="Sort results">
         <option>Sort: Relevance</option>
         <option>Sort: University ranking</option>
-        <option>Sort: Tuition (low to high)</option>
-        <option>Sort: Intake date</option>
       </select>
     </div>
     <div id="results-list">
@@ -215,14 +215,14 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
           </div>
           <div class="course-meta">
             <div class="course-meta-item"><div class="course-meta-label">Tuition</div><div class="course-meta-val">£32,300/yr</div></div>
-            <div class="course-meta-item"><div class="course-meta-label">Next intake</div><div class="course-meta-val">Sep 2025</div></div>
+            <div class="course-meta-item"><div class="course-meta-label">Next intake</div><div class="course-meta-val">Verify current intake</div></div>
             <div class="course-meta-item"><div class="course-meta-label">IELTS</div><div class="course-meta-val">7.0+</div></div>
             <div class="course-meta-item"><div class="course-meta-label">Ranking</div><div class="course-meta-val">QS #9</div></div>
           </div>
         </div>
         <div class="course-actions">
           <button class="btn-shortlist">♡ Shortlist</button>
-          <button class="btn-details">View details</button>
+          <a href="free-consultation.html?interest=course" class="btn-details">Apply now</a>
         </div>
       </div>
 
@@ -240,14 +240,14 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
           </div>
           <div class="course-meta">
             <div class="course-meta-item"><div class="course-meta-label">Tuition</div><div class="course-meta-val">CAD $38,000/yr</div></div>
-            <div class="course-meta-item"><div class="course-meta-label">Next intake</div><div class="course-meta-val">Sep 2025</div></div>
+            <div class="course-meta-item"><div class="course-meta-label">Next intake</div><div class="course-meta-val">Verify current intake</div></div>
             <div class="course-meta-item"><div class="course-meta-label">GMAT</div><div class="course-meta-val">650+</div></div>
             <div class="course-meta-item"><div class="course-meta-label">Ranking</div><div class="course-meta-val">QS #22</div></div>
           </div>
         </div>
         <div class="course-actions">
           <button class="btn-shortlist">♡ Shortlist</button>
-          <button class="btn-details">View details</button>
+          <a href="free-consultation.html?interest=course" class="btn-details">Apply now</a>
         </div>
       </div>
 
@@ -264,14 +264,14 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
           </div>
           <div class="course-meta">
             <div class="course-meta-item"><div class="course-meta-label">Tuition</div><div class="course-meta-val">£28,400/yr</div></div>
-            <div class="course-meta-item"><div class="course-meta-label">Next intake</div><div class="course-meta-val">Sep 2025</div></div>
+            <div class="course-meta-item"><div class="course-meta-label">Next intake</div><div class="course-meta-val">Verify current intake</div></div>
             <div class="course-meta-item"><div class="course-meta-label">IELTS</div><div class="course-meta-val">6.5+</div></div>
             <div class="course-meta-item"><div class="course-meta-label">Ranking</div><div class="course-meta-val">QS #22</div></div>
           </div>
         </div>
         <div class="course-actions">
           <button class="btn-shortlist">♡ Shortlist</button>
-          <button class="btn-details">View details</button>
+          <a href="free-consultation.html?interest=course" class="btn-details">Apply now</a>
         </div>
       </div>
 
@@ -289,14 +289,14 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
           </div>
           <div class="course-meta">
             <div class="course-meta-item"><div class="course-meta-label">Tuition</div><div class="course-meta-val">£38,500/yr</div></div>
-            <div class="course-meta-item"><div class="course-meta-label">Next intake</div><div class="course-meta-val">Sep 2025</div></div>
+            <div class="course-meta-item"><div class="course-meta-label">Next intake</div><div class="course-meta-val">Verify current intake</div></div>
             <div class="course-meta-item"><div class="course-meta-label">A-Level equiv</div><div class="course-meta-val">AAA</div></div>
             <div class="course-meta-item"><div class="course-meta-label">Ranking</div><div class="course-meta-val">QS #6</div></div>
           </div>
         </div>
         <div class="course-actions">
           <button class="btn-shortlist">♡ Shortlist</button>
-          <button class="btn-details">View details</button>
+          <a href="free-consultation.html?interest=course" class="btn-details">Apply now</a>
         </div>
       </div>
 
@@ -314,14 +314,14 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
           </div>
           <div class="course-meta">
             <div class="course-meta-item"><div class="course-meta-label">Tuition</div><div class="course-meta-val">$57,000/yr</div></div>
-            <div class="course-meta-item"><div class="course-meta-label">Next intake</div><div class="course-meta-val">Aug 2025</div></div>
+            <div class="course-meta-item"><div class="course-meta-label">Next intake</div><div class="course-meta-val">Verify current intake</div></div>
             <div class="course-meta-item"><div class="course-meta-label">GRE</div><div class="course-meta-val">320+</div></div>
             <div class="course-meta-item"><div class="course-meta-label">Ranking</div><div class="course-meta-val">QS #61</div></div>
           </div>
         </div>
         <div class="course-actions">
           <button class="btn-shortlist">♡ Shortlist</button>
-          <button class="btn-details">View details</button>
+          <a href="free-consultation.html?interest=course" class="btn-details">Apply now</a>
         </div>
       </div>
 
@@ -339,14 +339,14 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
           </div>
           <div class="course-meta">
             <div class="course-meta-item"><div class="course-meta-label">Tuition</div><div class="course-meta-val">€250 semester fee</div></div>
-            <div class="course-meta-item"><div class="course-meta-label">Next intake</div><div class="course-meta-val">Oct 2025</div></div>
+            <div class="course-meta-item"><div class="course-meta-label">Next intake</div><div class="course-meta-val">Verify current intake</div></div>
             <div class="course-meta-item"><div class="course-meta-label">IELTS</div><div class="course-meta-val">7.0+</div></div>
             <div class="course-meta-item"><div class="course-meta-label">Ranking</div><div class="course-meta-val">QS #37</div></div>
           </div>
         </div>
         <div class="course-actions">
           <button class="btn-shortlist">♡ Shortlist</button>
-          <button class="btn-details">View details</button>
+          <a href="free-consultation.html?interest=course" class="btn-details">Apply now</a>
         </div>
       </div>
 
@@ -375,17 +375,87 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 </footer>
 
 <script>
-document.querySelectorAll('.btn-shortlist').forEach(btn => {
-  btn.addEventListener('click', () => {
-    if (btn.textContent.includes('♡')) { btn.textContent = '♥ Shortlisted'; btn.style.borderColor = 'var(--accent)'; btn.style.color = 'var(--accent)'; }
-    else { btn.textContent = '♡ Shortlist'; btn.style.borderColor = ''; btn.style.color = ''; }
+(() => {
+  const params = new URLSearchParams(location.search);
+  const input = document.getElementById('search-subject');
+  const countrySelect = document.getElementById('search-country');
+  const levelSelect = document.getElementById('search-level');
+  const cards = [...document.querySelectorAll('#results-list .course-card')];
+  const count = document.getElementById('results-count');
+  const aliases = {
+    'ai': /artificial intelligence|machine learning|data science|ai/i,
+    'data science': /data science|analytics|ai/i,
+    'business': /business|mba|management|finance/i,
+    'computer science': /computer science|computing|software|ai/i,
+    'engineering': /engineering|electrical|mechanical|robotics/i,
+    'medicine': /medicine|medical|health|mbbs/i,
+    'design': /design|creative|architecture|fashion/i,
+    'law': /law|legal/i,
+    'hospitality': /hospitality|tourism/i
+  };
+  const subjectPatterns = {
+    business: /business|mba|management|finance/i,
+    computing: /computer science|computing|software|data science|artificial intelligence|machine learning|analytics/i,
+    engineering: /engineering|electrical|mechanical|robotics/i,
+    medicine: /medicine|medical|health|mbbs/i
+  };
+  const countryNames = {uk:/united kingdom|uk/i, usa:/usa|united states/i, canada:/canada/i, australia:/australia/i, germany:/germany/i, ireland:/ireland/i, italy:/italy/i, newzealand:/new zealand/i, finland:/finland/i};
+  const initialCourse = params.get('course') || '';
+  if (initialCourse) input.value = initialCourse;
+  function selected(type) { return [...document.querySelectorAll(`[data-filter="${type}"]:checked`)].map(el => el.value); }
+  function applyFilters() {
+    const query = input.value.trim();
+    const normalized = query.toLowerCase();
+    const pattern = aliases[normalized] || null;
+    const destinations = selected('dest');
+    const levels = selected('level');
+    const subjects = selected('subject');
+    let visible = 0;
+    cards.forEach(card => {
+      const text = card.innerText;
+      const queryMatch = !normalized || (pattern ? pattern.test(text) : text.toLowerCase().includes(normalized));
+      const destinationMatch = destinations.length === 0 || destinations.some(key => countryNames[key]?.test(text));
+      const levelText = (card.querySelector('.course-level')?.innerText || '').toLowerCase();
+      const levelMatch = levels.length === 0 || levels.some(level => level === 'pg' ? levelText.includes('postgraduate') : level === 'ug' ? levelText.includes('undergraduate') : level === 'phd' ? /phd|research/.test(levelText) : /foundation|pre-masters/.test(levelText));
+      const subjectMatch = subjects.length === 0 || subjects.some(subject => subjectPatterns[subject]?.test(text));
+      const selectCountry = countrySelect.value;
+      const countryMatch = !selectCountry || countryNames[selectCountry.toLowerCase().replace(/\s/g, '')]?.test(text) || text.toLowerCase().includes(selectCountry.toLowerCase());
+      const show = queryMatch && destinationMatch && levelMatch && subjectMatch && countryMatch;
+      card.hidden = !show;
+      if (show) visible += 1;
+    });
+    count.innerHTML = visible ? `Showing <strong>${visible}</strong> sample course listing${visible === 1 ? '' : 's'}. Confirm current fees, intake and entry requirements with the university.` : 'No sample listings match those filters. Try another subject or destination, or ask a counsellor for help.';
+  }
+  document.querySelectorAll('[data-filter]').forEach(control => control.addEventListener('change', applyFilters));
+  input.addEventListener('input', applyFilters);
+  countrySelect.addEventListener('change', applyFilters);
+  document.querySelector('.results-sort')?.addEventListener('change', event => {
+    if (event.target.value.includes('ranking')) {
+      cards.sort((a, b) => {
+        const rank = el => Number(el.innerText.match(/QS\s*#(\d+)/i)?.[1] || 99999);
+        return rank(a) - rank(b);
+      }).forEach(card => document.getElementById('results-list').appendChild(card));
+    }
   });
-});
-function runSearch() {
-  const subject = document.getElementById('search-subject').value;
-  const count = subject ? Math.floor(Math.random() * 200 + 50) : 4760;
-  document.getElementById('results-count').innerHTML = `Showing <strong>6</strong> of ${count.toLocaleString()} courses`;
-}
+  levelSelect.addEventListener('change', () => {
+    const levelMap = {'Undergraduate':'ug','Postgraduate':'pg','PhD / Research':'phd','Foundation':'found','Pre-Masters':'found'};
+    document.querySelectorAll('[data-filter="level"]').forEach(el => { el.checked = Boolean(levelSelect.value) && levelMap[levelSelect.value] === el.value; });
+    applyFilters();
+  });
+  document.getElementById('clear-course-filters')?.addEventListener('click', () => {
+    input.value = ''; countrySelect.value = ''; levelSelect.value = '';
+    document.querySelectorAll('[data-filter]').forEach(el => { el.checked = false; });
+    history.replaceState(null, '', location.pathname);
+    applyFilters();
+  });
+  window.runSearch = applyFilters;
+  document.querySelectorAll('.btn-shortlist').forEach(btn => btn.addEventListener('click', () => {
+    const saved = btn.getAttribute('aria-pressed') === 'true';
+    btn.setAttribute('aria-pressed', String(!saved));
+    btn.textContent = saved ? '♡ Shortlist' : '♥ Shortlisted';
+  }));
+  applyFilters();
+})();
 </script>
 
 

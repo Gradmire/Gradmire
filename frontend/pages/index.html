@@ -1878,8 +1878,26 @@
             transform: none;
         }
     }
+
+    .dest-name{bottom:3rem;}
+    .dest-meta{position:absolute;left:1.25rem;right:1.25rem;bottom:.8rem;color:rgba(255,255,255,.9);font-size:.72rem;line-height:1.3;max-width:34ch;}
+    .dest-grid{grid-template-rows:260px 260px 220px 220px 150px;}
+    .bg-finland{background-image:url('../assets/finland-helsinki.jpg');background-size:cover;background-position:center;}
+    .footer-inner{grid-template-columns:1.45fr repeat(4,minmax(0,1fr));gap:2rem;}
+    .home-faq{padding:var(--sec) var(--gutter);background:var(--surface);}
+    .home-faq-inner{max-width:var(--w);margin:0 auto;}
+    .home-faq-eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.5rem;}
+    .home-faq h2{font-size:clamp(1.8rem,3.5vw,2.8rem);line-height:1.1;letter-spacing:-.035em;margin-bottom:1.5rem;}
+    .home-faq-list{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+    .home-faq-list details{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:1rem 1.2rem;}
+    .home-faq-list summary{font-weight:700;cursor:pointer;}
+    .home-faq-list p{padding-top:.65rem;color:var(--text-s);font-size:.9rem;}
+    @media(max-width:1100px){.dest-grid{grid-template-rows:none;grid-auto-rows:210px;}}
+    @media(max-width:640px){.dest-grid{grid-template-columns:1fr;grid-template-rows:none;grid-auto-rows:auto;}.dest-stat{grid-column:span 1;}}
+    @media(max-width:900px){.footer-inner{grid-template-columns:1fr 1fr;}.home-faq-list{grid-template-columns:1fr;}}
+
 </style>
-<link rel="stylesheet" href="../assets/site.css?v=2">
+<link rel="stylesheet" href="../assets/site.css?v=4">
 
 <!-- NAV -->
 <nav class="nav" aria-label="Main navigation">
@@ -2043,54 +2061,59 @@
         <a href="study-in-uk.html" class="dest-cell" aria-label="Study in United Kingdom">
             <div class="dest-cell-bg bg-uk"></div>
             <div class="dest-overlay" aria-hidden="true"></div>
-            <span class="dest-name">United Kingdom</span>
+            <span class="dest-name">United Kingdom</span><span class="dest-meta">Typical master’s: 1–2 years · Bachelor’s: 3–4 years</span>
         </a>
         <!-- col 2, row 1 -->
         <a href="study-in-usa.html" class="dest-cell" aria-label="Study in USA">
             <div class="dest-cell-bg bg-usa"></div>
             <div class="dest-overlay" aria-hidden="true"></div>
-            <span class="dest-name">USA</span>
+            <span class="dest-name">USA</span><span class="dest-meta">Typical master’s: 1–2 years · Bachelor’s: 3–4 years</span>
         </a>
         <!-- col 3, row 1 -->
         <a href="study-in-canada.html" class="dest-cell" aria-label="Study in Canada">
             <div class="dest-cell-bg bg-canada"></div>
             <div class="dest-overlay" aria-hidden="true"></div>
-            <span class="dest-name">Canada</span>
+            <span class="dest-name">Canada</span><span class="dest-meta">Typical master’s: 1–2 years · Bachelor’s: 3–4 years</span>
         </a>
         <!-- col 2, row 2 -->
         <a href="study-in-germany.html" class="dest-cell" aria-label="Study in Germany">
             <div class="dest-cell-bg bg-germany"></div>
             <div class="dest-overlay" aria-hidden="true"></div>
-            <span class="dest-name">Germany</span>
+            <span class="dest-name">Germany</span><span class="dest-meta">Typical master’s: 1–2 years · Bachelor’s: 3–4 years</span>
         </a>
         <!-- col 3, row 2 -->
         <a href="study-in-australia.html" class="dest-cell" aria-label="Study in Australia">
             <div class="dest-cell-bg bg-australia"></div>
             <div class="dest-overlay" aria-hidden="true"></div>
-            <span class="dest-name">Australia</span>
+            <span class="dest-name">Australia</span><span class="dest-meta">Typical master’s: 1–2 years · Bachelor’s: 3–4 years</span>
         </a>
         <!-- col 1, row 3 -->
         <a href="study-in-ireland.html" class="dest-cell" aria-label="Study in Ireland">
             <div class="dest-cell-bg bg-ireland"></div>
             <div class="dest-overlay" aria-hidden="true"></div>
-            <span class="dest-name">Ireland</span>
+            <span class="dest-name">Ireland</span><span class="dest-meta">Typical master’s: 1–2 years · Bachelor’s: 3–4 years</span>
         </a>
         <!-- col 2, row 3 -->
         <a href="study-in-italy.html" class="dest-cell" aria-label="Study in Italy">
             <div class="dest-cell-bg bg-italy"></div>
             <div class="dest-overlay" aria-hidden="true"></div>
-            <span class="dest-name">Italy</span>
+            <span class="dest-name">Italy</span><span class="dest-meta">Typical master’s: 1–2 years · Bachelor’s: 3–4 years</span>
         </a>
         <!-- col 3, row 3 -->
         <a href="study-in-newzealand.html" class="dest-cell" aria-label="Study in New Zealand">
             <div class="dest-cell-bg bg-nz"></div>
             <div class="dest-overlay" aria-hidden="true"></div>
-            <span class="dest-name">New Zealand</span>
+            <span class="dest-name">New Zealand</span><span class="dest-meta">Typical master’s: 1–2 years · Bachelor’s: 3–4 years</span>
         </a>
-        <!-- row 4: full-width stat banner -->
+        <a href="study-in-finland.html" class="dest-cell" aria-label="Study in Finland">
+            <div class="dest-cell-bg bg-finland"></div>
+            <div class="dest-overlay" aria-hidden="true"></div>
+            <span class="dest-name">Finland</span><span class="dest-meta">Master’s: typically 2 years · Bachelor’s: typically 3 years</span>
+        </a>
+        <!-- stat banner -->
         <div class="dest-stat" aria-label="47,000 plus students placed worldwide">
             <div class="dest-stat-num">47,000+</div>
-            <div class="dest-stat-lbl">students placed in universities worldwide through Gradmire — across 8 countries and counting</div>
+            <div class="dest-stat-lbl">students placed in universities worldwide through Gradmire — across 9 countries and counting</div>
         </div>
     </div>
 </section>
@@ -2197,57 +2220,10 @@
     </div>
 </section>
 
-<!-- COUNSELLORS -->
-<section class="counsellors" id="team" aria-labelledby="counsel-title">
-    <div class="counsel-header reveal">
-        <h2 class="sec-title" id="counsel-title">Meet your counsellors.</h2>
-        <p class="sec-body">Specialists, not generalists. Each counsellor covers the destinations they know inside out.</p>
-    </div>
-    <div class="counsel-track-wrap" role="list" aria-label="Counsellor profiles">
-        <div class="counsel-track">
-            <div class="counsel-card" role="listitem">
-                <div class="counsel-avatar" aria-hidden="true"><img class="counsel-photo" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80" alt="Priya Sharma" loading="lazy"></div>
-                <div class="counsel-name">Priya Sharma</div>
-                <div class="counsel-spec">UK + Ireland</div>
-                <p class="counsel-bio">9 years placing students at Russell Group and leading Irish universities. Former student advisor at University of Edinburgh.</p>
-                <a href="free-consultation.html?counsellor=priya" class="counsel-cta">Book a session with Priya →</a>
-            </div>
-            <div class="counsel-card" role="listitem">
-                <div class="counsel-avatar" aria-hidden="true"><img class="counsel-photo" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80" alt="Rahul Mehta" loading="lazy"></div>
-                <div class="counsel-name">Rahul Mehta</div>
-                <div class="counsel-spec">USA + Canada</div>
-                <p class="counsel-bio">Specialist in Ivy League, liberal arts and top Canadian institutions. 11 years of US admissions experience, based in Mumbai.</p>
-                <a href="free-consultation.html?counsellor=rahul" class="counsel-cta">Book a session with Rahul →</a>
-            </div>
-            <div class="counsel-card" role="listitem">
-                <div class="counsel-avatar" aria-hidden="true"><img class="counsel-photo" src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=400&q=80" alt="Anjali Patel" loading="lazy"></div>
-                <div class="counsel-name">Anjali Patel</div>
-                <div class="counsel-spec">Australia + New Zealand</div>
-                <p class="counsel-bio">Deep relationships with Group of Eight universities. Expert in post-study work visa pathways and scholarship applications.</p>
-                <a href="free-consultation.html?counsellor=anjali" class="counsel-cta">Book a session with Anjali →</a>
-            </div>
-            <div class="counsel-card" role="listitem">
-                <div class="counsel-avatar" aria-hidden="true"><img class="counsel-photo" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80" alt="Siddharth Nair" loading="lazy"></div>
-                <div class="counsel-name">Siddharth Nair</div>
-                <div class="counsel-spec">Germany + Europe</div>
-                <p class="counsel-bio">Fluent in German. Navigates tuition-free and low-cost European programmes including TU9 and Grande Ecoles pathways.</p>
-                <a href="free-consultation.html?counsellor=siddharth" class="counsel-cta">Book a session with Siddharth →</a>
-            </div>
-            <div class="counsel-card" role="listitem">
-                <div class="counsel-avatar" aria-hidden="true"><img class="counsel-photo" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80" alt="Fatima Khan" loading="lazy"></div>
-                <div class="counsel-name">Fatima Khan</div>
-                <div class="counsel-spec">Singapore + Asia</div>
-                <p class="counsel-bio">NUS and NTU specialist with expertise in government scholarships and tech-focused programmes across Southeast Asia.</p>
-                <a href="free-consultation.html?counsellor=fatima" class="counsel-cta">Book a session with Fatima →</a>
-            </div>
-        </div>
-    </div>
-</section>
-
 <!-- VOICES -->
 <section class="voices" aria-labelledby="voices-title">
     <div class="sec-head reveal-slow">
-        <h2 class="sec-title" id="voices-title">What our students say.</h2>
+        <h2 class="sec-title" id="voices-title">Student stories: every step, we're with you.</h2>
     </div>
     <div class="voices-grid">
         <div class="voice reveal">
@@ -2318,6 +2294,20 @@
     </div>
 </section>
 
+<!-- HOME FAQ -->
+<section class="home-faq" aria-labelledby="home-faq-title">
+  <div class="home-faq-inner">
+    <p class="home-faq-eyebrow">Quick answers</p>
+    <h2 id="home-faq-title">Planning to study abroad?</h2>
+    <div class="home-faq-list">
+      <details><summary>How long does a postgraduate course usually take?</summary><p>Many international master’s programmes take one to two years. The exact duration depends on the country, university and course; check the relevant destination and course listing.</p></details>
+      <details><summary>Can international students work part-time while studying?</summary><p>Work permission and allowed hours depend on your visa, course and destination. Review the destination’s latest official rules before accepting work.</p></details>
+      <details><summary>What documents are commonly needed for a student visa?</summary><p>Typical items include a valid passport, admission confirmation, financial evidence, academic records and any required health, language or biometric documents. Requirements vary by destination and applicant.</p></details>
+      <details><summary>What happens when I book a free consultation?</summary><p>A counsellor reviews your study goals, profile and preferred destinations, then helps you understand course options and next steps.</p></details>
+    </div>
+  </div>
+</section>
+
 <!-- CTA -->
 <section class="cta-sec" id="cta" aria-labelledby="cta-title" style="padding:var(--sec) var(--gutter);max-width:var(--w);margin:0 auto;">
     <div class="cta-wrap reveal-slow">
@@ -2349,6 +2339,7 @@
                 <li><a href="study-in-ireland.html">Ireland</a></li>
                 <li><a href="study-in-newzealand.html">New Zealand</a></li>
                 <li><a href="study-in-italy.html">Italy</a></li>
+                <li><a href="study-in-finland.html">Finland</a></li>
             </ul>
         </div>
         <div>
@@ -2359,6 +2350,16 @@
                 <li><a href="scholarships.html">Scholarships</a></li>
                 <li><a href="free-consultation.html">Visa support</a></li>
                 <li><a href="free-consultation.html">Test prep</a></li>
+            </ul>
+        </div>
+        <div>
+            <div class="footer-col-title">Tools</div>
+            <ul class="footer-links" role="list">
+                <li><a href="find-courses.html">Course finder</a></li>
+                <li><a href="tools/roi-calculator.html">Study cost calculator</a></li>
+                <li><a href="tools/comparator.html">Course comparator</a></li>
+                <li><a href="tools/deadline-tracker.html">Deadline tracker</a></li>
+                <li><a href="tools/grade-converter.html">GPA / CGPA converter</a></li>
             </ul>
         </div>
         <div>
