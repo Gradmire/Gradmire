@@ -3,46 +3,36 @@
     const isToolPage = /\/tools\//.test(window.location.pathname);
     const pagePrefix = isToolPage ? '../' : '';
     const page = (name) => `${pagePrefix}${name}`;
-
     const chevron = '<svg class="nav-dropdown-chevron" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="m2.25 4.5 3.75 3 3.75-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
-    const navItems = [
-        `<li class="nav-dropdown">
-      <button type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false" aria-haspopup="true">Destinations ${chevron}</button>
-      <div class="nav-dropdown-menu dropdown-menu" role="menu">
-        <span class="nav-dropdown-label">Popular</span>
-        <a href="${page('study-in-uk.html')}" class="dropdown-item" role="menuitem">United Kingdom</a>
-        <a href="${page('study-in-usa.html')}" class="dropdown-item" role="menuitem">United States</a>
-        <a href="${page('study-in-canada.html')}" class="dropdown-item" role="menuitem">Canada</a>
-        <a href="${page('study-in-australia.html')}" class="dropdown-item" role="menuitem">Australia</a>
-        <span class="nav-dropdown-label">Europe</span>
-        <a href="${page('study-in-germany.html')}" class="dropdown-item" role="menuitem">Germany</a>
-        <a href="${page('study-in-ireland.html')}" class="dropdown-item" role="menuitem">Ireland</a>
-        <a href="${page('study-in-italy.html')}" class="dropdown-item" role="menuitem">Italy</a>
-        <a href="${page('study-in-newzealand.html')}" class="dropdown-item" role="menuitem">New Zealand</a>
-        <a href="${page('destinations.html')}" class="dropdown-item nav-view-all" role="menuitem">View all destinations →</a>
-      </div>
-    </li>`,
-        `<li class="nav-dropdown">
-      <button type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false" aria-haspopup="true">Courses ${chevron}</button>
-      <div class="nav-dropdown-menu dropdown-menu" role="menu">
-        <a href="${page('find-courses.html')}" class="dropdown-item" role="menuitem">Find Courses</a>
-        <a href="${page('find-universities.html')}" class="dropdown-item" role="menuitem">Find Universities</a>
-        <a href="${page('scholarships.html')}" class="dropdown-item" role="menuitem">Scholarships</a>
-        <span class="nav-dropdown-label">Tools</span>
-        <a href="${page('tools/roi-calculator.html')}" class="dropdown-item" role="menuitem">ROI Calculator</a>
-        <a href="${page('tools/comparator.html')}" class="dropdown-item" role="menuitem">Course Comparator</a>
-        <a href="${page('tools/deadline-tracker.html')}" class="dropdown-item" role="menuitem">Deadline Tracker</a>
-      </div>
-    </li>`,
-        `<li><a href="${page('faq.html')}">FAQ</a></li>`,
-        `<li><a href="${page('about.html')}">About</a></li>`
+    const destinations = [
+        ['United Kingdom', 'uk'], ['United States', 'usa'], ['Canada', 'canada'],
+        ['Australia', 'australia'], ['Germany', 'germany'], ['Ireland', 'ireland'],
+        ['Italy', 'italy'], ['New Zealand', 'newzealand'], ['Finland', 'finland']
     ];
+    const countryPage = (slug) => page(`study-in-${slug}.html`);
+    const scholarshipPage = (slug) => `${page('scholarships.html')}?country=${encodeURIComponent(slug)}`;
+    const link = (href, label) => `<a href="${href}" role="menuitem">${label}</a>`;
+    const dropdown = (label, items, extraClass = '') => `
+      <li class="nav-dropdown ${extraClass}">
+        <button type="button" aria-expanded="false" aria-haspopup="true">${label} ${chevron}</button>
+        <div class="nav-dropdown-menu" role="menu">${items}</div>
+      </li>`;
 
-    const mobileItems = [
-        ...navItems,
-        `<li><a href="${page('login.html')}">Log in</a></li>`,
-        `<li><a href="${page('free-consultation.html')}" class="btn btn-primary">Free consultation</a></li>`
+    const navItems = [
+        dropdown('Destinations', `<span class="nav-dropdown-label">Study destinations</span>${destinations.map(([name, slug]) => link(countryPage(slug), name)).join('')}${link(page('destinations.html'), 'All destinations →')}`),
+        dropdown('Courses', `<span class="nav-dropdown-label">Popular courses</span>${[
+            ['Business & Management', 'Business'], ['Computer Science', 'Computer Science'],
+            ['Data Science & AI', 'Data Science'], ['Engineering & Technology', 'Engineering'],
+            ['Health & Medicine', 'Medicine'], ['Design & Creative Arts', 'Design'],
+            ['Law', 'Law'], ['Hospitality & Tourism', 'Hospitality']
+        ].map(([label, query]) => link(`${page('find-courses.html')}?course=${encodeURIComponent(query)}`, label)).join('')}${link(page('find-courses.html'), 'Browse all courses →')}`),
+        dropdown('MBBS Abroad', `${destinations.filter(([name]) => name !== 'Finland').map(([name]) => link(`${page('find-courses.html')}?course=${encodeURIComponent('Medicine')}`, `${name} · Medicine / MBBS`)).join('')}${link(page('destinations.html'), 'Explore destinations →')}`),
+        dropdown('Student Services', `${link(page('free-consultation.html'), 'Free counselling')}${link(page('free-consultation.html'), 'Test preparation')}${link(page('free-consultation.html'), 'Visa assistance')}${link(page('free-consultation.html'), 'Application assistance')}${link(page('find-courses.html'), 'Course selection guidance')}`),
+        dropdown('Scholarships', `<span class="nav-dropdown-label">Explore by country</span>${destinations.map(([name, slug]) => link(scholarshipPage(slug), `Scholarships in ${name}`)).join('')}${link(page('scholarships.html'), 'All scholarships →')}`),
+        dropdown('Student Tools', `${link(page('find-courses.html'), 'Course finder')}${link(page('tools/roi-calculator.html'), 'Study cost calculator')}${link(page('tools/comparator.html'), 'Course comparator')}${link(page('tools/deadline-tracker.html'), 'Deadline tracker')}${link(page('tools/grade-converter.html'), 'GPA / CGPA / SGPA converter')}`),
+        `<li class="nav-primary-link"><a href="${page('faq.html')}">FAQ</a></li>`,
+        `<li class="nav-primary-link"><a href="${page('about.html')}">About</a></li>`
     ];
 
     function icon(kind) {
@@ -60,82 +50,114 @@
     }
 
     function setupThemeToggle() {
-        const existing = document.querySelector('.site-theme-toggle');
-        if (existing) return;
+        if (document.querySelector('.site-theme-toggle')) return;
         const toggle = document.createElement('button');
         toggle.className = 'site-theme-toggle';
         toggle.type = 'button';
         toggle.innerHTML = `${icon('sun')}${icon('moon')}`;
         toggle.addEventListener('click', () => {
             const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
-            localStorage.setItem('gradmire-theme', next);
+            try { localStorage.setItem('gradmire-theme', next); } catch (_) {}
             applyTheme(next);
         });
         const navInner = document.querySelector('.nav-inner');
-        const hamburger = navInner ? navInner.querySelector('.nav-ham') : null;
+        const hamburger = navInner?.querySelector('.nav-ham');
         if (navInner) navInner.insertBefore(toggle, hamburger || null);
+    }
+
+    function setupDropdowns(scope, mobile = false) {
+        scope.querySelectorAll('.nav-dropdown').forEach((item) => {
+            const button = item.querySelector(':scope > button');
+            const menu = item.querySelector(':scope > .nav-dropdown-menu');
+            if (!button || !menu) return;
+            button.addEventListener('click', () => {
+                const isOpen = item.classList.toggle('is-open');
+                button.setAttribute('aria-expanded', String(isOpen));
+                if (mobile) menu.classList.toggle('show', isOpen);
+            });
+            item.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') {
+                    item.classList.remove('is-open');
+                    menu.classList.remove('show');
+                    button.setAttribute('aria-expanded', 'false');
+                    button.focus();
+                }
+            });
+        });
     }
 
     function setupNavigation() {
         const nav = document.querySelector('.nav');
-        const navInner = nav ? nav.querySelector('.nav-inner') : null;
-        const navTarget = navInner || nav;
-        if (navTarget && !navTarget.querySelector('.nav-ham')) {
+        const navInner = nav?.querySelector('.nav-inner');
+        if (!nav || !navInner) return;
+        if (!navInner.querySelector('.nav-ham')) {
             const ham = document.createElement('button');
             ham.className = 'nav-ham';
             ham.type = 'button';
             ham.setAttribute('aria-label', 'Open menu');
             ham.setAttribute('aria-expanded', 'false');
             ham.innerHTML = '<svg width="22" height="16" viewBox="0 0 22 16" fill="none" aria-hidden="true"><rect y="0" width="22" height="2" rx="1" fill="currentColor"/><rect y="7" width="22" height="2" rx="1" fill="currentColor"/><rect y="14" width="22" height="2" rx="1" fill="currentColor"/></svg>';
-            navTarget.appendChild(ham);
+            navInner.appendChild(ham);
         }
-
-        const links = document.querySelector('.nav-links');
-        if (links) {
-            links.innerHTML = navItems.join('');
-            if (typeof bootstrap !== 'undefined') {
-                links.querySelectorAll('[data-bs-toggle="dropdown"]').forEach(el => {
-                    new bootstrap.Dropdown(el, { display: 'static' });
-                });
-            }
-        }
+        const desktop = nav.querySelector('.nav-links');
+        if (desktop) desktop.innerHTML = navItems.join('');
 
         let mobile = document.querySelector('.nav-mobile');
-        if (nav && !mobile) {
+        if (!mobile) {
             mobile = document.createElement('div');
             mobile.className = 'nav-mobile';
             mobile.setAttribute('aria-label', 'Mobile navigation');
             nav.insertAdjacentElement('afterend', mobile);
         }
-        if (mobile) {
-            mobile.innerHTML = `<ul class="nav-mobile-links" role="list">${mobileItems.join('')}</ul>`;
-            if (typeof bootstrap !== 'undefined') {
-                mobile.querySelectorAll('[data-bs-toggle="dropdown"]').forEach(el => {
-                    new bootstrap.Dropdown(el, { display: 'static' });
+        mobile.innerHTML = `<ul class="nav-mobile-links" role="list">${navItems.join('')}
+          <li><a href="${page('free-consultation.html')}" class="btn btn-primary">Book free consultation</a></li>
+        </ul>`;
+        mobile.id = mobile.id || 'mobile-nav';
+        mobile.setAttribute('role', 'navigation');
+        mobile.setAttribute('aria-label', 'Mobile navigation');
+        mobile.setAttribute('aria-hidden', 'true');
+        mobile.setAttribute('inert', '');
+        setupDropdowns(nav, false);
+        setupDropdowns(mobile, true);
+
+        const ham = nav.querySelector('.nav-ham');
+        ham.setAttribute('aria-controls', mobile.id);
+        ham.setAttribute('aria-expanded', 'false');
+        const setMobileOpen = (open) => {
+            mobile.classList.toggle('is-open', open);
+            ham.classList.toggle('is-open', open);
+            mobile.setAttribute('aria-hidden', String(!open));
+            if (open) mobile.removeAttribute('inert');
+            else mobile.setAttribute('inert', '');
+            ham.setAttribute('aria-expanded', String(open));
+            ham.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+            document.body.classList.toggle('nav-open', open);
+        };
+        ham.addEventListener('click', () => {
+            setMobileOpen(!mobile.classList.contains('is-open'));
+        });
+        mobile.addEventListener('click', (event) => {
+            if (event.target.closest('a')) setMobileOpen(false);
+        });
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && mobile.classList.contains('is-open')) {
+                setMobileOpen(false);
+                ham.focus();
+            }
+        });
+        document.addEventListener('click', (event) => {
+            if (mobile.classList.contains('is-open') && !nav.contains(event.target) && !mobile.contains(event.target)) setMobileOpen(false);
+            if (!nav.contains(event.target)) {
+                nav.querySelectorAll('.nav-dropdown.is-open').forEach((item) => {
+                    item.classList.remove('is-open');
+                    item.querySelector('button')?.setAttribute('aria-expanded', 'false');
                 });
             }
-        }
-
-        const ham = document.querySelector('.nav-ham');
-        const mobilePanel = document.querySelector('.nav-mobile');
-        if (ham && mobilePanel) {
-            ham.setAttribute('aria-expanded', 'false');
-            ham.addEventListener('click', () => {
-                const open = mobilePanel.classList.toggle('is-open');
-                ham.setAttribute('aria-expanded', String(open));
-                ham.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-            });
-            mobilePanel.addEventListener('click', (event) => {
-                if (event.target.closest('a')) {
-                    mobilePanel.classList.remove('is-open');
-                    ham.setAttribute('aria-expanded', 'false');
-                    ham.setAttribute('aria-label', 'Open menu');
-                }
-            });
-        }
+        });
     }
 
-    const savedTheme = localStorage.getItem('gradmire-theme') || 'light';
+    let savedTheme = 'light';
+    try { savedTheme = localStorage.getItem('gradmire-theme') || 'light'; } catch (_) {}
     applyTheme(savedTheme);
     setupNavigation();
     setupThemeToggle();

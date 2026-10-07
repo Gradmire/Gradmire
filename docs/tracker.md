@@ -174,3 +174,27 @@ Next week plan:
 Metrics snapshot (leads, bookings, conversion %):
 - 
 ```
+
+
+## October 2026 — Website UI and destination-content delivery
+
+**Frontend work delivered in this repository:** shared responsive hover-safe navigation with mobile menus; destination cards now expose programme-duration notes; navigation/footers are grouped into destinations, services, tools, and company; homepage testimonials and FAQs are surfaced; course filters and the scholarship destination selector were improved; a GPA/CGPA/SGPA converter was added; and Italy/Finland scholarship guidance was added.
+
+**Destination coverage:** added a sourced Finland country page and updated the homepage/all-destinations directory. Existing destination pages now include career-sector/employer examples, visa document guidance, part-time work rules, pay context and official source links. For Australia and Canada, legacy visa and post-study copy was replaced where it contained stale work-hour, fee, duration or guaranteed-PR claims.
+
+**Landing-page motion refinement (8 October 2026):** added a lightweight reading-progress indicator, a pauseable university ticker, polished stat count-up and destination-card interactions, numbered process steps, spotlight-enabled tool/testimonial cards, clearer FAQ toggles and a restrained CTA sweep. The implementation uses native CSS/JavaScript, preserves the existing content, and respects reduced-motion preferences. Validated with the frontend link checker, inline-script syntax checks, and desktop/mobile/reduced-motion browser previews.
+
+**Accuracy note:** country work-permission and wage panels are dated 8 October 2026 and link to official authorities. Statutory floors are labelled as legal floors rather than typical student pay; Italy/Finland pay is described without implying a national statutory minimum. Official visa checklists remain controlling and should be rechecked before a user submits an application. Existing sample course/scholarship listings elsewhere in the static site still require ongoing content-owner verification.
+
+**Scope boundary:** this delivery covers frontend/UI and static content only. The broader roadmap’s CMS, API, search infrastructure, CRM, analytics and production-readiness tasks remain tracked separately and are not marked complete by this work.
+
+
+## October 2026 follow-up — routing and Germany imagery QA
+
+**Completed:** repaired duplicate Tools/FAQ markup and empty placeholder links across the site; made blog preview, dashboard, service, and login-support links route to relevant live pages or in-page targets; unified the standalone landing-page mobile menu with the shared controller; and added contextual Contact-form prefill for visa, test-prep, and account-help deep links.
+
+**Germany page:** replaced the mismatched university/city images with 14 verified, optimized local derivatives, corrected institution alt text, and documented source licenses/attributions. Browser verification confirmed all 15 image usages load, all 14 credits are present, and the Career Prospects grid is correctly separated from the employer strip.
+
+**Validation:** frontend link checker, shared JavaScript syntax check, whitespace check, source-level link/navigation audit, and local fragment audit passed. Browser QA passed across all nine destination pages at 390px and 320px, including keyboard menu close/focus return and reduced-motion behavior; additional checks covered Course Finder query aliases, Contact topic prefill, dashboard anchors, blog routes, and the standalone landing menu. No production deployment was checked in this pass.
+
+**Status:** branch `feature/gradmire-destination-ux-oct-2026` is pushed, and [PR #1](https://github.com/Gradmire/Gradmire/pull/1) is open to `master`. The three reported PR checks passed; no merge was performed. Sample catalogue coverage remains limited for some Course Finder subjects, and dedicated blog-detail pages remain a separate content task.
