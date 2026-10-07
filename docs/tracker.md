@@ -182,6 +182,8 @@ Metrics snapshot (leads, bookings, conversion %):
 
 **Destination coverage:** added a sourced Finland country page and updated the homepage/all-destinations directory. Existing destination pages now include career-sector/employer examples, visa document guidance, part-time work rules, pay context and official source links. For Australia and Canada, legacy visa and post-study copy was replaced where it contained stale work-hour, fee, duration or guaranteed-PR claims.
 
+**Landing-page motion refinement (8 October 2026):** added a lightweight reading-progress indicator, a pauseable university ticker, polished stat count-up and destination-card interactions, numbered process steps, spotlight-enabled tool/testimonial cards, clearer FAQ toggles and a restrained CTA sweep. The implementation uses native CSS/JavaScript, preserves the existing content, and respects reduced-motion preferences. Validated with the frontend link checker, inline-script syntax checks, and desktop/mobile/reduced-motion browser previews.
+
 **Accuracy note:** country work-permission and wage panels are dated 8 October 2026 and link to official authorities. Statutory floors are labelled as legal floors rather than typical student pay; Italy/Finland pay is described without implying a national statutory minimum. Official visa checklists remain controlling and should be rechecked before a user submits an application. Existing sample course/scholarship listings elsewhere in the static site still require ongoing content-owner verification.
 
 **Scope boundary:** this delivery covers frontend/UI and static content only. The broader roadmap’s CMS, API, search infrastructure, CRM, analytics and production-readiness tasks remain tracked separately and are not marked complete by this work.
