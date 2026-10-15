@@ -286,6 +286,23 @@ textarea.field-input{resize:vertical;min-height:130px;line-height:1.55;}
 </footer>
 
 <script>
+const contactParams = new URLSearchParams(location.search);
+const interest = contactParams.get('interest');
+const enquiryTypes = {
+  visa: 'Visa & documentation',
+  'test-prep': 'Test prep (IELTS / GRE / GMAT)',
+  course: 'Course counselling',
+  scholarships: 'Scholarship & funding',
+  'application-review': 'Application review',
+  'password-reset': 'General enquiry'
+};
+const enquirySelect = document.getElementById('inp-subject');
+const enquiryMessage = document.getElementById('inp-msg');
+if (enquiryTypes[interest]) enquirySelect.value = enquiryTypes[interest];
+if (interest === 'password-reset') enquiryMessage.value = 'I need help accessing or resetting my Gradmire account password.';
+else if (interest === 'visa') enquiryMessage.value = 'I would like help with visa and documentation support.';
+else if (interest === 'test-prep') enquiryMessage.value = 'I would like help choosing or preparing for an English-language or admissions test.';
+
 document.getElementById('contact-form').addEventListener('submit', function(e){
   e.preventDefault();
   const name = document.getElementById('inp-name').value.trim();
