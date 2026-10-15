@@ -197,7 +197,7 @@ Metrics snapshot (leads, bookings, conversion %):
 
 **Validation:** frontend link checker, shared JavaScript syntax check, whitespace check, source-level link/navigation audit, and local fragment audit passed. Browser QA passed across all nine destination pages at 390px and 320px, including keyboard menu close/focus return and reduced-motion behavior; additional checks covered Course Finder query aliases, Contact topic prefill, dashboard anchors, blog routes, and the standalone landing menu. No production deployment was checked in this pass.
 
-**Status:** branch `feature/gradmire-destination-ux-oct-2026` is pushed, and [PR #1](https://github.com/Gradmire/Gradmire/pull/1) is open to `master`. The three reported PR checks passed; no merge was performed. Sample catalogue coverage remains limited for some Course Finder subjects, and dedicated blog-detail pages remain a separate content task.
+**Status:** branch `feature/gradmire-destination-ux-oct-2026` is pushed, and [PR #1](https://github.com/Gradmire/Gradmire/pull/1) is open to `master`. Check GitHub for live checks on the current head; they rerun after pushes. No merge was performed. Sample catalogue coverage remains limited for some Course Finder subjects, and dedicated blog-detail pages remain a separate content task.
 
 
 ## October 2026 — Requirements-led landing-page follow-up (16 October)
