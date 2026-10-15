@@ -95,8 +95,37 @@ img{max-width:100%;display:block;}a{color:inherit;}
 @media(max-width:640px){.nav-links,.nav-btn{display:none;}.nav-ham{display:flex;}.form-row{grid-template-columns:1fr;}.dest-checks{grid-template-columns:1fr;}.branch-grid{grid-template-columns:1fr;}}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .nav{background:rgba(10,13,22,.88);}}
 :root[data-theme="dark"] .nav{background:rgba(10,13,22,.88);}
+/* Hero: friendly photo + promise above the booking form */
+.consult-hero{background:radial-gradient(ellipse 70% 90% at 85% 40%,rgba(0,122,90,.12),transparent 70%),linear-gradient(180deg,var(--surface),var(--bg));border-bottom:1px solid var(--border);}
+.consult-hero-inner{max-width:var(--w);margin:0 auto;padding:clamp(2rem,4vw,3.25rem) var(--gutter) clamp(1.5rem,3vw,2.25rem);display:grid;grid-template-columns:1.25fr .75fr;gap:clamp(2rem,5vw,4rem);align-items:center;}
+.consult-hero-eyebrow{display:inline-flex;align-items:center;gap:.5rem;margin-bottom:.9rem;padding:.35rem .8rem;border-radius:999px;background:var(--accent-dim);color:var(--accent);font:700 .72rem var(--mono);letter-spacing:.1em;text-transform:uppercase;}
+.consult-hero-eyebrow span{width:.5rem;height:.5rem;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(0,122,90,.18);}
+.consult-hero-title{font-size:clamp(2.1rem,4.4vw,3.6rem);font-weight:800;letter-spacing:-.035em;line-height:1.02;text-wrap:balance;margin-bottom:1rem;}
+.consult-hero-title span{color:var(--accent);}
+.consult-hero-sub{max-width:52ch;color:var(--text-s);font-size:1.02rem;line-height:1.6;margin-bottom:1.25rem;}
+.consult-hero-points{display:flex;flex-wrap:wrap;gap:.5rem;padding:0;list-style:none;}
+.consult-hero-points li{display:inline-flex;align-items:center;gap:.4rem;padding:.45rem .85rem;border:1px solid var(--border);border-radius:999px;background:var(--surface);font-size:.84rem;font-weight:600;}
+.consult-hero-points li::before{content:'✓';color:var(--accent);font-weight:800;}
+.consult-hero-photo{position:relative;justify-self:center;width:min(100%,340px);margin:0;}
+.consult-hero-photo img{width:100%;aspect-ratio:36/41;object-fit:cover;object-position:center 25%;border-radius:28px 28px 120px 28px;box-shadow:0 30px 60px rgba(14,32,60,.22);animation:consult-pop .9s cubic-bezier(.16,1,.3,1) both;}
+.consult-hero-badge{position:absolute;display:flex;align-items:center;gap:.4rem;padding:.6rem .85rem;border:1px solid var(--border);border-radius:14px;background:var(--surface);box-shadow:0 12px 28px rgba(14,20,32,.14);font-size:.78rem;color:var(--text-s);line-height:1.3;white-space:nowrap;}
+.consult-hero-badge strong{color:var(--text-p);font-size:.95rem;}
+.consult-hero-badge span{display:grid;place-items:center;width:1.7rem;height:1.7rem;border-radius:50%;background:var(--accent);color:#fff;font-size:.8rem;}
+.consult-hero-badge--top{top:12%;left:-18%;}
+.consult-hero-badge--bottom{bottom:8%;right:-8%;color:var(--text-p);font-weight:700;}
+@keyframes consult-pop{from{opacity:0;transform:translateY(16px) scale(.98);}to{opacity:1;transform:none;}}
+.step-note{font-size:.8rem;color:var(--text-s);}
+.field-error{margin-top:.35rem;color:#C0392B;font-size:.78rem;font-weight:600;}
+.form-check .field-error{flex-basis:100%;margin-left:1.6rem;}
+.form-check{flex-wrap:wrap;}
+.form-input[aria-invalid="true"],.form-select[aria-invalid="true"]{border-color:#C0392B;box-shadow:0 0 0 3px rgba(192,57,43,.12);}
+.consult-wrap{scroll-margin-top:80px;min-height:0;}
+@media(max-width:900px){.consult-hero-inner{grid-template-columns:1fr;gap:1.5rem;}.consult-hero-photo{width:100%;max-width:520px;justify-self:stretch;}.consult-hero-photo img{aspect-ratio:16/10;object-position:center 30%;border-radius:22px;}.consult-hero-badge--top{top:.75rem;left:.75rem;}.consult-hero-badge--bottom{bottom:.75rem;right:.75rem;}.consult-hero-sub{font-size:.95rem;}}
+@media(prefers-reduced-motion:reduce){.consult-hero-photo img{animation:none;}}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .field-error{color:#FF8A7A;}}
+:root[data-theme="dark"] .field-error{color:#FF8A7A;}
 </style>
-<link rel="stylesheet" href="../assets/site.css?v=8">
+<link rel="stylesheet" href="../assets/site.css?v=9">
 
 <nav class="nav" aria-label="Main navigation">
   <div class="nav-inner">
@@ -118,7 +147,27 @@ img{max-width:100%;display:block;}a{color:inherit;}
   </div>
 </nav>
 
-<div class="consult-wrap">
+<section class="consult-hero" aria-labelledby="consult-hero-title">
+  <div class="consult-hero-inner">
+    <div class="consult-hero-copy">
+      <p class="consult-hero-eyebrow"><span aria-hidden="true"></span>Free 1:1 counselling</p>
+      <h1 class="consult-hero-title" id="consult-hero-title">Talk to a study-abroad expert. <span>It's free.</span></h1>
+      <p class="consult-hero-sub">Tell us your goals in two minutes. A Gradmire counsellor will call within 24 hours to plan your courses, universities, budget and next steps.</p>
+      <ul class="consult-hero-points">
+        <li>No fees, no obligation</li>
+        <li>Personalised university shortlist</li>
+        <li>Scholarship and visa guidance</li>
+      </ul>
+    </div>
+    <figure class="consult-hero-photo">
+      <img src="https://images.unsplash.com/photo-1577036057060-d318e280b0c2?auto=format&fit=crop&w=720&h=820&q=80" alt="Smiling graduate holding a stack of books in a library" width="360" height="410" fetchpriority="high">
+      <p class="consult-hero-badge consult-hero-badge--top"><strong>47,000+</strong> students placed worldwide</p>
+      <p class="consult-hero-badge consult-hero-badge--bottom"><span aria-hidden="true">☎</span> Callback within 24 hours</p>
+    </figure>
+  </div>
+</section>
+
+<div class="consult-wrap" id="book">
   <!-- Form -->
   <div class="form-side">
     <div class="step-indicator">
@@ -127,32 +176,32 @@ img{max-width:100%;display:block;}a{color:inherit;}
       <div class="step-dot" id="sd2"></div>
       <div class="step-line"><div class="step-line-fill" id="sl2"></div></div>
       <div class="step-dot" id="sd3"></div>
-      <span class="step-label" id="step-label" style="margin-left:.5rem">Step 1 of 3</span>
+      <span class="step-label" id="step-label" style="margin-left:.5rem" aria-live="polite">Step 1 of 3 · About you</span>
     </div>
 
     <!-- Step 1 -->
     <div class="form-step active" id="step1">
-      <h1 class="step-title">Tell us about you.</h1>
+      <h2 class="step-title">Tell us about you.</h2>
       <p class="step-subtitle">We'll match you with the right specialist counsellor.</p>
       <form id="form1" novalidate>
         <div class="form-row">
           <div class="form-field">
             <label class="form-label" for="s1-first">First name</label>
-            <input class="form-input" type="text" id="s1-first" placeholder="Arjun" required>
+            <input class="form-input" type="text" id="s1-first" name="first_name" placeholder="Arjun" autocomplete="given-name" required>
           </div>
           <div class="form-field">
             <label class="form-label" for="s1-last">Last name</label>
-            <input class="form-input" type="text" id="s1-last" placeholder="Sharma" required>
+            <input class="form-input" type="text" id="s1-last" name="last_name" placeholder="Sharma" autocomplete="family-name" required>
           </div>
         </div>
         <div class="form-row">
           <div class="form-field">
             <label class="form-label" for="s1-phone">Phone (with country code)</label>
-            <input class="form-input" type="tel" id="s1-phone" placeholder="+91 98765 43210" required>
+            <input class="form-input" type="tel" id="s1-phone" name="phone" placeholder="+91 98765 43210" autocomplete="tel" inputmode="tel" required>
           </div>
           <div class="form-field">
             <label class="form-label" for="s1-email">Email address</label>
-            <input class="form-input" type="email" id="s1-email" placeholder="you@example.com" required>
+            <input class="form-input" type="email" id="s1-email" name="email" placeholder="you@example.com" autocomplete="email" required>
           </div>
         </div>
         <div class="form-row">
@@ -177,7 +226,7 @@ img{max-width:100%;display:block;}a{color:inherit;}
         </div>
         <div class="form-field">
           <label class="form-label" for="s1-destination">Primary destination of interest</label>
-          <select class="form-select" id="s1-destination">
+          <select class="form-select" id="s1-destination" name="destination" required>
             <option value="">Select a country</option>
             <optgroup label="Study destinations">
               <option value="uk">United Kingdom</option>
@@ -231,6 +280,7 @@ img{max-width:100%;display:block;}a{color:inherit;}
         </div>
         <div class="step-nav">
           <button type="button" class="btn-next" onclick="goStep(2)">Continue →</button>
+          <span class="step-note">Takes about 2 minutes</span>
         </div>
       </form>
     </div>
@@ -286,10 +336,14 @@ img{max-width:100%;display:block;}a{color:inherit;}
     <!-- Step 3 -->
     <div class="form-step" id="step3">
       <h2 class="step-title">Almost done.</h2>
-      <p class="step-subtitle">Confirm your consent and we'll match you with a counsellor immediately.</p>
+      <p class="step-subtitle">A couple of quick details, then we'll match you with a counsellor.</p>
       <div class="form-check" style="margin-bottom:1rem;">
-        <input type="checkbox" id="consent-comms" name="marketing_opt_in" required>
-        <label class="form-check-label" for="consent-comms">I consent to receiving communications from Gradmire including scholarship alerts, event invitations and study-abroad guidance. (Required)</label>
+        <input type="checkbox" id="consent-contact" name="contact_consent" required>
+        <label class="form-check-label" for="consent-contact">Gradmire may call, email or WhatsApp me about this consultation request. (Required)</label>
+      </div>
+      <div class="form-check" style="margin-bottom:1rem;">
+        <input type="checkbox" id="consent-comms" name="marketing_opt_in">
+        <label class="form-check-label" for="consent-comms">Send me scholarship alerts, event invitations and study-abroad tips. (Optional)</label>
       </div>
       <div class="form-check" style="margin-bottom:1.5rem;">
         <input type="checkbox" id="consent-partners" name="partner_institution_opt_in">
@@ -327,7 +381,7 @@ img{max-width:100%;display:block;}a{color:inherit;}
     <div class="thankyou" id="thankyou">
       <div class="ty-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><polyline points="4,14 10,20 24,8" stroke="#00A878" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <h2 class="ty-title">You're booked in!</h2>
-      <p class="ty-sub">Your counsellor from our Mumbai branch will call within 24 hours to schedule your free session.</p>
+      <p class="ty-sub">Your counsellor from our <span id="ty-branch">Mumbai</span> branch will call within 24 hours to schedule your free session.</p>
       <div class="ty-next">
         <div style="font-size:.8rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--text-s);margin-bottom:.75rem;">What happens next</div>
         <div class="ty-next-step"><div class="ty-next-step-num">1</div>Counsellor calls within 24 hours to confirm</div>
@@ -419,27 +473,109 @@ img{max-width:100%;display:block;}a{color:inherit;}
 </div>
 
 <script>
-function goStep(n) {
+const STEP_NAMES = ['About you', 'Your office', 'Confirm'];
+let currentStep = 1;
+
+function setFieldError(field, message) {
+  const wrap = field.closest('.form-field') || field.closest('.form-check');
+  let note = wrap && wrap.querySelector('.field-error');
+  if (!message) {
+    field.removeAttribute('aria-invalid');
+    if (note) note.remove();
+    return;
+  }
+  field.setAttribute('aria-invalid', 'true');
+  if (!note && wrap) {
+    note = document.createElement('p');
+    note.className = 'field-error';
+    note.id = field.id + '-error';
+    wrap.appendChild(note);
+    field.setAttribute('aria-describedby', note.id);
+  }
+  if (note) note.textContent = message;
+}
+
+function validateStep(n) {
+  const checks = {
+    1: [
+      ['s1-first', (v) => v.trim() ? '' : 'Please enter your first name.'],
+      ['s1-last', (v) => v.trim() ? '' : 'Please enter your last name.'],
+      ['s1-phone', (v) => v.replace(/[^\d]/g, '').length >= 10 ? '' : 'Please enter a valid phone number.'],
+      ['s1-email', (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) ? '' : 'Please enter a valid email address.'],
+      ['s1-destination', (v) => v ? '' : 'Please choose a destination.']
+    ],
+    3: [
+      ['consent-contact', (v, el) => el.checked ? '' : 'Please allow us to contact you so a counsellor can call you back.']
+    ]
+  }[n] || [];
+  let firstInvalid = null;
+  checks.forEach(([id, rule]) => {
+    const el = document.getElementById(id);
+    const message = rule(el.value, el);
+    setFieldError(el, message);
+    if (message && !firstInvalid) firstInvalid = el;
+  });
+  if (firstInvalid) firstInvalid.focus();
+  return !firstInvalid;
+}
+
+function showStep(n) {
+  currentStep = n;
   document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
   const target = document.getElementById('step' + n);
   if (target) target.classList.add('active');
   const dots = [document.getElementById('sd1'),document.getElementById('sd2'),document.getElementById('sd3')];
   const lines = [document.getElementById('sl1'),document.getElementById('sl2')];
-  dots.forEach((d,i) => { d.classList.remove('active','done'); });
+  dots.forEach(d => { d.classList.remove('active','done'); });
   lines.forEach(l => l.style.width='0');
   for (let i=0;i<n-1;i++) { dots[i].classList.add('done'); if(lines[i]) lines[i].style.width='100%'; }
   dots[n-1].classList.add('active');
-  document.getElementById('step-label').textContent = 'Step ' + n + ' of 3';
-  window.scrollTo({top:0,behavior:'smooth'});
+  document.getElementById('step-label').textContent = 'Step ' + n + ' of 3 · ' + STEP_NAMES[n - 1];
+  document.getElementById('book').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
 }
+
+function goStep(n) {
+  if (n > currentStep && !validateStep(currentStep)) return;
+  showStep(n);
+}
+
 function submitForm() {
+  if (!validateStep(3)) return;
+  const branch = document.querySelector('input[name="branch"]:checked');
+  const branchName = branch ? branch.closest('.branch-card').querySelector('.branch-name').textContent.split('—')[0].trim() : '';
+  if (branchName) document.getElementById('ty-branch').textContent = branchName;
+  try { sessionStorage.removeItem('gradmire-consult-prefill'); } catch (_) {}
   document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
   document.getElementById('thankyou').style.display = 'block';
   [document.getElementById('sd1'),document.getElementById('sd2'),document.getElementById('sd3')].forEach(d => { d.classList.remove('active'); d.classList.add('done'); });
   [document.getElementById('sl1'),document.getElementById('sl2')].forEach(l => l.style.width='100%');
   document.getElementById('step-label').textContent = 'Completed';
-  window.scrollTo({top:0,behavior:'smooth'});
+  document.getElementById('book').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+
+/* Clear an error as soon as the field is corrected. */
+document.querySelectorAll('#step1 .form-input, #step1 .form-select, #consent-contact').forEach(el => {
+  el.addEventListener(el.type === 'checkbox' || el.tagName === 'SELECT' ? 'change' : 'input', () => {
+    if (el.getAttribute('aria-invalid') === 'true') setFieldError(el, '');
+  });
+});
+
+/* Details typed into the site-wide consultation popup arrive through sessionStorage
+   (never the URL), so the student does not have to type them twice. */
+(function prefillFromPopup() {
+  let data = null;
+  try { data = JSON.parse(sessionStorage.getItem('gradmire-consult-prefill') || 'null'); } catch (_) {}
+  if (!data) return;
+  const [first, ...rest] = String(data.name || '').trim().split(/\s+/);
+  const set = (id, value) => { const el = document.getElementById(id); if (el && value && !el.value) el.value = value; };
+  set('s1-first', first);
+  set('s1-last', rest.join(' '));
+  set('s1-phone', data.phone);
+  set('s1-email', data.email);
+  const destination = document.getElementById('s1-destination');
+  if (destination && data.destination && [...destination.options].some(o => o.value === data.destination)) destination.value = data.destination;
+})();
+
 (function prefillConsultationContext() {
   const params = new URLSearchParams(window.location.search);
   const rawInterest = (params.get('interest') || '').trim().toLowerCase();
@@ -472,4 +608,4 @@ function submitForm() {
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../assets/site.js?v=8"></script>
+<script src="../assets/site.js?v=9"></script>

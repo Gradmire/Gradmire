@@ -350,6 +350,8 @@
         justify-content: center;
         padding-top: clamp(2.5rem, 6vh, 4rem);
         background: radial-gradient(ellipse 90% 80% at 72% 40%, rgba(26, 72, 112, .09) 0%, transparent 65%), var(--bg);
+        /* The tilted orbit rings can poke past the viewport edge; never let them add a page scrollbar. */
+        overflow-x: clip;
     }
     
     @media (prefers-color-scheme: dark) {
@@ -428,9 +430,9 @@
         inset: 5%;
         width: 90%;
         height: 90%;
-        overflow: hidden;
-        border-radius: 50%;
-        background: radial-gradient(circle at 35% 28%, rgba(84, 160, 221, .2), rgba(9, 17, 34, .92) 68%);
+        /* Transparent stage: no blue backdrop, and pins near the limb are never clipped. */
+        overflow: visible;
+        background: none;
         cursor: grab;
         touch-action: pan-y;
     }
@@ -445,11 +447,12 @@
         height: 100%;
         position: relative;
         z-index: 1;
+        filter: drop-shadow(0 26px 38px rgba(14, 32, 60, .22));
     }
 
     .globe-fallback {
         position: absolute;
-        inset: 0;
+        inset: 10%;
         border-radius: 50%;
         background: url('../assets/earth-texture.jpg') center / cover no-repeat, radial-gradient(circle at 34% 28%, #64a5ca, #16364c 68%, #0a1220 100%);
         box-shadow: inset 18px 4px 32px rgba(1, 8, 20, .5), inset -20px -8px 28px rgba(1, 8, 20, .62), 0 0 52px rgba(47, 163, 218, .22);
@@ -463,13 +466,13 @@
         position: absolute;
         z-index: 2;
         inset: 2%;
-        border: 1px solid rgba(107, 199, 236, .35);
+        border: 1px solid color-mix(in srgb, var(--brand) 22%, transparent);
         border-radius: 50%;
         pointer-events: none;
         transform-style: preserve-3d;
     }
     .globe-orbit--one { transform: rotateX(66deg) rotateZ(-22deg); animation: globe-orbit-roll-one 54s linear infinite; }
-    .globe-orbit--two { inset: 7%; border-color: rgba(255, 255, 255, .16); transform: rotateX(66deg) rotateZ(54deg); animation: globe-orbit-roll-two 72s linear infinite reverse; }
+    .globe-orbit--two { inset: 7%; border-color: color-mix(in srgb, var(--brand) 14%, transparent); transform: rotateX(66deg) rotateZ(54deg); animation: globe-orbit-roll-two 72s linear infinite reverse; }
     @keyframes globe-orbit-roll-one {
         from { transform: rotateX(66deg) rotateZ(-22deg); }
         to { transform: rotateX(66deg) rotateZ(338deg); }
@@ -481,8 +484,10 @@
     .globe-meta-chip {
         position: absolute;
         z-index: 3;
-        top: 9%;
-        right: -2%;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
         display: inline-flex;
         align-items: center;
         gap: .5rem;
@@ -1377,112 +1382,6 @@
         text-decoration: none;
         display: block;
     }
-    /* ─── Partners strip ─────────────────────────────────── */
-    
-    .partners {
-        background: var(--surface);
-        border-top: 1px solid var(--border);
-        border-bottom: 1px solid var(--border);
-        padding: clamp(2rem, 4vw, 3rem) var(--gutter);
-    }
-    
-    .partners-inner {
-        max-width: var(--w);
-        margin: 0 auto;
-        overflow: hidden;
-    }
-    
-    .partners-label {
-        font-size: .78rem;
-        font-family: var(--mono);
-        color: var(--text-s);
-        text-align: left;
-        letter-spacing: .07em;
-        text-transform: uppercase;
-        margin-bottom: 1.25rem;
-    }
-    
-    .partners-logos {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        flex-wrap: nowrap;
-        gap: 1rem 1.5rem;
-        width: max-content;
-        animation: partner-marquee 32s linear infinite;
-    }
-
-    @keyframes partner-marquee {
-        from {
-            transform: translateX(-50%);
-        }
-        to {
-            transform: translateX(0);
-        }
-    }
-    
-    .partner-chip {
-        display: flex;
-        align-items: center;
-        gap: .6rem;
-        min-width: 132px;
-        padding: .55rem .7rem;
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        background: var(--bg);
-        flex: 0 0 150px;
-        transition: border-color .2s, transform .2s, background .2s;
-    }
-
-    .partner-chip:hover {
-        border-color: var(--accent);
-        background: var(--surface);
-        transform: translateY(-2px);
-    }
-    
-    .partner-badge {
-        width: 36px;
-        height: 36px;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: var(--mono);
-        font-size: .68rem;
-        font-weight: 700;
-        letter-spacing: .01em;
-        flex-shrink: 0;
-    }
-    
-    .partner-chip-name {
-        font-size: .82rem;
-        font-weight: 600;
-        color: var(--text-s);
-        white-space: nowrap;
-    }
-
-    .partner-chip-school {
-        display: block;
-        margin-top: .1rem;
-        font-size: .62rem;
-        color: var(--text-s);
-        opacity: .75;
-        white-space: nowrap;
-    }
-    
-    .partner-name {
-        font-size: .9rem;
-        font-weight: 700;
-        letter-spacing: -.01em;
-        color: var(--text-s);
-        opacity: .7;
-        white-space: nowrap;
-        transition: opacity .2s;
-    }
-    
-    .partner-name:hover {
-        opacity: 1;
-    }
     /* ─── Voices (extra testimonial) ────────────────────── */
     
     .voices-grid {
@@ -1893,7 +1792,7 @@
         .hero-trust-row {
             gap: .35rem;
         }
-        .globe-meta-chip { top: 8%; right: -1%; padding: .48rem .62rem; font-size: .58rem; }
+        .globe-meta-chip { padding: .48rem .62rem; font-size: .58rem; }
         .globe-orbit--one { inset: 1%; }
         .globe-orbit--two { inset: 6%; }
         /* Destinations grid: true single column on mobile */
@@ -1929,26 +1828,6 @@
         .footer-bottom {
             flex-direction: column;
             align-items: flex-start;
-        }
-
-        .partners-logos {
-            gap: .65rem;
-        }
-
-        .partner-chip {
-            flex-basis: 150px;
-            padding: .5rem;
-        }
-
-        .partner-chip-name {
-            font-size: .74rem;
-        }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        .partners-logos {
-            animation: none;
-            transform: none;
         }
     }
 
@@ -1988,10 +1867,6 @@
     @keyframes evidence-sweep { 0%,12% { transform:translateX(-140%);opacity:0; } 19% { opacity:1; } 42%,100% { transform:translateX(350%);opacity:0; } }
     @keyframes stat-settle { 0% { transform:translateY(5px);opacity:.72; } 100% { transform:translateY(0);opacity:1; } }
 
-    .partners-logos { -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent); mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent); animation-duration:48s; }
-    .partners-logos:hover,.partners-logos:focus-within { animation-play-state:paused; }
-    .partner-chip { transition:border-color .24s,transform .28s cubic-bezier(.16,1,.3,1),background .24s,box-shadow .24s; }
-    .partner-chip:hover { box-shadow:0 8px 22px rgba(14,20,32,.08); }
 
     .dest-cell { isolation:isolate; transition:opacity .6s ease,transform .6s ease,box-shadow .32s ease; }
     .dest-cell:hover,.dest-cell:focus-visible { box-shadow:0 18px 40px rgba(14,20,32,.18),inset 0 0 0 1px rgba(255,255,255,.6); }
@@ -2046,7 +1921,7 @@
       .hero-headline .hl-accent::after { animation:none;transform:scaleX(1); }
       .evidence::after,.cta-wrap::before { animation:none;display:none; }
       .stat-num.is-counted { animation:none; }
-      .partner-chip,.dest-cell,.dest-cell-bg,.dest-name,.journey-photo,.tool-card,.voice,.home-faq-list details,.home-faq-list summary::after { transition:none!important; }
+      .logo-card,.dest-cell,.dest-cell-bg,.dest-name,.journey-photo,.tool-card,.voice,.home-faq-list details,.home-faq-list summary::after { transition:none!important; }
       .dest-cell:hover,.dest-cell:focus-visible,.tool-card:hover,.voice:hover,.home-faq-list details:hover { transform:none; }
       .spotlight-card::before { display:none; }
       .globe-orbit { animation:none!important; }
@@ -2065,19 +1940,95 @@
     .why-evidence .stat-num { color: var(--brand); font-size: clamp(1.65rem, 2.8vw, 2.45rem); line-height: 1.08; }
     .why-evidence .stat-lbl { color: var(--text-s); font-size: .82rem; }
     .evidence-proof { max-width: var(--w); margin: 1rem auto 0; color: var(--text-s); font-size: .82rem; }
-    .partners { padding: 2.25rem var(--gutter); }
-    .partners-inner { max-width: var(--w); margin: 0 auto; }
-    .partners-title { margin: .25rem 0 .4rem; text-align: center; font-size: clamp(1.35rem, 2.4vw, 2rem); letter-spacing: -.03em; }
-    .partners-note { margin: 0 auto; max-width: 60ch; color: var(--text-s); text-align: center; font-size: .82rem; }
-    .partners-logos { margin-top: 1.25rem; }
-    .partner-badge { width: 2.5rem; height: 2.5rem; border-radius: .7rem; font-size: .8rem; }
     .voice-avatar { display: grid; place-items: center; width: 46px; height: 46px; flex: 0 0 46px; border-radius: 50%; background: var(--surface-tint); color: var(--brand); font-size: .82rem; font-weight: 800; }
     @media (max-width: 900px) { .why-evidence .evidence-inner { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-    @media (max-width: 560px) { .why-evidence .evidence-inner { grid-template-columns: 1fr; } .evidence-proof { line-height: 1.65; } }
-    @media (prefers-reduced-motion: reduce) { .partners-logos { animation: none !important; transform: none !important; } }
+    @media (max-width: 560px) { .evidence-proof { line-height: 1.65; } }
+
+    /* ─── Why us: icon + headline-number stat cards ─────────── */
+    .why-evidence .evidence-card { display: flex; flex-direction: column; gap: .35rem; padding: 1.5rem 1.4rem 1.6rem; border-radius: 18px; box-shadow: 0 14px 34px rgba(14,20,32,.07); transition: transform .3s cubic-bezier(.16,1,.3,1), box-shadow .3s; }
+    .why-evidence .evidence-card:hover { transform: translateY(-4px); box-shadow: 0 20px 44px rgba(14,20,32,.11); }
+    .stat-top { display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin-bottom: .9rem; }
+    .stat-icon { display: grid; place-items: center; flex: 0 0 52px; width: 52px; height: 52px; border-radius: 50%; background: color-mix(in srgb, var(--brand) 12%, var(--surface)); color: var(--brand); }
+    .why-evidence .stat-num { font-family: inherit; font-size: clamp(2.2rem, 3.6vw, 3rem); font-weight: 800; letter-spacing: -.04em; line-height: 1; color: color-mix(in srgb, var(--brand) 42%, var(--text-s)); text-align: right; }
+    .why-evidence .stat-num.is-counting { text-shadow: none; }
+    .stat-title { margin: 0; font-size: 1.12rem; font-weight: 750; letter-spacing: -.015em; color: var(--text-p); }
+    .why-evidence .stat-lbl { margin: 0; font-size: .9rem; line-height: 1.6; }
+    @media (max-width: 560px) {
+        .why-evidence .evidence-inner { gap: .7rem; }
+        .why-evidence .evidence-card { padding: 1rem .95rem 1.1rem; border-radius: 14px; }
+        .stat-top { flex-direction: column-reverse; align-items: flex-start; gap: .55rem; margin-bottom: .45rem; }
+        .stat-icon { flex-basis: 38px; width: 38px; height: 38px; }
+        .stat-icon svg { width: 18px; height: 18px; }
+        .why-evidence .stat-num { font-size: 1.9rem; text-align: left; }
+        .stat-title { font-size: .95rem; }
+        .why-evidence .stat-lbl { font-size: .78rem; line-height: 1.5; }
+    }
+
+    /* ─── Logo sliders (partner universities, top recruiters) ─ */
+    .logo-band { padding: clamp(2.5rem, 5vw, 3.75rem) var(--gutter); background: var(--surface); border-top: 1px solid var(--border); }
+    .logo-band--recruiters { background: var(--bg); border-bottom: 1px solid var(--border); }
+    .logo-band-inner { max-width: var(--w); margin: 0 auto; }
+    .logo-band-head { margin-bottom: 1.4rem; }
+    .logo-band-eyebrow { margin: 0 0 .4rem; color: var(--accent); font: 700 .7rem var(--mono); letter-spacing: .12em; text-transform: uppercase; }
+    .logo-band-title { margin: 0; font-size: clamp(1.5rem, 2.6vw, 2.1rem); font-weight: 800; letter-spacing: -.03em; color: var(--text-p); }
+    .logo-band-note { margin: .5rem 0 0; max-width: 62ch; color: var(--text-s); font-size: .88rem; }
+    .logo-slider { display: flex; align-items: center; gap: .9rem; }
+    .logo-slider-viewport { flex: 1; min-width: 0; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; padding: .5rem 0 1.1rem; -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); }
+    .logo-slider-viewport::-webkit-scrollbar { display: none; }
+    .logo-slider-viewport:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 14px; }
+    .logo-slider-track { display: flex; gap: 1.15rem; width: max-content; margin: 0; padding: 0 .6rem; list-style: none; }
+    .logo-card { flex: 0 0 auto; display: grid; place-items: center; width: 184px; height: 100px; padding: 1rem 1.35rem; border: 1px solid rgba(14,20,32,.07); border-radius: 16px; background: #fff; box-shadow: 0 6px 18px rgba(14,20,32,.07); transition: transform .28s cubic-bezier(.16,1,.3,1), box-shadow .28s; }
+    .logo-card:hover { transform: translateY(-3px); box-shadow: 0 14px 28px rgba(14,20,32,.12); }
+    .logo-card img { display: block; width: auto; height: auto; max-width: 100%; max-height: 54px; object-fit: contain; -webkit-user-drag: none; user-select: none; }
+    .logo-slider-btn { flex: 0 0 auto; display: grid; place-items: center; width: 46px; height: 46px; padding: 0; border: 1px solid var(--border); border-radius: 50%; background: var(--surface); color: var(--text-p); box-shadow: 0 6px 16px rgba(14,20,32,.08); cursor: pointer; transition: transform .2s, border-color .2s, color .2s; }
+    .logo-slider-btn:hover { border-color: var(--accent); color: var(--accent); transform: scale(1.05); }
+    .logo-slider-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    .logo-slider-btn[hidden] { display: none; }
+    @media (max-width: 640px) {
+        .logo-band-head { margin-bottom: 1rem; }
+        /* Phones: swipe + drift edge to edge; arrows would leave room for only two logos. */
+        .logo-slider { margin-inline: calc(var(--gutter) * -1); }
+        .logo-slider-btn { display: none; }
+        .logo-slider-track { gap: .75rem; }
+        .logo-card { width: 136px; height: 78px; padding: .75rem 1rem; border-radius: 12px; }
+        .logo-card img { max-height: 42px; }
+    }
+
+    /* ─── Mobile sliders: swipeable rows instead of long stacks ─ */
+    .m-slider-dots { display: none; }
+    @media (max-width: 640px) {
+        .m-slider { display: flex !important; grid-template-columns: none !important; grid-template-rows: none !important; gap: .85rem !important; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter); scrollbar-width: none; margin-inline: calc(var(--gutter) * -1); padding: .35rem var(--gutter) .9rem; }
+        .m-slider::-webkit-scrollbar { display: none; }
+        .m-slider > * { flex: 0 0 min(84%, 340px); min-width: 0; margin-top: 0 !important; scroll-snap-align: start; transition-delay: 0s !important; }
+        /* Scroll reveals key off vertical position; cards waiting off to the side would otherwise swipe in blank. */
+        .m-slider > .reveal, .m-slider > .dest-cell, .m-slider > .dest-stat { opacity: 1 !important; transform: none !important; }
+        .m-slider-dots { display: flex; justify-content: center; gap: .45rem; margin: .1rem 0 0; }
+        .m-slider-dot { width: 8px; height: 8px; padding: 0; border: 0; border-radius: 999px; background: color-mix(in srgb, var(--text-s) 35%, transparent); cursor: pointer; transition: width .3s cubic-bezier(.16,1,.3,1), background .3s; }
+        .m-slider-dot[aria-current="true"] { width: 22px; background: var(--accent); }
+        .m-slider-dot:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+        /* Destinations: uniform swipe cards */
+        .dest-grid.m-slider > .dest-cell { aspect-ratio: 4/5; grid-column: auto; grid-row: auto; }
+        .dest-grid.m-slider > .dest-stat { flex-basis: min(70%, 280px); }
+        /* Journey: four step cards instead of full-height sticky panels */
+        .journey-stack.m-slider { margin-inline: 0; }
+        .journey-stack.m-slider > .journey-card { position: relative; top: auto; min-height: 0; align-items: stretch; border: 1px solid var(--border); border-radius: var(--r-md); overflow: hidden; transform: none !important; }
+        .journey-stack.m-slider .journey-inner { display: flex; flex-direction: column-reverse; justify-content: flex-end; align-items: stretch; gap: 1.1rem; padding: 1rem 1rem 1.4rem; }
+        .journey-stack.m-slider .journey-visual { max-height: none; aspect-ratio: 16/10; border-radius: 12px; }
+        .journey-stack.m-slider .journey-title { font-size: 1.55rem; margin-bottom: .6rem; }
+        .journey-stack.m-slider .journey-text { font-size: .92rem; line-height: 1.6; }
+        .journey-stack.m-slider .journey-stage { margin-bottom: .8rem; font-size: .62rem; }
+        .journey .m-slider-dots { padding-bottom: var(--sec); }
+        .voices-grid.m-slider, .tools-promo-grid.m-slider { margin-top: 1.5rem; }
+        .voices-grid.m-slider > .voice { margin: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .m-slider { scroll-behavior: auto; }
+        .logo-card, .why-evidence .evidence-card { transition: none; }
+        .logo-card:hover, .why-evidence .evidence-card:hover { transform: none; }
+    }
 
 </style>
-<link rel="stylesheet" href="../assets/site.css?v=8">
+<link rel="stylesheet" href="../assets/site.css?v=9">
 
 </head>
 <body>
@@ -2149,7 +2100,7 @@
         </div>
         <a href="destinations.html" class="btn btn-outline" style="flex-shrink:0;margin-bottom:.25rem">View all destinations</a>
     </div>
-    <div class="dest-grid" role="list">
+    <div class="dest-grid m-slider" role="list" aria-label="Study destinations">
         <!-- col 1, rows 1–2: UK tall -->
         <a href="study-in-uk.html" class="dest-cell" data-spotlight aria-label="Study in United Kingdom">
             <div class="dest-cell-bg bg-uk"></div>
@@ -2213,55 +2164,86 @@
 
 <!-- WHY US / GRADMIRE STATS -->
 <section class="evidence why-evidence" aria-labelledby="why-title">
-  <div class="evidence-head"><p class="evidence-eyebrow">Why Gradmire</p><h2 class="sec-title" id="why-title">Trusted guidance. Tangible reach.</h2><p class="evidence-intro">We combine counselling experience, university relationships and practical tools to help students plan their next step.</p></div>
+  <div class="evidence-head"><p class="evidence-eyebrow">Why Gradmire</p><h2 class="sec-title" id="why-title">Why us?</h2><p class="evidence-intro">Trusted by students and families across India, we combine counselling experience, university relationships and practical tools to fuel your international journey.</p></div>
   <div class="evidence-inner" role="list" aria-label="Gradmire at a glance">
-    <article class="evidence-card" role="listitem"><p class="stat-kicker">Trust &amp; reliability</p><div class="stat-num">Since 2006</div><div class="stat-lbl">Guidance for students and families</div></article>
-    <article class="evidence-card" role="listitem"><p class="stat-kicker">Global partnerships</p><div class="stat-num" data-target="850" data-suffix="+">850+</div><div class="stat-lbl">Partner university agreements</div></article>
-    <article class="evidence-card" role="listitem"><p class="stat-kicker">Proven placement experience</p><div class="stat-num" data-target="47000" data-suffix="+">47,000+</div><div class="stat-lbl">Students placed in universities worldwide</div></article>
-    <article class="evidence-card" role="listitem"><p class="stat-kicker">Global reach</p><div class="stat-num" data-target="50" data-suffix="+ countries">50+ countries</div><div class="stat-lbl">Destination countries with active placements</div></article>
+    <article class="evidence-card" role="listitem">
+      <div class="stat-top"><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 2.5 4.5 5.3v6.1c0 4.7 3.2 8.6 7.5 10.1 4.3-1.5 7.5-5.4 7.5-10.1V5.3L12 2.5Z" fill="currentColor"/></svg></span><div class="stat-num" data-target="20" data-suffix="+">20+</div></div>
+      <h3 class="stat-title">Trust &amp; reliability</h3>
+      <p class="stat-lbl">20 years of guidance for students and families, since 2006.</p>
+    </article>
+    <article class="evidence-card" role="listitem">
+      <div class="stat-top"><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 3.9 5.6 3.9 9s-1.3 6.4-3.9 9c-2.6-2.6-3.9-5.6-3.9-9S9.4 5.6 12 3Z"/></svg></span><div class="stat-num" data-target="850" data-suffix="+">850+</div></div>
+      <h3 class="stat-title">Global partnerships</h3>
+      <p class="stat-lbl">Partner university agreements with institutions worldwide.</p>
+    </article>
+    <article class="evidence-card" role="listitem">
+      <div class="stat-top"><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24"><path d="M12 4 1.5 9 12 14l8.5-4v5.5h1.5V9L12 4Z" fill="currentColor"/><path d="M5.5 12.3v3.4c0 1.6 2.9 3.3 6.5 3.3s6.5-1.7 6.5-3.3v-3.4L12 15.4l-6.5-3.1Z" fill="currentColor"/></svg></span><div class="stat-num" data-target="47" data-suffix="K+">47K+</div></div>
+      <h3 class="stat-title">Proven excellence</h3>
+      <p class="stat-lbl">47,000+ students placed in universities worldwide.</p>
+    </article>
+    <article class="evidence-card" role="listitem">
+      <div class="stat-top"><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M9 3.5 3 5.8v14.7l6-2.3 6 2.3 6-2.3V3.5l-6 2.3-6-2.3Zm6 4.1v10.6l-6-2.3V5.3l6 2.3Z" fill="currentColor"/></svg></span><div class="stat-num" data-target="50" data-suffix="+">50+</div></div>
+      <h3 class="stat-title">Global reach</h3>
+      <p class="stat-lbl">Destination countries with active student placements.</p>
+    </article>
   </div>
   <p class="evidence-proof">No commission model · Talk to alumni before deciding · Guidance starts with your profile</p>
 </section>
 
-<!-- PARTNERS -->
-<section class="partners" aria-labelledby="partners-title">
-    <div class="partners-inner">
-        <p class="partners-label">University network</p>
-        <h2 class="partners-title" id="partners-title">Universities our students have attended</h2>
-        <p class="partners-note">Selected institutions from Gradmire’s existing student-placement network.</p>
-        <div class="partners-logos" role="list">
-            <div class="partner-chip" role="listitem" title="University of Oxford">
-                <div class="partner-badge" aria-hidden="true" style="background:#002147;color:#fff;">Ox</div>
-                <span><span class="partner-chip-name">Oxford</span><span class="partner-chip-school">United Kingdom</span></span>
+<!-- PARTNER UNIVERSITIES -->
+<section class="logo-band" aria-labelledby="partners-title">
+    <div class="logo-band-inner">
+        <div class="logo-band-head">
+            <p class="logo-band-eyebrow">University network</p>
+            <h2 class="logo-band-title" id="partners-title">Universities our students have attended</h2>
+            <p class="logo-band-note">Selected institutions from Gradmire’s existing student-placement network.</p>
+        </div>
+        <div class="logo-slider" data-logo-slider>
+            <button class="logo-slider-btn logo-slider-btn--prev" type="button" aria-label="Previous logos" hidden><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="m15 5-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="logo-slider-viewport" tabindex="0" role="region" aria-label="Partner university logos">
+                <ul class="logo-slider-track">
+                <li class="logo-card" title="University of Oxford · United Kingdom"><img src="../assets/logos/universities/oxford.svg" alt="University of Oxford" loading="lazy" decoding="async"></li>
+                <li class="logo-card" title="Imperial College London · United Kingdom"><img src="../assets/logos/universities/imperial.svg" alt="Imperial College London" loading="lazy" decoding="async"></li>
+                <li class="logo-card" title="University of Toronto · Canada"><img src="../assets/logos/universities/toronto.svg" alt="University of Toronto" loading="lazy" decoding="async"></li>
+                <li class="logo-card" title="University of Melbourne · Australia"><img src="../assets/logos/universities/melbourne.svg" alt="University of Melbourne" loading="lazy" decoding="async"></li>
+                <li class="logo-card" title="Technical University of Munich · Germany"><img src="../assets/logos/universities/tum.svg" alt="Technical University of Munich" loading="lazy" decoding="async"></li>
+                <li class="logo-card" title="National University of Singapore · Singapore"><img src="../assets/logos/universities/nus.svg" alt="National University of Singapore" loading="lazy" decoding="async"></li>
+                <li class="logo-card" title="McGill University · Canada"><img src="../assets/logos/universities/mcgill.png" alt="McGill University" loading="lazy" decoding="async"></li>
+                <li class="logo-card" title="University of Edinburgh · United Kingdom"><img src="../assets/logos/universities/edinburgh.svg" alt="University of Edinburgh" loading="lazy" decoding="async"></li>
+                </ul>
             </div>
-            <div class="partner-chip" role="listitem" title="Imperial College London">
-                <div class="partner-badge" aria-hidden="true" style="background:#003E74;color:#fff;">IC</div>
-                <span><span class="partner-chip-name">Imperial</span><span class="partner-chip-school">United Kingdom</span></span>
+            <button class="logo-slider-btn logo-slider-btn--next" type="button" aria-label="Next logos" hidden><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+    </div>
+</section>
+
+<!-- TOP RECRUITERS -->
+<section class="logo-band logo-band--recruiters" aria-labelledby="recruiters-title">
+    <div class="logo-band-inner">
+        <div class="logo-band-head">
+            <p class="logo-band-eyebrow">Careers after graduation</p>
+            <h2 class="logo-band-title" id="recruiters-title">Top recruiters</h2>
+            <p class="logo-band-note">Global employers that hire international graduates across our destination countries.</p>
+        </div>
+        <div class="logo-slider" data-logo-slider>
+            <button class="logo-slider-btn logo-slider-btn--prev" type="button" aria-label="Previous logos" hidden><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="m15 5-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="logo-slider-viewport" tabindex="0" role="region" aria-label="Top recruiter logos">
+                <ul class="logo-slider-track">
+                <li class="logo-card" title="Amazon"><img src="../assets/logos/recruiters/amazon.svg" alt="Amazon" loading="lazy" decoding="async"></li>
+                <li class="logo-card" title="Facebook (Meta)"><img src="../assets/logos/recruiters/facebook.svg" alt="Facebook (Meta)" loading="lazy" decoding="async"></li>
+                <li class="logo-card" title="Deloitte"><img src="../assets/logos/recruiters/deloitte.svg" alt="Deloitte" loading="lazy" decoding="async"></li>
+                <li class="logo-card" title="Capgemini"><img src="../assets/logos/recruiters/capgemini.svg" alt="Capgemini" loading="lazy" decoding="async"></li>
+                <li class="logo-card" title="Google"><img src="../assets/logos/recruiters/google.svg" alt="Google" loading="lazy" decoding="async"></li>
+                <li class="logo-card" title="Microsoft"><img src="../assets/logos/recruiters/microsoft.svg" alt="Microsoft" loading="lazy" decoding="async"></li>
+                <li class="logo-card" title="Accenture"><img src="../assets/logos/recruiters/accenture.svg" alt="Accenture" loading="lazy" decoding="async"></li>
+                <li class="logo-card" title="Goldman Sachs"><img src="../assets/logos/recruiters/goldman-sachs.svg" alt="Goldman Sachs" loading="lazy" decoding="async"></li>
+                <li class="logo-card" title="KPMG"><img src="../assets/logos/recruiters/kpmg.svg" alt="KPMG" loading="lazy" decoding="async"></li>
+                <li class="logo-card" title="IBM"><img src="../assets/logos/recruiters/ibm.svg" alt="IBM" loading="lazy" decoding="async"></li>
+                <li class="logo-card" title="Infosys"><img src="../assets/logos/recruiters/infosys.svg" alt="Infosys" loading="lazy" decoding="async"></li>
+                <li class="logo-card" title="JPMorgan Chase"><img src="../assets/logos/recruiters/jpmorgan.svg" alt="JPMorgan Chase" loading="lazy" decoding="async"></li>
+                </ul>
             </div>
-            <div class="partner-chip" role="listitem" title="University of Toronto">
-                <div class="partner-badge" aria-hidden="true" style="background:#002A5C;color:#fff;">UT</div>
-                <span><span class="partner-chip-name">Toronto</span><span class="partner-chip-school">Canada</span></span>
-            </div>
-            <div class="partner-chip" role="listitem" title="University of Melbourne">
-                <div class="partner-badge" aria-hidden="true" style="background:#000F3C;color:#fff;">UM</div>
-                <span><span class="partner-chip-name">Melbourne</span><span class="partner-chip-school">Australia</span></span>
-            </div>
-            <div class="partner-chip" role="listitem" title="TU Munich">
-                <div class="partner-badge" aria-hidden="true" style="background:#0065BD;color:#fff;">TUM</div>
-                <span><span class="partner-chip-name">TU Munich</span><span class="partner-chip-school">Germany</span></span>
-            </div>
-            <div class="partner-chip" role="listitem" title="NUS Singapore">
-                <div class="partner-badge" aria-hidden="true" style="background:#003D7C;color:#fff;">NUS</div>
-                <span><span class="partner-chip-name">NUS</span><span class="partner-chip-school">Singapore</span></span>
-            </div>
-            <div class="partner-chip" role="listitem" title="McGill University">
-                <div class="partner-badge" aria-hidden="true" style="background:#ED1B2F;color:#fff;">Mc</div>
-                <span><span class="partner-chip-name">McGill</span><span class="partner-chip-school">Canada</span></span>
-            </div>
-            <div class="partner-chip" role="listitem" title="University of Edinburgh">
-                <div class="partner-badge" aria-hidden="true" style="background:#041E42;color:#fff;">UE</div>
-                <span><span class="partner-chip-name">Edinburgh</span><span class="partner-chip-school">United Kingdom</span></span>
-            </div>
+            <button class="logo-slider-btn logo-slider-btn--next" type="button" aria-label="Next logos" hidden><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         </div>
     </div>
 </section>
@@ -2272,7 +2254,7 @@
         <h2 class="sec-title" id="tools-promo-title">Plan before you commit.</h2>
         <p class="sec-body">Free tools built for Indian students — no sign-up required.</p>
     </div>
-    <div class="tools-promo-grid">
+    <div class="tools-promo-grid m-slider" aria-label="Free planning tools">
         <a href="tools/roi-calculator.html" class="tool-card reveal spotlight-card" data-spotlight>
             <div class="tool-card-icon" aria-hidden="true">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M2 12h20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/></svg>
@@ -2312,7 +2294,7 @@
         <h2 class="sec-title" id="journey-title">How we help you find the right course and university.</h2>
         <p class="sec-body">Personalized counselling from profile planning through applications, scholarships and visa preparation.</p>
     </div>
-    <div class="journey-stack">
+    <div class="journey-stack m-slider" aria-label="How we help, step by step">
         <div class="journey-card">
             <div class="journey-inner">
                 <div>
@@ -2374,7 +2356,7 @@
         <h2 class="sec-title" id="voices-title">Student testimonials: individual journeys, personal outcomes.</h2>
         <p class="sec-body">Each student’s experience is different; admissions and scholarship outcomes depend on individual circumstances.</p>
     </div>
-    <div class="voices-grid">
+    <div class="voices-grid m-slider" aria-label="Student testimonials">
         <div class="voice reveal spotlight-card" data-spotlight>
             <blockquote class="voice-q">I had three offers from UK universities within six weeks of my first session. My counsellor knew which professors matched my research interests before I did.</blockquote>
             <div class="voice-attr">
@@ -2737,17 +2719,20 @@
             if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined' || reduced) return;
             gsap.registerPlugin(ScrollTrigger);
             const cards = document.querySelectorAll('.journey-card');
-            cards.forEach((card, i) => {
-                if (i === cards.length - 1) return;
-                gsap.to(card, {
-                    scale: .92,
-                    ease: 'none',
-                    scrollTrigger: {
-                        trigger: cards[i + 1],
-                        start: 'top bottom',
-                        end: 'top top',
-                        scrub: true
-                    }
+            /* Sticky stack only above 640px; on phones the steps are a swipe slider. */
+            gsap.matchMedia().add('(min-width: 641px)', () => {
+                cards.forEach((card, i) => {
+                    if (i === cards.length - 1) return;
+                    gsap.to(card, {
+                        scale: .92,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: cards[i + 1],
+                            start: 'top bottom',
+                            end: 'top top',
+                            scrub: true
+                        }
+                    });
                 });
             });
         });
@@ -2797,7 +2782,7 @@
 
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 100);
-        camera.position.z = 2.8;
+        camera.position.z = 3.0;
 
         const globeGroup = new THREE.Group();
         scene.add(globeGroup);
@@ -2815,18 +2800,11 @@
         });
         globeGroup.add(new THREE.Mesh(new THREE.SphereGeometry(1, 64, 64), earthMat));
 
-        /* Atmosphere glow */
-        const atmMat = new THREE.MeshPhongMaterial({
-            color: 0x4da6ff,
-            side: THREE.BackSide,
-            transparent: true,
-            opacity: 0.2,
-        });
-        scene.add(new THREE.Mesh(new THREE.SphereGeometry(1.09, 64, 64), atmMat));
+        /* No atmosphere mesh: its back-face shell rendered as a flat blue disc behind the Earth. */
 
         /* Lights */
-        scene.add(new THREE.AmbientLight(0xffffff, 0.55));
-        const sun = new THREE.DirectionalLight(0xfff5e0, 1.1);
+        scene.add(new THREE.AmbientLight(0xffffff, 0.78));
+        const sun = new THREE.DirectionalLight(0xfff5e0, 0.95);
         sun.position.set(5, 3, 5);
         scene.add(sun);
 
@@ -2840,125 +2818,69 @@
             );
         }
 
-        /* University markers stay close to the globe surface so they cannot clip at the visual edge. */
-        const universities = [{
-            lat: 40.71,
-            lng: -74.01,
-            label: 'NYU',
-            color: '#9B2335',
-            src: 'https://assets.aceternity.com/avatars/1.webp'
-        }, {
-            lat: 51.51,
-            lng: -0.13,
-            label: 'UCL',
-            color: '#003E74',
-            src: 'https://assets.aceternity.com/avatars/2.webp'
-        }, {
-            lat: 35.68,
-            lng: 139.65,
-            label: 'UTokyo',
-            color: '#8B1E3F',
-            src: 'https://assets.aceternity.com/avatars/3.webp'
-        }, {
-            lat: -33.87,
-            lng: 151.21,
-            label: 'USYD',
-            color: '#E64626',
-            src: 'https://assets.aceternity.com/avatars/4.webp'
-        }, {
-            lat: 48.86,
-            lng: 2.35,
-            label: 'PSL',
-            color: '#1A4870',
-            src: 'https://assets.aceternity.com/avatars/5.webp'
-        }, {
-            lat: 28.61,
-            lng: 77.21,
-            label: 'IIT',
-            color: '#B87333',
-            src: 'https://assets.aceternity.com/avatars/6.webp'
-        }, {
-            lat: 55.76,
-            lng: 37.62,
-            label: 'HSE',
-            color: '#007A5A',
-            src: 'https://assets.aceternity.com/avatars/7.webp'
-        }, {
-            lat: -22.91,
-            lng: -43.17,
-            label: 'PUC',
-            color: '#2E6F95',
-            src: 'https://assets.aceternity.com/avatars/8.webp'
-        }, {
-            lat: 31.23,
-            lng: 121.47,
-            label: 'SJTU',
-            color: '#C8102E',
-            src: 'https://assets.aceternity.com/avatars/9.webp'
-        }, {
-            lat: 25.20,
-            lng: 55.27,
-            label: 'AUD',
-            color: '#6C4F3D',
-            src: 'https://assets.aceternity.com/avatars/10.webp'
-        }, {
-            lat: -34.60,
-            lng: -58.38,
-            label: 'UBA',
-            color: '#0072B1',
-            src: 'https://assets.aceternity.com/avatars/11.webp'
-        }, {
-            lat: 1.35,
-            lng: 103.82,
-            label: 'NUS',
-            color: '#EF7C00',
-            src: 'https://assets.aceternity.com/avatars/12.webp'
-        }, {
-            lat: 37.57,
-            lng: 126.98,
-            label: 'SNU',
-            color: '#005BAC',
-            src: 'https://assets.aceternity.com/avatars/13.webp'
-        }, ];
+        /* Destination pins: the nine country guides, plus India as the starting point.
+           dx/dy nudge each badge (in px) so neighbouring European pins do not stack. */
+        const origin = { lat: 28.61, lng: 77.21, label: 'India', dx: 0, dy: 18, home: true };
+        const destinations = [
+            { lat: 51.51, lng: -0.13, label: 'UK', dx: -4, dy: -20 },
+            { lat: 53.35, lng: -6.26, label: 'Ireland', dx: -40, dy: 0 },
+            { lat: 52.52, lng: 13.40, label: 'Germany', dx: 38, dy: -10 },
+            { lat: 45.46, lng: 9.19, label: 'Italy', dx: 10, dy: 18 },
+            { lat: 60.17, lng: 24.94, label: 'Finland', dx: 22, dy: -20 },
+            { lat: 40.71, lng: -74.01, label: 'USA', dx: 0, dy: 18 },
+            { lat: 43.65, lng: -79.38, label: 'Canada', dx: -10, dy: -20 },
+            { lat: -37.81, lng: 144.96, label: 'Australia', dx: -18, dy: 18 },
+            { lat: -36.85, lng: 174.76, label: 'New Zealand', dx: 22, dy: -18 },
+        ];
 
-        const labelObjs = [];
-        universities.forEach(c => {
-            const surfacePos = latlng(c.lat, c.lng, 1.01);
-            const labelPos = latlng(c.lat, c.lng, 1.12);
-
-            /* University pin on the globe surface */
-            const dot = new THREE.Mesh(new THREE.SphereGeometry(0.018, 10, 10), new THREE.MeshBasicMaterial({ color: c.color }));
+        const pins = [];
+        function addPin(c) {
+            const surfacePos = latlng(c.lat, c.lng, 1.004);
+            const color = c.home ? 0x22c38e : 0xffb547;
+            const dot = new THREE.Mesh(new THREE.SphereGeometry(c.home ? 0.026 : 0.021, 16, 16), new THREE.MeshBasicMaterial({ color }));
             dot.position.copy(surfacePos);
             globeGroup.add(dot);
+            const halo = new THREE.Mesh(new THREE.RingGeometry(0.03, 0.042, 32), new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.55, side: THREE.DoubleSide }));
+            halo.position.copy(latlng(c.lat, c.lng, 1.006));
+            halo.lookAt(latlng(c.lat, c.lng, 2));
+            globeGroup.add(halo);
 
-            const lineGeo = new THREE.BufferGeometry().setFromPoints([surfacePos, labelPos]);
-            const lineMat = new THREE.LineBasicMaterial({
-                color: 0xffffff,
-                transparent: true,
-                opacity: 0.55
-            });
-            globeGroup.add(new THREE.Line(lineGeo, lineMat));
+            if (!CSS2DObject) return;
+            const wrap = document.createElement('div');
+            const badge = document.createElement('span');
+            badge.style.cssText = [
+                'display:inline-block;padding:3px 8px;border-radius:999px;',
+                `background:${c.home ? '#0b7a58' : '#1A4870'};`,
+                'color:#fff;font-size:10px;font-weight:700;line-height:1.3;',
+                'font-family:system-ui,sans-serif;white-space:nowrap;letter-spacing:.04em;',
+                'box-shadow:0 3px 12px rgba(6,16,32,.35);border:1.5px solid rgba(255,255,255,.85);',
+                `transform:translate(${c.dx}px,${c.dy}px);`,
+            ].join('');
+            badge.textContent = c.label;
+            wrap.appendChild(badge);
+            wrap.style.transition = 'opacity .3s';
+            const obj = new CSS2DObject(wrap);
+            obj.position.copy(surfacePos);
+            globeGroup.add(obj);
+            pins.push({ obj, normal: surfacePos.clone().normalize() });
+        }
+        addPin(origin);
+        destinations.forEach(addPin);
 
-            /* University text-badge pin (no student photos) */
-            if (CSS2DObject) {
-                const wrap = document.createElement('div');
-                wrap.style.cssText = [
-                    'display:inline-block;padding:3px 8px;border-radius:6px;',
-                    `background:${c.color};`,
-                    'color:#fff;font-size:9px;font-weight:700;',
-                    'font-family:system-ui,sans-serif;white-space:nowrap;',
-                    'letter-spacing:.06em;text-transform:uppercase;',
-                    'box-shadow:0 2px 10px rgba(0,0,0,.45);',
-                    'border:1.5px solid rgba(255,255,255,.65);',
-                    'transition:opacity .35s;',
-                ].join('');
-                wrap.textContent = c.label;
-                const obj = new CSS2DObject(wrap);
-                obj.position.copy(labelPos);
-                globeGroup.add(obj);
-                labelObjs.push(obj);
-            }
+        /* Flight arcs from India to every destination */
+        const originPos = latlng(origin.lat, origin.lng, 1.004);
+        const arcMat = new THREE.LineBasicMaterial({ color: 0x2fa3da, transparent: true, opacity: 0.7 });
+        destinations.forEach(c => {
+            const end = latlng(c.lat, c.lng, 1.004);
+            const lift = 1 + originPos.distanceTo(end) * 0.32;
+            const mid = originPos.clone().add(end).normalize().multiplyScalar(lift);
+            const curve = new THREE.QuadraticBezierCurve3(originPos, mid, end);
+            globeGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(curve.getPoints(48)), arcMat));
         });
+
+        /* Start with India, Europe and the UK facing the viewer, tilted to show the north. */
+        globeGroup.rotation.y = -(45 + 90) * Math.PI / 180;
+        globeGroup.rotation.x = 0.32;
 
         /* Drag-to-rotate */
         const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -2996,7 +2918,7 @@
         });
 
         /* Render loop */
-        const _camDir = new THREE.Vector3();
+        const _camDir = new THREE.Vector3(0, 0, 1);
         const _markerWorld = new THREE.Vector3();
         (function loop() {
             requestAnimationFrame(loop);
@@ -3006,14 +2928,14 @@
                 needsRender = true;
             }
             if (!needsRender) return;
-            /* Depth-cull: smoothly fade markers on the back hemisphere */
-            if (labelObjs.length) {
-                camera.getWorldDirection(_camDir).negate();
-                labelObjs.forEach(obj => {
-                    _markerWorld.copy(obj.position);
-                    globeGroup.localToWorld(_markerWorld);
-                    const dot = _markerWorld.normalize().dot(_camDir);
-                    obj.element.style.opacity = Math.max(0, Math.min(1, dot / 0.18));
+            /* Horizon cull: a surface point is visible only when its normal faces the camera
+               past the limb (n·camDir > 1 / camDistance); fade badges in just above it. */
+            if (pins.length) {
+                const horizon = 1 / camera.position.length();
+                pins.forEach(pin => {
+                    _markerWorld.copy(pin.normal).applyQuaternion(globeGroup.quaternion);
+                    const facing = _markerWorld.dot(_camDir);
+                    pin.obj.element.style.opacity = Math.max(0, Math.min(1, (facing - horizon) / 0.12));
                 });
             }
             renderer.render(scene, camera);
@@ -3036,7 +2958,7 @@
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../assets/site.js?v=8"></script>
+<script src="../assets/site.js?v=9"></script>
 
 </body>
 </html>

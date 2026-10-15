@@ -1,0 +1,194 @@
+/* Log in / sign up: bright student-photo panel that invites a free consultation. */
+
+.auth-visual {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    /* Pin to the viewport so the call to action stays visible beside a long form. */
+    position: sticky;
+    top: 68px;
+    align-self: start;
+    height: calc(100dvh - 68px);
+    min-height: 560px;
+    padding: clamp(2rem, 4vw, 3.25rem);
+    overflow: hidden;
+    isolation: isolate;
+    background: #0F2D4A;
+    color: #fff;
+}
+
+.auth-visual-img {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 58% 18%;
+    animation: auth-photo-in 1.4s cubic-bezier(.16, 1, .3, 1) both;
+}
+
+.auth-visual-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+        linear-gradient(to top, rgba(8, 24, 42, .96) 0%, rgba(8, 24, 42, .78) 34%, rgba(8, 24, 42, .2) 62%, rgba(8, 24, 42, 0) 78%),
+        linear-gradient(to right, rgba(8, 24, 42, .25), transparent 60%);
+}
+
+.auth-chip {
+    position: absolute;
+    top: clamp(1.5rem, 3vw, 2.25rem);
+    left: clamp(1.5rem, 3vw, 2.25rem);
+    display: inline-flex;
+    align-items: center;
+    gap: .55rem;
+    padding: .55rem .95rem;
+    border: 1px solid rgba(255, 255, 255, .55);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .88);
+    color: #0E1420;
+    font-size: .8rem;
+    font-weight: 700;
+    box-shadow: 0 10px 30px rgba(8, 24, 42, .25);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.auth-chip-dot {
+    width: .55rem;
+    height: .55rem;
+    border-radius: 50%;
+    background: #00A878;
+    box-shadow: 0 0 0 4px rgba(0, 168, 120, .2);
+}
+
+.auth-visual-content {
+    max-width: 34rem;
+    animation: auth-rise .9s .15s cubic-bezier(.16, 1, .3, 1) both;
+}
+
+.auth-vis-eyebrow {
+    margin-bottom: .6rem;
+    color: #5EE0B0;
+    font: 700 .72rem var(--mono);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+}
+
+.auth-vis-hl {
+    margin-bottom: .8rem;
+    color: #fff;
+    font-size: clamp(1.75rem, 2.9vw, 2.6rem);
+    font-weight: 800;
+    letter-spacing: -.03em;
+    line-height: 1.06;
+    text-wrap: balance;
+}
+
+.auth-vis-sub {
+    max-width: 44ch;
+    color: rgba(255, 255, 255, .82);
+    font-size: .95rem;
+    line-height: 1.6;
+}
+
+.auth-vis-points {
+    display: grid;
+    gap: .5rem;
+    margin: 1.25rem 0 1.5rem;
+    padding: 0;
+    list-style: none;
+}
+
+.auth-vis-points li {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    color: rgba(255, 255, 255, .92);
+    font-size: .9rem;
+    font-weight: 500;
+}
+
+.auth-vis-points svg { flex: 0 0 auto; }
+
+.auth-vis-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .85rem 1.4rem;
+    border-radius: 999px;
+    background: #fff;
+    color: #0F2D4A;
+    font-size: .95rem;
+    font-weight: 750;
+    text-decoration: none;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, .25);
+    transition: transform .25s cubic-bezier(.16, 1, .3, 1), box-shadow .25s, background .2s;
+}
+
+.auth-vis-cta span { transition: transform .25s cubic-bezier(.16, 1, .3, 1); }
+.auth-vis-cta:hover { transform: translateY(-2px); background: #EFFFF8; box-shadow: 0 16px 36px rgba(0, 0, 0, .3); }
+.auth-vis-cta:hover span { transform: translateX(3px); }
+.auth-vis-cta:focus-visible { outline: 3px solid #5EE0B0; outline-offset: 3px; }
+
+.auth-vis-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    margin-top: 1.75rem;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, .16);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, .16);
+}
+
+.auth-vis-stats > div {
+    display: flex;
+    flex-direction: column-reverse;
+    padding: .85rem .9rem;
+    background: rgba(8, 24, 42, .55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.auth-vis-stats dd { margin: 0; color: #fff; font-size: 1.3rem; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; }
+.auth-vis-stats dt { margin-top: .2rem; color: rgba(255, 255, 255, .7); font-size: .72rem; line-height: 1.3; }
+
+/* Phones and tablets: the panel is replaced by a compact promo above the form. */
+.auth-mobile-promo { display: none; }
+
+@media (max-width: 900px) {
+    .auth-visual { display: none; }
+    .auth-mobile-promo {
+        display: flex;
+        align-items: center;
+        gap: .85rem;
+        margin: 1.25rem var(--gutter) 0;
+        padding: .75rem .9rem .75rem .75rem;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 12%, var(--surface)), var(--surface) 70%);
+        color: var(--text-p);
+        text-decoration: none;
+        box-shadow: 0 8px 24px rgba(14, 20, 32, .07);
+    }
+    .auth-mobile-promo img { flex: 0 0 64px; width: 64px; height: 64px; border-radius: 50%; object-fit: cover; object-position: center 20%; border: 3px solid var(--surface); box-shadow: 0 4px 12px rgba(14, 20, 32, .15); }
+    .auth-mobile-promo > span:not(.auth-mobile-promo-go) { display: flex; flex: 1; flex-direction: column; min-width: 0; font-size: .82rem; line-height: 1.4; color: var(--text-s); }
+    .auth-mobile-promo strong { color: var(--text-p); font-size: .95rem; }
+    .auth-mobile-promo-go { display: grid; place-items: center; flex: 0 0 36px; width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 700; }
+    .auth-mobile-promo:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+}
+
+@keyframes auth-photo-in { from { transform: scale(1.06); opacity: .4; } to { transform: scale(1); opacity: 1; } }
+@keyframes auth-rise { from { transform: translateY(18px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+    .auth-visual-img, .auth-visual-content { animation: none; }
+    .auth-vis-cta, .auth-vis-cta span { transition: none; }
+}
+
+/* Sign-up photo: the graduate sits mid-frame; anchoring to the bottom lifts her face clear of the copy. */
+.auth-signup .auth-visual-img { object-position: 50% 100%; }
