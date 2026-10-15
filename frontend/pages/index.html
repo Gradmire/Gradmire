@@ -2052,8 +2052,32 @@
       .globe-orbit { animation:none!important; }
     }
 
+    /* Requirements-led Why Us metrics and accessible university/testimonial wordmarks. */
+    .why-evidence { padding: var(--sec) var(--gutter); background: transparent; }
+    .why-evidence::after { display: none; }
+    .evidence-head { max-width: var(--w); margin: 0 auto 1.5rem; }
+    .evidence-eyebrow { margin: 0 0 .45rem; color: var(--accent); font: 700 .7rem var(--mono); letter-spacing: .12em; text-transform: uppercase; }
+    .evidence-head .sec-title { margin: 0; }
+    .evidence-intro { max-width: 62ch; margin: .7rem 0 0; color: var(--text-s); }
+    .why-evidence .evidence-inner { max-width: var(--w); padding: 0; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+    .why-evidence .evidence-card { min-width: 0; padding: 1.25rem; border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface); box-shadow: 0 12px 30px rgba(14,20,32,.055); }
+    .why-evidence .stat-kicker { margin: 0 0 .8rem; color: var(--text-s); font: 700 .66rem var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .why-evidence .stat-num { color: var(--brand); font-size: clamp(1.65rem, 2.8vw, 2.45rem); line-height: 1.08; }
+    .why-evidence .stat-lbl { color: var(--text-s); font-size: .82rem; }
+    .evidence-proof { max-width: var(--w); margin: 1rem auto 0; color: var(--text-s); font-size: .82rem; }
+    .partners { padding: 2.25rem var(--gutter); }
+    .partners-inner { max-width: var(--w); margin: 0 auto; }
+    .partners-title { margin: .25rem 0 .4rem; text-align: center; font-size: clamp(1.35rem, 2.4vw, 2rem); letter-spacing: -.03em; }
+    .partners-note { margin: 0 auto; max-width: 60ch; color: var(--text-s); text-align: center; font-size: .82rem; }
+    .partners-logos { margin-top: 1.25rem; }
+    .partner-badge { width: 2.5rem; height: 2.5rem; border-radius: .7rem; font-size: .8rem; }
+    .voice-avatar { display: grid; place-items: center; width: 46px; height: 46px; flex: 0 0 46px; border-radius: 50%; background: var(--surface-tint); color: var(--brand); font-size: .82rem; font-weight: 800; }
+    @media (max-width: 900px) { .why-evidence .evidence-inner { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 560px) { .why-evidence .evidence-inner { grid-template-columns: 1fr; } .evidence-proof { line-height: 1.65; } }
+    @media (prefers-reduced-motion: reduce) { .partners-logos { animation: none !important; transform: none !important; } }
+
 </style>
-<link rel="stylesheet" href="../assets/site.css?v=7">
+<link rel="stylesheet" href="../assets/site.css?v=8">
 
 </head>
 <body>
@@ -2066,16 +2090,12 @@
         <ul class="nav-links" role="list">
             <li><a href="destinations.html">Destinations</a></li>
             <li><a href="find-courses.html">Courses</a></li>
-            <li><a href="find-universities.html">Universities</a></li>
+            <li><a href="free-consultation.html?interest=mbbs-abroad">MBBS Abroad</a></li>
+            <li><a href="free-consultation.html?interest=counselling">Student Services</a></li>
             <li><a href="scholarships.html">Scholarships</a></li>
-            <li><a href="tools/roi-calculator.html">Tools</a></li>
-            <li><a href="faq.html">FAQ</a></li>
-            <li><a href="about.html">About</a></li>
+            <li><a href="tools/roi-calculator.html">Student Tools</a></li>
         </ul>
-        <div style="display:flex;gap:.75rem;align-items:center">
-            <a href="login.html" class="nav-btn" style="background:transparent;color:var(--text-p);border:1.5px solid var(--border)">Log in</a>
-            <a href="free-consultation.html" class="nav-btn">Free consultation</a>
-        </div>
+        <div style="display:flex;gap:.75rem;align-items:center"><a href="free-consultation.html" class="nav-btn">Book free consultation</a></div>
         <button class="nav-ham" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
       <svg width="22" height="16" viewBox="0 0 22 16" fill="none" aria-hidden="true"><rect y="0" width="22" height="2" rx="1" fill="currentColor"/><rect y="7" width="22" height="2" rx="1" fill="currentColor"/><rect y="14" width="22" height="2" rx="1" fill="currentColor"/></svg>
     </button>
@@ -2085,21 +2105,19 @@
 <div class="nav-mobile" id="mobile-nav" aria-label="Mobile navigation">
     <a href="destinations.html">Destinations</a>
     <a href="find-courses.html">Courses</a>
-    <a href="find-universities.html">Universities</a>
+    <a href="free-consultation.html?interest=mbbs-abroad">MBBS Abroad</a>
+    <a href="free-consultation.html?interest=counselling">Student Services</a>
     <a href="scholarships.html">Scholarships</a>
-    <a href="tools/roi-calculator.html">Tools</a>
-    <a href="faq.html">FAQ</a>
-    <a href="about.html">About</a>
-    <a href="login.html">Log in</a>
-    <a href="free-consultation.html" class="btn btn-primary" style="align-self:flex-start">Free consultation</a>
+    <a href="tools/roi-calculator.html">Student Tools</a>
+    <a href="free-consultation.html" class="btn btn-primary" style="align-self:flex-start">Book free consultation</a>
 </div>
 
 <!-- HERO -->
 <section class="hero-wrap" aria-label="Hero">
     <div class="hero">
         <div class="hero-content">
-            <h1 class="hero-headline" id="hero-hl">47,000 students placed. <span class="hl-accent">You're next.</span></h1>
-            <p class="hero-sub">Specialist counsellors for UK, Canada, Germany and Australia — built around your actual grades, budget and timeline. Your college doesn't define your destination.</p>
+            <h1 class="hero-headline" id="hero-hl">Your next chapter <span class="hl-accent">starts here.</span></h1>
+            <p class="hero-sub">Compare destinations, courses, budgets and timelines with guidance tailored to your grades, goals and next steps.</p>
             <div class="hero-actions">
                 <a href="free-consultation.html" class="btn btn-primary btn-lg magnetic-cta">Start free — book a session</a>
                 <a href="tools/roi-calculator.html" class="btn btn-outline btn-lg">See what I can afford →</a>
@@ -2117,107 +2135,17 @@
             <div id="globe-container">
                 <div class="globe-fallback"></div>
             </div>
-            <span class="globe-meta-chip">9 study destinations</span>
+            <span class="globe-meta-chip">9 destination guides</span>
         </div>
     </div>
 </section>
-
-<!-- EVIDENCE BAR -->
-<div class="evidence" aria-label="Key statistics">
-    <div class="evidence-inner">
-        <div>
-            <div class="stat-num" data-target="18" data-suffix="+ years">18+ years</div>
-            <div class="stat-lbl">Established and trusted since 2006</div>
-        </div>
-        <div>
-            <div class="stat-num" data-target="47000" data-suffix="+">47,000+</div>
-            <div class="stat-lbl">Students placed in universities worldwide</div>
-        </div>
-        <div>
-            <div class="stat-num" data-target="850" data-suffix="+">850+</div>
-            <div class="stat-lbl">Partner university agreements</div>
-        </div>
-        <div>
-            <div class="stat-num" data-target="50" data-suffix="+ countries">50+ countries</div>
-            <div class="stat-lbl">Destination countries with active placements</div>
-        </div>
-    </div>
-</div>
-
-<!-- WHY GRADMIRE -->
-<section class="why-strip" aria-labelledby="why-title">
-    <div class="why-strip-inner">
-        <div class="why-item">
-            <div class="why-icon" aria-hidden="true">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
-            </div>
-            <h3 class="why-title">No commission. Ever.</h3>
-            <p class="why-body">We earn nothing from universities. Every recommendation is made for you — not the most profitable referral.</p>
-        </div>
-        <div class="why-item">
-            <div class="why-icon" aria-hidden="true">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3.5" stroke="currentColor" stroke-width="1.8"/><path d="M2 20c0-3.87 3.13-7 7-7h0c1.5 0 2.9.47 4 1.27M16 11l2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <h3 class="why-title">Talk to alumni before you decide.</h3>
-            <p class="why-body">Connect with students already studying or working abroad. Real questions, real answers — before you commit to anything.</p>
-        </div>
-        <div class="why-item">
-            <div class="why-icon" aria-hidden="true">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <h3 class="why-title">Your profile is the starting point.</h3>
-            <p class="why-body">Grades, budget, timeline — we work with what you have. No pressure. No upsells. Just an honest plan built for you.</p>
-        </div>
-    </div>
-</section>
-
-<!-- PARTNERS -->
-<div class="partners" aria-label="Partner universities">
-    <div class="partners-inner">
-        <p class="partners-label">Students placed at top universities worldwide</p>
-        <div class="partners-logos" role="list">
-            <div class="partner-chip" role="listitem" title="University of Oxford">
-                <div class="partner-badge" style="background:#002147;color:#fff;">Ox</div>
-                <span><span class="partner-chip-name">Oxford</span><span class="partner-chip-school">United Kingdom</span></span>
-            </div>
-            <div class="partner-chip" role="listitem" title="Imperial College London">
-                <div class="partner-badge" style="background:#003E74;color:#fff;">IC</div>
-                <span><span class="partner-chip-name">Imperial</span><span class="partner-chip-school">United Kingdom</span></span>
-            </div>
-            <div class="partner-chip" role="listitem" title="University of Toronto">
-                <div class="partner-badge" style="background:#002A5C;color:#fff;">UT</div>
-                <span><span class="partner-chip-name">Toronto</span><span class="partner-chip-school">Canada</span></span>
-            </div>
-            <div class="partner-chip" role="listitem" title="University of Melbourne">
-                <div class="partner-badge" style="background:#000F3C;color:#fff;">UM</div>
-                <span><span class="partner-chip-name">Melbourne</span><span class="partner-chip-school">Australia</span></span>
-            </div>
-            <div class="partner-chip" role="listitem" title="TU Munich">
-                <div class="partner-badge" style="background:#0065BD;color:#fff;">TUM</div>
-                <span><span class="partner-chip-name">TU Munich</span><span class="partner-chip-school">Germany</span></span>
-            </div>
-            <div class="partner-chip" role="listitem" title="NUS Singapore">
-                <div class="partner-badge" style="background:#003D7C;color:#fff;">NUS</div>
-                <span><span class="partner-chip-name">NUS</span><span class="partner-chip-school">Singapore</span></span>
-            </div>
-            <div class="partner-chip" role="listitem" title="McGill University">
-                <div class="partner-badge" style="background:#ED1B2F;color:#fff;">Mc</div>
-                <span><span class="partner-chip-name">McGill</span><span class="partner-chip-school">Canada</span></span>
-            </div>
-            <div class="partner-chip" role="listitem" title="University of Edinburgh">
-                <div class="partner-badge" style="background:#041E42;color:#fff;">UE</div>
-                <span><span class="partner-chip-name">Edinburgh</span><span class="partner-chip-school">United Kingdom</span></span>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- DESTINATIONS -->
 <section class="destinations" id="destinations" aria-labelledby="dest-title">
     <div class="sec-head reveal-slow" style="display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap;">
         <div>
-            <h2 class="sec-title" id="dest-title">Study in 50+ countries.</h2>
-            <p class="sec-body">From the world's top-ranked universities to hidden gems that match your goals. We know every destination in detail.</p>
+            <h2 class="sec-title" id="dest-title">Explore 9 study destinations.</h2>
+            <p class="sec-body">Compare dedicated country guides, typical study durations, university options and official next-step resources.</p>
         </div>
         <a href="destinations.html" class="btn btn-outline" style="flex-shrink:0;margin-bottom:.25rem">View all destinations</a>
     </div>
@@ -2276,9 +2204,64 @@
             <span class="dest-name">Finland</span><span class="dest-meta">Master’s: typically 2 years · Bachelor’s: typically 3 years</span>
         </a>
         <!-- stat banner -->
-        <div class="dest-stat" aria-label="47,000 plus students placed worldwide">
-            <div class="dest-stat-num">47,000+</div>
-            <div class="dest-stat-lbl">students placed in universities worldwide through Gradmire — across 9 countries and counting</div>
+        <div class="dest-stat" aria-label="Nine destination country guides">
+            <div class="dest-stat-num">9 guides</div>
+            <div class="dest-stat-lbl">Explore country-by-country information and compare the options that fit your study goals.</div>
+        </div>
+    </div>
+</section>
+
+<!-- WHY US / GRADMIRE STATS -->
+<section class="evidence why-evidence" aria-labelledby="why-title">
+  <div class="evidence-head"><p class="evidence-eyebrow">Why Gradmire</p><h2 class="sec-title" id="why-title">Trusted guidance. Tangible reach.</h2><p class="evidence-intro">We combine counselling experience, university relationships and practical tools to help students plan their next step.</p></div>
+  <div class="evidence-inner" role="list" aria-label="Gradmire at a glance">
+    <article class="evidence-card" role="listitem"><p class="stat-kicker">Trust &amp; reliability</p><div class="stat-num">Since 2006</div><div class="stat-lbl">Guidance for students and families</div></article>
+    <article class="evidence-card" role="listitem"><p class="stat-kicker">Global partnerships</p><div class="stat-num" data-target="850" data-suffix="+">850+</div><div class="stat-lbl">Partner university agreements</div></article>
+    <article class="evidence-card" role="listitem"><p class="stat-kicker">Proven placement experience</p><div class="stat-num" data-target="47000" data-suffix="+">47,000+</div><div class="stat-lbl">Students placed in universities worldwide</div></article>
+    <article class="evidence-card" role="listitem"><p class="stat-kicker">Global reach</p><div class="stat-num" data-target="50" data-suffix="+ countries">50+ countries</div><div class="stat-lbl">Destination countries with active placements</div></article>
+  </div>
+  <p class="evidence-proof">No commission model · Talk to alumni before deciding · Guidance starts with your profile</p>
+</section>
+
+<!-- PARTNERS -->
+<section class="partners" aria-labelledby="partners-title">
+    <div class="partners-inner">
+        <p class="partners-label">University network</p>
+        <h2 class="partners-title" id="partners-title">Universities our students have attended</h2>
+        <p class="partners-note">Selected institutions from Gradmire’s existing student-placement network.</p>
+        <div class="partners-logos" role="list">
+            <div class="partner-chip" role="listitem" title="University of Oxford">
+                <div class="partner-badge" aria-hidden="true" style="background:#002147;color:#fff;">Ox</div>
+                <span><span class="partner-chip-name">Oxford</span><span class="partner-chip-school">United Kingdom</span></span>
+            </div>
+            <div class="partner-chip" role="listitem" title="Imperial College London">
+                <div class="partner-badge" aria-hidden="true" style="background:#003E74;color:#fff;">IC</div>
+                <span><span class="partner-chip-name">Imperial</span><span class="partner-chip-school">United Kingdom</span></span>
+            </div>
+            <div class="partner-chip" role="listitem" title="University of Toronto">
+                <div class="partner-badge" aria-hidden="true" style="background:#002A5C;color:#fff;">UT</div>
+                <span><span class="partner-chip-name">Toronto</span><span class="partner-chip-school">Canada</span></span>
+            </div>
+            <div class="partner-chip" role="listitem" title="University of Melbourne">
+                <div class="partner-badge" aria-hidden="true" style="background:#000F3C;color:#fff;">UM</div>
+                <span><span class="partner-chip-name">Melbourne</span><span class="partner-chip-school">Australia</span></span>
+            </div>
+            <div class="partner-chip" role="listitem" title="TU Munich">
+                <div class="partner-badge" aria-hidden="true" style="background:#0065BD;color:#fff;">TUM</div>
+                <span><span class="partner-chip-name">TU Munich</span><span class="partner-chip-school">Germany</span></span>
+            </div>
+            <div class="partner-chip" role="listitem" title="NUS Singapore">
+                <div class="partner-badge" aria-hidden="true" style="background:#003D7C;color:#fff;">NUS</div>
+                <span><span class="partner-chip-name">NUS</span><span class="partner-chip-school">Singapore</span></span>
+            </div>
+            <div class="partner-chip" role="listitem" title="McGill University">
+                <div class="partner-badge" aria-hidden="true" style="background:#ED1B2F;color:#fff;">Mc</div>
+                <span><span class="partner-chip-name">McGill</span><span class="partner-chip-school">Canada</span></span>
+            </div>
+            <div class="partner-chip" role="listitem" title="University of Edinburgh">
+                <div class="partner-badge" aria-hidden="true" style="background:#041E42;color:#fff;">UE</div>
+                <span><span class="partner-chip-name">Edinburgh</span><span class="partner-chip-school">United Kingdom</span></span>
+            </div>
         </div>
     </div>
 </section>
@@ -2295,7 +2278,7 @@
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M2 12h20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/></svg>
             </div>
             <div class="tool-card-body">
-                <div class="tool-card-name">ROI Calculator</div>
+                <div class="tool-card-name">Study Cost Calculator</div>
                 <p class="tool-card-desc">See your estimated salary vs. total cost for any country — and the break-even point.</p>
             </div>
             <span class="tool-card-link">Calculate now →</span>
@@ -2326,16 +2309,16 @@
 <!-- JOURNEY -->
 <section class="journey" id="process" aria-labelledby="journey-title">
     <div class="journey-header reveal-slow">
-        <h2 class="sec-title" id="journey-title">Every step, we're with you.</h2>
-        <p class="sec-body">A guided process from first conversation to your first day on campus.</p>
+        <h2 class="sec-title" id="journey-title">How we help you find the right course and university.</h2>
+        <p class="sec-body">Personalized counselling from profile planning through applications, scholarships and visa preparation.</p>
     </div>
     <div class="journey-stack">
         <div class="journey-card">
             <div class="journey-inner">
                 <div>
-                    <span class="journey-stage">Exploration</span>
-                    <h3 class="journey-title">Explore your options.</h3>
-                    <p class="journey-text">Your counsellor maps destinations, course options and intake windows that fit your academic profile, budget and goals. No generic advice - a plan built around you.</p>
+                    <span class="journey-stage">Personalized counselling</span>
+                    <h3 class="journey-title">Start with your profile.</h3>
+                    <p class="journey-text">We map your grades, interests, budget and timeline, then explain study pathways that fit your goals and current profile.</p>
                 </div>
                 <div class="journey-visual" aria-hidden="true">
                     <img class="journey-photo" src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80" alt="Students in counselling session" loading="lazy">
@@ -2346,9 +2329,9 @@
         <div class="journey-card">
             <div class="journey-inner">
                 <div>
-                    <span class="journey-stage">Shortlisting</span>
-                    <h3 class="journey-title">Build your shortlist.</h3>
-                    <p class="journey-text">Together you narrow down to 6-10 universities: reach schools, target schools and safe choices. Every pick is backed by our placement data and direct relationships with admissions teams.</p>
+                    <span class="journey-stage">Profile building &amp; shortlisting</span>
+                    <h3 class="journey-title">Shortlist universities that fit.</h3>
+                    <p class="journey-text">Compare course fit, entry requirements, location and cost to build a balanced shortlist of universities to research further.</p>
                 </div>
                 <div class="journey-visual" aria-hidden="true">
                     <img class="journey-photo" src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=800&q=80" alt="Student researching universities" loading="lazy">
@@ -2359,9 +2342,9 @@
         <div class="journey-card">
             <div class="journey-inner">
                 <div>
-                    <span class="journey-stage">Application</span>
-                    <h3 class="journey-title">Apply with confidence.</h3>
-                    <p class="journey-text">We manage every document, deadline and essay. Statement of purpose reviews, reference letter guidance, transcript verification - nothing slips. You focus on being ready; we handle the rest.</p>
+                    <span class="journey-stage">Document editing &amp; application support</span>
+                    <h3 class="journey-title">Polish documents and apply.</h3>
+                    <p class="journey-text">Get feedback on statements, CVs, references and application materials. You review every final document and submit it yourself.</p>
                 </div>
                 <div class="journey-visual" aria-hidden="true">
                     <img class="journey-photo" src="https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=800&q=80" alt="Student preparing application documents" loading="lazy">
@@ -2372,9 +2355,9 @@
         <div class="journey-card">
             <div class="journey-inner">
                 <div>
-                    <span class="journey-stage">Arrival</span>
-                    <h3 class="journey-title">Arrive prepared.</h3>
-                    <p class="journey-text">Visa application support, pre-departure briefing, accommodation guidance, forex and insurance referrals. You land knowing exactly what comes next.</p>
+                    <span class="journey-stage">Scholarship &amp; visa support</span>
+                    <h3 class="journey-title">Prepare for funding and travel.</h3>
+                    <p class="journey-text">Explore relevant funding, organize visa documents and plan pre-departure steps. Scholarship and visa decisions remain with the awarding institution and immigration authority.</p>
                 </div>
                 <div class="journey-visual" aria-hidden="true">
                     <img class="journey-photo" src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=800&q=80" alt="Student arriving at university campus" loading="lazy">
@@ -2388,13 +2371,14 @@
 <!-- VOICES -->
 <section class="voices" aria-labelledby="voices-title">
     <div class="sec-head reveal-slow">
-        <h2 class="sec-title" id="voices-title">Student stories: every step, we're with you.</h2>
+        <h2 class="sec-title" id="voices-title">Student testimonials: individual journeys, personal outcomes.</h2>
+        <p class="sec-body">Each student’s experience is different; admissions and scholarship outcomes depend on individual circumstances.</p>
     </div>
     <div class="voices-grid">
         <div class="voice reveal spotlight-card" data-spotlight>
             <blockquote class="voice-q">I had three offers from UK universities within six weeks of my first session. My counsellor knew which professors matched my research interests before I did.</blockquote>
             <div class="voice-attr">
-                <img class="voice-avatar" src="https://images.unsplash.com/photo-1463453091185-61582044d556?auto=format&fit=crop&w=100&h=100&q=80" alt="Aryan Kapoor" style="border-radius:50%;object-fit:cover;flex-shrink:0;">
+                <span class="voice-avatar" aria-hidden="true">AK</span>
                 <div>
                     <div class="voice-name">Aryan Kapoor</div>
                     <div class="voice-detail">MSc Finance, London School of Economics</div>
@@ -2404,7 +2388,7 @@
         <div class="voice reveal spotlight-card" data-spotlight style="transition-delay:.12s">
             <blockquote class="voice-q">They found me a scholarship that cut my tuition by 40 percent. My parents stopped worrying the day we got the offer letter from Toronto.</blockquote>
             <div class="voice-attr">
-                <img class="voice-avatar" src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=100&h=100&q=80" alt="Diya Menon" style="border-radius:50%;object-fit:cover;flex-shrink:0;">
+                <span class="voice-avatar" aria-hidden="true">DM</span>
                 <div>
                     <div class="voice-name">Diya Menon</div>
                     <div class="voice-detail">BSc Computer Science, University of Toronto</div>
@@ -2414,7 +2398,7 @@
         <div class="voice reveal spotlight-card" data-spotlight style="transition-delay:.22s">
             <blockquote class="voice-q">Siddharth guided me through the APS verification and DAAD application. I got into TU Munich's engineering programme with a full scholarship. Zero tuition fees.</blockquote>
             <div class="voice-attr">
-                <img class="voice-avatar" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&h=100&q=80" alt="Vikram Reddy" style="border-radius:50%;object-fit:cover;flex-shrink:0;">
+                <span class="voice-avatar" aria-hidden="true">VR</span>
                 <div>
                     <div class="voice-name">Vikram Reddy</div>
                     <div class="voice-detail">MEng Mechanical Engineering, TU Munich</div>
@@ -2510,11 +2494,12 @@
         <div>
             <div class="footer-col-title">Services</div>
             <ul class="footer-links" role="list">
-                <li><a href="find-courses.html">Course finder</a></li>
-                <li><a href="find-universities.html">University finder</a></li>
+                <li><a href="free-consultation.html?interest=counselling">Free counselling</a></li>
+                <li><a href="free-consultation.html?interest=test-preparation">Test preparation</a></li>
+                <li><a href="free-consultation.html?interest=visa-assistance">Visa assistance</a></li>
+                <li><a href="free-consultation.html?interest=application-support">Application assistance</a></li>
+                <li><a href="free-consultation.html?interest=course-selection">Course selection guidance</a></li>
                 <li><a href="scholarships.html">Scholarships</a></li>
-                <li><a href="free-consultation.html">Visa support</a></li>
-                <li><a href="free-consultation.html">Test prep</a></li>
             </ul>
         </div>
         <div>
@@ -2524,7 +2509,7 @@
                 <li><a href="tools/roi-calculator.html">Study cost calculator</a></li>
                 <li><a href="tools/comparator.html">Course comparator</a></li>
                 <li><a href="tools/deadline-tracker.html">Deadline tracker</a></li>
-                <li><a href="tools/grade-converter.html">GPA / CGPA converter</a></li>
+                <li><a href="tools/grade-converter.html">GPA / CGPA / SGPA converter</a></li>
             </ul>
         </div>
         <div>
@@ -2535,6 +2520,7 @@
                 <li><a href="about.html">Branches</a></li>
                 <li><a href="blog.html">Blog</a></li>
                 <li><a href="contact.html">Contact</a></li>
+                <li><a href="faq.html">FAQs</a></li>
             </ul>
         </div>
     </div>
@@ -2755,7 +2741,6 @@
                 if (i === cards.length - 1) return;
                 gsap.to(card, {
                     scale: .92,
-                    opacity: .58,
                     ease: 'none',
                     scrollTrigger: {
                         trigger: cards[i + 1],
@@ -3051,7 +3036,7 @@
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../assets/site.js?v=7"></script>
+<script src="../assets/site.js?v=8"></script>
 
 </body>
 </html>

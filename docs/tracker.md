@@ -198,3 +198,12 @@ Metrics snapshot (leads, bookings, conversion %):
 **Validation:** frontend link checker, shared JavaScript syntax check, whitespace check, source-level link/navigation audit, and local fragment audit passed. Browser QA passed across all nine destination pages at 390px and 320px, including keyboard menu close/focus return and reduced-motion behavior; additional checks covered Course Finder query aliases, Contact topic prefill, dashboard anchors, blog routes, and the standalone landing menu. No production deployment was checked in this pass.
 
 **Status:** branch `feature/gradmire-destination-ux-oct-2026` is pushed, and [PR #1](https://github.com/Gradmire/Gradmire/pull/1) is open to `master`. The three reported PR checks passed; no merge was performed. Sample catalogue coverage remains limited for some Course Finder subjects, and dedicated blog-detail pages remain a separate content task.
+
+
+## October 2026 — Requirements-led landing-page follow-up (16 October)
+
+**Completed:** homepage flow now follows the requested student journey with destination cards, four Why Gradmire metric cards, a selected-university network band, four guidance stages, student testimonials, FAQs and a direct consultation CTA. The six shared navigation groups route course categories, destinations, MBBS countries, student services, scholarships and tools to their intended pages. Country/course/service query parameters are preserved and applied as form/filter prefills.
+
+**Accuracy and accessibility:** retained existing Gradmire metrics instead of copying numbers from third-party reference screenshots; added a note clarifying the selected-university list. All nine destination pages have standalone populated Career Prospects sections. Fixed sticky journey text bleed by removing the full-card opacity fade. Mobile menu focus now waits until the overlay is visible; reduced-motion mode removes that transition. Shared asset references were bumped to cache version 8 on all 28 HTML pages.
+
+**Validation:** frontend link checker, shared/inline JavaScript syntax checks (29 inline scripts), and whitespace checks passed. Browser query tests passed for 7 course categories, 5 student services, 9 MBBS destinations and 9 scholarship filters. Mobile keyboard/focus and overflow checks passed at 320px and 390px with both normal and reduced-motion settings. Desktop visual check confirmed the journey cards no longer reveal previous headings. Production deployment was not tested.

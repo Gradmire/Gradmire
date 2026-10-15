@@ -10,29 +10,42 @@
         ['Australia', 'australia'], ['Germany', 'germany'], ['Ireland', 'ireland'],
         ['Italy', 'italy'], ['New Zealand', 'newzealand'], ['Finland', 'finland']
     ];
+    const mbbsCountries = [
+        ['Russia', 'russia'], ['China', 'china'], ['Georgia', 'georgia'], ['Egypt', 'egypt'],
+        ['Uzbekistan', 'uzbekistan'], ['Kazakhstan', 'kazakhstan'], ['Kyrgyzstan', 'kyrgyzstan'],
+        ['Bulgaria', 'bulgaria'], ['Moldova', 'moldova']
+    ];
     const countryPage = (slug) => page(`study-in-${slug}.html`);
     const scholarshipPage = (slug) => `${page('scholarships.html')}?country=${encodeURIComponent(slug)}`;
-    const link = (href, label) => `<a href="${href}" role="menuitem">${label}</a>`;
+    const consultationPage = (interest, country = '') => `${page('free-consultation.html')}?interest=${encodeURIComponent(interest)}${country ? `&country=${encodeURIComponent(country)}` : ''}`;
+    const link = (href, label) => `<a href="${href}" role="menuitem">${label.replace(/&/g, '&amp;')}</a>`;
     const dropdown = (label, items, extraClass = '') => `
       <li class="nav-dropdown ${extraClass}">
         <button type="button" aria-expanded="false" aria-haspopup="true">${label} ${chevron}</button>
         <div class="nav-dropdown-menu" role="menu">${items}</div>
       </li>`;
 
+    const courseCategories = [
+        ['Business & Management', 'Business and Management'],
+        ['Creative Arts, Design & Media', 'Creative Arts, Design and Media'],
+        ['Engineering & Technology', 'Engineering and Technology'],
+        ['Medicine & Health', 'Medicine and Health'],
+        ['Science', 'Science'],
+        ['Social Sciences & Humanities', 'Social Sciences and Humanities'],
+        ['Tourism & Hospitality', 'Tourism and Hospitality']
+    ];
+    const studentServices = [
+        ['Gradmire free counselling', 'counselling'], ['Test preparation', 'test-preparation'],
+        ['Visa assistance', 'visa-assistance'], ['Application assistance', 'application-support'],
+        ['Course selection guidance', 'course-selection']
+    ];
     const navItems = [
         dropdown('Destinations', `<span class="nav-dropdown-label">Study destinations</span>${destinations.map(([name, slug]) => link(countryPage(slug), name)).join('')}${link(page('destinations.html'), 'All destinations →')}`),
-        dropdown('Courses', `<span class="nav-dropdown-label">Popular courses</span>${[
-            ['Business & Management', 'Business'], ['Computer Science', 'Computer Science'],
-            ['Data Science & AI', 'Data Science'], ['Engineering & Technology', 'Engineering'],
-            ['Health & Medicine', 'Medicine'], ['Design & Creative Arts', 'Design'],
-            ['Law', 'Law'], ['Hospitality & Tourism', 'Hospitality']
-        ].map(([label, query]) => link(`${page('find-courses.html')}?course=${encodeURIComponent(query)}`, label)).join('')}${link(page('find-courses.html'), 'Browse all courses →')}`),
-        dropdown('MBBS Abroad', `${destinations.filter(([name]) => name !== 'Finland').map(([name]) => link(`${page('find-courses.html')}?course=${encodeURIComponent('Medicine')}`, `${name} · Medicine / MBBS`)).join('')}${link(page('destinations.html'), 'Explore destinations →')}`),
-        dropdown('Student Services', `${link(page('free-consultation.html'), 'Free counselling')}${link(page('free-consultation.html'), 'Test preparation')}${link(page('free-consultation.html'), 'Visa assistance')}${link(page('free-consultation.html'), 'Application assistance')}${link(page('find-courses.html'), 'Course selection guidance')}`),
+        dropdown('Courses', `<span class="nav-dropdown-label">Explore study areas</span>${courseCategories.map(([label, query]) => link(`${page('find-courses.html')}?course=${encodeURIComponent(query)}`, label)).join('')}${link(page('find-courses.html'), 'Course Finder →')}`),
+        dropdown('MBBS Abroad', `<span class="nav-dropdown-label">Countries to explore</span>${mbbsCountries.map(([name, slug]) => link(consultationPage('mbbs-abroad', slug), name)).join('')}${link(consultationPage('mbbs-abroad'), 'Ask about MBBS abroad →')}`),
+        dropdown('Student Services', `${studentServices.map(([label, interest]) => link(consultationPage(interest), label)).join('')}`),
         dropdown('Scholarships', `<span class="nav-dropdown-label">Explore by country</span>${destinations.map(([name, slug]) => link(scholarshipPage(slug), `Scholarships in ${name}`)).join('')}${link(page('scholarships.html'), 'All scholarships →')}`),
-        dropdown('Student Tools', `${link(page('find-courses.html'), 'Course finder')}${link(page('tools/roi-calculator.html'), 'Study cost calculator')}${link(page('tools/comparator.html'), 'Course comparator')}${link(page('tools/deadline-tracker.html'), 'Deadline tracker')}${link(page('tools/grade-converter.html'), 'GPA / CGPA / SGPA converter')}`),
-        `<li class="nav-primary-link"><a href="${page('faq.html')}">FAQ</a></li>`,
-        `<li class="nav-primary-link"><a href="${page('about.html')}">About</a></li>`
+        dropdown('Student Tools', `${link(page('find-courses.html'), 'Course Finder')}${link(page('tools/roi-calculator.html'), 'Study cost calculator')}${link(page('tools/comparator.html'), 'Course comparator')}${link(page('tools/deadline-tracker.html'), 'Deadline tracker')}${link(page('tools/grade-converter.html'), 'GPA / CGPA / SGPA converter')}`)
     ];
 
     function icon(kind) {
@@ -123,7 +136,7 @@
         const ham = nav.querySelector('.nav-ham');
         ham.setAttribute('aria-controls', mobile.id);
         ham.setAttribute('aria-expanded', 'false');
-        const setMobileOpen = (open) => {
+        const setMobileOpen = (open, restoreFocus = false) => {
             mobile.classList.toggle('is-open', open);
             ham.classList.toggle('is-open', open);
             mobile.setAttribute('aria-hidden', String(!open));
@@ -132,17 +145,44 @@
             ham.setAttribute('aria-expanded', String(open));
             ham.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
             document.body.classList.toggle('nav-open', open);
+            if (open) {
+                let attempts = 0;
+                const focusFirstVisible = () => {
+                    if (!mobile.classList.contains('is-open')) return;
+                    const firstVisible = [...mobile.querySelectorAll('a[href], button:not([disabled])')]
+                        .find((element) => element.getClientRects().length > 0 && getComputedStyle(element).visibility === 'visible');
+                    if (firstVisible) firstVisible.focus();
+                    else if (attempts++ < 15) window.setTimeout(focusFirstVisible, 20);
+                };
+                window.setTimeout(focusFirstVisible, 0);
+            }
+            else if (restoreFocus) ham.focus();
         };
         ham.addEventListener('click', () => {
-            setMobileOpen(!mobile.classList.contains('is-open'));
+            const opening = !mobile.classList.contains('is-open');
+            setMobileOpen(opening, !opening);
         });
         mobile.addEventListener('click', (event) => {
             if (event.target.closest('a')) setMobileOpen(false);
         });
+        mobile.addEventListener('keydown', (event) => {
+            if (event.key !== 'Tab' || !mobile.classList.contains('is-open')) return;
+            const focusable = [...mobile.querySelectorAll('a[href], button:not([disabled])')]
+                .filter((element) => element.getClientRects().length > 0);
+            if (!focusable.length) return;
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            if (event.shiftKey && document.activeElement === first) {
+                event.preventDefault();
+                last.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+                event.preventDefault();
+                first.focus();
+            }
+        });
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape' && mobile.classList.contains('is-open')) {
-                setMobileOpen(false);
-                ham.focus();
+                setMobileOpen(false, true);
             }
         });
         document.addEventListener('click', (event) => {

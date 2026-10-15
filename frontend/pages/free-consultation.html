@@ -96,7 +96,7 @@ img{max-width:100%;display:block;}a{color:inherit;}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .nav{background:rgba(10,13,22,.88);}}
 :root[data-theme="dark"] .nav{background:rgba(10,13,22,.88);}
 </style>
-<link rel="stylesheet" href="../assets/site.css?v=7">
+<link rel="stylesheet" href="../assets/site.css?v=8">
 
 <nav class="nav" aria-label="Main navigation">
   <div class="nav-inner">
@@ -176,17 +176,43 @@ img{max-width:100%;display:block;}a{color:inherit;}
           </div>
         </div>
         <div class="form-field">
-          <label class="form-label">Primary destination of interest</label>
-          <select class="form-select">
+          <label class="form-label" for="s1-destination">Primary destination of interest</label>
+          <select class="form-select" id="s1-destination">
             <option value="">Select a country</option>
-            <option>United Kingdom</option>
-            <option>USA</option>
-            <option>Canada</option>
-            <option>Australia</option>
-            <option>Germany</option>
-            <option>Ireland</option>
-            <option>New Zealand</option>
-            <option>Italy</option>
+            <optgroup label="Study destinations">
+              <option value="uk">United Kingdom</option>
+              <option value="usa">United States</option>
+              <option value="canada">Canada</option>
+              <option value="australia">Australia</option>
+              <option value="germany">Germany</option>
+              <option value="ireland">Ireland</option>
+              <option value="newzealand">New Zealand</option>
+              <option value="italy">Italy</option>
+              <option value="finland">Finland</option>
+            </optgroup>
+            <optgroup label="MBBS destinations">
+              <option value="russia">Russia</option>
+              <option value="china">China</option>
+              <option value="georgia">Georgia</option>
+              <option value="egypt">Egypt</option>
+              <option value="uzbekistan">Uzbekistan</option>
+              <option value="kazakhstan">Kazakhstan</option>
+              <option value="kyrgyzstan">Kyrgyzstan</option>
+              <option value="bulgaria">Bulgaria</option>
+              <option value="moldova">Moldova</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="s1-interest">What would you like help with?</label>
+          <select class="form-select" id="s1-interest">
+            <option value="">Choose a service (optional)</option>
+            <option value="counselling">Free counselling</option>
+            <option value="test-preparation">Test preparation</option>
+            <option value="visa-assistance">Visa assistance</option>
+            <option value="application-support">Application assistance</option>
+            <option value="course-selection">Course selection guidance</option>
+            <option value="mbbs-abroad">MBBS abroad guidance</option>
           </select>
         </div>
         <div class="form-field">
@@ -200,6 +226,7 @@ img{max-width:100%;display:block;}a{color:inherit;}
             <label class="dest-check"><input type="checkbox">🇮🇪 Ireland</label>
             <label class="dest-check"><input type="checkbox">🇳🇿 New Zealand</label>
             <label class="dest-check"><input type="checkbox">🇮🇹 Italy</label>
+            <label class="dest-check"><input type="checkbox">🇫🇮 Finland</label>
           </div>
         </div>
         <div class="step-nav">
@@ -329,8 +356,8 @@ img{max-width:100%;display:block;}a{color:inherit;}
           <div class="trust-stat-lbl">Satisfaction rate</div>
         </div>
         <div class="trust-stat-item">
-          <div class="trust-stat-num">18 yrs</div>
-          <div class="trust-stat-lbl">Trusted since 2006</div>
+          <div class="trust-stat-num">2006</div>
+          <div class="trust-stat-lbl">Trusted since</div>
         </div>
       </div>
     </div>
@@ -413,7 +440,36 @@ function submitForm() {
   document.getElementById('step-label').textContent = 'Completed';
   window.scrollTo({top:0,behavior:'smooth'});
 }
+(function prefillConsultationContext() {
+  const params = new URLSearchParams(window.location.search);
+  const rawInterest = (params.get('interest') || '').trim().toLowerCase();
+  const rawCountry = (params.get('country') || '').trim().toLowerCase();
+  const interestSelect = document.getElementById('s1-interest');
+  const destinationSelect = document.getElementById('s1-destination');
+  const interestAliases = {
+    'free-counselling': 'counselling', 'free-counseling': 'counselling',
+    'test-prep': 'test-preparation', 'visa': 'visa-assistance',
+    'application-assistance': 'application-support',
+    'course-selection-guidance': 'course-selection', 'mbbs': 'mbbs-abroad'
+  };
+  const interestValue = interestAliases[rawInterest] || rawInterest;
+  if (interestSelect && [...interestSelect.options].some((option) => option.value === interestValue)) {
+    interestSelect.value = interestValue;
+  }
+  const countryAliases = {
+    'uk': 'uk', 'united kingdom': 'uk', 'united-kingdom': 'uk',
+    'us': 'usa', 'united states': 'usa', 'united-states': 'usa',
+    'new zealand': 'newzealand', 'new-zealand': 'newzealand',
+    'unitedkingdom': 'uk', 'unitedstates': 'usa', 'newzealand': 'newzealand'
+  };
+  const countryKey = countryAliases[rawCountry] || rawCountry.replace(/[\s_-]/g, '');
+  const interestCountry = countryAliases[rawInterest] || rawInterest.replace(/[\s_-]/g, '');
+  const requestedCountry = rawCountry ? countryKey : interestCountry;
+  if (destinationSelect && requestedCountry && [...destinationSelect.options].some((option) => option.value === requestedCountry)) {
+    destinationSelect.value = requestedCountry;
+  }
+})();
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../assets/site.js?v=7"></script>
+<script src="../assets/site.js?v=8"></script>

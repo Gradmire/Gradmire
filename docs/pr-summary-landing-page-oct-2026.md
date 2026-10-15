@@ -59,3 +59,23 @@ Refine Gradmire’s homepage and destination pages, standardize navigation, repa
 ## GitHub status
 
 The feature branch was pushed to `origin/feature/gradmire-destination-ux-oct-2026`. The open pull request to `master` is [#1](https://github.com/Gradmire/Gradmire/pull/1); its title and description were updated to match this work. GitHub reports all three PR checks successful, including Vercel and the repository test; merge status is **CLEAN**. The PR has not been merged.
+
+
+## Requirements-led landing-page follow-up — 16 October 2026
+
+### Implemented
+
+- Reordered the homepage around the student journey: hero, destination cards, a four-card “Why Gradmire” metrics block, the university network band, four guidance stages, student testimonials, FAQs and a clear consultation CTA. The footer is grouped into destinations, services, tools and company.
+- Added the six requested shared navigation groups—Destinations, Courses, MBBS Abroad, Student Services, Scholarships and Student Tools—with working country/course/service routes. Course categories preserve their subject query; service and MBBS links prefill the consultation form; country scholarship links select the matching destination.
+- Kept the existing Gradmire figures (Since 2006, 850+ partner-university agreements, 47k+ students and 50+ countries) instead of importing the different statistics shown in third-party visual references. University-network copy identifies the list as selected institutions.
+- Made the UK, USA and Finland career modules consistent with the other destination pages; all nine destination pages now have populated standalone Career Prospects sections.
+- Removed the sticky journey’s whole-card opacity fade, which caused headings from earlier steps to show through later cards.
+- Improved mobile navigation focus timing for the visibility transition; reduced-motion mode now removes the overlay transition and exposes its open state immediately. Bumped shared CSS/JavaScript cache keys to v8 across all 28 HTML pages.
+
+### Follow-up validation
+
+- `node scripts/check-frontend-links.mjs`, shared and inline JavaScript syntax checks (29 inline scripts), and `git diff --check` passed.
+- Browser route tests passed for all 7 course categories, all 5 student-service interests, all 9 MBBS country prefills, and all 9 scholarship destination filters.
+- Mobile browser checks passed at 390px and 320px with normal and reduced motion: no horizontal overflow, focus enters the menu, Tab wraps, and Escape closes the menu and restores focus.
+- Source audit confirmed populated semantic Career Prospects sections on 9/9 destination pages. Desktop visual review confirmed the journey headings no longer bleed through the stacked cards.
+- These are local-preview checks; no production deployment was tested.

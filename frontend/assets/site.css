@@ -737,7 +737,7 @@
 .nav-mobile .nav-dropdown > button { width: 100%; justify-content: space-between; text-align: left; }
 .nav-mobile .nav-dropdown-menu a { min-height: 40px; }
 
-@media (max-width: 1100px) {
+@media (max-width: 1180px) {
     .nav-links,
     .nav-btn { display: none !important; }
     .nav-ham { display: flex !important; margin-left: auto; }
@@ -798,6 +798,8 @@
     .nav-dropdown-chevron,
     .nav-mobile,
     .nav-ham svg rect { transition-duration: .01ms !important; }
+    .nav-mobile { transition: none !important; }
+    .nav-mobile.is-open { opacity: 1; visibility: visible; transform: none; }
 }
 
 
@@ -848,3 +850,25 @@
 .part-time-source-note a { color: var(--brand); text-decoration-thickness: 1px; text-underline-offset: 2px; }
 .part-time-source-note a:hover { color: var(--accent); }
 @media (max-width: 760px) { .part-time-source-note { padding-inline: .1rem; } }
+
+
+/* Six-group navigation refinement: preserve readable labels without crowding desktop widths. */
+.nav-inner { gap: clamp(.45rem, 1vw, .9rem); }
+.nav-links { min-width: 0; justify-content: center; gap: clamp(.25rem, .6vw, .65rem); margin: 0; padding: 0; }
+.nav-links > li { flex: 0 0 auto; list-style: none; }
+.nav-dropdown > button { font-size: clamp(.7rem, .78vw, .83rem); font-weight: 650; white-space: nowrap; }
+.nav-dropdown > button:focus-visible,
+.nav-dropdown-menu a:focus-visible,
+.nav-ham:focus-visible,
+.site-theme-toggle:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 72%, white); outline-offset: 3px; }
+.nav-links > .nav-dropdown:last-child > .nav-dropdown-menu { left: auto; right: 0; transform: translateY(-6px); }
+.nav-links > .nav-dropdown:last-child:hover > .nav-dropdown-menu,
+.nav-links > .nav-dropdown:last-child:focus-within > .nav-dropdown-menu,
+.nav-links > .nav-dropdown:last-child.is-open > .nav-dropdown-menu { transform: translateY(0); }
+
+
+/* Keep the mobile call-to-action at accessible contrast and metrics tidy in wide layouts. */
+.nav-mobile a.btn.btn-primary { color: #fff !important; }
+@media (min-width: 901px) {
+  .why-evidence .evidence-card:last-child .stat-num { font-size: clamp(1.35rem, 1.9vw, 1.8rem); white-space: nowrap; }
+}
