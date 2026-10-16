@@ -1,5 +1,34 @@
 (() => {
     const root = document.documentElement;
+
+    /* ── Consent: essential storage always; "preferences" and "analytics" only with opt-in.
+       The choice itself is essential (it has to be remembered to be respected). ── */
+    const CONSENT_KEY = 'gm-consent';
+    const CONSENT_VERSION = 1;
+    const PREF_KEYS = ['gradmire-theme', 'gm-consult-popup-dismissed'];
+    function readConsent() {
+        try {
+            const c = JSON.parse(localStorage.getItem(CONSENT_KEY) || 'null');
+            return c && c.v === CONSENT_VERSION ? c : null;
+        } catch (_) { return null; }
+    }
+    const allows = (category) => Boolean(readConsent()?.[category]);
+    /* Preference values live in localStorage only with consent; otherwise for this tab only. */
+    function savePref(key, value) {
+        try { (allows('preferences') ? localStorage : sessionStorage).setItem(key, value); } catch (_) {}
+    }
+    function readPref(key) {
+        try { return (allows('preferences') ? localStorage.getItem(key) : null) ?? sessionStorage.getItem(key); } catch (_) { return null; }
+    }
+    function writeConsent(choice) {
+        const record = { v: CONSENT_VERSION, necessary: true, preferences: Boolean(choice.preferences), analytics: Boolean(choice.analytics), ts: new Date().toISOString() };
+        try { localStorage.setItem(CONSENT_KEY, JSON.stringify(record)); } catch (_) {}
+        if (!record.preferences) PREF_KEYS.forEach((key) => { try { localStorage.removeItem(key); } catch (_) {} });
+        window.dispatchEvent(new CustomEvent('gm:consent', { detail: record }));
+        return record;
+    }
+    /* Hook for any future analytics loader: load only when gradmireConsent.allows('analytics'). */
+    window.gradmireConsent = { get: readConsent, allows, set: writeConsent };
     const isToolPage = /\/tools\//.test(window.location.pathname);
     const pagePrefix = isToolPage ? '../' : '';
     const page = (name) => `${pagePrefix}${name}`;
@@ -70,7 +99,7 @@
         toggle.innerHTML = `${icon('sun')}${icon('moon')}`;
         toggle.addEventListener('click', () => {
             const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
-            try { localStorage.setItem('gradmire-theme', next); } catch (_) {}
+            savePref('gradmire-theme', next);
             applyTheme(next);
         });
         const navInner = document.querySelector('.nav-inner');
@@ -276,6 +305,14 @@
         document.querySelectorAll('.m-slider').forEach((slider) => {
             const items = [...slider.children];
             if (items.length < 2) return;
+            /* While it scrolls sideways (phones), the row must be reachable by keyboard. */
+            const phone = window.matchMedia('(max-width: 640px)');
+            const syncFocus = () => {
+                if (phone.matches) { slider.tabIndex = 0; slider.setAttribute('role', 'region'); }
+                else { slider.removeAttribute('tabindex'); slider.removeAttribute('role'); }
+            };
+            syncFocus();
+            phone.addEventListener?.('change', syncFocus);
             const dots = document.createElement('div');
             dots.className = 'm-slider-dots';
             const offsetOf = (item) => item.getBoundingClientRect().left - slider.getBoundingClientRect().left - (parseFloat(getComputedStyle(slider).scrollPaddingLeft) || 0);
@@ -318,11 +355,10 @@
 
         const store = (kind) => { try { return window[kind]; } catch (_) { return null; } };
         const session = store('sessionStorage');
-        const local = store('localStorage');
         const read = (s, key) => { try { return s ? s.getItem(key) : null; } catch (_) { return null; } };
         const write = (s, key, value) => { try { if (s) s.setItem(key, value); } catch (_) {} };
         const DISMISS_DAYS = 3;
-        const recentlyDismissed = Number(read(local, 'gm-consult-popup-dismissed') || 0) > Date.now() - DISMISS_DAYS * 864e5;
+        const recentlyDismissed = Number(readPref('gm-consult-popup-dismissed') || 0) > Date.now() - DISMISS_DAYS * 864e5;
         const photo = 'https://images.unsplash.com/photo-1728141123512-87c415cecc9d?auto=format&fit=crop&w=640&h=820&q=80';
         const options = destinations.map(([name, slug]) => `<option value="${slug}">${name}</option>`).join('');
 
@@ -350,7 +386,7 @@
                 <label class="gm-popup-field"><span>Where do you want to study?</span><select name="destination"><option value="">Not sure yet</option>${options}</select></label>
                 <p class="gm-popup-error" role="alert" hidden></p>
                 <button type="submit" class="gm-popup-submit">Book my free consultation <span aria-hidden="true">→</span></button>
-                <p class="gm-popup-fine">You'll confirm your details and consent on the next step.</p>
+                <p class="gm-popup-fine">You'll confirm your details and consent on the next step. Under 18? Please ask a parent or guardian first. <a href="${page('privacy.html')}">Privacy policy</a></p>
               </form>
             </div>
           </div>`;
@@ -367,7 +403,6 @@
         const form = popup.querySelector('form');
         const error = popup.querySelector('.gm-popup-error');
         let lastFocus = null;
-        let autoTimer = 0;
         let autoDone = false;
 
         const focusables = () => [...card.querySelectorAll('button, input, select, a[href]')].filter((el) => !el.disabled && el.offsetParent !== null);
@@ -378,7 +413,6 @@
                 if (active && /^(INPUT|TEXTAREA|SELECT)$/.test(active.tagName)) return;
                 if (document.querySelector('.nav-mobile.is-open, .nav-mobile[aria-hidden="false"]')) return;
             }
-            clearTimeout(autoTimer);
             autoDone = true;
             write(session, 'gm-consult-popup-shown', '1');
             lastFocus = document.activeElement;
@@ -389,13 +423,14 @@
         }
         function close() {
             if (popup.hidden) return;
-            write(local, 'gm-consult-popup-dismissed', String(Date.now()));
+            savePref('gm-consult-popup-dismissed', String(Date.now()));
             popup.classList.remove('is-visible');
             document.documentElement.classList.remove('gm-popup-open');
             setTimeout(() => { popup.hidden = true; }, 220);
             lastFocus?.focus?.({ preventScroll: true });
         }
 
+        window.__gmOpenPopup = open;
         fab.addEventListener('click', () => open(false));
         popup.querySelectorAll('[data-popup-close]').forEach((el) => el.addEventListener('click', close));
         popup.addEventListener('keydown', (event) => {
@@ -433,7 +468,20 @@
 
         /* Auto-open: once per session, and not again for a few days after a dismissal. */
         if (read(session, 'gm-consult-popup-shown') || recentlyDismissed) return;
-        autoTimer = setTimeout(() => open(true), 12000);
+        /* Never stack the popup on top of the cookie banner: start the timers once a choice is made. */
+        if (!readConsent()) {
+            window.addEventListener('gm:consent', armAutoOpen, { once: true });
+            return;
+        }
+        armAutoOpen();
+    }
+
+    function armAutoOpen() {
+        const popup = document.querySelector('.gm-popup');
+        if (!popup || window.__gmPopupArmed) return;
+        window.__gmPopupArmed = true;
+        const open = (auto) => window.__gmOpenPopup?.(auto);
+        setTimeout(() => open(true), 12000);
         const onScroll = () => {
             const depth = (window.scrollY + window.innerHeight) / document.documentElement.scrollHeight;
             if (depth > 0.45) { window.removeEventListener('scroll', onScroll); open(true); }
@@ -444,13 +492,90 @@
         });
     }
 
-    let savedTheme = 'light';
-    try { savedTheme = localStorage.getItem('gradmire-theme') || 'light'; } catch (_) {}
+    /* Cookie / storage consent banner. Accept and Reject carry equal weight; nothing optional
+       is stored until a choice is made. Any [data-cookie-settings] link reopens the settings. */
+    function setupConsentBanner() {
+        const policy = page('cookie-policy.html');
+        const banner = document.createElement('section');
+        banner.className = 'gm-consent';
+        banner.setAttribute('aria-label', 'Cookie preferences');
+        banner.hidden = true;
+        banner.innerHTML = `
+          <div class="gm-consent-main">
+            <p class="gm-consent-title">Your privacy choices</p>
+            <p class="gm-consent-text">We use essential storage to run this site. With your permission we'll also remember preferences, such as night mode and dismissed pop-ups. We don't use advertising cookies, and no analytics run unless you allow them. <a href="${policy}">Cookie policy</a></p>
+            <div class="gm-consent-options" hidden>
+              <label class="gm-consent-option"><input type="checkbox" checked disabled><span><strong>Essential</strong>Needed for the site to work and to remember this choice. Always on.</span></label>
+              <label class="gm-consent-option"><input type="checkbox" name="preferences"><span><strong>Preferences</strong>Remember night mode and pop-ups you have closed.</span></label>
+              <label class="gm-consent-option"><input type="checkbox" name="analytics"><span><strong>Analytics</strong>Anonymous usage statistics. None run today; this choice applies if we add them.</span></label>
+            </div>
+          </div>
+          <div class="gm-consent-actions">
+            <button type="button" class="gm-consent-btn" data-consent="reject">Reject non-essential</button>
+            <button type="button" class="gm-consent-btn gm-consent-btn--ghost" data-consent="customise" aria-expanded="false">Customise</button>
+            <button type="button" class="gm-consent-btn" data-consent="accept">Accept all</button>
+          </div>`;
+        document.body.appendChild(banner);
+
+        const options = banner.querySelector('.gm-consent-options');
+        const customise = banner.querySelector('[data-consent="customise"]');
+        const checkbox = (name) => banner.querySelector(`input[name="${name}"]`);
+        function show(expand) {
+            const current = readConsent();
+            checkbox('preferences').checked = Boolean(current?.preferences);
+            checkbox('analytics').checked = Boolean(current?.analytics);
+            options.hidden = !expand;
+            customise.textContent = expand ? 'Save choices' : 'Customise';
+            customise.setAttribute('aria-expanded', String(expand));
+            banner.hidden = false;
+            root.classList.add('gm-consent-open');
+        }
+        function hide() {
+            banner.hidden = true;
+            root.classList.remove('gm-consent-open');
+        }
+        banner.addEventListener('click', (event) => {
+            const action = event.target.closest('[data-consent]')?.dataset.consent;
+            if (!action) return;
+            if (action === 'customise' && options.hidden) { show(true); checkbox('preferences').focus(); return; }
+            if (action === 'accept') writeConsent({ preferences: true, analytics: true });
+            if (action === 'reject') writeConsent({ preferences: false, analytics: false });
+            if (action === 'customise') writeConsent({ preferences: checkbox('preferences').checked, analytics: checkbox('analytics').checked });
+            hide();
+        });
+        document.addEventListener('click', (event) => {
+            const trigger = event.target.closest('[data-cookie-settings]');
+            if (!trigger) return;
+            event.preventDefault();
+            show(true);
+            checkbox('preferences').focus();
+        });
+        if (!readConsent()) show(false);
+    }
+
+    /* Keyboard: "Skip to content" as the first focusable element on every page. */
+    function setupSkipLink() {
+        const nav = document.querySelector('nav.nav, .nav, header.topnav, header');
+        let target = document.querySelector('main') || nav?.nextElementSibling;
+        while (target && /^(SCRIPT|STYLE)$/.test(target.tagName)) target = target.nextElementSibling;
+        if (!target) return;
+        if (!target.id) target.id = 'main-content';
+        if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+        const link = document.createElement('a');
+        link.className = 'skip-link';
+        link.href = `#${target.id}`;
+        link.textContent = 'Skip to content';
+        document.body.prepend(link);
+    }
+
+    const savedTheme = readPref('gradmire-theme') || 'light';
     applyTheme(savedTheme);
     setupNavigation();
     setupThemeToggle();
     applyTheme(savedTheme);
+    setupSkipLink();
     setupLogoSliders();
     setupMobileSliders();
+    setupConsentBanner();
     setupConsultPopup();
 })();

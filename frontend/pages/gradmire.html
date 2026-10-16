@@ -1,7 +1,11 @@
-﻿<meta charset="UTF-8">
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<script>try{var c=JSON.parse(localStorage.getItem("gm-consent")||"null"),t=(c&&c.preferences&&localStorage.getItem("gradmire-theme"))||sessionStorage.getItem("gradmire-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Gradmire</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="preload" href="../assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/fonts/fonts.css">
 
 <style>
 /* ─── Tokens ─────────────────────────────────────────── */
@@ -24,14 +28,14 @@
   --sec: clamp(5rem, 10vw, 8rem);
 }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
+  :root:not([data-theme="light"]) {--accent:#2DB88C;--accent-hover:#27A07B;--accent-dim:rgba(45,184,140,.18);
     --bg: #0A0D16; --surface: #121825; --surface-tint: #1A2136;
     --text-p: #EEF1F8; --text-s: #8893B8;
     --brand: #4D8FBF; --border: rgba(238,241,248,.1);
     --accent-dim: rgba(45,184,140,.18);
   }
 }
-:root[data-theme="dark"] {
+:root[data-theme="dark"] {--accent:#2DB88C;--accent-hover:#27A07B;--accent-dim:rgba(45,184,140,.18);
   --bg: #0A0D16; --surface: #121825; --surface-tint: #1A2136;
   --text-p: #EEF1F8; --text-s: #8893B8;
   --brand: #4D8FBF; --border: rgba(238,241,248,.1);
@@ -110,7 +114,7 @@ a { color: inherit; }
 .ht-2 { background: rgba(255,255,255,.07); }
 .ht-3 { background: rgba(77,143,191,.2); aspect-ratio: 2/1; grid-column: span 2; }
 .hero-tile-num { font-family: var(--mono); font-size: 1.35rem; font-weight: 700; color: #fff; letter-spacing: -.03em; }
-.hero-tile-lbl { font-size: .72rem; color: rgba(255,255,255,.55); margin-top: .2rem; }
+.hero-tile-lbl { font-size: .72rem; color: rgba(255,255,255,.85); margin-top: .2rem; }
 
 /* ─── Evidence ───────────────────────────────────────── */
 .evidence { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
@@ -236,18 +240,19 @@ a { color: inherit; }
 .journey-text { font-size: 1.05rem; color: var(--text-s); max-width: 40ch; line-height: 1.7; }
 .journey-card:nth-child(4) .journey-title { color: #fff; }
 .journey-card:nth-child(4) .journey-text { color: rgba(255,255,255,.7); }
-.journey-card:nth-child(4) .journey-stage { color: rgba(255,255,255,.5); }
+.journey-card:nth-child(4) .journey-stage { color: rgba(255,255,255,.8); }
 /* Journey visual boxes (CSS, no images needed) */
 .journey-visual { border-radius: var(--r-lg); overflow: hidden; aspect-ratio: 4/3; position: relative; }
 .jv-1 { background: linear-gradient(135deg, #e8edf8 0%, #d4ddf0 100%); }
 .jv-2 { background: linear-gradient(135deg, #e8f4f0 0%, #c8e8df 100%); }
 .jv-3 { background: linear-gradient(135deg, #dce4f2 0%, #c8d4ec 100%); }
-.jv-4 { background: linear-gradient(135deg, #1e2d48 0%, #0e1a2e 100%); }
+.jv-4 { background: #16233b linear-gradient(135deg, #1e2d48 0%, #0e1a2e 100%); }
 .journey-visual-inner { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 1rem; padding: 2rem; }
-.jv-icon { font-family: var(--mono); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 700; color: var(--brand); opacity: .25; letter-spacing: -.05em; }
-.journey-card:nth-child(4) .jv-icon { color: rgba(255,255,255,.2); }
+.jv-icon { font-family: var(--mono); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 700; color: var(--brand); opacity: .9; letter-spacing: -.05em; }
+.journey-card:nth-child(4) .jv-icon { color: rgba(255,255,255,.6); }
+.jv-icon::before { content: attr(data-n); }
 .jv-lines { width: 100%; display: flex; flex-direction: column; gap: .5rem; }
-.jv-line { height: 8px; border-radius: 4px; background: var(--brand); opacity: .15; }
+.jv-line { height: 8px; border-radius: 4px; background: #1A4870; opacity: .15; }
 .jv-line:nth-child(1) { width: 80%; }
 .jv-line:nth-child(2) { width: 60%; }
 .jv-line:nth-child(3) { width: 70%; }
@@ -375,7 +380,7 @@ a { color: inherit; }
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .nav{background:rgba(10,13,22,.88);}}
 :root[data-theme="dark"] .nav{background:rgba(10,13,22,.88);}
 </style>
-<link rel="stylesheet" href="../assets/site.css?v=9">
+<link rel="stylesheet" href="../assets/site.css?v=13">
 
 <!-- NAV -->
 <nav class="nav" aria-label="Main navigation">
@@ -427,7 +432,7 @@ a { color: inherit; }
           <div class="hero-tile-lbl">Countries</div>
         </div>
         <div class="hero-tile ht-3">
-          <div class="hero-tile-num">18 years</div>
+          <div class="hero-tile-num">20+ years</div>
           <div class="hero-tile-lbl">of trusted counselling</div>
         </div>
       </div>
@@ -469,51 +474,51 @@ a { color: inherit; }
     <h2 class="sec-title" id="dest-title">Study in 50+ countries.</h2>
     <p class="sec-body">From the world's top-ranked universities to hidden gems that match your goals. We know every destination in detail.</p>
   </div>
-  <div class="dest-grid" role="list">
+  <div class="dest-grid">
     <!-- col 1, rows 1–2: UK tall -->
-    <div class="dest-cell" role="listitem" tabindex="0" aria-label="United Kingdom">
+    <div class="dest-cell" tabindex="0" aria-label="United Kingdom">
       <div class="dest-cell-bg bg-uk"></div>
       <div class="dest-overlay" aria-hidden="true"></div>
       <span class="dest-name">United Kingdom</span>
     </div>
     <!-- col 2, row 1 -->
-    <div class="dest-cell" role="listitem" tabindex="0" aria-label="USA">
+    <div class="dest-cell" tabindex="0" aria-label="USA">
       <div class="dest-cell-bg bg-usa"></div>
       <div class="dest-overlay" aria-hidden="true"></div>
       <span class="dest-name">USA</span>
     </div>
     <!-- col 3, row 1 -->
-    <div class="dest-cell" role="listitem" tabindex="0" aria-label="Canada">
+    <div class="dest-cell" tabindex="0" aria-label="Canada">
       <div class="dest-cell-bg bg-canada"></div>
       <div class="dest-overlay" aria-hidden="true"></div>
       <span class="dest-name">Canada</span>
     </div>
     <!-- col 2, row 2 -->
-    <div class="dest-cell" role="listitem" tabindex="0" aria-label="Germany">
+    <div class="dest-cell" tabindex="0" aria-label="Germany">
       <div class="dest-cell-bg bg-germany"></div>
       <div class="dest-overlay" aria-hidden="true"></div>
       <span class="dest-name">Germany</span>
     </div>
     <!-- col 3, row 2 -->
-    <div class="dest-cell" role="listitem" tabindex="0" aria-label="Australia">
+    <div class="dest-cell" tabindex="0" aria-label="Australia">
       <div class="dest-cell-bg bg-australia"></div>
       <div class="dest-overlay" aria-hidden="true"></div>
       <span class="dest-name">Australia</span>
     </div>
     <!-- col 1, row 3 -->
-    <div class="dest-cell" role="listitem" tabindex="0" aria-label="Ireland">
+    <div class="dest-cell" tabindex="0" aria-label="Ireland">
       <div class="dest-cell-bg bg-ireland"></div>
       <div class="dest-overlay" aria-hidden="true"></div>
       <span class="dest-name">Ireland</span>
     </div>
     <!-- col 2, row 3 -->
-    <div class="dest-cell" role="listitem" tabindex="0" aria-label="Italy">
+    <div class="dest-cell" tabindex="0" aria-label="Italy">
       <div class="dest-cell-bg bg-italy"></div>
       <div class="dest-overlay" aria-hidden="true"></div>
       <span class="dest-name">Italy</span>
     </div>
     <!-- col 3, row 3 -->
-    <div class="dest-cell" role="listitem" tabindex="0" aria-label="New Zealand">
+    <div class="dest-cell" tabindex="0" aria-label="New Zealand">
       <div class="dest-cell-bg bg-nz"></div>
       <div class="dest-overlay" aria-hidden="true"></div>
       <span class="dest-name">New Zealand</span>
@@ -542,7 +547,7 @@ a { color: inherit; }
         </div>
         <div class="journey-visual jv-1" aria-hidden="true">
           <div class="journey-visual-inner">
-            <div class="jv-icon">01</div>
+            <div class="jv-icon" data-n="01"></div>
             <div class="jv-lines"><div class="jv-line"></div><div class="jv-line"></div><div class="jv-line"></div></div>
           </div>
         </div>
@@ -557,7 +562,7 @@ a { color: inherit; }
         </div>
         <div class="journey-visual jv-2" aria-hidden="true">
           <div class="journey-visual-inner">
-            <div class="jv-icon">02</div>
+            <div class="jv-icon" data-n="02"></div>
             <div class="jv-lines"><div class="jv-line"></div><div class="jv-line"></div><div class="jv-line"></div></div>
           </div>
         </div>
@@ -572,7 +577,7 @@ a { color: inherit; }
         </div>
         <div class="journey-visual jv-3" aria-hidden="true">
           <div class="journey-visual-inner">
-            <div class="jv-icon">03</div>
+            <div class="jv-icon" data-n="03"></div>
             <div class="jv-lines"><div class="jv-line"></div><div class="jv-line"></div><div class="jv-line"></div></div>
           </div>
         </div>
@@ -587,7 +592,7 @@ a { color: inherit; }
         </div>
         <div class="journey-visual jv-4" aria-hidden="true">
           <div class="journey-visual-inner">
-            <div class="jv-icon" style="color:rgba(255,255,255,.2)">04</div>
+            <div class="jv-icon" data-n="04"></div>
             <div class="jv-lines"><div class="jv-line"></div><div class="jv-line"></div><div class="jv-line"></div></div>
           </div>
         </div>
@@ -602,8 +607,8 @@ a { color: inherit; }
     <h2 class="sec-title" id="counsel-title">Meet your counsellors.</h2>
     <p class="sec-body">Specialists, not generalists. Each counsellor covers the destinations they know inside out.</p>
   </div>
-  <div class="counsel-track-wrap" role="list" aria-label="Counsellor profiles">
-    <div class="counsel-track">
+  <div class="counsel-track-wrap" tabindex="0" role="region" aria-label="Counsellor profiles (scroll sideways for more)">
+    <div class="counsel-track" role="list">
       <div class="counsel-card" role="listitem">
         <div class="counsel-avatar ca-priya" aria-hidden="true"><span class="counsel-avatar-monogram">PS</span></div>
         <div class="counsel-name">Priya Sharma</div>
@@ -672,7 +677,7 @@ a { color: inherit; }
   <div class="schol-inner">
     <div class="sec-head reveal">
       <h2 class="sec-title" id="schol-title">Funding your degree.</h2>
-      <p class="sec-body">We actively match students to scholarships. Over 4,800 students have received partial or full funding through our counselling process.</p>
+      <p class="sec-body">We help you find scholarships that fit your profile and prepare strong applications. Awards are decided by each funder.</p>
     </div>
     <div class="bento">
       <div class="bento-hero reveal">
@@ -706,7 +711,7 @@ a { color: inherit; }
   <a href="mailto:consult@gradmire.com" class="btn btn-primary btn-lg magnetic-cta reveal" style="transition-delay:.14s">Book your free session</a>
   <div class="cta-avail reveal" style="transition-delay:.22s" aria-live="polite">
     <span class="avail-dot" aria-hidden="true"></span>
-    <span>Next available: Monday, 11am IST with Priya Sharma</span>
+    <span>A counsellor replies within 24 business hours</span>
   </div>
 </section>
 
@@ -757,10 +762,11 @@ a { color: inherit; }
       <a href="privacy.html#cookies" class="footer-legal" style="text-decoration:none">Cookie policy</a>
     </div>
   </div>
+    <div class="gm-legal-bar gm-legal-bar--light"><p class="gm-legal-entity">Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · <a href="mailto:privacy@gradmire.in">privacy@gradmire.in</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund-policy.html">Refunds &amp; fees</a><a href="cookie-policy.html">Cookies</a><a href="data-request.html">Your data rights</a><a href="grievance.html">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <script>
 (function() {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -851,5 +857,4 @@ a { color: inherit; }
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../assets/site.js?v=9"></script>
+<script src="../assets/site.js?v=13" defer></script>

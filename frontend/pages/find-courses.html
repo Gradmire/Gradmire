@@ -1,12 +1,16 @@
-﻿<meta charset="UTF-8">
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<script>try{var c=JSON.parse(localStorage.getItem("gm-consent")||"null"),t=(c&&c.preferences&&localStorage.getItem("gradmire-theme"))||sessionStorage.getItem("gradmire-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="canonical" href="https://gradmire.in/find-courses.html">
 <title>Gradmire — Course Finder</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="preload" href="../assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/fonts/fonts.css">
 <style>
 :root{--bg:#F0F2F7;--surface:#FFFFFF;--surface-tint:#E8EBF4;--text-p:#0E1420;--text-s:#556270;--brand:#1A4870;--accent:#007A5A;--accent-dim:rgba(0,122,90,.12);--border:rgba(14,20,32,.1);--sans:'Bricolage Grotesque',system-ui,sans-serif;--mono:'JetBrains Mono','Menlo',monospace;--r-sm:8px;--r-md:16px;--r-lg:24px;--w:1280px;--gutter:clamp(1.25rem,5vw,3rem);--ease:cubic-bezier(.16,1,.3,1);}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(45,184,140,.18);}}
-:root[data-theme="dark"]{--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(45,184,140,.18);}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--accent:#2DB88C;--accent-hover:#27A07B;--accent-dim:rgba(45,184,140,.18);--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(45,184,140,.18);}}
+:root[data-theme="dark"]{--accent:#2DB88C;--accent-hover:#27A07B;--accent-dim:rgba(45,184,140,.18);--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(45,184,140,.18);}
 *,*::before,*::after{box-sizing:border-box;margin:0;}
 body{background:var(--bg);color:var(--text-p);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;}
 img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
@@ -22,9 +26,9 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 .nav-btn:active{transform:scale(.97);}
 .nav-ham{display:none;background:none;border:none;cursor:pointer;padding:.5rem;color:var(--text-p);}
 /* Search hero */
-.search-hero{background:var(--brand);padding:clamp(3rem,6vw,5rem) var(--gutter);}
+.search-hero{background:#1A4870;padding:clamp(3rem,6vw,5rem) var(--gutter);}
 .search-hero-inner{max-width:var(--w);margin:0 auto;}
-.search-hero-tag{font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;color:rgba(255,255,255,.5);margin-bottom:.75rem;}
+.search-hero-tag{font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;color:rgba(255,255,255,.8);margin-bottom:.75rem;}
 .search-hero-title{font-size:clamp(2rem,4.5vw,3.8rem);font-weight:800;color:#fff;letter-spacing:-.035em;line-height:.95;margin-bottom:2rem;text-wrap:balance;}
 .search-bar{background:var(--surface);border-radius:var(--r-lg);padding:1.25rem 1.5rem;display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:1rem;align-items:center;}
 .search-field{display:flex;flex-direction:column;gap:.25rem;}
@@ -92,7 +96,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 :root[data-theme="dark"] .nav{background:rgba(10,13,22,.88);}
 .course-data-note{margin:0 0 1rem;padding:.8rem 1rem;border-left:3px solid var(--accent);background:var(--surface-tint);border-radius:0 10px 10px 0;color:var(--text-s);font-size:.82rem;} .course-card[hidden]{display:none!important;}
 </style>
-<link rel="stylesheet" href="../assets/site.css?v=9">
+<link rel="stylesheet" href="../assets/site.css?v=13">
 
 <nav class="nav" aria-label="Main navigation">
   <div class="nav-inner">
@@ -120,13 +124,13 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
     <h1 class="search-hero-title">Find your perfect course.</h1>
     <div class="search-bar">
       <div class="search-field">
-        <div class="search-label">Subject</div>
-        <input class="search-input" type="text" id="search-subject" placeholder="e.g. Computer Science, MBA, Law…" autocomplete="off">
+        <div class="search-label" id="search-subject-label">Subject</div>
+        <input class="search-input" type="text" id="search-subject" aria-labelledby="search-subject-label" placeholder="e.g. Computer Science, MBA, Law…" autocomplete="off">
       </div>
       <div class="search-divider" aria-hidden="true"></div>
       <div class="search-field">
-        <div class="search-label">Study level</div>
-        <select class="search-select" id="search-level">
+        <div class="search-label" id="search-level-label">Study level</div>
+        <select class="search-select" id="search-level" aria-labelledby="search-level-label">
           <option value="">Any level</option>
           <option>Undergraduate</option>
           <option>Postgraduate</option>
@@ -137,8 +141,8 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
       </div>
       <div class="search-divider" aria-hidden="true"></div>
       <div class="search-field">
-        <div class="search-label">Country</div>
-        <select class="search-select" id="search-country">
+        <div class="search-label" id="search-country-label">Country</div>
+        <select class="search-select" id="search-country" aria-labelledby="search-country-label">
           <option value="">Any country</option>
           <option>United Kingdom</option>
           <option>USA</option>
@@ -356,7 +360,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:1.5rem;margin-top:2rem;text-align:center;">
       <div style="font-size:.95rem;font-weight:700;margin-bottom:.5rem;">Can't find your course?</div>
       <div style="font-size:.875rem;color:var(--text-s);margin-bottom:1rem;">Let one of our specialist counsellors help — they know courses that aren't always listed online.</div>
-      <a href="free-consultation.html" style="display:inline-flex;padding:.6em 1.6em;border-radius:100px;background:var(--accent);color:#fff;font-family:var(--sans);font-size:.875rem;font-weight:600;">Get expert help</a>
+      <a href="free-consultation.html" style="display:inline-flex;padding:.6em 1.6em;border-radius:100px;background:#007A5A;color:#fff;font-family:var(--sans);font-size:.875rem;font-weight:600;">Get expert help</a>
     </div>
   </main>
 </div>
@@ -369,6 +373,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
     <div><div class="footer-col-title">Company</div><ul class="footer-links"><li><a href="about.html">About us</a></li><li><a href="blog.html">Blog</a></li><li><a href="tools/roi-calculator.html">Tools</a></li><li><a href="faq.html">FAQ</a></li></ul></div>
   </div>
   <div class="footer-bottom"><span class="footer-legal">© 2026 Gradmire. All rights reserved.</span><div style="display:flex;gap:1.5rem;"><a href="privacy.html" class="footer-legal">Privacy policy</a><a href="terms.html" class="footer-legal">Terms of use</a></div></div>
+    <div class="gm-legal-bar gm-legal-bar--light"><p class="gm-legal-entity">Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · <a href="mailto:privacy@gradmire.in">privacy@gradmire.in</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund-policy.html">Refunds &amp; fees</a><a href="cookie-policy.html">Cookies</a><a href="data-request.html">Your data rights</a><a href="grievance.html">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
 </footer>
 
 <script>
@@ -475,5 +480,4 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 </script>
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../assets/site.js?v=9"></script>
+<script src="../assets/site.js?v=13" defer></script>

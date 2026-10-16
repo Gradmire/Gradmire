@@ -1,7 +1,12 @@
-﻿<meta charset="UTF-8">
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<script>try{var c=JSON.parse(localStorage.getItem("gm-consent")||"null"),t=(c&&c.preferences&&localStorage.getItem("gradmire-theme"))||sessionStorage.getItem("gradmire-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+<link rel="preconnect" href="https://images.unsplash.com">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Gradmire — Create Account</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="preload" href="../assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/fonts/fonts.css">
 <style>
      :root {
         --bg: #F0F2F7;
@@ -432,7 +437,7 @@
         background: rgba(10, 13, 22, .88);
     }
 </style>
-<link rel="stylesheet" href="../assets/site.css?v=9">
+<link rel="stylesheet" href="../assets/site.css?v=13">
 <link rel="stylesheet" href="../assets/auth.css?v=1">
 <style>
 @media(max-width:900px){.auth-wrap{grid-template-columns:1fr!important}}
@@ -552,6 +557,11 @@
                     <div class="pwd-hint" id="pwd-hint">Use 8+ characters with numbers and symbols</div>
                 </div>
                 <div class="form-check">
+                    <input type="checkbox" id="age-confirm" name="age_confirmation" required>
+                    <label class="form-check-label" for="age-confirm">I am 18 or older, or my parent or guardian has agreed to me creating this account. (Required)</label>
+                </div>
+                <p class="field-error" id="age-error" role="alert" hidden style="margin:-.25rem 0 .75rem;color:#C0392B;font-size:.78rem;font-weight:600;">Please confirm your age, or ask a parent or guardian to sign up with you.</p>
+                <div class="form-check">
                     <input type="checkbox" id="marketing" name="marketing_opt_in">
                     <label class="form-check-label" for="marketing">I'd like to receive scholarship tips, event invites and study-abroad news from Gradmire.</label>
                 </div>
@@ -567,7 +577,7 @@
         <svg width="18" height="18" viewBox="0 0 18 18"><path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 01-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/><path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z" fill="#34A853"/><path d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/><path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/></svg>
         Continue with Google
       </button>
-            <div style="font-size:.75rem;color:var(--text-s);text-align:center;margin-top:1rem;">By signing up you agree to our <a href="terms.html" style="color:var(--accent);text-decoration:none;">Terms of Use</a> and <a href="privacy.html" style="color:var(--accent);text-decoration:none;">Privacy Policy</a>.</div>
+            <div style="font-size:.75rem;color:var(--text-s);text-align:center;margin-top:1rem;">By signing up you agree to our <a href="terms.html" style="color:var(--accent);text-decoration:underline;">Terms of Use</a> and <a href="privacy.html" style="color:var(--accent);text-decoration:underline;">Privacy Policy</a>.</div>
         </div>
         <div class="auth-footer-note">© 2026 Gradmire · India's study-abroad counselling platform</div>
         </div><!-- /auth-form-inner -->
@@ -624,6 +634,9 @@
     });
     document.getElementById('signup-form').addEventListener('submit', function(e) {
         e.preventDefault();
+        const age = document.getElementById('age-confirm');
+        document.getElementById('age-error').hidden = age.checked;
+        if (!age.checked) { age.focus(); return; }
         const btn = this.querySelector('.btn-submit');
         btn.textContent = 'Creating account…';
         btn.disabled = true;
@@ -633,5 +646,6 @@
     });
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../assets/site.js?v=9"></script>
+<footer class="gm-legal-bar gm-legal-bar--light"><p class="gm-legal-entity">Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · <a href="mailto:privacy@gradmire.in">privacy@gradmire.in</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund-policy.html">Refunds &amp; fees</a><a href="cookie-policy.html">Cookies</a><a href="data-request.html">Your data rights</a><a href="grievance.html">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></footer>
+
+<script src="../assets/site.js?v=13" defer></script>

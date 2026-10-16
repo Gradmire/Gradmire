@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<script>try{var c=JSON.parse(localStorage.getItem("gm-consent")||"null"),t=(c&&c.preferences&&localStorage.getItem("gradmire-theme"))||sessionStorage.getItem("gradmire-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+<link rel="canonical" href="https://gradmire.in/refund-policy.html">
+<meta name="robots" content="noindex">
+<title>Gradmire — Refund & Fees Policy</title>
+<meta name="description" content="Gradmire's fees, what is always free, and how refunds work for paid services.">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preload" href="../assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/fonts/fonts.css">
+<style>
+     :root {
+        --bg: #F0F2F7;
+        --surface: #FFFFFF;
+        --surface-tint: #E8EBF4;
+        --text-p: #0E1420;
+        --text-s: #556270;
+        --brand: #1A4870;
+        --brand-deep: #0F2D4A;
+        --accent: #007A5A;
+        --accent-hover: #006649;
+        --accent-dim: rgba(0, 122, 90, .12);
+        --border: rgba(14, 20, 32, .1);
+        --sans: 'Bricolage Grotesque', system-ui, sans-serif;
+        --mono: 'JetBrains Mono', 'Menlo', monospace;
+        --r-sm: 8px;
+        --r-md: 16px;
+        --r-lg: 24px;
+        --w: 1280px;
+        --gutter: clamp(1.25rem, 5vw, 3rem);
+        --ease: cubic-bezier(.16, 1, .3, 1);
+    }
+    
+    @media(prefers-color-scheme:dark) {
+        :root:not([data-theme="light"]) {
+            --bg: #0A0D16;
+            --surface: #121825;
+            --surface-tint: #1A2136;
+            --text-p: #EEF1F8;
+            --text-s: #8893B8;
+            --brand: #4D8FBF;
+            --brand-deep: #1A4870;
+            --border: rgba(238, 241, 248, .1);
+            --accent: #2DB88C;
+            --accent-hover: #27A07B;
+            --accent-dim: rgba(45, 184, 140, .18);
+        }
+    }
+    
+    :root[data-theme="dark"] {
+        --bg: #0A0D16;
+        --surface: #121825;
+        --surface-tint: #1A2136;
+        --text-p: #EEF1F8;
+        --text-s: #8893B8;
+        --brand: #4D8FBF;
+        --brand-deep: #1A4870;
+        --border: rgba(238, 241, 248, .1);
+        --accent: #2DB88C;
+        --accent-hover: #27A07B;
+        --accent-dim: rgba(45, 184, 140, .18);
+    }
+    
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+        margin: 0;
+    }
+    
+    body {
+        background: var(--bg);
+        color: var(--text-p);
+        font-family: var(--sans);
+        font-size: 16px;
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
+        font-optical-sizing: auto;
+    }
+    
+    a {
+        color: var(--brand);
+        text-decoration: none;
+    }
+    
+    a:hover {
+        text-decoration: underline;
+    }
+    
+    img {
+        max-width: 100%;
+        display: block;
+    }
+    
+    .nav {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(240, 242, 247, .88);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border-bottom: 1px solid var(--border);
+        height: 68px;
+    }
+    
+    @media(prefers-color-scheme:dark) {
+        :root:not([data-theme="light"]) .nav {
+            background: rgba(10, 13, 22, .9);
+        }
+    }
+    
+    :root[data-theme="dark"] .nav {
+        background: rgba(10, 13, 22, .9);
+    }
+    
+    .nav-inner {
+        max-width: var(--w);
+        margin: 0 auto;
+        padding: 0 var(--gutter);
+        height: 100%;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
+    
+    .nav-links {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        gap: 1.75rem;
+        flex: 1;
+    }
+    
+    .nav-links a {
+        color: var(--text-s);
+        font-size: .86rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: color .2s;
+    }
+    
+    .nav-links a:hover {
+        color: var(--text-p);
+    }
+    
+    .nav-btn {
+        display: inline-flex;
+        align-items: center;
+        padding: .5em 1.2em;
+        border-radius: 100px;
+        font-family: var(--sans);
+        font-size: .84rem;
+        font-weight: 600;
+        background: var(--accent);
+        color: #fff;
+        text-decoration: none;
+        transition: background .2s;
+    }
+    
+    .nav-btn:hover {
+        background: var(--accent-hover);
+    }
+    
+    @media(max-width:860px) {
+        .nav-links {
+            display: none;
+        }
+    }
+    
+    .page-hero {
+        background: var(--brand-deep);
+        padding: 5rem var(--gutter) 4rem;
+        text-align: center;
+    }
+    
+    .page-hero-tag {
+        font-family: var(--mono);
+        font-size: .7rem;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, .78);
+        margin-bottom: 1rem;
+    }
+    
+    .page-hero-title {
+        font-size: clamp(2.2rem, 4vw, 3.5rem);
+        font-weight: 800;
+        letter-spacing: -.04em;
+        color: #fff;
+        line-height: 1.02;
+        margin-bottom: .75rem;
+    }
+    
+    .page-hero-sub {
+        font-size: 1rem;
+        color: rgba(255, 255, 255, .6);
+        max-width: 55ch;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+    
+    .layout {
+        max-width: var(--w);
+        margin: 0 auto;
+        padding: 4rem var(--gutter) 6rem;
+        display: grid;
+        grid-template-columns: 240px 1fr;
+        gap: 3.5rem;
+        align-items: start;
+    }
+    
+    @media(max-width:960px) {
+        .layout {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    .toc {
+        position: sticky;
+        top: 88px;
+    }
+    
+    @media(max-width:960px) {
+        .toc {
+            display: none;
+        }
+    }
+    
+    .toc-title {
+        font-family: var(--mono);
+        font-size: .68rem;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: var(--text-s);
+        margin-bottom: .85rem;
+    }
+    
+    .toc-list {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: .15rem;
+    }
+    
+    .toc-list a {
+        font-size: .84rem;
+        color: var(--text-s);
+        text-decoration: none;
+        padding: .35rem .7rem;
+        border-radius: 6px;
+        display: block;
+        transition: all .2s;
+    }
+    
+    .toc-list a:hover,
+    .toc-list a.active {
+        color: var(--brand);
+        background: var(--accent-dim);
+    }
+    
+    .prose {
+        max-width: 72ch;
+    }
+    
+    .section {
+        scroll-margin-top: 96px;
+        margin-bottom: 3rem;
+    }
+    
+    .section:last-child {
+        margin-bottom: 0;
+    }
+    
+    .section-num {
+        font-family: var(--mono);
+        font-size: .68rem;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: .4rem;
+    }
+    
+    .section h2 {
+        font-size: 1.35rem;
+        font-weight: 800;
+        letter-spacing: -.02em;
+        margin-bottom: .9rem;
+        color: var(--text-p);
+    }
+    
+    .section p {
+        color: var(--text-s);
+        margin-bottom: .9rem;
+        font-size: .95rem;
+        line-height: 1.7;
+    }
+    
+    .section p:last-child {
+        margin-bottom: 0;
+    }
+    
+    .section ul,
+    .section ol {
+        color: var(--text-s);
+        padding-left: 1.4rem;
+        margin-bottom: .9rem;
+        font-size: .95rem;
+    }
+    
+    .section ul li,
+    .section ol li {
+        margin-bottom: .4rem;
+        line-height: 1.6;
+    }
+    
+    .highlight-box {
+        background: var(--accent-dim);
+        border: 1px solid rgba(0, 122, 90, .18);
+        border-radius: var(--r-md);
+        padding: 1.25rem 1.5rem;
+        margin-bottom: 1.25rem;
+    }
+    
+    @media(prefers-color-scheme:dark) {
+        :root:not([data-theme="light"]) .highlight-box {
+            border-color: rgba(45, 184, 140, .2);
+        }
+    }
+    
+    :root[data-theme="dark"] .highlight-box {
+        border-color: rgba(45, 184, 140, .2);
+    }
+    
+    .highlight-box p {
+        color: var(--text-p) !important;
+        margin-bottom: 0 !important;
+        font-size: .9rem !important;
+    }
+    
+    .meta-bar {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+        margin-bottom: 2.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border);
+    }
+    
+    .meta-item {
+        display: flex;
+        flex-direction: column;
+        gap: .15rem;
+    }
+    
+    .meta-label {
+        font-size: .72rem;
+        font-family: var(--mono);
+        letter-spacing: .07em;
+        text-transform: uppercase;
+        color: var(--text-s);
+    }
+    
+    .meta-val {
+        font-size: .9rem;
+        font-weight: 600;
+        color: var(--text-p);
+    }
+    
+    .contact-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--r-md);
+        padding: 1.5rem;
+        margin-top: .75rem;
+    }
+    
+    .contact-card p {
+        color: var(--text-p) !important;
+        font-size: .9rem !important;
+        margin-bottom: .3rem !important;
+    }
+    
+    .contact-card p:last-child {
+        margin-bottom: 0 !important;
+    }
+    
+    hr.divider {
+        border: none;
+        border-top: 1px solid var(--border);
+        margin: 2rem 0;
+    }
+    /* Footer */
+    
+    .footer {
+        background: var(--brand-deep);
+        color: rgba(255, 255, 255, .7);
+        padding: 4rem var(--gutter) 2rem;
+    }
+    
+    .footer-grid {
+        max-width: var(--w);
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 220px 1fr 1fr 1fr;
+        gap: 3rem;
+        padding-bottom: 3rem;
+        border-bottom: 1px solid rgba(255, 255, 255, .08);
+    }
+    
+    @media(max-width:860px) {
+        .footer-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+    
+    @media(max-width:540px) {
+        .footer-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    .footer-brand img {
+        margin-bottom: 1rem;
+    }
+    
+    .footer-tagline {
+        font-size: .85rem;
+        line-height: 1.6;
+        max-width: 26ch;
+    }
+    
+    .footer-col-title {
+        font-size: .72rem;
+        font-family: var(--mono);
+        font-weight: 700;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, .78);
+        margin-bottom: 1rem;
+    }
+    
+    .footer-col ul {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: .6rem;
+    }
+    
+    .footer-col ul li a {
+        color: rgba(255, 255, 255, .78);
+        font-size: .88rem;
+        text-decoration: none;
+        transition: color .2s;
+    }
+    
+    .footer-col ul li a:hover {
+        color: #fff;
+    }
+    
+    .footer-bottom {
+        max-width: var(--w);
+        margin: 2rem auto 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .footer-legal {
+        color: rgba(255, 255, 255, .78);
+        font-size: .78rem;
+    }
+    
+    .footer-legal a {
+        color: rgba(255, 255, 255, .78);
+        text-decoration: none;
+    }
+    
+    .footer-legal a:hover {
+        color: rgba(255, 255, 255, .7);
+    }
+
+    mark.todo { background: #FFF1B8; color: #5A3D00; padding: 0 .25em; border-radius: 4px; }
+    .store-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: .86rem; }
+    .store-table th, .store-table td { padding: .6rem .7rem; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+    .store-table th { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-s); }
+    .store-table code { font-size: .8rem; }
+    .table-scroll { overflow-x: auto; }
+
+    /* Draft: owner and legal review pending (rules.md §3.5). Remove noindex once the placeholders are filled. */
+</style>
+<link rel="stylesheet" href="../assets/site.css?v=13">
+
+<nav class="nav" aria-label="Main navigation">
+    <div class="nav-inner">
+        <a href="index.html" aria-label="Gradmire home">
+            <img src="../assets/gradmire-logo.png" alt="Gradmire" height="34" style="display:block;max-width:155px;">
+        </a>
+        <ul class="nav-links">
+            <li><a href="find-courses.html">Courses</a></li>
+            <li><a href="destinations.html">Destinations</a></li>
+            <li><a href="scholarships.html">Scholarships</a></li>
+            <li><a href="tools/roi-calculator.html">Tools</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+        </ul>
+        <a href="free-consultation.html" class="nav-btn">Free Consultation</a>
+    </div>
+</nav>
+
+<header class="page-hero">
+    <p class="page-hero-tag">Legal</p>
+    <h1 class="page-hero-title">Refund &amp; Fees Policy</h1>
+    <p class="page-hero-sub">What is free, how paid services are quoted, and how to ask for a refund.</p>
+</header>
+
+<main>
+    <div class="layout">
+        <!-- TOC sidebar -->
+        <aside class="toc">
+            <p class="toc-title">On this page</p>
+            <ul class="toc-list" id="toc">
+                <li><a href="#free">What is always free</a></li>
+                <li><a href="#fees">Fees for paid services</a></li>
+                <li><a href="#third-party-fees">Fees paid to others</a></li>
+                <li><a href="#refunds">Refunds</a></li>
+                <li><a href="#how">How to request a refund</a></li>
+                <li><a href="#complaints">Complaints</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main content -->
+        <div class="prose">
+            <div class="meta-bar">
+                <div class="meta-item">
+                    <span class="meta-label">Version</span>
+                    <span class="meta-val">1.0 (draft)</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Effective date</span>
+                    <span class="meta-val"><mark class="todo">[To confirm: date]</mark></span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Applies to</span>
+                    <span class="meta-val">Paid Gradmire services</span>
+                </div>
+            </div>
+
+            <section class="section" id="free">
+                <p class="section-num">01</p>
+                <h2>What is always free</h2>
+                <div class="highlight-box">
+                    <p>The free consultation is free. We never ask for card or bank details to book it, and booking does not commit you to any paid service.</p>
+                </div>
+                <p>Our online tools (Study Cost Calculator, Course Comparator, Deadline Tracker and grade converter) are also free to use.</p>
+            </section>
+
+            <hr class="divider">
+
+            <section class="section" id="fees">
+                <p class="section-num">02</p>
+                <h2>Fees for paid services</h2>
+                <p>Before any paid service starts, we give you a written quote that lists the service, what is included, the total fee including taxes, and when payment is due. We will not charge you without your written agreement to that quote, and there are no extra Gradmire charges beyond it.</p>
+                <p>Our paid services and current fees: <mark class="todo">[To confirm: list each paid service and its fee, or say where the fee schedule is published]</mark>.</p>
+            </section>
+
+            <hr class="divider">
+
+            <section class="section" id="third-party-fees">
+                <p class="section-num">03</p>
+                <h2>Fees paid to others</h2>
+                <p>Some costs are charged by other organisations, not by Gradmire. These include university application fees, tuition deposits, visa and immigration fees, biometric and visa-centre charges, English-test fees, translation, attestation and courier costs. You pay these directly to the organisation concerned, and their refund rules apply. Gradmire cannot refund them.</p>
+            </section>
+
+            <hr class="divider">
+
+            <section class="section" id="refunds">
+                <p class="section-num">04</p>
+                <h2>Refunds</h2>
+                <ul>
+                    <li><strong>Before work starts:</strong> <mark class="todo">[To confirm: e.g. full refund if you cancel within N days of paying and before work begins]</mark></li>
+                    <li><strong>After work starts:</strong> <mark class="todo">[To confirm: e.g. refund of the unused part of the service, calculated as …]</mark></li>
+                    <li><strong>Completed services:</strong> <mark class="todo">[To confirm: e.g. not refundable once delivered]</mark></li>
+                </ul>
+                <p>Because no one can guarantee admission, a visa or a scholarship (see our <a href="terms.html">Terms of Use</a>), an unsuccessful application is not by itself grounds for a refund, unless we failed to deliver the service we quoted.</p>
+            </section>
+
+            <hr class="divider">
+
+            <section class="section" id="how">
+                <p class="section-num">05</p>
+                <h2>How to request a refund</h2>
+                <p>Email <mark class="todo">[To confirm: billing email address]</mark> with your name, the service, the payment date and the reason. We will reply within <mark class="todo">[To confirm: N]</mark> business days. Approved refunds go back to the original payment method within <mark class="todo">[To confirm: N]</mark> business days.</p>
+            </section>
+
+            <hr class="divider">
+
+            <section class="section" id="complaints">
+                <p class="section-num">06</p>
+                <h2>Complaints</h2>
+                <p>If you are unhappy with our decision, contact our <a href="grievance.html">Grievance Officer</a>.</p>
+            </section>
+
+        </div>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <img src="../assets/gradmire-logo-white.png" alt="Gradmire" height="28" style="max-width:140px;">
+            <p class="footer-tagline" style="margin-top:.85rem;">Transparent, trusted study-abroad guidance for Indian students.</p>
+        </div>
+        <div class="footer-col">
+            <p class="footer-col-title">Explore</p>
+            <ul>
+                <li><a href="find-courses.html">Courses</a></li>
+                <li><a href="destinations.html">Destinations</a></li>
+                <li><a href="scholarships.html">Scholarships</a></li>
+                <li><a href="tools/roi-calculator.html">Tools</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <p class="footer-col-title">Company</p>
+            <ul>
+                <li><a href="about.html">About us</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="free-consultation.html">Free consultation</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <p class="footer-col-title">Legal</p>
+            <ul>
+                <li><a href="privacy.html">Privacy policy</a></li>
+                <li><a href="terms.html">Terms of use</a></li>
+                <li><a href="grievance.html">Grievance</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span class="footer-legal">© 2026 Gradmire Education Pvt. Ltd. All rights reserved.</span>
+        <div style="display:flex;gap:1.5rem;flex-wrap:wrap;">
+            <a href="privacy.html" class="footer-legal">Privacy policy</a>
+            <a href="terms.html" class="footer-legal">Terms of use</a>
+            <a href="grievance.html" class="footer-legal">Grievance</a>
+        </div>
+    </div>
+    <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · <a href="mailto:privacy@gradmire.in">privacy@gradmire.in</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund-policy.html">Refunds &amp; fees</a><a href="cookie-policy.html">Cookies</a><a href="data-request.html">Your data rights</a><a href="grievance.html">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
+</footer>
+
+<script>
+    const sections = document.querySelectorAll('.section[id]');
+    const tocLinks = document.querySelectorAll('.toc-list a');
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                tocLinks.forEach(l => l.classList.remove('active'));
+                const active = document.querySelector('.toc-list a[href="#' + e.target.id + '"]');
+                if (active) active.classList.add('active');
+            }
+        });
+    }, {
+        rootMargin: '-80px 0px -60% 0px'
+    });
+    sections.forEach(s => observer.observe(s));
+</script>
+<script src="../assets/site.js?v=13" defer></script>

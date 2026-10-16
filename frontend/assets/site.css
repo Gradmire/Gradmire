@@ -918,3 +918,63 @@ html.gm-popup-open .gm-consult-fab { visibility: hidden; }
 @media (prefers-reduced-motion: reduce) {
     .gm-popup-backdrop, .gm-popup-card, .gm-consult-fab, .gm-popup-close { transition: none; animation: none; }
 }
+
+/* ─── Accessibility: green text on green-tinted chips/rows needs a darker green to reach 4.5:1 ─── */
+:root { --accent-text: #005C44; }
+:root[data-theme="dark"] { --accent-text: #2DB88C; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --accent-text: #2DB88C; } }
+.journey-stage, .page-tag, .cost-total td, .timeline-step .step-dot { color: var(--accent-text); }
+.journey-card:nth-child(4) .journey-stage { color: rgba(255, 255, 255, .85); }
+/* Links inside running text must not rely on colour alone. */
+main p a, main li a, .form-terms a, .auth-form-sub a, p a[href^="mailto:"] { text-decoration: underline; text-underline-offset: 2px; }
+.sr-only { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* Skip link (inserted by site.js) */
+.skip-link { position: fixed; top: .5rem; left: .5rem; z-index: 3000; padding: .7rem 1rem; border-radius: 10px; background: #0F2D4A; color: #fff; font-weight: 700; text-decoration: none; transform: translateY(-160%); transition: transform .2s; }
+.skip-link:focus { transform: none; outline: 3px solid #5EE0B0; outline-offset: 2px; }
+
+/* ─── Cookie consent banner (site.js: setupConsentBanner) ─── */
+.gm-consent { position: fixed; left: max(1rem, env(safe-area-inset-left)); bottom: max(1rem, env(safe-area-inset-bottom)); z-index: 2500; display: grid; gap: 1rem; width: min(560px, calc(100vw - 2rem)); padding: 1.15rem 1.2rem; border: 1px solid var(--border, rgba(14,20,32,.1)); border-radius: 18px; background: var(--surface, #fff); color: var(--text-p, #0E1420); box-shadow: 0 24px 60px rgba(8, 18, 32, .22); font-family: var(--sans, system-ui, sans-serif); }
+.gm-consent[hidden] { display: none; }
+.gm-consent-title { margin: 0 0 .3rem; font-size: 1rem; font-weight: 800; }
+.gm-consent-text { margin: 0; color: var(--text-s, #556270); font-size: .85rem; line-height: 1.55; }
+.gm-consent-text a { color: var(--accent-text, #005C44); font-weight: 700; text-decoration: underline; }
+.gm-consent-options { display: grid; gap: .55rem; margin-top: .85rem; }
+.gm-consent-options[hidden] { display: none; }
+.gm-consent-option { display: flex; align-items: flex-start; gap: .6rem; padding: .6rem .7rem; border: 1px solid var(--border, rgba(14,20,32,.1)); border-radius: 12px; font-size: .8rem; color: var(--text-s, #556270); line-height: 1.4; cursor: pointer; }
+.gm-consent-option input { margin-top: .15rem; width: 1.05rem; height: 1.05rem; accent-color: var(--accent, #007A5A); flex: 0 0 auto; }
+.gm-consent-option strong { display: block; color: var(--text-p, #0E1420); font-size: .86rem; }
+.gm-consent-actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+.gm-consent-btn { flex: 1 1 auto; min-height: 44px; padding: .6rem 1rem; border: 1.5px solid var(--text-p, #0E1420); border-radius: 999px; background: var(--text-p, #0E1420); color: var(--bg, #fff); font: 700 .86rem var(--sans, system-ui, sans-serif); cursor: pointer; }
+.gm-consent-btn--ghost { background: transparent; color: var(--text-p, #0E1420); }
+.gm-consent-btn:focus-visible { outline: 3px solid var(--accent, #007A5A); outline-offset: 2px; }
+html.gm-consent-open .gm-consult-fab { visibility: hidden; }
+@media (max-width: 560px) {
+    .gm-consent { left: 0; right: 0; bottom: 0; width: 100%; border-radius: 18px 18px 0 0; padding-bottom: calc(1.15rem + env(safe-area-inset-bottom)); }
+    .gm-consent-btn { flex-basis: 100%; }
+}
+.gm-popup-fine a { color: inherit; text-decoration: underline; }
+
+/* ─── Legal bar: business details + policy links, injected into every footer ─── */
+.gm-legal-bar { max-width: var(--w, 1280px); margin: 1.5rem auto 0; padding: 1.1rem 0 0; border-top: 1px solid var(--legal-line); color: var(--legal-fg); font-size: .78rem; line-height: 1.6; }
+.gm-legal-bar--dark { --legal-fg: rgba(255, 255, 255, .8); --legal-link: #fff; --legal-line: rgba(255, 255, 255, .14); }
+.gm-legal-bar--light { --legal-fg: var(--text-s, #556270); --legal-link: var(--text-p, #0E1420); --legal-line: var(--border, rgba(14,20,32,.1)); }
+footer.gm-legal-bar { margin: 0; padding: 1.25rem var(--gutter, 1.25rem) calc(1.25rem + env(safe-area-inset-bottom)); max-width: none; background: var(--surface, #fff); }
+.gm-legal-entity { margin: 0 0 .5rem; }
+.gm-legal-bar a, .gm-legal-bar button { color: var(--legal-link); text-decoration: underline; text-underline-offset: 2px; }
+.gm-legal-links { display: flex; flex-wrap: wrap; gap: .35rem 1.1rem; }
+.gm-legal-links a, .gm-legal-links button { font-size: .78rem; font-weight: 600; }
+.gm-legal-links button { padding: 0; border: 0; background: none; font-family: inherit; cursor: pointer; }
+.gm-legal-bar a:focus-visible, .gm-legal-bar button:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; border-radius: 3px; }
+
+/* ─── Dark mode: the bright dark-theme green (#2DB88C) carries dark text, not white ─── */
+.gm-consult-fab strong, .gm-consult-fab > span > span { color: inherit; opacity: 1; }
+.counsel-spec { color: var(--accent-text, #005C44); }
+
+/* ─── Dark mode: green-filled controls keep the deep green so white text stays at 5.3:1 ─── */
+:root[data-theme="dark"] :is(.btn-cta, .btn-details, .btn-explore, .btn-next, .btn-primary, .btn-reg, .btn-sm-primary, .btn-submit, .btn-submit-full, .consult-hero-badge span, .counsellor-btn-primary, .cta-strip .btn, .destination-page .nav-btn, .dr-submit, .nav-btn, .nav-cta, .newsletter-btn, .p-step.done, .search-btn, .sidebar-badge, .submit-btn, .ty-next-step-num, .gm-consult-fab, .gm-popup-submit, .error-actions .btn:not(.btn-ghost):not(.btn-outline)) { background-color: #007A5A !important; color: #fff !important; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) :is(.btn-cta, .btn-details, .btn-explore, .btn-next, .btn-primary, .btn-reg, .btn-sm-primary, .btn-submit, .btn-submit-full, .consult-hero-badge span, .counsellor-btn-primary, .cta-strip .btn, .destination-page .nav-btn, .dr-submit, .nav-btn, .nav-cta, .newsletter-btn, .p-step.done, .search-btn, .sidebar-badge, .submit-btn, .ty-next-step-num, .gm-consult-fab, .gm-popup-submit, .error-actions .btn:not(.btn-ghost):not(.btn-outline)) { background-color: #007A5A !important; color: #fff !important; } }
+:root[data-theme="dark"] .highlight-box a { color: var(--text-p); }
+:root[data-theme="dark"] a.btn[href$="free-consultation.html"]:not(.btn-outline):not(.btn-ghost) { background-color: #007A5A !important; color: #fff !important; }
+:root[data-theme="dark"] .status-applying { color: #8FB4FF; }
+:root[data-theme="dark"] .accent-card :is(.metric-lbl, .metric-sub) { color: rgba(255, 255, 255, .82); }

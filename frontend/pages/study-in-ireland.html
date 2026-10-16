@@ -2,14 +2,17 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script>try{var c=JSON.parse(localStorage.getItem("gm-consent")||"null"),t=(c&&c.preferences&&localStorage.getItem("gradmire-theme"))||sessionStorage.getItem("gradmire-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+<link rel="preconnect" href="https://images.unsplash.com">
 <link rel="canonical" href="https://gradmire.in/study-in-ireland.html">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Study in Ireland | Gradmire</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="preload" href="../assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/fonts/fonts.css">
 <style>
 :root{--bg:#F0F2F7;--surface:#FFFFFF;--surface-tint:#E8EBF4;--text-p:#0E1420;--text-s:#556270;--brand:#1A4870;--accent:#007A5A;--accent-dim:rgba(0,122,90,.12);--border:rgba(14,20,32,.1);--sans:'Bricolage Grotesque',system-ui,sans-serif;--mono:'JetBrains Mono','Menlo',monospace;--r-md:16px;--r-lg:24px;--gutter:clamp(1.25rem,5vw,3rem);--ease:cubic-bezier(.16,1,.3,1);}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);}}
-:root[data-theme="dark"]{--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--accent:#2DB88C;--accent-hover:#27A07B;--accent-dim:rgba(45,184,140,.18);--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);}}
+:root[data-theme="dark"]{--accent:#2DB88C;--accent-hover:#27A07B;--accent-dim:rgba(45,184,140,.18);--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);}
 *,*::before,*::after{box-sizing:border-box;margin:0;}
 body{background:var(--bg);color:var(--text-p);font-family:var(--sans);-webkit-font-smoothing:antialiased;}
 .nav{position:fixed;top:0;left:0;right:0;z-index:100;height:68px;background:rgba(240,242,247,.82);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 var(--gutter);}
@@ -81,7 +84,7 @@ body{background:var(--bg);color:var(--text-p);font-family:var(--sans);-webkit-fo
 .elig-req{font-size:.85rem;color:var(--text-s);line-height:1.6;}
 .visa-steps{display:flex;flex-direction:column;gap:1px;background:var(--border);}
 .visa-step{display:flex;align-items:flex-start;gap:1.25rem;background:var(--surface);padding:1.25rem 1.5rem;}
-.visa-step-num{width:32px;height:32px;border-radius:50%;background:var(--brand);color:#fff;font-family:var(--mono);font-size:.8rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.visa-step-num{width:32px;height:32px;border-radius:50%;background:#1A4870;color:#fff;font-family:var(--mono);font-size:.8rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .visa-step-title{font-weight:700;margin-bottom:.3rem;}
 .visa-step-desc{font-size:.85rem;color:var(--text-s);line-height:1.6;}
 .career-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.75rem;}
@@ -99,7 +102,7 @@ body{background:var(--bg);color:var(--text-p);font-family:var(--sans);-webkit-fo
 .faq-item.open .faq-q-icon{transform:rotate(45deg);}
 .faq-a{max-height:0;overflow:hidden;transition:max-height .4s var(--ease);}
 .faq-a-inner{padding:0 1.25rem 1.1rem;font-size:.88rem;color:var(--text-s);line-height:1.7;}
-.cta-strip{background:var(--brand);padding:clamp(2.5rem,5vw,4rem) var(--gutter);text-align:center;}
+.cta-strip{background:#1A4870;padding:clamp(2.5rem,5vw,4rem) var(--gutter);text-align:center;}
 .cta-strip h2{font-size:clamp(1.5rem,3vw,2rem);font-weight:800;letter-spacing:-.03em;color:#fff;margin-bottom:.75rem;}
 .cta-strip p{color:rgba(255,255,255,.7);font-size:.95rem;margin-bottom:2rem;max-width:48ch;margin-left:auto;margin-right:auto;}
 .cta-strip .btn{display:inline-flex;align-items:center;gap:.4em;padding:.75em 2em;border-radius:100px;background:var(--accent);color:#fff;font-size:.95rem;font-weight:700;text-decoration:none;transition:background .2s;}
@@ -109,12 +112,12 @@ footer{background:#0E1420;color:rgba(255,255,255,.7);padding:clamp(2rem,4vw,3.5r
 @media(max-width:768px){.footer-grid{grid-template-columns:1fr 1fr;}}
 .footer-brand{font-size:1.2rem;font-weight:800;letter-spacing:-.03em;color:#fff;margin-bottom:.75rem;}
 .footer-tagline{font-size:.82rem;line-height:1.6;}
-.footer-heading{font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:.85rem;}
+.footer-heading{font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.78);margin-bottom:.85rem;}
 .footer-links{list-style:none;display:flex;flex-direction:column;gap:.5rem;}
-.footer-links a{font-size:.85rem;color:rgba(255,255,255,.65);text-decoration:none;transition:color .2s;}
+.footer-links a{font-size:.85rem;color:rgba(255,255,255,.78);text-decoration:none;transition:color .2s;}
 .footer-links a:hover{color:#fff;}
 .footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.75rem;}
-.footer-legal{font-size:.78rem;}
+.footer-legal{font-size:.78rem;color:rgba(255,255,255,.78);}
 .reveal{opacity:0;transform:translateY(22px);transition:opacity .55s var(--ease),transform .55s var(--ease);}
 .reveal.on{opacity:1;transform:translateY(0);}
 /* COURSES GRID */
@@ -125,7 +128,7 @@ footer{background:#0E1420;color:rgba(255,255,255,.7);padding:clamp(2rem,4vw,3.5r
 .course-card-note{font-family:var(--mono);font-size:.71rem;color:var(--accent);}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px;}
 </style>
-<link rel="stylesheet" href="../assets/site.css?v=9">
+<link rel="stylesheet" href="../assets/site.css?v=13">
 </head>
 <body class="destination-page">
 
@@ -474,7 +477,7 @@ footer{background:#0E1420;color:rgba(255,255,255,.7);padding:clamp(2rem,4vw,3.5r
 <footer>
   <div class="footer-grid">
     <div>
-      <div class="footer-brand"><img src="../assets/gradmire-logo-white.png" alt="Gradmire" height="28" style="display:block;max-width:140px;"></div>
+      <div class="footer-brand"><img src="../assets/gradmire-logo-white.png" alt="Gradmire" height="28" style="display:block;max-width:140px;" loading="lazy" decoding="async"></div>
       <div class="footer-tagline">India's most trusted study-abroad platform. Expert counselling for 50+ countries, zero bias.</div>
     </div>
     <div>
@@ -517,6 +520,7 @@ footer{background:#0E1420;color:rgba(255,255,255,.7);padding:clamp(2rem,4vw,3.5r
       <a href="terms.html" class="footer-legal">Terms of use</a>
     </div>
   </div>
+    <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · <a href="mailto:privacy@gradmire.in">privacy@gradmire.in</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund-policy.html">Refunds &amp; fees</a><a href="cookie-policy.html">Cookies</a><a href="data-request.html">Your data rights</a><a href="grievance.html">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
 </footer>
 
 <script>
@@ -544,7 +548,6 @@ const so = new IntersectionObserver(entries => {
 }, { rootMargin: '-20% 0px -70% 0px' });
 sections.forEach(s => so.observe(s));
 </script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../assets/site.js?v=9"></script>
+<script src="../assets/site.js?v=13" defer></script>
 </body>
 </html>

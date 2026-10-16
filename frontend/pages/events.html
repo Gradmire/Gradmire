@@ -1,11 +1,16 @@
-﻿<meta charset="UTF-8">
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<script>try{var c=JSON.parse(localStorage.getItem("gm-consent")||"null"),t=(c&&c.preferences&&localStorage.getItem("gradmire-theme"))||sessionStorage.getItem("gradmire-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+<link rel="preconnect" href="https://images.unsplash.com">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Gradmire — Events</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="preload" href="../assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/fonts/fonts.css">
 <style>
-:root{--bg:#F0F2F7;--surface:#FFFFFF;--surface-tint:#E8EBF4;--text-p:#0E1420;--text-s:#556270;--brand:#1A4870;--accent:#00A878;--accent-dim:rgba(0,168,120,.12);--border:rgba(14,20,32,.1);--sans:'Bricolage Grotesque',system-ui,sans-serif;--mono:'JetBrains Mono','Menlo',monospace;--r-sm:8px;--r-md:16px;--r-lg:24px;--w:1280px;--gutter:clamp(1.25rem,5vw,3rem);--sec:clamp(4rem,8vw,6rem);--ease:cubic-bezier(.16,1,.3,1);}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(0,168,120,.18);}}
-:root[data-theme="dark"]{--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(0,168,120,.18);}
+:root{--bg:#F0F2F7;--surface:#FFFFFF;--surface-tint:#E8EBF4;--text-p:#0E1420;--text-s:#556270;--brand:#1A4870;--accent:#007A5A;--accent-dim:rgba(0,122,90,.12);--border:rgba(14,20,32,.1);--sans:'Bricolage Grotesque',system-ui,sans-serif;--mono:'JetBrains Mono','Menlo',monospace;--r-sm:8px;--r-md:16px;--r-lg:24px;--w:1280px;--gutter:clamp(1.25rem,5vw,3rem);--sec:clamp(4rem,8vw,6rem);--ease:cubic-bezier(.16,1,.3,1);}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--accent:#2DB88C;--accent-hover:#27A07B;--accent-dim:rgba(45,184,140,.18);--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(0,168,120,.18);}}
+:root[data-theme="dark"]{--accent:#2DB88C;--accent-hover:#27A07B;--accent-dim:rgba(45,184,140,.18);--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(0,168,120,.18);}
 *,*::before,*::after{box-sizing:border-box;margin:0;}
 body{background:var(--bg);color:var(--text-p);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;}
 img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
@@ -31,14 +36,14 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 .filter-select{padding:.5em 1.1em;border-radius:100px;border:1.5px solid var(--border);font-family:var(--sans);font-size:.85rem;font-weight:500;background:var(--surface);color:var(--text-s);cursor:pointer;outline:none;transition:border-color .2s;}
 .filter-select:focus{border-color:var(--accent);}
 .filter-chip{padding:.45em 1.1em;border-radius:100px;border:1.5px solid var(--border);font-family:var(--sans);font-size:.85rem;font-weight:500;background:var(--surface);color:var(--text-s);cursor:pointer;transition:border-color .2s,background .2s,color .2s;}
-.filter-chip.active{background:var(--brand);border-color:var(--brand);color:#fff;}
+.filter-chip.active{background:#1A4870;border-color:var(--brand);color:#fff;}
 /* Featured event */
 .feat-event{max-width:var(--w);margin:3rem auto 0;padding:0 var(--gutter);}
-.feat-card{border-radius:var(--r-lg);overflow:hidden;position:relative;background:var(--brand);min-height:320px;display:grid;grid-template-columns:1fr 1fr;}
+.feat-card{border-radius:var(--r-lg);overflow:hidden;position:relative;background:#1A4870;min-height:320px;display:grid;grid-template-columns:1fr 1fr;}
 .feat-img{width:100%;height:100%;object-fit:cover;object-position:center;}
 .feat-body{padding:2.5rem;display:flex;flex-direction:column;justify-content:center;}
 .event-badge{display:inline-flex;align-items:center;gap:.4rem;padding:.3em .8em;border-radius:100px;font-family:var(--mono);font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;}
-.badge-live{background:rgba(239,68,68,.15);color:#EF4444;border:1px solid rgba(239,68,68,.3);}
+.badge-live{background:#B91C1C;color:#fff;border:1px solid #B91C1C;}
 .badge-online{background:var(--accent-dim);color:var(--accent);border:1px solid rgba(0,168,120,.25);}
 .badge-inperson{background:rgba(77,143,191,.15);color:var(--brand);border:1px solid rgba(77,143,191,.25);}
 .feat-title{font-size:clamp(1.3rem,2.5vw,2rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:.75rem;}
@@ -95,7 +100,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .nav{background:rgba(10,13,22,.88);}}
 :root[data-theme="dark"] .nav{background:rgba(10,13,22,.88);}
 </style>
-<link rel="stylesheet" href="../assets/site.css?v=9">
+<link rel="stylesheet" href="../assets/site.css?v=13">
 
 <nav class="nav" aria-label="Main navigation">
   <div class="nav-inner">
@@ -173,7 +178,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 
     <div class="event-card reveal">
       <div class="event-card-img-wrap">
-        <img class="event-card-img" src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" alt="Webinar">
+        <img class="event-card-img" src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" alt="Webinar" loading="lazy" decoding="async">
         <div class="event-card-date"><div class="event-date-day">24</div><div class="event-date-mon">Jan</div></div>
       </div>
       <div class="event-card-body">
@@ -189,7 +194,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 
     <div class="event-card reveal" style="transition-delay:.05s">
       <div class="event-card-img-wrap">
-        <img class="event-card-img" src="https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=800&q=80" alt="Students">
+        <img class="event-card-img" src="https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=800&q=80" alt="Students" loading="lazy" decoding="async">
         <div class="event-card-date"><div class="event-date-day">1</div><div class="event-date-mon">Feb</div></div>
       </div>
       <div class="event-card-body">
@@ -205,7 +210,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 
     <div class="event-card reveal" style="transition-delay:.1s">
       <div class="event-card-img-wrap">
-        <img class="event-card-img" src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=800&q=80" alt="University campus">
+        <img class="event-card-img" src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=800&q=80" alt="University campus" loading="lazy" decoding="async">
         <div class="event-card-date"><div class="event-date-day">8</div><div class="event-date-mon">Feb</div></div>
       </div>
       <div class="event-card-body">
@@ -221,7 +226,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 
     <div class="event-card reveal">
       <div class="event-card-img-wrap">
-        <img class="event-card-img" src="https://images.unsplash.com/photo-1486299267070-83823f5448dd?auto=format&fit=crop&w=800&q=80" alt="London">
+        <img class="event-card-img" src="https://images.unsplash.com/photo-1486299267070-83823f5448dd?auto=format&fit=crop&w=800&q=80" alt="London" loading="lazy" decoding="async">
         <div class="event-card-date"><div class="event-date-day">15</div><div class="event-date-mon">Feb</div></div>
       </div>
       <div class="event-card-body">
@@ -237,7 +242,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 
     <div class="event-card reveal" style="transition-delay:.05s">
       <div class="event-card-img-wrap">
-        <img class="event-card-img" src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=800&q=80" alt="Australia">
+        <img class="event-card-img" src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=800&q=80" alt="Australia" loading="lazy" decoding="async">
         <div class="event-card-date"><div class="event-date-day">22</div><div class="event-date-mon">Feb</div></div>
       </div>
       <div class="event-card-body">
@@ -253,7 +258,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 
     <div class="event-card reveal" style="transition-delay:.1s">
       <div class="event-card-img-wrap">
-        <img class="event-card-img" src="https://images.unsplash.com/photo-1560969184-10fe8719e047?auto=format&fit=crop&w=800&q=80" alt="Germany Berlin">
+        <img class="event-card-img" src="https://images.unsplash.com/photo-1560969184-10fe8719e047?auto=format&fit=crop&w=800&q=80" alt="Germany Berlin" loading="lazy" decoding="async">
         <div class="event-card-date"><div class="event-date-day">1</div><div class="event-date-mon">Mar</div></div>
       </div>
       <div class="event-card-body">
@@ -269,7 +274,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 
     <div class="event-card reveal">
       <div class="event-card-img-wrap">
-        <img class="event-card-img" src="https://images.unsplash.com/photo-1485871981521-5b1fd3805eee?auto=format&fit=crop&w=800&q=80" alt="New York">
+        <img class="event-card-img" src="https://images.unsplash.com/photo-1485871981521-5b1fd3805eee?auto=format&fit=crop&w=800&q=80" alt="New York" loading="lazy" decoding="async">
         <div class="event-card-date"><div class="event-date-day">8</div><div class="event-date-mon">Mar</div></div>
       </div>
       <div class="event-card-body">
@@ -285,7 +290,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 
     <div class="event-card reveal" style="transition-delay:.05s">
       <div class="event-card-img-wrap">
-        <img class="event-card-img" src="https://images.unsplash.com/photo-1590089415462-6f0f8f99db5e?auto=format&fit=crop&w=800&q=80" alt="Ireland">
+        <img class="event-card-img" src="https://images.unsplash.com/photo-1590089415462-6f0f8f99db5e?auto=format&fit=crop&w=800&q=80" alt="Ireland" loading="lazy" decoding="async">
         <div class="event-card-date"><div class="event-date-day">15</div><div class="event-date-mon">Mar</div></div>
       </div>
       <div class="event-card-body">
@@ -301,7 +306,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 
     <div class="event-card reveal" style="transition-delay:.1s">
       <div class="event-card-img-wrap">
-        <img class="event-card-img" src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=800&q=80" alt="Scholarship">
+        <img class="event-card-img" src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=800&q=80" alt="Scholarship" loading="lazy" decoding="async">
         <div class="event-card-date"><div class="event-date-day">22</div><div class="event-date-mon">Mar</div></div>
       </div>
       <div class="event-card-body">
@@ -353,12 +358,13 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 
 <footer class="footer" aria-label="Site footer">
   <div class="footer-inner">
-    <div><span class="footer-brand"><img src="../assets/gradmire-logo.png" alt="Gradmire" height="28" style="display:block;max-width:140px;"></span><p class="footer-tagline">India's study-abroad counselling platform. Trusted since 2006.</p></div>
+    <div><span class="footer-brand"><img src="../assets/gradmire-logo.png" alt="Gradmire" height="28" style="display:block;max-width:140px;" loading="lazy" decoding="async"></span><p class="footer-tagline">India's study-abroad counselling platform. Trusted since 2006.</p></div>
     <div><div class="footer-col-title">Destinations</div><ul class="footer-links"><li><a href="study-in-uk.html">United Kingdom</a></li><li><a href="study-in-usa.html">USA</a></li><li><a href="study-in-canada.html">Canada</a></li><li><a href="study-in-australia.html">Australia</a></li><li><a href="study-in-germany.html">Germany</a></li><li><a href="study-in-ireland.html">Ireland</a></li><li><a href="study-in-newzealand.html">New Zealand</a></li><li><a href="study-in-italy.html">Italy</a></li></ul></div>
     <div><div class="footer-col-title">Services</div><ul class="footer-links"><li><a href="find-courses.html">Course finder</a></li><li><a href="find-universities.html">Universities</a></li><li><a href="scholarships.html">Scholarships</a></li></ul></div>
     <div><div class="footer-col-title">Company</div><ul class="footer-links"><li><a href="about.html">About us</a></li><li><a href="blog.html">Blog</a></li><li><a href="events.html">Events</a></li></ul></div>
   </div>
   <div class="footer-bottom"><span class="footer-legal">© 2026 Gradmire. All rights reserved.</span><div style="display:flex;gap:1.5rem;"><a href="privacy.html" class="footer-legal">Privacy policy</a><a href="terms.html" class="footer-legal">Terms of use</a></div></div>
+    <div class="gm-legal-bar gm-legal-bar--light"><p class="gm-legal-entity">Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · <a href="mailto:privacy@gradmire.in">privacy@gradmire.in</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund-policy.html">Refunds &amp; fees</a><a href="cookie-policy.html">Cookies</a><a href="data-request.html">Your data rights</a><a href="grievance.html">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
 </footer>
 
 <script>
@@ -385,5 +391,4 @@ document.getElementById('modal').addEventListener('click',e=>{if(e.target===docu
 </script>
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../assets/site.js?v=9"></script>
+<script src="../assets/site.js?v=13" defer></script>

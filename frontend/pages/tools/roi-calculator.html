@@ -1,9 +1,13 @@
-﻿<meta charset="UTF-8">
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<script>try{var c=JSON.parse(localStorage.getItem("gm-consent")||"null"),t=(c&&c.preferences&&localStorage.getItem("gradmire-theme"))||sessionStorage.getItem("gradmire-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 <link rel="canonical" href="https://gradmire.in/tools/roi-calculator.html">
 <title>ROI Calculator — Gradmire</title>
 <meta name="description" content="Calculate the real cost of studying abroad — tuition, living, IELTS, loan EMI — vs expected salary and break-even timeline.">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="preload" href="../../assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/fonts/fonts.css">
 <style>
      :root {
         --bg: #F0F2F7;
@@ -379,7 +383,7 @@
     }
     
     .country-pill.sel {
-        background: var(--brand);
+        background: #1A4870;
         color: #fff;
         border-color: var(--brand);
     }
@@ -517,7 +521,7 @@
     }
     
     .bf-tuition {
-        background: var(--brand);
+        background: #1A4870;
     }
     
     .bf-living {
@@ -630,7 +634,7 @@
     
     .footer-tagline {
         font-size: .85rem;
-        color: rgba(255, 255, 255, .5);
+        color: rgba(255, 255, 255, .78);
         max-width: 28ch;
         line-height: 1.55;
     }
@@ -641,7 +645,7 @@
         font-weight: 700;
         letter-spacing: .06em;
         text-transform: uppercase;
-        color: rgba(255, 255, 255, .4);
+        color: rgba(255, 255, 255, .78);
         margin-bottom: .9rem;
     }
     
@@ -655,7 +659,7 @@
     
     .footer-links a {
         font-size: .85rem;
-        color: rgba(255, 255, 255, .6);
+        color: rgba(255, 255, 255, .78);
         transition: color .2s;
     }
     
@@ -677,7 +681,7 @@
     
     .footer-legal {
         font-size: .78rem;
-        color: rgba(255, 255, 255, .35);
+        color: rgba(255, 255, 255, .78);
     }
     
     @media(max-width:800px) {
@@ -700,7 +704,7 @@
         }
     }
 </style>
-<link rel="stylesheet" href="../../assets/site.css?v=9">
+<link rel="stylesheet" href="../../assets/site.css?v=13">
 
 <nav class="nav" aria-label="Main navigation">
     <div class="nav-inner">
@@ -736,7 +740,7 @@
         <div class="panel-title">Your numbers</div>
 
         <div class="form-group">
-            <div class="form-label">Destination country</div>
+            <div class="form-label" id="duration-label">Destination country</div>
             <div class="country-pills">
                 <button class="country-pill sel" data-country="uk">🇬🇧 UK</button>
                 <button class="country-pill" data-country="usa">🇺🇸 USA</button>
@@ -747,25 +751,25 @@
 
         <div class="form-group">
             <div class="form-label">Program duration <span class="form-label-val" id="dur-val">1 year</span></div>
-            <input type="range" id="duration" min="1" max="4" step="1" value="1">
+            <input type="range" id="duration" aria-labelledby="duration-label" min="1" max="4" step="1" value="1">
             <div class="field-hint">MSc = 1yr in UK · MBA/MEng may be 1–2 yrs</div>
         </div>
 
         <div class="form-group">
-            <div class="form-label">Annual tuition <span class="form-label-val" id="tuition-val">₹30 L/yr</span></div>
-            <input type="range" id="tuition" min="5" max="120" step="1" value="30">
+            <div class="form-label" id="tuition-label">Annual tuition <span class="form-label-val" id="tuition-val">₹30 L/yr</span></div>
+            <input type="range" id="tuition" aria-labelledby="tuition-label" min="5" max="120" step="1" value="30">
             <div class="field-hint">In INR equivalent. UK MSc avg ₹28–45 L/yr</div>
         </div>
 
         <div class="form-group">
-            <div class="form-label">Annual living costs <span class="form-label-val" id="living-val">₹14 L/yr</span></div>
-            <input type="range" id="living" min="6" max="60" step="1" value="14">
+            <div class="form-label" id="living-label">Annual living costs <span class="form-label-val" id="living-val">₹14 L/yr</span></div>
+            <input type="range" id="living" aria-labelledby="living-label" min="6" max="60" step="1" value="14">
             <div class="field-hint">Rent, food, transport, utilities</div>
         </div>
 
         <div class="form-group">
-            <div class="form-label">IELTS + coaching (one-time) <span class="form-label-val" id="ielts-val">₹45,000</span></div>
-            <input type="range" id="ielts" min="15000" max="150000" step="5000" value="45000">
+            <div class="form-label" id="ielts-label">IELTS + coaching (one-time) <span class="form-label-val" id="ielts-val">₹45,000</span></div>
+            <input type="range" id="ielts" aria-labelledby="ielts-label" min="15000" max="150000" step="5000" value="45000">
         </div>
 
         <hr class="divider">
@@ -773,32 +777,32 @@
 
         <div class="form-row">
             <div class="form-group" style="margin-bottom:0">
-                <div class="form-label">Financed by loan <span class="form-label-val" id="loanpct-val">70%</span></div>
-                <input type="range" id="loanpct" min="0" max="100" step="5" value="70">
+                <div class="form-label" id="loanpct-label">Financed by loan <span class="form-label-val" id="loanpct-val">70%</span></div>
+                <input type="range" id="loanpct" aria-labelledby="loanpct-label" min="0" max="100" step="5" value="70">
             </div>
             <div class="form-group" style="margin-bottom:0">
-                <div class="form-label">Interest rate <span class="form-label-val" id="rate-val">10%</span></div>
-                <input type="range" id="rate" min="6" max="16" step="0.5" value="10">
+                <div class="form-label" id="rate-label">Interest rate <span class="form-label-val" id="rate-val">10%</span></div>
+                <input type="range" id="rate" aria-labelledby="rate-label" min="6" max="16" step="0.5" value="10">
             </div>
         </div>
 
         <div class="form-group" style="margin-top:1.25rem">
-            <div class="form-label">Repayment period <span class="form-label-val" id="repay-val">10 years</span></div>
-            <input type="range" id="repay" min="3" max="20" step="1" value="10">
+            <div class="form-label" id="repay-label">Repayment period <span class="form-label-val" id="repay-val">10 years</span></div>
+            <input type="range" id="repay" aria-labelledby="repay-label" min="3" max="20" step="1" value="10">
         </div>
 
         <hr class="divider">
         <div class="panel-title">Salary comparison</div>
 
         <div class="form-group">
-            <div class="form-label">Expected monthly salary abroad <span class="form-label-val" id="salary-val">₹3.2 L/mo</span></div>
-            <input type="range" id="salary" min="50000" max="600000" step="10000" value="320000">
+            <div class="form-label" id="salary-label">Expected monthly salary abroad <span class="form-label-val" id="salary-val">₹3.2 L/mo</span></div>
+            <input type="range" id="salary" aria-labelledby="salary-label" min="50000" max="600000" step="10000" value="320000">
             <div class="field-hint" id="salary-hint">~£3,000/mo — UK grad avg in 1st year</div>
         </div>
 
         <div class="form-group">
-            <div class="form-label">Current/expected India salary <span class="form-label-val" id="indiasalary-val">₹80,000/mo</span></div>
-            <input type="range" id="indiasalary" min="20000" max="300000" step="5000" value="80000">
+            <div class="form-label" id="indiasalary-label">Current/expected India salary <span class="form-label-val" id="indiasalary-val">₹80,000/mo</span></div>
+            <input type="range" id="indiasalary" aria-labelledby="indiasalary-label" min="20000" max="300000" step="5000" value="80000">
             <div class="field-hint">Used to calculate your opportunity cost</div>
         </div>
     </div>
@@ -917,6 +921,7 @@
             <a href="../terms.html" class="footer-legal">Terms of use</a>
         </div>
     </div>
+    <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · <a href="mailto:privacy@gradmire.in">privacy@gradmire.in</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="../privacy.html">Privacy</a><a href="../terms.html">Terms</a><a href="../refund-policy.html">Refunds &amp; fees</a><a href="../cookie-policy.html">Cookies</a><a href="../data-request.html">Your data rights</a><a href="../grievance.html">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
 </footer>
 
 <script>
@@ -1127,5 +1132,4 @@
     setupCountries();
     calculate();
 </script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../../assets/site.js?v=9"></script>
+<script src="../../assets/site.js?v=13" defer></script>

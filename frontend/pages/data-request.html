@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<script>try{var c=JSON.parse(localStorage.getItem("gm-consent")||"null"),t=(c&&c.preferences&&localStorage.getItem("gradmire-theme"))||sessionStorage.getItem("gradmire-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+<link rel="canonical" href="https://gradmire.in/data-request.html">
+<title>Gradmire — Your Data Rights</title>
+<meta name="description" content="Ask Gradmire for a copy of your personal data, correct it, delete it, or withdraw consent.">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preload" href="../assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/fonts/fonts.css">
+<style>
+     :root {
+        --bg: #F0F2F7;
+        --surface: #FFFFFF;
+        --surface-tint: #E8EBF4;
+        --text-p: #0E1420;
+        --text-s: #556270;
+        --brand: #1A4870;
+        --brand-deep: #0F2D4A;
+        --accent: #007A5A;
+        --accent-hover: #006649;
+        --accent-dim: rgba(0, 122, 90, .12);
+        --border: rgba(14, 20, 32, .1);
+        --sans: 'Bricolage Grotesque', system-ui, sans-serif;
+        --mono: 'JetBrains Mono', 'Menlo', monospace;
+        --r-sm: 8px;
+        --r-md: 16px;
+        --r-lg: 24px;
+        --w: 1280px;
+        --gutter: clamp(1.25rem, 5vw, 3rem);
+        --ease: cubic-bezier(.16, 1, .3, 1);
+    }
+    
+    @media(prefers-color-scheme:dark) {
+        :root:not([data-theme="light"]) {
+            --bg: #0A0D16;
+            --surface: #121825;
+            --surface-tint: #1A2136;
+            --text-p: #EEF1F8;
+            --text-s: #8893B8;
+            --brand: #4D8FBF;
+            --brand-deep: #1A4870;
+            --border: rgba(238, 241, 248, .1);
+            --accent: #2DB88C;
+            --accent-hover: #27A07B;
+            --accent-dim: rgba(45, 184, 140, .18);
+        }
+    }
+    
+    :root[data-theme="dark"] {
+        --bg: #0A0D16;
+        --surface: #121825;
+        --surface-tint: #1A2136;
+        --text-p: #EEF1F8;
+        --text-s: #8893B8;
+        --brand: #4D8FBF;
+        --brand-deep: #1A4870;
+        --border: rgba(238, 241, 248, .1);
+        --accent: #2DB88C;
+        --accent-hover: #27A07B;
+        --accent-dim: rgba(45, 184, 140, .18);
+    }
+    
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+        margin: 0;
+    }
+    
+    body {
+        background: var(--bg);
+        color: var(--text-p);
+        font-family: var(--sans);
+        font-size: 16px;
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
+        font-optical-sizing: auto;
+    }
+    
+    a {
+        color: var(--brand);
+        text-decoration: none;
+    }
+    
+    a:hover {
+        text-decoration: underline;
+    }
+    
+    img {
+        max-width: 100%;
+        display: block;
+    }
+    
+    .nav {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(240, 242, 247, .88);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border-bottom: 1px solid var(--border);
+        height: 68px;
+    }
+    
+    @media(prefers-color-scheme:dark) {
+        :root:not([data-theme="light"]) .nav {
+            background: rgba(10, 13, 22, .9);
+        }
+    }
+    
+    :root[data-theme="dark"] .nav {
+        background: rgba(10, 13, 22, .9);
+    }
+    
+    .nav-inner {
+        max-width: var(--w);
+        margin: 0 auto;
+        padding: 0 var(--gutter);
+        height: 100%;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
+    
+    .nav-links {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        gap: 1.75rem;
+        flex: 1;
+    }
+    
+    .nav-links a {
+        color: var(--text-s);
+        font-size: .86rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: color .2s;
+    }
+    
+    .nav-links a:hover {
+        color: var(--text-p);
+    }
+    
+    .nav-btn {
+        display: inline-flex;
+        align-items: center;
+        padding: .5em 1.2em;
+        border-radius: 100px;
+        font-family: var(--sans);
+        font-size: .84rem;
+        font-weight: 600;
+        background: var(--accent);
+        color: #fff;
+        text-decoration: none;
+        transition: background .2s;
+    }
+    
+    .nav-btn:hover {
+        background: var(--accent-hover);
+    }
+    
+    @media(max-width:860px) {
+        .nav-links {
+            display: none;
+        }
+    }
+    
+    .page-hero {
+        background: var(--brand-deep);
+        padding: 5rem var(--gutter) 4rem;
+        text-align: center;
+    }
+    
+    .page-hero-tag {
+        font-family: var(--mono);
+        font-size: .7rem;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, .78);
+        margin-bottom: 1rem;
+    }
+    
+    .page-hero-title {
+        font-size: clamp(2.2rem, 4vw, 3.5rem);
+        font-weight: 800;
+        letter-spacing: -.04em;
+        color: #fff;
+        line-height: 1.02;
+        margin-bottom: .75rem;
+    }
+    
+    .page-hero-sub {
+        font-size: 1rem;
+        color: rgba(255, 255, 255, .6);
+        max-width: 55ch;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+    
+    .layout {
+        max-width: var(--w);
+        margin: 0 auto;
+        padding: 4rem var(--gutter) 6rem;
+        display: grid;
+        grid-template-columns: 240px 1fr;
+        gap: 3.5rem;
+        align-items: start;
+    }
+    
+    @media(max-width:960px) {
+        .layout {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    .toc {
+        position: sticky;
+        top: 88px;
+    }
+    
+    @media(max-width:960px) {
+        .toc {
+            display: none;
+        }
+    }
+    
+    .toc-title {
+        font-family: var(--mono);
+        font-size: .68rem;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: var(--text-s);
+        margin-bottom: .85rem;
+    }
+    
+    .toc-list {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: .15rem;
+    }
+    
+    .toc-list a {
+        font-size: .84rem;
+        color: var(--text-s);
+        text-decoration: none;
+        padding: .35rem .7rem;
+        border-radius: 6px;
+        display: block;
+        transition: all .2s;
+    }
+    
+    .toc-list a:hover,
+    .toc-list a.active {
+        color: var(--brand);
+        background: var(--accent-dim);
+    }
+    
+    .prose {
+        max-width: 72ch;
+    }
+    
+    .section {
+        scroll-margin-top: 96px;
+        margin-bottom: 3rem;
+    }
+    
+    .section:last-child {
+        margin-bottom: 0;
+    }
+    
+    .section-num {
+        font-family: var(--mono);
+        font-size: .68rem;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: .4rem;
+    }
+    
+    .section h2 {
+        font-size: 1.35rem;
+        font-weight: 800;
+        letter-spacing: -.02em;
+        margin-bottom: .9rem;
+        color: var(--text-p);
+    }
+    
+    .section p {
+        color: var(--text-s);
+        margin-bottom: .9rem;
+        font-size: .95rem;
+        line-height: 1.7;
+    }
+    
+    .section p:last-child {
+        margin-bottom: 0;
+    }
+    
+    .section ul,
+    .section ol {
+        color: var(--text-s);
+        padding-left: 1.4rem;
+        margin-bottom: .9rem;
+        font-size: .95rem;
+    }
+    
+    .section ul li,
+    .section ol li {
+        margin-bottom: .4rem;
+        line-height: 1.6;
+    }
+    
+    .highlight-box {
+        background: var(--accent-dim);
+        border: 1px solid rgba(0, 122, 90, .18);
+        border-radius: var(--r-md);
+        padding: 1.25rem 1.5rem;
+        margin-bottom: 1.25rem;
+    }
+    
+    @media(prefers-color-scheme:dark) {
+        :root:not([data-theme="light"]) .highlight-box {
+            border-color: rgba(45, 184, 140, .2);
+        }
+    }
+    
+    :root[data-theme="dark"] .highlight-box {
+        border-color: rgba(45, 184, 140, .2);
+    }
+    
+    .highlight-box p {
+        color: var(--text-p) !important;
+        margin-bottom: 0 !important;
+        font-size: .9rem !important;
+    }
+    
+    .meta-bar {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+        margin-bottom: 2.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--border);
+    }
+    
+    .meta-item {
+        display: flex;
+        flex-direction: column;
+        gap: .15rem;
+    }
+    
+    .meta-label {
+        font-size: .72rem;
+        font-family: var(--mono);
+        letter-spacing: .07em;
+        text-transform: uppercase;
+        color: var(--text-s);
+    }
+    
+    .meta-val {
+        font-size: .9rem;
+        font-weight: 600;
+        color: var(--text-p);
+    }
+    
+    .contact-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--r-md);
+        padding: 1.5rem;
+        margin-top: .75rem;
+    }
+    
+    .contact-card p {
+        color: var(--text-p) !important;
+        font-size: .9rem !important;
+        margin-bottom: .3rem !important;
+    }
+    
+    .contact-card p:last-child {
+        margin-bottom: 0 !important;
+    }
+    
+    hr.divider {
+        border: none;
+        border-top: 1px solid var(--border);
+        margin: 2rem 0;
+    }
+    /* Footer */
+    
+    .footer {
+        background: var(--brand-deep);
+        color: rgba(255, 255, 255, .7);
+        padding: 4rem var(--gutter) 2rem;
+    }
+    
+    .footer-grid {
+        max-width: var(--w);
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 220px 1fr 1fr 1fr;
+        gap: 3rem;
+        padding-bottom: 3rem;
+        border-bottom: 1px solid rgba(255, 255, 255, .08);
+    }
+    
+    @media(max-width:860px) {
+        .footer-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+    
+    @media(max-width:540px) {
+        .footer-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    .footer-brand img {
+        margin-bottom: 1rem;
+    }
+    
+    .footer-tagline {
+        font-size: .85rem;
+        line-height: 1.6;
+        max-width: 26ch;
+    }
+    
+    .footer-col-title {
+        font-size: .72rem;
+        font-family: var(--mono);
+        font-weight: 700;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, .78);
+        margin-bottom: 1rem;
+    }
+    
+    .footer-col ul {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: .6rem;
+    }
+    
+    .footer-col ul li a {
+        color: rgba(255, 255, 255, .78);
+        font-size: .88rem;
+        text-decoration: none;
+        transition: color .2s;
+    }
+    
+    .footer-col ul li a:hover {
+        color: #fff;
+    }
+    
+    .footer-bottom {
+        max-width: var(--w);
+        margin: 2rem auto 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .footer-legal {
+        color: rgba(255, 255, 255, .78);
+        font-size: .78rem;
+    }
+    
+    .footer-legal a {
+        color: rgba(255, 255, 255, .78);
+        text-decoration: none;
+    }
+    
+    .footer-legal a:hover {
+        color: rgba(255, 255, 255, .7);
+    }
+
+    .dr-form { display: grid; gap: .9rem; max-width: 560px; margin-top: 1.25rem; }
+    .dr-field { display: grid; gap: .35rem; font-size: .86rem; font-weight: 600; }
+    .dr-field em { font-style: normal; font-weight: 500; color: var(--text-s); }
+    .dr-field input, .dr-field select, .dr-field textarea { width: 100%; padding: .7em .9em; border: 1.5px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text-p); font: 500 .92rem var(--sans); }
+    .dr-field input:focus, .dr-field select:focus, .dr-field textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
+    .dr-check { display: flex; gap: .6rem; align-items: flex-start; font-size: .84rem; color: var(--text-s); }
+    .dr-check input { margin-top: .2rem; accent-color: var(--accent); }
+    .dr-error { margin: 0; color: #C0392B; font-size: .82rem; font-weight: 600; }
+    .dr-submit { justify-self: start; padding: .8em 1.4em; border: 0; border-radius: 999px; background: var(--accent); color: #fff; font: 700 .95rem var(--sans); cursor: pointer; }
+    .dr-submit:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+    .dr-fine { margin: 0; font-size: .8rem; color: var(--text-s); }
+</style>
+<link rel="stylesheet" href="../assets/site.css?v=13">
+
+<nav class="nav" aria-label="Main navigation">
+    <div class="nav-inner">
+        <a href="index.html" aria-label="Gradmire home">
+            <img src="../assets/gradmire-logo.png" alt="Gradmire" height="34" style="display:block;max-width:155px;">
+        </a>
+        <ul class="nav-links">
+            <li><a href="find-courses.html">Courses</a></li>
+            <li><a href="destinations.html">Destinations</a></li>
+            <li><a href="scholarships.html">Scholarships</a></li>
+            <li><a href="tools/roi-calculator.html">Tools</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+        </ul>
+        <a href="free-consultation.html" class="nav-btn">Free Consultation</a>
+    </div>
+</nav>
+
+<header class="page-hero">
+    <p class="page-hero-tag">Privacy</p>
+    <h1 class="page-hero-title">Your data, your choice</h1>
+    <p class="page-hero-sub">Ask for a copy of your data, correct it, delete it, or withdraw consent, including unsubscribing from emails.</p>
+</header>
+
+<main>
+    <div class="layout">
+        <!-- TOC sidebar -->
+        <aside class="toc">
+            <p class="toc-title">On this page</p>
+            <ul class="toc-list" id="toc">
+                <li><a href="#rights">What you can ask for</a></li>
+                <li><a href="#how">How it works</a></li>
+                <li><a href="#details">What we hold</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main content -->
+        <div class="prose">
+            <div class="meta-bar">
+                <div class="meta-item">
+                    <span class="meta-label">Response time</span>
+                    <span class="meta-val">Within 30 days</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Cost</span>
+                    <span class="meta-val">Free</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Law</span>
+                    <span class="meta-val">DPDP Act 2023</span>
+                </div>
+            </div>
+
+            <section class="section" id="rights">
+                <p class="section-num">01</p>
+                <h2>What you can ask for</h2>
+                <ul>
+                    <li><strong>A copy</strong> of the personal data we hold about you and how we use it</li>
+                    <li><strong>Correction</strong> of anything inaccurate or incomplete</li>
+                    <li><strong>Deletion</strong> of your data, except records we must keep by law (for example tax records, kept for 7 years)</li>
+                    <li><strong>Withdrawing consent</strong>, including unsubscribing from emails. Every marketing email also has a one-click unsubscribe link</li>
+                    <li><strong>Nominating</strong> someone to act for you</li>
+                </ul>
+            </section>
+
+            <hr class="divider">
+
+            <section class="section" id="how">
+                <p class="section-num">02</p>
+                <h2>How it works</h2>
+                <p>We reply within 30 days, free of charge. We may ask you to confirm your identity, usually by replying from the email address you used with us. Parents and guardians can make requests for a student under 18.</p>
+                <p>If you are not satisfied with our reply, contact our <a href="grievance.html">Grievance Officer</a>, and then the Data Protection Board of India.</p>
+            </section>
+
+            <hr class="divider">
+
+            <section class="section" id="details">
+                <p class="section-num">03</p>
+                <h2>What we hold</h2>
+                <p>Our <a href="privacy.html">Privacy Policy</a> lists the data we collect and why. Items stored only in your browser are described in our <a href="cookie-policy.html">Cookie Policy</a>; you can clear those yourself at any time.</p>
+            </section>
+
+            <hr class="divider">
+
+            <section class="section" id="request-form">
+                <p class="section-num">04</p>
+                <h2>Make a request</h2>
+                <p>This form opens an email to our privacy team in your own email app, with your request filled in. Nothing is sent until you press send there.</p>
+                <form class="dr-form" id="data-request-form" novalidate>
+                    <label class="dr-field"><span>What would you like to do?</span>
+                        <select name="type" required>
+                            <option value="">Choose a request</option>
+                            <option>Get a copy of my data</option>
+                            <option>Correct my data</option>
+                            <option>Delete my data</option>
+                            <option>Withdraw consent or unsubscribe from emails</option>
+                            <option>Nominate someone to act for me</option>
+                            <option>Something else</option>
+                        </select>
+                    </label>
+                    <label class="dr-field"><span>Full name</span><input name="name" type="text" autocomplete="name" required></label>
+                    <label class="dr-field"><span>Email you used with Gradmire</span><input name="email" type="email" autocomplete="email" required></label>
+                    <label class="dr-field"><span>Phone you used with Gradmire <em>(optional)</em></span><input name="phone" type="tel" autocomplete="tel" inputmode="tel"></label>
+                    <label class="dr-field"><span>Details <em>(optional)</em></span><textarea name="details" rows="4" placeholder="For corrections, tell us what should change."></textarea></label>
+                    <label class="dr-check"><input name="parent" type="checkbox"><span>I am a parent or guardian making this request for a student under 18.</span></label>
+                    <p class="dr-error" role="alert" hidden></p>
+                    <button type="submit" class="dr-submit">Open email to privacy@gradmire.in</button>
+                    <p class="dr-fine">No email app? Write to <a href="mailto:privacy@gradmire.in">privacy@gradmire.in</a> with the same details.</p>
+                </form>
+            </section>
+<script>
+(function () {
+    const form = document.getElementById('data-request-form');
+    const error = form.querySelector('.dr-error');
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const data = new FormData(form);
+        const missing = [];
+        if (!data.get('type')) missing.push('the type of request');
+        if (!String(data.get('name') || '').trim()) missing.push('your name');
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(data.get('email') || '').trim())) missing.push('a valid email');
+        error.hidden = !missing.length;
+        if (missing.length) { error.textContent = 'Please add ' + missing.join(', ') + '.'; return; }
+        const lines = [
+            'Request: ' + data.get('type'),
+            'Name: ' + data.get('name'),
+            'Email: ' + data.get('email'),
+            data.get('phone') ? 'Phone: ' + data.get('phone') : '',
+            data.get('parent') ? 'I am a parent or guardian requesting for a student under 18.' : '',
+            data.get('details') ? '\nDetails:\n' + data.get('details') : ''
+        ].filter(Boolean);
+        window.location.href = 'mailto:privacy@gradmire.in?subject=' + encodeURIComponent('Data request: ' + data.get('type')) + '&body=' + encodeURIComponent(lines.join('\n'));
+    });
+})();
+</script>
+        </div>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <img src="../assets/gradmire-logo-white.png" alt="Gradmire" height="28" style="max-width:140px;">
+            <p class="footer-tagline" style="margin-top:.85rem;">Transparent, trusted study-abroad guidance for Indian students.</p>
+        </div>
+        <div class="footer-col">
+            <p class="footer-col-title">Explore</p>
+            <ul>
+                <li><a href="find-courses.html">Courses</a></li>
+                <li><a href="destinations.html">Destinations</a></li>
+                <li><a href="scholarships.html">Scholarships</a></li>
+                <li><a href="tools/roi-calculator.html">Tools</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <p class="footer-col-title">Company</p>
+            <ul>
+                <li><a href="about.html">About us</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="free-consultation.html">Free consultation</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <p class="footer-col-title">Legal</p>
+            <ul>
+                <li><a href="privacy.html">Privacy policy</a></li>
+                <li><a href="terms.html">Terms of use</a></li>
+                <li><a href="grievance.html">Grievance</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span class="footer-legal">© 2026 Gradmire Education Pvt. Ltd. All rights reserved.</span>
+        <div style="display:flex;gap:1.5rem;flex-wrap:wrap;">
+            <a href="privacy.html" class="footer-legal">Privacy policy</a>
+            <a href="terms.html" class="footer-legal">Terms of use</a>
+            <a href="grievance.html" class="footer-legal">Grievance</a>
+        </div>
+    </div>
+    <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · <a href="mailto:privacy@gradmire.in">privacy@gradmire.in</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund-policy.html">Refunds &amp; fees</a><a href="cookie-policy.html">Cookies</a><a href="data-request.html">Your data rights</a><a href="grievance.html">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
+</footer>
+
+<script>
+    const sections = document.querySelectorAll('.section[id]');
+    const tocLinks = document.querySelectorAll('.toc-list a');
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                tocLinks.forEach(l => l.classList.remove('active'));
+                const active = document.querySelector('.toc-list a[href="#' + e.target.id + '"]');
+                if (active) active.classList.add('active');
+            }
+        });
+    }, {
+        rootMargin: '-80px 0px -60% 0px'
+    });
+    sections.forEach(s => observer.observe(s));
+</script>
+<script src="../assets/site.js?v=13" defer></script>

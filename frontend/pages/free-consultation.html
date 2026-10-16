@@ -1,12 +1,17 @@
-﻿<meta charset="UTF-8">
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<script>try{var c=JSON.parse(localStorage.getItem("gm-consent")||"null"),t=(c&&c.preferences&&localStorage.getItem("gradmire-theme"))||sessionStorage.getItem("gradmire-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+<link rel="preconnect" href="https://images.unsplash.com">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="canonical" href="https://gradmire.in/free-consultation.html">
 <title>Gradmire — Free Consultation</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="preload" href="../assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/fonts/fonts.css">
 <style>
 :root{--bg:#F0F2F7;--surface:#FFFFFF;--surface-tint:#E8EBF4;--text-p:#0E1420;--text-s:#556270;--brand:#1A4870;--accent:#007A5A;--accent-hover:#006649;--accent-dim:rgba(0,122,90,.12);--border:rgba(14,20,32,.1);--sans:'Bricolage Grotesque',system-ui,sans-serif;--mono:'JetBrains Mono','Menlo',monospace;--r-sm:8px;--r-md:16px;--r-lg:24px;--w:1280px;--gutter:clamp(1.25rem,5vw,3rem);--ease:cubic-bezier(.16,1,.3,1);}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(0,168,120,.18);}}
-:root[data-theme="dark"]{--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(0,168,120,.18);}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--accent:#2DB88C;--accent-hover:#27A07B;--accent-dim:rgba(45,184,140,.18);--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(0,168,120,.18);}}
+:root[data-theme="dark"]{--accent:#2DB88C;--accent-hover:#27A07B;--accent-dim:rgba(45,184,140,.18);--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(0,168,120,.18);}
 *,*::before,*::after{box-sizing:border-box;margin:0;}
 body{background:var(--bg);color:var(--text-p);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;}
 img{max-width:100%;display:block;}a{color:inherit;}
@@ -27,9 +32,9 @@ img{max-width:100%;display:block;}a{color:inherit;}
 .step-indicator{display:flex;align-items:center;gap:.5rem;margin-bottom:2.5rem;}
 .step-dot{width:10px;height:10px;border-radius:50%;background:var(--border);transition:background .3s,transform .3s var(--ease);}
 .step-dot.active{background:var(--accent);transform:scale(1.3);}
-.step-dot.done{background:var(--brand);}
+.step-dot.done{background:#1A4870;}
 .step-line{flex:1;height:2px;background:var(--border);border-radius:1px;overflow:hidden;max-width:60px;}
-.step-line-fill{height:100%;background:var(--brand);width:0;transition:width .4s var(--ease);}
+.step-line-fill{height:100%;background:#1A4870;width:0;transition:width .4s var(--ease);}
 .step-label{font-family:var(--mono);font-size:.72rem;color:var(--text-s);letter-spacing:.08em;}
 .form-step{display:none;}
 .form-step.active{display:block;}
@@ -66,8 +71,6 @@ img{max-width:100%;display:block;}a{color:inherit;}
 .trust-side{display:flex;flex-direction:column;gap:1.5rem;padding-top:.5rem;}
 .trust-header{font-size:.78rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--text-s);margin-bottom:.25rem;}
 .trust-card{background:var(--surface);border-radius:var(--r-md);padding:1.5rem;border:1px solid var(--border);}
-.trust-rating{display:flex;gap:.25rem;margin-bottom:.5rem;}
-.star{color:#FBBF24;font-size:1.1rem;}
 .trust-quote{font-size:.9rem;line-height:1.55;color:var(--text-p);margin-bottom:.75rem;}
 .trust-attr{display:flex;align-items:center;gap:.6rem;}
 .trust-avatar{width:38px;height:38px;border-radius:50%;object-fit:cover;object-position:center top;}
@@ -77,6 +80,7 @@ img{max-width:100%;display:block;}a{color:inherit;}
 .trust-stat-item{text-align:center;}
 .trust-stat-num{font-family:var(--mono);font-size:1.6rem;font-weight:700;color:var(--brand);letter-spacing:-.03em;}
 .trust-stat-lbl{font-size:.75rem;color:var(--text-s);margin-top:.15rem;}
+.trust-steps{margin:0;padding-left:1.1rem;display:grid;gap:.5rem;font-size:.86rem;line-height:1.5;color:var(--text-s);}
 .trust-counsellors{display:flex;flex-direction:column;gap:.75rem;}
 .counsel-row{display:flex;align-items:center;gap:.75rem;}
 .counsel-av{width:42px;height:42px;border-radius:50%;object-fit:cover;object-position:center top;flex-shrink:0;}
@@ -125,7 +129,7 @@ img{max-width:100%;display:block;}a{color:inherit;}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .field-error{color:#FF8A7A;}}
 :root[data-theme="dark"] .field-error{color:#FF8A7A;}
 </style>
-<link rel="stylesheet" href="../assets/site.css?v=9">
+<link rel="stylesheet" href="../assets/site.css?v=13">
 
 <nav class="nav" aria-label="Main navigation">
   <div class="nav-inner">
@@ -342,6 +346,10 @@ img{max-width:100%;display:block;}a{color:inherit;}
         <label class="form-check-label" for="consent-contact">Gradmire may call, email or WhatsApp me about this consultation request. (Required)</label>
       </div>
       <div class="form-check" style="margin-bottom:1rem;">
+        <input type="checkbox" id="consent-age" name="age_confirmation" required>
+        <label class="form-check-label" for="consent-age">I am 18 or older, or my parent or guardian has agreed to me sharing these details. (Required)</label>
+      </div>
+      <div class="form-check" style="margin-bottom:1rem;">
         <input type="checkbox" id="consent-comms" name="marketing_opt_in">
         <label class="form-check-label" for="consent-comms">Send me scholarship alerts, event invitations and study-abroad tips. (Optional)</label>
       </div>
@@ -350,15 +358,16 @@ img{max-width:100%;display:block;}a{color:inherit;}
         <label class="form-check-label" for="consent-partners">I'm happy to receive information from Gradmire's partner universities and institutions about their programmes, scholarships and open days. (Optional)</label>
       </div>
       <div class="form-field">
-        <label class="form-label" for="s3-passport">Passport status</label>
+        <label class="form-label" for="s3-passport">Passport status (optional)</label>
         <select class="form-select" id="s3-passport">
+          <option value="">Prefer not to say</option>
           <option>I have a valid passport</option>
           <option>I have applied and it's in process</option>
           <option>I don't have a passport yet</option>
         </select>
       </div>
       <div class="form-field">
-        <label class="form-label" for="s3-source">How did you hear about Gradmire?</label>
+        <label class="form-label" for="s3-source">How did you hear about Gradmire? (optional)</label>
         <select class="form-select" id="s3-source">
           <option value="">Select</option>
           <option>Google / Search</option>
@@ -406,8 +415,8 @@ img{max-width:100%;display:block;}a{color:inherit;}
           <div class="trust-stat-lbl">Students placed</div>
         </div>
         <div class="trust-stat-item">
-          <div class="trust-stat-num">97%</div>
-          <div class="trust-stat-lbl">Satisfaction rate</div>
+          <div class="trust-stat-num">850+</div>
+          <div class="trust-stat-lbl">Partner universities</div>
         </div>
         <div class="trust-stat-item">
           <div class="trust-stat-num">2006</div>
@@ -417,54 +426,36 @@ img{max-width:100%;display:block;}a{color:inherit;}
     </div>
 
     <div class="trust-card">
-      <div class="trust-rating"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
-      <p class="trust-quote">"From our first consultation to getting my offer letter from UCL, Priya guided us through every step. The process felt completely stress-free."</p>
-      <div class="trust-attr">
-        <img class="trust-avatar" src="https://images.unsplash.com/photo-1463453091185-61582044d556?auto=format&fit=crop&w=80&q=80" alt="Aryan K">
-        <div>
-          <div class="trust-name">Aryan Kapoor</div>
-          <div class="trust-detail">MSc Computer Science, UCL · 2024</div>
-        </div>
-      </div>
+      <div style="font-size:.82rem;font-weight:700;margin-bottom:.75rem;">What happens after you book</div>
+      <ol class="trust-steps">
+        <li>A counsellor calls or emails within 24 business hours to confirm a time.</li>
+        <li>Your free session covers courses, universities, budget and timelines.</li>
+        <li>You get a written shortlist and next steps. No fees, no obligation.</li>
+      </ol>
     </div>
 
     <div class="trust-card">
-      <div class="trust-rating"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
-      <p class="trust-quote">"Rahul had a scholarship shortlist ready for me before I even asked. I received a 40% fee reduction at University of Toronto."</p>
-      <div class="trust-attr">
-        <img class="trust-avatar" src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=80&q=80" alt="Diya S">
-        <div>
-          <div class="trust-name">Diya Singh</div>
-          <div class="trust-detail">MBA, University of Toronto · 2023</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="trust-card">
-      <div style="font-size:.82rem;font-weight:700;margin-bottom:1rem;">Available counsellors</div>
+      <div style="font-size:.82rem;font-weight:700;margin-bottom:1rem;">Our counsellors</div>
       <div class="trust-counsellors">
         <div class="counsel-row">
-          <img class="counsel-av" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=80&q=80" alt="Priya Sharma">
+          <img class="counsel-av" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=80&q=80" alt="Priya Sharma" loading="lazy" decoding="async">
           <div>
             <div class="counsel-name">Priya Sharma</div>
             <div class="counsel-spec">UK + Ireland</div>
-            <div class="counsel-avail">Next slot: Mon 11am IST</div>
           </div>
         </div>
         <div class="counsel-row">
-          <img class="counsel-av" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&q=80" alt="Rahul Mehta">
+          <img class="counsel-av" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&q=80" alt="Rahul Mehta" loading="lazy" decoding="async">
           <div>
             <div class="counsel-name">Rahul Mehta</div>
             <div class="counsel-spec">USA + Canada</div>
-            <div class="counsel-avail">Next slot: Tue 2pm IST</div>
           </div>
         </div>
         <div class="counsel-row">
-          <img class="counsel-av" src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=80&q=80" alt="Anjali Patel">
+          <img class="counsel-av" src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=80&q=80" alt="Anjali Patel" loading="lazy" decoding="async">
           <div>
             <div class="counsel-name">Anjali Patel</div>
             <div class="counsel-spec">Australia + New Zealand</div>
-            <div class="counsel-avail">Next slot: Wed 10am IST</div>
           </div>
         </div>
       </div>
@@ -505,7 +496,8 @@ function validateStep(n) {
       ['s1-destination', (v) => v ? '' : 'Please choose a destination.']
     ],
     3: [
-      ['consent-contact', (v, el) => el.checked ? '' : 'Please allow us to contact you so a counsellor can call you back.']
+      ['consent-contact', (v, el) => el.checked ? '' : 'Please allow us to contact you so a counsellor can call you back.'],
+      ['consent-age', (v, el) => el.checked ? '' : 'Please confirm your age, or ask a parent or guardian to complete this form with you.']
     ]
   }[n] || [];
   let firstInvalid = null;
@@ -554,7 +546,7 @@ function submitForm() {
 }
 
 /* Clear an error as soon as the field is corrected. */
-document.querySelectorAll('#step1 .form-input, #step1 .form-select, #consent-contact').forEach(el => {
+document.querySelectorAll('#step1 .form-input, #step1 .form-select, #consent-contact, #consent-age').forEach(el => {
   el.addEventListener(el.type === 'checkbox' || el.tagName === 'SELECT' ? 'change' : 'input', () => {
     if (el.getAttribute('aria-invalid') === 'true') setFieldError(el, '');
   });
@@ -607,5 +599,6 @@ document.querySelectorAll('#step1 .form-input, #step1 .form-select, #consent-con
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../assets/site.js?v=9"></script>
+<footer class="gm-legal-bar gm-legal-bar--light"><p class="gm-legal-entity">Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · <a href="mailto:privacy@gradmire.in">privacy@gradmire.in</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund-policy.html">Refunds &amp; fees</a><a href="cookie-policy.html">Cookies</a><a href="data-request.html">Your data rights</a><a href="grievance.html">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></footer>
+
+<script src="../assets/site.js?v=13" defer></script>

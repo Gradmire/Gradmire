@@ -1,11 +1,16 @@
-﻿<meta charset="UTF-8">
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<script>try{var c=JSON.parse(localStorage.getItem("gm-consent")||"null"),t=(c&&c.preferences&&localStorage.getItem("gradmire-theme"))||sessionStorage.getItem("gradmire-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+<link rel="preconnect" href="https://images.unsplash.com">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Gradmire — Student Dashboard</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="preload" href="../assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/fonts/fonts.css">
 <style>
 :root{--bg:#F0F2F7;--surface:#FFFFFF;--surface-tint:#E8EBF4;--text-p:#0E1420;--text-s:#556270;--brand:#1A4870;--accent:#007A5A;--accent-dim:rgba(0,122,90,.12);--border:rgba(14,20,32,.1);--sans:'Bricolage Grotesque',system-ui,sans-serif;--mono:'JetBrains Mono','Menlo',monospace;--r-sm:8px;--r-md:16px;--r-lg:24px;--ease:cubic-bezier(.16,1,.3,1);--sidebar:260px;}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(45,184,140,.18);}}
-:root[data-theme="dark"]{--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(45,184,140,.18);}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--accent:#2DB88C;--accent-hover:#27A07B;--accent-dim:rgba(45,184,140,.18);--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(45,184,140,.18);}}
+:root[data-theme="dark"]{--accent:#2DB88C;--accent-hover:#27A07B;--accent-dim:rgba(45,184,140,.18);--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(45,184,140,.18);}
 *,*::before,*::after{box-sizing:border-box;margin:0;}
 html,body{height:100%;}
 body{background:var(--bg);color:var(--text-p);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;}
@@ -53,13 +58,13 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 .btn:hover{background:#006649;}.btn:active{transform:scale(.97);}
 
 /* PROGRESS CARD */
-.progress-card{background:var(--brand);border-radius:var(--r-md);padding:1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;}
+.progress-card{background:#1A4870;border-radius:var(--r-md);padding:1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;}
 .progress-donut{flex-shrink:0;}
 .progress-donut svg circle{transition:stroke-dashoffset .6s var(--ease);}
 .progress-text{color:rgba(255,255,255,.7);font-size:.875rem;flex:1;min-width:200px;}
 .progress-text strong{color:#fff;font-size:1rem;display:block;font-weight:700;margin-bottom:.35rem;}
 .progress-steps{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.75rem;}
-.p-step{background:rgba(255,255,255,.1);border-radius:100px;padding:.3em .8em;font-size:.72rem;color:rgba(255,255,255,.65);}
+.p-step{background:rgba(255,255,255,.1);border-radius:100px;padding:.3em .8em;font-size:.72rem;color:rgba(255,255,255,.88);}
 .p-step.done{background:var(--accent);color:#fff;}
 
 /* STATS ROW */
@@ -142,7 +147,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .nav{background:rgba(10,13,22,.88);}}
 :root[data-theme="dark"] .nav{background:rgba(10,13,22,.88);}
 </style>
-<link rel="stylesheet" href="../assets/site.css?v=9">
+<link rel="stylesheet" href="../assets/site.css?v=13">
 
 <!-- TOP NAV -->
 <header class="topnav">
@@ -204,7 +209,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
     <!-- Counsellor -->
     <div class="sidebar-footer">
       <div class="counsellor-mini">
-        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=80&q=80" alt="Priya Mehta">
+        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=80&q=80" alt="Priya Mehta" loading="lazy" decoding="async">
         <div class="counsellor-mini-info">
           <div class="counsellor-mini-name">Priya Mehta</div>
           <div class="counsellor-mini-role">Your UK Specialist</div>
@@ -320,11 +325,11 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
         </div>
         <div class="counsellor-card-full">
           <div class="counsellor-top">
-            <img class="counsellor-avatar" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=120&q=80" alt="Priya Mehta">
+            <img class="counsellor-avatar" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=120&q=80" alt="Priya Mehta" loading="lazy" decoding="async">
             <div>
               <div class="counsellor-name">Priya Mehta</div>
               <div class="counsellor-spec">UK Specialist · 8 years experience</div>
-              <div class="counsellor-badge">⭐ 4.9 · 340 students helped</div>
+              <div class="counsellor-badge">UK &amp; Ireland specialist</div>
             </div>
           </div>
           <div class="next-meeting">
@@ -452,5 +457,4 @@ document.querySelectorAll('.sidebar-nav a').forEach(link => {
 });
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../assets/site.js?v=9"></script>
+<script src="../assets/site.js?v=13" defer></script>

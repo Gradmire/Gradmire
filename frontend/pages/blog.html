@@ -1,12 +1,17 @@
-﻿<meta charset="UTF-8">
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<script>try{var c=JSON.parse(localStorage.getItem("gm-consent")||"null"),t=(c&&c.preferences&&localStorage.getItem("gradmire-theme"))||sessionStorage.getItem("gradmire-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+<link rel="preconnect" href="https://images.unsplash.com">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="canonical" href="https://gradmire.in/blog.html">
 <title>Gradmire — Study Abroad Blog</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="preload" href="../assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/fonts/fonts.css">
 <style>
 :root{--bg:#F0F2F7;--surface:#FFFFFF;--surface-tint:#E8EBF4;--text-p:#0E1420;--text-s:#556270;--brand:#1A4870;--accent:#007A5A;--accent-dim:rgba(0,122,90,.12);--border:rgba(14,20,32,.1);--sans:'Bricolage Grotesque',system-ui,sans-serif;--mono:'JetBrains Mono','Menlo',monospace;--r-sm:8px;--r-md:16px;--r-lg:24px;--w:1280px;--gutter:clamp(1.25rem,5vw,3rem);--sec:clamp(4rem,8vw,6rem);--ease:cubic-bezier(.16,1,.3,1);}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(45,184,140,.18);}}
-:root[data-theme="dark"]{--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(45,184,140,.18);}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--accent:#2DB88C;--accent-hover:#27A07B;--accent-dim:rgba(45,184,140,.18);--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(45,184,140,.18);}}
+:root[data-theme="dark"]{--accent:#2DB88C;--accent-hover:#27A07B;--accent-dim:rgba(45,184,140,.18);--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(45,184,140,.18);}
 *,*::before,*::after{box-sizing:border-box;margin:0;}
 body{background:var(--bg);color:var(--text-p);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;}
 img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
@@ -28,7 +33,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 /* Categories */
 .cat-bar{max-width:var(--w);margin:2.5rem auto 0;padding:0 var(--gutter);display:flex;gap:.65rem;flex-wrap:wrap;}
 .cat-chip{padding:.45em 1.1em;border-radius:100px;border:1.5px solid var(--border);font-family:var(--sans);font-size:.85rem;font-weight:500;background:var(--surface);color:var(--text-s);cursor:pointer;transition:border-color .2s,background .2s,color .2s;}
-.cat-chip.active{background:var(--brand);border-color:var(--brand);color:#fff;}
+.cat-chip.active{background:#1A4870;border-color:var(--brand);color:#fff;}
 /* Featured post */
 .feat-section{max-width:var(--w);margin:3rem auto 0;padding:0 var(--gutter);}
 .feat-post{border-radius:var(--r-lg);overflow:hidden;display:grid;grid-template-columns:1fr 1fr;background:var(--surface);border:1px solid var(--border);}
@@ -56,7 +61,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 .post-date{font-family:var(--mono);font-size:.72rem;color:var(--text-s);}
 .post-read{font-family:var(--mono);font-size:.72rem;color:var(--text-s);}
 /* Newsletter */
-.newsletter{background:var(--brand);padding:clamp(3.5rem,7vw,6rem) var(--gutter);text-align:center;margin-top:var(--sec);}
+.newsletter{background:#1A4870;padding:clamp(3.5rem,7vw,6rem) var(--gutter);text-align:center;margin-top:var(--sec);}
 .newsletter-title{font-size:clamp(1.8rem,3vw,2.6rem);font-weight:800;color:#fff;letter-spacing:-.03em;margin-bottom:.75rem;text-wrap:balance;}
 .newsletter-sub{color:rgba(255,255,255,.7);font-size:.95rem;margin-bottom:2rem;}
 .newsletter-form{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;max-width:480px;margin:0 auto;}
@@ -84,7 +89,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .nav{background:rgba(10,13,22,.88);}}
 :root[data-theme="dark"] .nav{background:rgba(10,13,22,.88);}
 </style>
-<link rel="stylesheet" href="../assets/site.css?v=9">
+<link rel="stylesheet" href="../assets/site.css?v=13">
 
 <nav class="nav" aria-label="Main navigation">
   <div class="nav-inner">
@@ -131,9 +136,9 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
     <div class="feat-body">
       <span class="post-cat">Scholarships</span>
       <h2 class="feat-title">The Complete Guide to Applying for a Chevening Scholarship in 2025</h2>
-      <p class="feat-excerpt">Everything from eligibility requirements to the essays that win — written by our UK specialist who has helped 200+ students receive Chevening awards.</p>
+      <p class="feat-excerpt">Everything from eligibility requirements to the essays that win — written by our UK specialist.</p>
       <div class="post-meta">
-        <img class="post-author-img" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=60&q=80" alt="Priya Sharma">
+        <img class="post-author-img" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=60&q=80" alt="Priya Sharma" loading="lazy" decoding="async">
         <span>Priya Sharma</span>
         <span>·</span>
         <span>12 min read</span>
@@ -149,7 +154,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
   <div class="blog-grid">
 
     <a href="study-in-uk.html" class="post-card reveal">
-      <div class="post-card-img-wrap"><img class="post-card-img" src="https://images.unsplash.com/photo-1486299267070-83823f5448dd?auto=format&fit=crop&w=700&q=80" alt="London"></div>
+      <div class="post-card-img-wrap"><img class="post-card-img" src="https://images.unsplash.com/photo-1486299267070-83823f5448dd?auto=format&fit=crop&w=700&q=80" alt="London" loading="lazy" decoding="async"></div>
       <div class="post-card-body">
         <span class="post-cat" style="margin-bottom:.6rem;font-size:.65rem;">Destinations</span>
         <div class="post-card-title">UK Student Visa 2025: Step-by-Step Application Guide</div>
@@ -159,7 +164,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
     </a>
 
     <a href="study-in-usa.html" class="post-card reveal" style="transition-delay:.05s">
-      <div class="post-card-img-wrap"><img class="post-card-img" src="https://images.unsplash.com/photo-1485871981521-5b1fd3805eee?auto=format&fit=crop&w=700&q=80" alt="USA"></div>
+      <div class="post-card-img-wrap"><img class="post-card-img" src="https://images.unsplash.com/photo-1485871981521-5b1fd3805eee?auto=format&fit=crop&w=700&q=80" alt="USA" loading="lazy" decoding="async"></div>
       <div class="post-card-body">
         <span class="post-cat" style="margin-bottom:.6rem;font-size:.65rem;">Destinations</span>
         <div class="post-card-title">F-1 vs J-1 Visa: Which is Right for Your US Study Plan?</div>
@@ -169,7 +174,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
     </a>
 
     <a href="scholarships.html" class="post-card reveal" style="transition-delay:.1s">
-      <div class="post-card-img-wrap"><img class="post-card-img" src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=700&q=80" alt="Scholarship"></div>
+      <div class="post-card-img-wrap"><img class="post-card-img" src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=700&q=80" alt="Scholarship" loading="lazy" decoding="async"></div>
       <div class="post-card-body">
         <span class="post-cat" style="margin-bottom:.6rem;font-size:.65rem;">Scholarships</span>
         <div class="post-card-title">10 Scholarships for Indian Students in 2025 — With Deadlines</div>
@@ -179,7 +184,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
     </a>
 
     <a href="study-in-australia.html" class="post-card reveal">
-      <div class="post-card-img-wrap"><img class="post-card-img" src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=700&q=80" alt="Australia"></div>
+      <div class="post-card-img-wrap"><img class="post-card-img" src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=700&q=80" alt="Australia" loading="lazy" decoding="async"></div>
       <div class="post-card-body">
         <span class="post-cat" style="margin-bottom:.6rem;font-size:.65rem;">Student life</span>
         <div class="post-card-title">Cost of Living in Australia for Indian Students — 2025 Budget Guide</div>
@@ -189,7 +194,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
     </a>
 
     <a href="study-in-germany.html" class="post-card reveal" style="transition-delay:.05s">
-      <div class="post-card-img-wrap"><img class="post-card-img" src="https://images.unsplash.com/photo-1560969184-10fe8719e047?auto=format&fit=crop&w=700&q=80" alt="Germany Berlin"></div>
+      <div class="post-card-img-wrap"><img class="post-card-img" src="https://images.unsplash.com/photo-1560969184-10fe8719e047?auto=format&fit=crop&w=700&q=80" alt="Germany Berlin" loading="lazy" decoding="async"></div>
       <div class="post-card-body">
         <span class="post-cat" style="margin-bottom:.6rem;font-size:.65rem;">Destinations</span>
         <div class="post-card-title">Studying in Germany for Free: Your Complete 2025 Roadmap</div>
@@ -199,7 +204,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
     </a>
 
     <a href="contact.html?interest=test-prep" class="post-card reveal" style="transition-delay:.1s">
-      <div class="post-card-img-wrap"><img class="post-card-img" src="https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=700&q=80" alt="Students studying"></div>
+      <div class="post-card-img-wrap"><img class="post-card-img" src="https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=700&q=80" alt="Students studying" loading="lazy" decoding="async"></div>
       <div class="post-card-body">
         <span class="post-cat" style="margin-bottom:.6rem;font-size:.65rem;">Test prep</span>
         <div class="post-card-title">IELTS vs PTE vs TOEFL: Which Test Should Indian Students Choose?</div>
@@ -209,7 +214,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
     </a>
 
     <a href="find-universities.html" class="post-card reveal">
-      <div class="post-card-img-wrap"><img class="post-card-img" src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=700&q=80" alt="Library books"></div>
+      <div class="post-card-img-wrap"><img class="post-card-img" src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=700&q=80" alt="Library books" loading="lazy" decoding="async"></div>
       <div class="post-card-body">
         <span class="post-cat" style="margin-bottom:.6rem;font-size:.65rem;">Destinations</span>
         <div class="post-card-title">Russell Group vs Oxbridge: Is It Worth the Extra Effort?</div>
@@ -219,7 +224,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
     </a>
 
     <a href="study-in-canada.html" class="post-card reveal" style="transition-delay:.05s">
-      <div class="post-card-img-wrap"><img class="post-card-img" src="https://images.unsplash.com/photo-1517090504586-fde19ea6066f?auto=format&fit=crop&w=700&q=80" alt="Canada"></div>
+      <div class="post-card-img-wrap"><img class="post-card-img" src="https://images.unsplash.com/photo-1517090504586-fde19ea6066f?auto=format&fit=crop&w=700&q=80" alt="Canada" loading="lazy" decoding="async"></div>
       <div class="post-card-body">
         <span class="post-cat" style="margin-bottom:.6rem;font-size:.65rem;">Careers</span>
         <div class="post-card-title">Canada PR After Study: Your PGWP to Permanent Residency Path</div>
@@ -229,7 +234,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
     </a>
 
     <a href="study-in-ireland.html" class="post-card reveal" style="transition-delay:.1s">
-      <div class="post-card-img-wrap"><img class="post-card-img" src="https://images.unsplash.com/photo-1590089415462-6f0f8f99db5e?auto=format&fit=crop&w=700&q=80" alt="Ireland"></div>
+      <div class="post-card-img-wrap"><img class="post-card-img" src="https://images.unsplash.com/photo-1590089415462-6f0f8f99db5e?auto=format&fit=crop&w=700&q=80" alt="Ireland" loading="lazy" decoding="async"></div>
       <div class="post-card-body">
         <span class="post-cat" style="margin-bottom:.6rem;font-size:.65rem;">Destinations</span>
         <div class="post-card-title">Why Ireland Is Becoming India's Favourite Study Destination</div>
@@ -248,21 +253,24 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 <div class="newsletter">
   <h2 class="newsletter-title reveal">Get the best guides in your inbox.</h2>
   <p class="newsletter-sub reveal">Scholarship deadlines, destination guides, and visa tips — every two weeks. Unsubscribe any time.</p>
-  <div class="newsletter-form reveal">
-    <input class="newsletter-input" type="email" placeholder="your@email.com">
-    <button class="newsletter-btn">Subscribe</button>
-  </div>
+  <form class="newsletter-form reveal" onsubmit="event.preventDefault()">
+    <label class="sr-only" for="newsletter-email">Email address</label>
+    <input class="newsletter-input" id="newsletter-email" name="email" type="email" autocomplete="email" placeholder="your@email.com" required>
+    <button class="newsletter-btn" type="submit">Subscribe</button>
+  </form>
+  <p class="newsletter-sub" style="font-size:.78rem;margin-top:.9rem;">Subscribing means you agree to receive these emails. Every email includes a one-click unsubscribe link. See our <a href="privacy.html" style="color:inherit;text-decoration:underline;">privacy policy</a>.</p>
 </div>
 
 <footer class="footer" aria-label="Site footer">
   <div class="footer-inner">
-    <div><span class="footer-brand"><img src="../assets/gradmire-logo.png" alt="Gradmire" height="28" style="display:block;max-width:140px;"></span><p class="footer-tagline">India's study-abroad counselling platform. Trusted since 2006.</p></div>
+    <div><span class="footer-brand"><img src="../assets/gradmire-logo.png" alt="Gradmire" height="28" style="display:block;max-width:140px;" loading="lazy" decoding="async"></span><p class="footer-tagline">India's study-abroad counselling platform. Trusted since 2006.</p></div>
     <div><div class="footer-col-title">Destinations</div><ul class="footer-links"><li><a href="study-in-uk.html">United Kingdom</a></li><li><a href="study-in-usa.html">USA</a></li><li><a href="study-in-canada.html">Canada</a></li><li><a href="study-in-australia.html">Australia</a></li><li><a href="study-in-germany.html">Germany</a></li><li><a href="study-in-ireland.html">Ireland</a></li><li><a href="study-in-newzealand.html">New Zealand</a></li><li><a href="study-in-italy.html">Italy</a></li></ul></div>
     <div><div class="footer-col-title">Services</div><ul class="footer-links"><li><a href="find-courses.html">Course finder</a></li><li><a href="find-universities.html">Universities</a></li><li><a href="scholarships.html">Scholarships</a></li></ul></div>
     <div><div class="footer-col-title">Company</div><ul class="footer-links"><li><a href="about.html">About us</a></li><li><a href="blog.html">Blog</a></li><li><a href="tools/roi-calculator.html">Tools</a></li>
       <li><a href="faq.html">FAQ</a></li></ul></div>
   </div>
   <div class="footer-bottom"><span class="footer-legal">© 2026 Gradmire. All rights reserved.</span><div style="display:flex;gap:1.5rem;"><a href="privacy.html" class="footer-legal">Privacy policy</a><a href="terms.html" class="footer-legal">Terms of use</a></div></div>
+    <div class="gm-legal-bar gm-legal-bar--light"><p class="gm-legal-entity">Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · <a href="mailto:privacy@gradmire.in">privacy@gradmire.in</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund-policy.html">Refunds &amp; fees</a><a href="cookie-policy.html">Cookies</a><a href="data-request.html">Your data rights</a><a href="grievance.html">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
 </footer>
 <script>
         // Pre-reveal elements already in viewport on page load
@@ -275,5 +283,4 @@ document.querySelectorAll('.cat-chip').forEach(c=>c.addEventListener('click',()=
 </script>
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../assets/site.js?v=9"></script>
+<script src="../assets/site.js?v=13" defer></script>

@@ -1,7 +1,12 @@
-﻿<meta charset="UTF-8">
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<script>try{var c=JSON.parse(localStorage.getItem("gm-consent")||"null"),t=(c&&c.preferences&&localStorage.getItem("gradmire-theme"))||sessionStorage.getItem("gradmire-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+<link rel="preconnect" href="https://images.unsplash.com">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Gradmire — Log In</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="preload" href="../assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/fonts/fonts.css">
 <style>
      :root {
         --bg: #F0F2F7;
@@ -480,7 +485,7 @@
         background: rgba(10, 13, 22, .88);
     }
 </style>
-<link rel="stylesheet" href="../assets/site.css?v=9">
+<link rel="stylesheet" href="../assets/site.css?v=13">
 <link rel="stylesheet" href="../assets/auth.css?v=1">
 <style>
 @media(max-width:900px){.auth-wrap{grid-template-columns:1fr!important}}
@@ -542,10 +547,10 @@
         <div class="auth-form-wrap">
             <div class="auth-proof" aria-label="47,000 students trust Gradmire">
                 <div class="auth-proof-avatars" aria-hidden="true">
-                    <img class="auth-proof-avatar" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=52&h=52&q=80" alt="">
-                    <img class="auth-proof-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=52&h=52&q=80" alt="">
-                    <img class="auth-proof-avatar" src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=52&h=52&q=80" alt="">
-                    <img class="auth-proof-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=52&h=52&q=80" alt="">
+                    <img class="auth-proof-avatar" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=52&h=52&q=80" alt="" loading="lazy" decoding="async">
+                    <img class="auth-proof-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=52&h=52&q=80" alt="" loading="lazy" decoding="async">
+                    <img class="auth-proof-avatar" src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=52&h=52&q=80" alt="" loading="lazy" decoding="async">
+                    <img class="auth-proof-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=52&h=52&q=80" alt="" loading="lazy" decoding="async">
                 </div>
                 <div class="auth-proof-text"><strong>47,000+ students</strong> placed at top universities worldwide</div>
             </div>
@@ -608,5 +613,6 @@
     });
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../assets/site.js?v=9"></script>
+<footer class="gm-legal-bar gm-legal-bar--light"><p class="gm-legal-entity">Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · <a href="mailto:privacy@gradmire.in">privacy@gradmire.in</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund-policy.html">Refunds &amp; fees</a><a href="cookie-policy.html">Cookies</a><a href="data-request.html">Your data rights</a><a href="grievance.html">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></footer>
+
+<script src="../assets/site.js?v=13" defer></script>

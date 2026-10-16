@@ -1,12 +1,17 @@
-﻿<meta charset="UTF-8">
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<script>try{var c=JSON.parse(localStorage.getItem("gm-consent")||"null"),t=(c&&c.preferences&&localStorage.getItem("gradmire-theme"))||sessionStorage.getItem("gradmire-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+<link rel="preconnect" href="https://images.unsplash.com">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="canonical" href="https://gradmire.in/destinations.html">
 <title>Gradmire — Study Abroad Destinations</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="preload" href="../assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/fonts/fonts.css">
 <style>
 :root{--bg:#F0F2F7;--surface:#FFFFFF;--surface-tint:#E8EBF4;--text-p:#0E1420;--text-s:#556270;--brand:#1A4870;--accent:#007A5A;--accent-dim:rgba(0,122,90,.12);--border:rgba(14,20,32,.1);--sans:'Bricolage Grotesque',system-ui,sans-serif;--mono:'JetBrains Mono','Menlo',monospace;--r-sm:8px;--r-md:16px;--r-lg:24px;--w:1280px;--gutter:clamp(1.25rem,5vw,3rem);--sec:clamp(4rem,8vw,7rem);--ease:cubic-bezier(.16,1,.3,1);}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(45,184,140,.18);}}
-:root[data-theme="dark"]{--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(45,184,140,.18);}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--accent:#2DB88C;--accent-hover:#27A07B;--accent-dim:rgba(45,184,140,.18);--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(45,184,140,.18);}}
+:root[data-theme="dark"]{--accent:#2DB88C;--accent-hover:#27A07B;--accent-dim:rgba(45,184,140,.18);--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(45,184,140,.18);}
 *,*::before,*::after{box-sizing:border-box;margin:0;}
 body{background:var(--bg);color:var(--text-p);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;}
 img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
@@ -30,11 +35,11 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 .filter-bar{max-width:var(--w);margin:3rem auto 0;padding:0 var(--gutter);display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;}
 .filter-chip{padding:.45em 1.1em;border-radius:100px;border:1.5px solid var(--border);font-family:var(--sans);font-size:.85rem;font-weight:500;background:var(--surface);color:var(--text-s);cursor:pointer;transition:border-color .2s,background .2s,color .2s;}
 .filter-chip:hover{border-color:var(--text-p);color:var(--text-p);}
-.filter-chip.active{background:var(--brand);border-color:var(--brand);color:#fff;}
+.filter-chip.active{background:#1A4870;border-color:var(--brand);color:#fff;}
 /* Destinations grid */
 .dest-section{max-width:var(--w);margin:0 auto;padding:3rem var(--gutter) var(--sec);}
 .dest-grid-big{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;}
-.dest-card{border-radius:var(--r-lg);overflow:hidden;position:relative;cursor:pointer;background:var(--brand);transition:transform .45s var(--ease),box-shadow .45s var(--ease);aspect-ratio:4/5;}
+.dest-card{border-radius:var(--r-lg);overflow:hidden;position:relative;cursor:pointer;background:#1A4870;transition:transform .45s var(--ease),box-shadow .45s var(--ease);aspect-ratio:4/5;}
 .dest-card:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(10,14,26,.16);}
 .dest-card:active{transform:scale(.98);}
 .dest-card-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .5s var(--ease);}
@@ -54,7 +59,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 .stat-num{font-family:var(--mono);font-size:clamp(2.2rem,3.5vw,3.2rem);font-weight:700;color:var(--brand);line-height:1;letter-spacing:-.03em;}
 .stat-lbl{font-size:.875rem;color:var(--text-s);font-weight:500;margin-top:.4rem;line-height:1.35;}
 /* CTA section */
-.cta-strip{background:var(--brand);padding:clamp(3.5rem,7vw,6rem) var(--gutter);text-align:center;}
+.cta-strip{background:#1A4870;padding:clamp(3.5rem,7vw,6rem) var(--gutter);text-align:center;}
 .cta-strip-title{font-size:clamp(1.8rem,3.5vw,3rem);font-weight:800;color:#fff;letter-spacing:-.03em;line-height:1.05;margin-bottom:1rem;text-wrap:balance;}
 .cta-strip-sub{color:rgba(255,255,255,.7);font-size:1rem;margin-bottom:2rem;}
 .btn-cta{display:inline-flex;align-items:center;gap:.5em;padding:.85em 2.2em;border-radius:100px;font-family:var(--sans);font-size:1rem;font-weight:600;background:var(--accent);color:#fff;border:none;cursor:pointer;transition:background .2s,transform .15s;text-decoration:none;}
@@ -79,7 +84,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .nav{background:rgba(10,13,22,.88);}}
 :root[data-theme="dark"] .nav{background:rgba(10,13,22,.88);}
 </style>
-<link rel="stylesheet" href="../assets/site.css?v=9">
+<link rel="stylesheet" href="../assets/site.css?v=13">
 
 <nav class="nav" aria-label="Main navigation">
   <div class="nav-inner">
@@ -119,8 +124,8 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
   <div class="stats-strip-inner">
     <div class="reveal"><div class="stat-num">47,000+</div><div class="stat-lbl">Students placed across 50+ countries</div></div>
     <div class="reveal" style="transition-delay:.08s"><div class="stat-num">850+</div><div class="stat-lbl">Partner university agreements</div></div>
-    <div class="reveal" style="transition-delay:.14s"><div class="stat-num">18 yrs</div><div class="stat-lbl">Trusted study-abroad guidance since 2006</div></div>
-    <div class="reveal" style="transition-delay:.2s"><div class="stat-num">97%</div><div class="stat-lbl">Student satisfaction rate across all destinations</div></div>
+    <div class="reveal" style="transition-delay:.14s"><div class="stat-num">20+ yrs</div><div class="stat-lbl">Trusted study-abroad guidance since 2006</div></div>
+    <div class="reveal" style="transition-delay:.2s"><div class="stat-num">9</div><div class="stat-lbl">Destination country guides</div></div>
   </div>
 </div>
 
@@ -142,7 +147,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
     </a>
     <!-- USA -->
     <a href="study-in-usa.html" class="dest-card reveal" style="transition-delay:.05s" aria-label="Study in the USA">
-      <img class="dest-card-img" src="https://images.unsplash.com/photo-1485871981521-5b1fd3805eee?auto=format&fit=crop&w=900&q=80" alt="New York City">
+      <img class="dest-card-img" src="https://images.unsplash.com/photo-1485871981521-5b1fd3805eee?auto=format&fit=crop&w=900&q=80" alt="New York City" loading="lazy" decoding="async">
       <div class="dest-card-overlay"></div>
       <div class="dest-card-arrow"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <div class="dest-card-body">
@@ -152,7 +157,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
     </a>
     <!-- Canada -->
     <a href="study-in-canada.html" class="dest-card reveal" style="transition-delay:.1s" aria-label="Study in Canada">
-      <img class="dest-card-img" src="https://images.unsplash.com/photo-1517090504586-fde19ea6066f?auto=format&fit=crop&w=900&q=80" alt="Canada city">
+      <img class="dest-card-img" src="https://images.unsplash.com/photo-1517090504586-fde19ea6066f?auto=format&fit=crop&w=900&q=80" alt="Canada city" loading="lazy" decoding="async">
       <div class="dest-card-overlay"></div>
       <div class="dest-card-arrow"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <div class="dest-card-body">
@@ -162,7 +167,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
     </a>
     <!-- Australia -->
     <a href="study-in-australia.html" class="dest-card reveal" style="transition-delay:.15s" aria-label="Study in Australia">
-      <img class="dest-card-img" src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=900&q=80" alt="Sydney Opera House">
+      <img class="dest-card-img" src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=900&q=80" alt="Sydney Opera House" loading="lazy" decoding="async">
       <div class="dest-card-overlay"></div>
       <div class="dest-card-arrow"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <div class="dest-card-body">
@@ -172,7 +177,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
     </a>
     <!-- Germany -->
     <a href="study-in-germany.html" class="dest-card reveal" style="transition-delay:.2s" aria-label="Study in Germany">
-      <img class="dest-card-img" src="https://images.unsplash.com/photo-1560969184-10fe8719e047?auto=format&fit=crop&w=900&q=80" alt="Berlin">
+      <img class="dest-card-img" src="https://images.unsplash.com/photo-1560969184-10fe8719e047?auto=format&fit=crop&w=900&q=80" alt="Berlin" loading="lazy" decoding="async">
       <div class="dest-card-overlay"></div>
       <div class="dest-card-arrow"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <div class="dest-card-body">
@@ -182,7 +187,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
     </a>
     <!-- Ireland -->
     <a href="study-in-ireland.html" class="dest-card reveal" style="transition-delay:.25s" aria-label="Study in Ireland">
-      <img class="dest-card-img" src="https://images.unsplash.com/photo-1570875450638-044bca38ec92?auto=format&fit=crop&w=900&q=80" alt="Cliffs of Moher, Ireland">
+      <img class="dest-card-img" src="https://images.unsplash.com/photo-1570875450638-044bca38ec92?auto=format&fit=crop&w=900&q=80" alt="Cliffs of Moher, Ireland" loading="lazy" decoding="async">
       <div class="dest-card-overlay"></div>
       <div class="dest-card-arrow"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <div class="dest-card-body">
@@ -192,7 +197,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
     </a>
     <!-- New Zealand -->
     <a href="study-in-newzealand.html" class="dest-card reveal" style="transition-delay:.3s" aria-label="Study in New Zealand">
-      <img class="dest-card-img" src="https://images.unsplash.com/photo-1469521669194-babb45599def?auto=format&fit=crop&w=900&q=80" alt="New Zealand landscape">
+      <img class="dest-card-img" src="https://images.unsplash.com/photo-1469521669194-babb45599def?auto=format&fit=crop&w=900&q=80" alt="New Zealand landscape" loading="lazy" decoding="async">
       <div class="dest-card-overlay"></div>
       <div class="dest-card-arrow"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <div class="dest-card-body">
@@ -202,7 +207,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
     </a>
     <!-- Italy -->
     <a href="study-in-italy.html" class="dest-card reveal" style="transition-delay:.35s" aria-label="Study in Italy">
-      <img class="dest-card-img" src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=900&q=80" alt="Rome Italy">
+      <img class="dest-card-img" src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=900&q=80" alt="Rome Italy" loading="lazy" decoding="async">
       <div class="dest-card-overlay"></div>
       <div class="dest-card-arrow"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <div class="dest-card-body">
@@ -212,7 +217,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
     </a>
     <!-- Finland -->
     <a href="study-in-finland.html" class="dest-card reveal" style="transition-delay:.4s" aria-label="Study in Finland">
-      <img class="dest-card-img" src="../assets/finland-helsinki.jpg" alt="Helsinki waterfront in Finland">
+      <img class="dest-card-img" src="../assets/finland-helsinki.jpg" alt="Helsinki waterfront in Finland" loading="lazy" decoding="async">
       <div class="dest-card-overlay"></div>
       <div class="dest-card-arrow"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <div class="dest-card-body">
@@ -232,7 +237,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 <footer class="footer" aria-label="Site footer">
   <div class="footer-inner">
     <div>
-      <span class="footer-brand"><img src="../assets/gradmire-logo.png" alt="Gradmire" height="28" style="display:block;max-width:140px;"></span>
+      <span class="footer-brand"><img src="../assets/gradmire-logo.png" alt="Gradmire" height="28" style="display:block;max-width:140px;" loading="lazy" decoding="async"></span>
       <p class="footer-tagline">India's study-abroad counselling platform. Trusted since 2006 by students and families across India.</p>
     </div>
     <div>
@@ -278,6 +283,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
       <a href="terms.html" class="footer-legal">Terms of use</a>
     </div>
   </div>
+    <div class="gm-legal-bar gm-legal-bar--light"><p class="gm-legal-entity">Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · <a href="mailto:privacy@gradmire.in">privacy@gradmire.in</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund-policy.html">Refunds &amp; fees</a><a href="cookie-policy.html">Cookies</a><a href="data-request.html">Your data rights</a><a href="grievance.html">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
 </footer>
 
 <script>
@@ -298,5 +304,4 @@ document.querySelectorAll('.filter-chip').forEach(chip => {
 });
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../assets/site.js?v=9"></script>
+<script src="../assets/site.js?v=13" defer></script>
