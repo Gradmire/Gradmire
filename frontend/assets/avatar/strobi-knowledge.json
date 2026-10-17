@@ -1,0 +1,176 @@
+{
+  "sections": {
+    "overview": {
+      "title": "Why this country",
+      "text": "The quick case for studying in {country}: what it's known for, typical degree lengths and what graduates do next. Use it to decide if {country} belongs on your shortlist."
+    },
+    "courses": {
+      "title": "Courses by subject",
+      "text": "Pick your subject first, then see which {country} programmes fit. Choosing by subject (not by flag) keeps your shortlist focused on your career."
+    },
+    "universities": {
+      "title": "Universities",
+      "text": "Leading universities in {country}. Compare entry requirements, location and fees before applying; rankings are only one signal."
+    },
+    "cost": {
+      "title": "Your budget",
+      "text": "Tuition plus living costs for a year in {country}. Add visa fees, insurance and flights, and keep a buffer of about 10% for surprises."
+    },
+    "scholarships": {
+      "title": "Scholarships",
+      "text": "Funding options for Indian students in {country}. Most deadlines fall 6–10 months before the intake, so start early."
+    },
+    "intakes": {
+      "title": "Intakes",
+      "text": "When courses start in {country}. Aim to apply 8–12 months before your chosen intake so offers, funding and visa all fit."
+    },
+    "eligibility": {
+      "title": "Eligibility",
+      "text": "Minimum academic and language requirements. Each university and course can ask for more, so always check the programme page."
+    },
+    "exams": {
+      "title": "Entrance and English tests",
+      "text": "Tests universities in {country} accept. Book a date at least 2–3 months before your application deadline."
+    },
+    "visa": {
+      "title": "Student visa",
+      "text": "The visa steps for {country}: documents, proof of funds and timelines. Apply as soon as you have your offer and fees are paid."
+    },
+    "pr": {
+      "title": "Path to permanent residence",
+      "text": "How study can lead to work permits and residence in {country}. Rules change often, so check the official immigration site."
+    },
+    "careers": {
+      "title": "Careers",
+      "text": "Sectors hiring graduates in {country}. Match your course to these sectors to improve your chances after graduating."
+    },
+    "part-time-work": {
+      "title": "Part-time work",
+      "text": "How many hours students may work in {country} and typical pay. Your visa conditions are the final word."
+    },
+    "cities": {
+      "title": "Student cities",
+      "text": "Popular student cities in {country}. Rent is usually the biggest cost, so compare cities as well as universities."
+    },
+    "faq": {
+      "title": "FAQs",
+      "text": "Answers to the questions students ask us most about {country}. Tap a question to expand it."
+    },
+    "duration": {
+      "title": "Programme length",
+      "text": "How long degrees take in {country}, which affects your total cost and time to your first job."
+    },
+    "destinations": {
+      "title": "Study destinations",
+      "text": "Our 9 study destinations. Open one to see costs, visas, intakes and careers in one place."
+    },
+    "globe-box": {
+      "title": "Destination globe",
+      "text": "Spin the globe to explore our 9 study destinations and see where Indian students go."
+    },
+    "process": {
+      "title": "How we help",
+      "text": "Our process from first call to visa: profile review, shortlist, applications, then visa and pre-departure support."
+    },
+    "cta": {
+      "title": "Get started",
+      "text": "Book a free 1:1 session. A counsellor calls within 24 hours, with no fees and no obligation."
+    }
+  },
+  "pages": {
+    "index": "Gradmire's home page: compare destinations, courses, budgets and timelines, then book free counselling.",
+    "about": "Who we are and how we work. We are paid by students, not commissions, so advice stays unbiased.",
+    "blog": "Guides and stories about studying abroad: applications, visas, costs and student life.",
+    "contact": "Ways to reach us. Use the form for questions; a counsellor replies within one working day.",
+    "destinations": "All 9 study destinations side by side. Open a country for its full guide.",
+    "events": "Upcoming fairs and webinars where you can meet universities and ask questions live.",
+    "faq": "Common questions about our services, fees, applications and visas.",
+    "find-courses": "Search courses by subject, level and country to build your shortlist.",
+    "find-universities": "Search partner universities by country, ranking and fees.",
+    "free-consultation": "Book a free 1:1 counselling session. Fill in your details and pick a time.",
+    "gradmire": "The Gradmire story, team and counsellors.",
+    "scholarships": "Scholarships for Indian students, filterable by country and level.",
+    "login": "Log in to see your applications, documents and counsellor messages.",
+    "signup": "Create an account to save shortlists and track your applications.",
+    "privacy": "How we collect, use and protect your personal data.",
+    "terms": "The terms for using Gradmire's website and services.",
+    "refund-policy": "Our fees and when refunds apply.",
+    "cookie-policy": "Which cookies and storage we use, and how to change your choice.",
+    "data-request": "Ask to see, correct or delete the data we hold about you.",
+    "grievance": "Raise a complaint with our grievance officer.",
+    "roi-calculator": "Estimate the full cost of a degree and how long it may take to pay back.",
+    "comparator": "Compare courses side by side: fees, duration, requirements and outcomes.",
+    "deadline-tracker": "Track application, scholarship and visa deadlines for each intake.",
+    "grade-converter": "Convert your Indian percentage, CGPA or SGPA to the GPA scales universities use.",
+    "404": "This page doesn't exist. Use the menu or go back to the home page."
+  },
+  "fields": {
+    "name": "Your full name as on your passport, so applications match your documents.",
+    "firstName": "Your first name as on your passport.",
+    "lastName": "Your surname as on your passport.",
+    "email": "An email you check often. Universities and your counsellor will write here.",
+    "phone": "A 10-digit mobile number. Your counsellor will call this within 24 hours.",
+    "tel": "A 10-digit mobile number. Your counsellor will call this within 24 hours.",
+    "destination": "Where you'd like to study. Pick \"Not sure yet\" and we'll help you choose.",
+    "country": "The country you're interested in. You can change your mind later.",
+    "intake": "The month you want to start. Most countries have a main autumn intake.",
+    "intendedIntake": "The month you want to start. Most countries have a main autumn intake.",
+    "studyLevel": "The level you're applying for: bachelor's, master's, PhD or diploma.",
+    "message": "Tell us what you need help with. The more detail, the better our answer.",
+    "password": "Use at least 8 characters, mixing letters, numbers and symbols.",
+    "search": "Type a subject, course or university to search."
+  },
+  "glossary": {
+    "IELTS": "IELTS is an English test (bands 0–9). Most master's courses ask for 6.5 overall, with no band under 6.",
+    "TOEFL": "TOEFL iBT is an English test scored out of 120. Many universities ask for 90–100.",
+    "PTE": "PTE Academic is a computer-based English test scored 10–90, with results in about 2 days.",
+    "Duolingo": "The Duolingo English Test is a cheap online test scored 10–160; check that your university accepts it.",
+    "GRE": "The GRE is a graduate entrance test used mainly by US universities for master's and PhD programmes.",
+    "GMAT": "The GMAT is the business-school entrance test, used for MBA and many management master's.",
+    "SAT": "The SAT is a US undergraduate entrance test; many universities are now test-optional.",
+    "SOP": "A Statement of Purpose explains why you chose this course and how it fits your goals. Make it specific to each university.",
+    "LOR": "A Letter of Recommendation comes from a teacher or manager who knows your work. Most courses want 2–3.",
+    "CAS": "A CAS is the UK university's confirmation number you need before applying for the Student visa.",
+    "I-20": "The I-20 is the form a US university issues so you can apply for the F-1 visa.",
+    "F-1": "The F-1 is the US student visa. You'll pay the SEVIS fee and attend an interview at the US embassy.",
+    "OPT": "OPT lets F-1 students work in the US for 12 months after graduating, related to their field of study.",
+    "STEM OPT": "STEM OPT extends US work rights by 24 months for graduates of eligible STEM degrees.",
+    "PGWP": "The Post-Graduation Work Permit lets graduates of eligible Canadian programmes work for up to 3 years.",
+    "GIC": "A GIC is a deposit that shows Canada you can cover living costs; it's paid back to you in instalments.",
+    "SDS": "Student Direct Stream was Canada's faster visa route; check the official site for its current status.",
+    "APS": "The APS certificate verifies Indian academic documents and is required for German university and visa applications.",
+    "blocked account": "A German blocked account holds a year of living costs; you can withdraw a fixed amount each month.",
+    "Graduate Route": "The UK Graduate Route lets you stay and work for 2 years after your degree (3 for a PhD).",
+    "subclass 500": "Subclass 500 is Australia's student visa. You'll need a CoE from your university and health insurance (OSHC).",
+    "OSHC": "OSHC is the health insurance international students must hold for their whole stay in Australia.",
+    "CoE": "A Confirmation of Enrolment is what an Australian university issues after you accept your offer and pay the deposit.",
+    "Stamp 1G": "Stamp 1G lets graduates stay in Ireland to look for work after their degree.",
+    "ECTS": "ECTS credits measure study load in Europe. One academic year is 60 ECTS.",
+    "GPA": "GPA is the grade average many universities use. Convert your Indian marks with our grade converter.",
+    "CGPA": "CGPA is your cumulative grade point average across all semesters.",
+    "SGPA": "SGPA is your grade point average for a single semester.",
+    "NMC": "The National Medical Commission sets the rules for Indians studying MBBS abroad to practise in India.",
+    "FMGE": "FMGE is the screening test Indian graduates of foreign medical schools must pass to practise in India.",
+    "MBBS": "MBBS is the medical degree. Abroad, check NMC rules on course length, language and internship.",
+    "Russell Group": "The Russell Group is 24 research-intensive UK universities, such as Oxford, UCL and Manchester.",
+    "Ivy League": "The Ivy League is 8 private US universities known for selectivity, such as Harvard and Yale.",
+    "intake": "An intake is when a course starts. Popular ones are September/autumn and January/spring.",
+    "tuition": "Tuition is what the university charges for teaching. It doesn't include rent, food or travel.",
+    "scholarship": "Scholarships are gifts, not loans. Merit awards need strong grades; apply early because funds run out.",
+    "ROI": "ROI (return on investment) compares what a degree costs with the salary it may lead to.",
+    "PR": "PR means permanent residence: the right to live and work in a country without a time limit.",
+    "visa": "A student visa lets you study in the country. You usually need an offer, proof of funds and health insurance."
+  },
+  "elements": {
+    "nav": "The main menu. Hover or tap a section to browse destinations, courses, services and tools.",
+    "footer": "Quick links to every part of the site, plus our legal pages.",
+    "footer-subscribe": "Leave your email for occasional study-abroad updates. You can unsubscribe at any time.",
+    "consult-fab": "Opens a short form to book free 1:1 counselling. No fees, no obligation.",
+    "theme": "Switches between light and dark mode.",
+    "logo-slider": "Universities our students have attended. Use the arrows or swipe to see more.",
+    "table": "A comparison table. Scroll sideways on a phone to see every column.",
+    "image": "A photo to help you picture the place.",
+    "consent": "Your cookie choices. Essential storage is always on; the rest is up to you.",
+    "hero": "{country} at a glance: how many universities, how many Indian students go there, typical fees and post-study work rights. Scroll down or use the tabs for each topic."
+  }
+}
