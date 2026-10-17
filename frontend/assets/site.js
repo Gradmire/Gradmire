@@ -506,16 +506,18 @@
         wrap.className = 'gm-buddy';
         wrap.innerHTML = `
           <div class="gm-buddy-bubble" role="status" aria-live="polite" hidden>
+            <p class="gm-buddy-title" hidden></p>
             <p class="gm-buddy-text"></p>
             <div class="gm-buddy-actions" hidden></div>
             <button type="button" class="gm-buddy-close" aria-label="Dismiss message"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>
           </div>
-          <button type="button" class="gm-buddy-avatar" aria-label="Strobi, your study-abroad buddy. Show a tip">${buddySvg()}</button>`;
+          <button type="button" class="gm-buddy-avatar" aria-label="Strobi, your study-abroad buddy. Drag me, or use the arrow keys, onto any part of the page and I’ll explain it. Press for a tip.">${buddySvg()}</button>`;
         document.body.appendChild(wrap);
 
         const button = wrap.querySelector('.gm-buddy-avatar');
         const bubble = wrap.querySelector('.gm-buddy-bubble');
         const text = wrap.querySelector('.gm-buddy-text');
+        const titleEl = wrap.querySelector('.gm-buddy-title');
         const actions = wrap.querySelector('.gm-buddy-actions');
 
         /* ── Animation state: a resting "base" plus short reactions that fall back to it. ── */
@@ -541,11 +543,13 @@
 
         /* ── Speech bubble ── */
         let bubbleTimer = 0;
-        function say(message, { ms = 4200, cta = false } = {}) {
+        function say(message, { ms = 4200, cta = false, title = '', home = false } = {}) {
             clearTimeout(bubbleTimer);
+            titleEl.textContent = title;
+            titleEl.hidden = !title;
             text.textContent = message;
-            actions.hidden = !cta;
-            actions.innerHTML = cta ? '<button type="button" class="gm-buddy-cta">Talk to a counsellor</button>' : '';
+            actions.hidden = !cta && !home;
+            actions.innerHTML = `${cta ? '<button type="button" class="gm-buddy-cta">Talk to a counsellor</button>' : ''}${home && wrap.classList.contains('is-placed') ? '<button type="button" class="gm-buddy-home">Send Strobi home</button>' : ''}`;
             bubble.hidden = false;
             requestAnimationFrame(() => bubble.classList.add('is-visible'));
             if (ms) bubbleTimer = setTimeout(hush, ms);
@@ -576,16 +580,249 @@
             button.querySelector('.gm-buddy-fallback')?.replaceWith(mount);
         }).catch((error) => { console.warn('[Gradmire] Strobi fell back to the inline SVG:', error.message); });
 
+        /* ── Drag me anywhere: drop Strobi on any part of the page and it explains that part,
+           using avatar/strobi-knowledge.json plus what the page itself says. Arrow keys move
+           it too, and Enter explains what is underneath. ── */
+        let knowledge = null;
+        const loadKnowledge = () => knowledge || (knowledge = fetch(new URL('avatar/strobi-knowledge.json', ASSETS_URL).href)
+            .then((res) => (res.ok ? res.json() : {})).catch(() => ({})));
+        const pageStem = pageName.replace(/\.html$/, '');
+        const countrySlug = pageName.match(/^study-in-([a-z-]+)\.html$/)?.[1];
+        const countryName = (countrySlug && destinations.find(([, slug]) => slug === countrySlug)?.[0]) || '';
+        const clean = (value) => String(value || '').replace(/\s+/g, ' ').trim();
+        const firstSentence = (value) => {
+            const s = clean(value);
+            const m = s.match(/^.{20,220}?[.!?](?=\s|$)/);
+            return m ? m[0] : (s.length > 200 ? `${s.slice(0, 197)}…` : s);
+        };
+        const capital = (s) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
+        const fill = (s) => s.replace(/\{country\}/g, countryName || 'this country');
+
+        let target = null;
+        const mark = (el) => {
+            if (target === el) return;
+            target?.classList.remove('gm-buddy-target');
+            target = el;
+            el?.classList.add('gm-buddy-target');
+        };
+        function orient() {
+            const r = button.getBoundingClientRect();
+            wrap.classList.toggle('is-below', r.top < 220);
+            wrap.classList.toggle('is-flip', r.left + 280 > window.innerWidth);
+        }
+        function place(x, y) {
+            const size = button.offsetWidth;
+            x = Math.max(8, Math.min(window.innerWidth - size - 8, x));
+            y = Math.max(8, Math.min(window.innerHeight - size - 8, y));
+            wrap.style.left = `${x}px`;
+            wrap.style.top = `${y}px`;
+            wrap.classList.add('is-placed');
+            orient();
+        }
+        function goHome() {
+            mark(null);
+            wrap.classList.remove('is-placed', 'is-below', 'is-flip');
+            wrap.style.left = wrap.style.top = '';
+            sessionSet('gm-buddy-pos', '');
+        }
+        const saved = (sessionGet('gm-buddy-pos') || '').split(',').map(Number);
+        if (saved.length === 2 && saved.every(Number.isFinite)) place(saved[0] * window.innerWidth, saved[1] * window.innerHeight);
+        window.addEventListener('resize', () => { if (wrap.classList.contains('is-placed')) place(parseFloat(wrap.style.left), parseFloat(wrap.style.top)); });
+
+        /* Sample Strobi's centre plus a small cross around it, skip invisible layers, and prefer a
+           control or field so small targets (nav buttons, footer links) are easy to hit. */
+        const interactive = 'input, select, textarea, button, a[href], summary, [role="button"]';
+        const visible = (el) => !el.checkVisibility || el.checkVisibility({ visibilityProperty: true });
+        function elementUnder() {
+            const r = button.getBoundingClientRect();
+            const cx = r.left + r.width / 2;
+            const cy = r.top + r.height / 2;
+            const hits = [[0, 0], [0, -14], [0, 14], [-14, 0], [14, 0]].map(([dx, dy]) => document.elementsFromPoint(cx + dx, cy + dy)
+                .find((el) => !wrap.contains(el) && el !== document.documentElement && el !== document.body && visible(el)) || null);
+            return hits.find((el) => el?.closest(interactive)) || hits[0] || hits.find(Boolean) || null;
+        }
+        const subjectOf = (el) => el && (el.closest('input, select, textarea, button, a[href], summary, img, table, .gm-consult-fab')
+            || el.closest('h1, h2, h3, h4, li, p, [class*="card"], [class*="stat"], form, section, article, aside, nav, footer, header')
+            || el);
+
+        function sectionFor(el, kb) {
+            for (let node = el; node && node !== document.body; node = node.parentElement) {
+                if (node.id && kb.sections?.[node.id]) return { key: node.id, node };
+            }
+            return null;
+        }
+        function glossaryFor(textValue, kb) {
+            const terms = Object.keys(kb.glossary || {}).sort((a, b) => b.length - a.length);
+            for (const term of terms) {
+                const acronym = term === term.toUpperCase();
+                const re = new RegExp(`(^|[^A-Za-z])${term.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')}(?![A-Za-z])`, acronym ? '' : 'i');
+                if (re.test(textValue)) return kb.glossary[term];
+            }
+            return '';
+        }
+        function describe(el, kb) {
+            const pageInfo = kb.pages?.[pageStem] || 'A Gradmire page to help you plan your studies abroad.';
+            if (!el) return { title: 'This page', text: pageInfo };
+            const near = el.closest('section, article, li, [class*="card"], form, nav, footer, header, aside, p') || el;
+            const tip = glossaryFor(clean(el.textContent).length > 30 ? el.textContent : near.textContent, kb);
+            const withTip = (text) => (tip && !text.includes(tip) ? `${text} Good to know: ${tip}` : text);
+
+            const field = el.closest('input, select, textarea');
+            if (field && !field.closest('.gm-buddy')) {
+                const label = labelOf(field);
+                let textValue = kb.fields?.[field.name] || kb.fields?.[field.id] || kb.fields?.[field.type] || `Fill in ${label} here.`;
+                const problem = fieldProblem(field);
+                if (problem) textValue += ` ${problem}`;
+                else if (problem === '') textValue += ' What you entered looks right.';
+                return { title: capital(label), text: textValue, mood: problem ? 'confused' : 'happy' };
+            }
+            if (el.closest('.gm-consult-fab')) return { title: 'Free counselling', text: kb.elements?.['consult-fab'], cta: true };
+            if (el.closest('.site-theme-toggle')) return { title: 'Light or dark', text: kb.elements?.theme };
+            if (el.closest('.footer-subscribe')) return { title: 'Study-abroad updates', text: kb.elements?.['footer-subscribe'] };
+            if (el.closest('.gm-consent')) return { title: 'Cookie choices', text: kb.elements?.consent };
+            if (el.closest('[data-logo-slider]')) return { title: 'Where our students go', text: kb.elements?.['logo-slider'] };
+
+            const control = el.closest('a[href], button, summary, [role="button"]');
+            if (control) {
+                const label = clean(control.getAttribute('aria-label') || control.textContent) || 'This button';
+                const href = control.getAttribute('href') || '';
+                let textValue;
+                if (href.startsWith('#')) {
+                    const dest = document.getElementById(href.slice(1));
+                    const heading = clean(dest?.querySelector('h1, h2, h3')?.textContent);
+                    textValue = `Jumps to ${heading ? `“${heading}”` : 'that section'} on this page.`;
+                } else if (href.startsWith('mailto:')) {
+                    textValue = `Opens your email app to write to ${href.slice(7)}.`;
+                } else if (href.startsWith('tel:')) {
+                    textValue = `Calls ${href.slice(4)}.`;
+                } else if (href) {
+                    const url = new URL(href, window.location.href);
+                    const stem = url.pathname.split('/').pop().replace(/\.html$/, '');
+                    textValue = url.origin !== window.location.origin
+                        ? `Opens ${url.hostname.replace(/^www\./, '')}, an outside website.`
+                        : kb.pages?.[stem] ? `Opens: ${kb.pages[stem]}`
+                            : stem.startsWith('study-in-') ? `Opens the full guide to studying in ${destinations.find(([, slug]) => `study-in-${slug}` === stem)?.[0] || 'this country'}: costs, visas, intakes and careers.`
+                                : 'Opens another Gradmire page.';
+                } else if (control.matches('[type="submit"]')) {
+                    textValue = 'Sends this form. I’ll tell you if anything needs fixing.';
+                } else if (control.hasAttribute('aria-expanded') || control.matches('summary')) {
+                    textValue = 'Shows or hides more detail. Tap it to expand.';
+                } else {
+                    textValue = 'Tap it to use it.';
+                }
+                return { title: label.length > 48 ? `${label.slice(0, 45)}…` : label, text: withTip(textValue) };
+            }
+            if (el.closest('table')) {
+                const heads = [...el.closest('table').querySelectorAll('th')].map((th) => clean(th.textContent)).filter(Boolean).slice(0, 4);
+                return { title: 'Table', text: withTip(`${kb.elements?.table}${heads.length ? ` Columns: ${heads.join(', ')}.` : ''}`) };
+            }
+            if (el.matches('img')) return { title: clean(el.alt) || 'Photo', text: kb.elements?.image };
+            const hero = el.closest('.dest-hero, .hero') || el.closest('[class*="hero"]');
+            if (hero && !el.closest('form')) {
+                const h1 = clean((el.closest('h1') || hero.querySelector('h1') || hero.closest('section, header')?.querySelector('h1'))?.textContent);
+                return { title: h1 || 'Welcome', text: withTip(countryName ? fill(kb.elements?.hero || '') : (kb.pages?.[pageStem] || '')) };
+            }
+
+            const section = sectionFor(el, kb);
+            const heading = clean((el.matches('h1, h2, h3, h4') ? el : near.querySelector('h1, h2, h3, h4') || section?.node.querySelector('h1, h2, h3'))?.textContent);
+            if (section) {
+                const info = kb.sections[section.key];
+                const local = el !== section.node && clean(el.textContent).length > 25 ? ` Here: “${firstSentence(el.textContent)}”` : '';
+                return { title: heading || info.title, text: withTip(`${fill(info.text)}${local}`), cta: ['cost', 'scholarships', 'visa', 'eligibility', 'intakes', 'courses', 'pr'].includes(section.key) };
+            }
+            if (el.closest('footer')) return { title: 'Footer', text: kb.elements?.footer };
+            if (el.closest('nav, .nav')) return { title: 'Menu', text: kb.elements?.nav };
+            if (el.closest('h1') && kb.pages?.[pageStem]) return { title: heading, text: withTip(kb.pages[pageStem]) };
+            const body = clean((near.matches('p') ? near : near.querySelector('p'))?.textContent || near.textContent).replace(heading, '').trim();
+            if (heading || body.length > 25) {
+                return { title: heading || 'On this page', text: withTip(body.length > 25 ? firstSentence(body) : `This part is about ${heading.replace(/[.!?]+$/, '')}.`) };
+            }
+            return { title: 'This page', text: withTip(pageInfo) };
+        }
+
+        async function explain() {
+            const el = subjectOf(elementUnder()) || target;
+            mark(el);
+            show('thinking');
+            const kb = await loadKnowledge();
+            const info = describe(el, kb);
+            react(info.mood || 'happy', 2600);
+            say(info.text || 'Hmm, I don’t know much about this part yet.', { title: info.title, ms: 14000, cta: info.cta, home: true });
+            setTimeout(() => { if (!drag) mark(null); }, 3000);
+        }
+
+        let drag = null;
+        let justDragged = false;
+        let frame = 0;
+        button.addEventListener('pointerdown', (event) => {
+            if (event.button !== 0) return;
+            const r = button.getBoundingClientRect();
+            drag = { x: event.clientX, y: event.clientY, ox: event.clientX - r.left, oy: event.clientY - r.top, moved: false };
+            mark(null);
+            try { button.setPointerCapture(event.pointerId); } catch (_) { /* synthetic or already-released pointer */ }
+            loadKnowledge();
+        });
+        button.addEventListener('pointermove', (event) => {
+            if (!drag) return;
+            if (!drag.moved && Math.hypot(event.clientX - drag.x, event.clientY - drag.y) < 6) return;
+            if (!drag.moved) {
+                drag.moved = true;
+                wrap.classList.add('is-dragging');
+                hush();
+                clearTimeout(reactionTimer);
+                reactionTimer = 0;
+                show('searching');
+            }
+            place(event.clientX - drag.ox, event.clientY - drag.oy);
+            if (!frame) frame = requestAnimationFrame(() => { frame = 0; if (drag) mark(subjectOf(elementUnder())); });
+        });
+        const endDrag = (event, drop) => {
+            if (!drag) return;
+            const moved = drag.moved;
+            drag = null;
+            wrap.classList.remove('is-dragging');
+            try { if (button.hasPointerCapture(event.pointerId)) button.releasePointerCapture(event.pointerId); } catch (_) {}
+            if (!moved) return;
+            justDragged = true;
+            setTimeout(() => { justDragged = false; }, 0);
+            const r = button.getBoundingClientRect();
+            sessionSet('gm-buddy-pos', `${(r.left / window.innerWidth).toFixed(4)},${(r.top / window.innerHeight).toFixed(4)}`);
+            if (drop) explain(); else { mark(null); show(base); }
+        };
+        button.addEventListener('pointerup', (event) => endDrag(event, true));
+        button.addEventListener('pointercancel', (event) => endDrag(event, false));
+        button.addEventListener('keydown', (event) => {
+            const step = event.shiftKey ? 72 : 24;
+            const moves = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] };
+            if (moves[event.key]) {
+                event.preventDefault();
+                const r = button.getBoundingClientRect();
+                place(r.left + moves[event.key][0], r.top + moves[event.key][1]);
+                mark(subjectOf(elementUnder()));
+                return;
+            }
+            if ((event.key === 'Enter' || event.key === ' ') && wrap.classList.contains('is-placed')) { event.preventDefault(); explain(); }
+            if (event.key === 'Escape' && wrap.classList.contains('is-placed')) { event.preventDefault(); hush(); goHome(); }
+        });
+        actions.addEventListener('click', (event) => {
+            if (!event.target.closest('.gm-buddy-home')) return;
+            hush();
+            goHome();
+            button.focus();
+        });
+
         /* ── The buddy itself ── */
         const tips = [
+            'Drag me onto any part of the page and I’ll explain it.',
             'Tip: shortlist courses by subject first, then compare countries.',
             'Public universities in Germany charge little or no tuition.',
             'Most UK master’s degrees take just one year.',
             'Start scholarship applications 9–12 months before your intake.',
             'Our counsellors can review your SOP for free.'
         ];
-        let tipIndex = Math.floor(Math.random() * tips.length);
+        let tipIndex = 0;
         button.addEventListener('click', () => {
+            if (justDragged) return;
             react('laughing', 2200);
             say(tips[tipIndex++ % tips.length], { ms: 7000, cta: true });
         });
@@ -721,8 +958,8 @@
                 const message = pageName === '404.html'
                     ? 'Oops, this page went missing. Let’s get you back on track.'
                     : match
-                        ? `Hi, I’m Strobi! Thinking about studying in ${match[0]}? Tap me for tips.`
-                        : 'Hi, I’m Strobi! I’ll keep you company while you explore. Tap me for tips.';
+                        ? `Hi, I’m Strobi! Thinking about studying in ${match[0]}? Drag me onto any section and I’ll explain it.`
+                        : 'Hi, I’m Strobi! Drag me onto anything on the page and I’ll explain it.';
                 if (!reduced.matches) react('excited', 2600);
                 say(message, { ms: 6500 });
             }, 3500);
