@@ -4,7 +4,7 @@ import { createLead, listLeads } from '../services/lead-store.js';
 const jsonHeaders = { 'Content-Type': 'application/json' };
 const MAX_BODY_BYTES = 16 * 1024;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const SOURCES = new Set(['consultation', 'contact']);
+const SOURCES = new Set(['consultation', 'contact', 'newsletter']);
 
 const TEXT_FIELDS = {
     firstName: 120,
@@ -103,7 +103,11 @@ function normaliseLead(body) {
         lead[field] = body[field] === true;
     }
 
-    if (!lead.firstName || !lead.email) {
+    if (!lead.email) {
+        return { error: 'email is required' };
+    }
+    // Newsletter sign-ups from the footer collect only an email address.
+    if (source !== 'newsletter' && !lead.firstName) {
         return { error: 'firstName and email are required' };
     }
     if (!EMAIL_PATTERN.test(lead.email)) {
@@ -114,6 +118,9 @@ function normaliseLead(body) {
     }
     if (source === 'consultation' && !lead.contactConsent) {
         return { error: 'contactConsent is required for consultation requests' };
+    }
+    if (source === 'newsletter' && !lead.newsletterOptIn) {
+        return { error: 'newsletterOptIn is required for newsletter sign-ups' };
     }
     if (source === 'contact' && !lead.message) {
         return { error: 'message is required for contact enquiries' };

@@ -105,7 +105,7 @@ textarea.field-input{resize:vertical;min-height:130px;line-height:1.55;}
 @media(max-width:800px){.footer-inner{grid-template-columns:1fr 1fr;}.footer-inner>div:not(:first-child){border-left:none;padding-left:0;}}
 @media(max-width:500px){.footer-inner{grid-template-columns:1fr;}.footer-bottom{flex-direction:column;align-items:flex-start;}}
 </style>
-<link rel="stylesheet" href="../assets/site.css?v=16">
+<link rel="stylesheet" href="../assets/site.css?v=20">
 
 <nav class="nav" aria-label="Main navigation">
   <div class="nav-inner">
@@ -255,8 +255,7 @@ textarea.field-input{resize:vertical;min-height:130px;line-height:1.55;}
 <footer class="footer" aria-label="Site footer">
   <div class="footer-inner">
     <div>
-      <span style="display:block;margin-bottom:.7rem;"><img src="../assets/gradmire-logo-white.png" alt="Gradmire" height="28" style="max-width:140px;" onerror="this.src='../assets/gradmire-logo.png'"></span>
-      <p class="footer-tagline">India's study-abroad counselling platform. Trusted since 2006 by students and families across India.</p>
+      <a class="footer-logo" href="index.html" aria-label="Gradmire home"><img src="../assets/gradmire-logo-white.png" alt="Gradmire" width="200" height="54" loading="lazy" decoding="async"></a><p class="footer-tagline">Study abroad, organized by subject — not by flag.</p><form class="footer-subscribe" novalidate><label class="sr-only" for="footer-email">Email address for study-abroad updates</label><input id="footer-email" type="email" name="email" autocomplete="email" placeholder="you@email.com" required><button type="submit" aria-label="Subscribe to updates"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><p class="footer-subscribe-msg" role="status" hidden></p></form>
     </div>
     <div>
       <div class="footer-col-title">Destinations</div>
@@ -360,4 +359,4 @@ document.getElementById('contact-form').addEventListener('submit', function(e){
 });
 </script>
 <script src="../assets/api.js?v=1"></script>
-<script src="../assets/site.js?v=17" defer></script>
+<script src="../assets/site.js?v=18" defer></script>

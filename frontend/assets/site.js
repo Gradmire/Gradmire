@@ -1,8 +1,9 @@
 (() => {
     const root = document.documentElement;
-    /* Floating helper avatar: @bible-strong/avatar-web (AGPL-3.0) renders the definition below. */
+    /* Strobi, the study buddy: @bible-strong/avatar-web (AGPL-3.0) renders the definition below. */
     const AVATAR_WEB_URL = 'https://cdn.jsdelivr.net/npm/@bible-strong/avatar-web@0.1.0/+esm';
-    const AVATAR_DEFINITION_URL = new URL('avatar/strobi.avatar.json', document.currentScript?.src || window.location.href).href;
+    const ASSETS_URL = new URL('./', document.currentScript?.src || window.location.href).href;
+    const AVATAR_DEFINITION_URL = new URL('avatar/strobi.avatar.json', ASSETS_URL).href;
 
     /* ── Consent: essential storage always; "preferences" and "analytics" only with opt-in.
        The choice itself is essential (it has to be remembered to be respected). ── */
@@ -399,9 +400,8 @@
         fab.type = 'button';
         fab.className = 'gm-consult-fab';
         fab.setAttribute('aria-haspopup', 'dialog');
-        fab.innerHTML = `${avatarSvg()}<span><strong>Free counselling</strong><span>Talk to an expert</span></span>`;
+        fab.innerHTML = `<img src="${photo.replace('w=640&h=820', 'w=96&h=96')}" alt="" width="40" height="40" loading="lazy"><span><strong>Free counselling</strong><span>Talk to an expert</span></span>`;
         document.body.appendChild(fab);
-        setupAvatar(fab, pageName);
 
         const card = popup.querySelector('.gm-popup-card');
         const form = popup.querySelector('form');
@@ -480,137 +480,306 @@
         armAutoOpen();
     }
 
-    /* "Strobi", the floating helper. The procedural avatar from @bible-strong/avatar-web replaces this
-       inline SVG once the module and definition load; the SVG stays as the fallback if either fails.
-       She idles, smiles on hover and says hello once per session. */
-    function avatarSvg() {
-        return `<svg class="gm-avatar" viewBox="0 0 64 64" width="44" height="44" aria-hidden="true" focusable="false">
-          <defs>
-            <radialGradient id="gm-avatar-body" cx="35%" cy="28%" r="80%">
-              <stop offset="0" stop-color="#FFE29A"/><stop offset=".55" stop-color="#FFC24B"/><stop offset="1" stop-color="#F29A2E"/>
-            </radialGradient>
-          </defs>
-          <g class="gm-avatar-body">
-            <rect x="6" y="8" width="52" height="50" rx="22" fill="url(#gm-avatar-body)"/>
-            <ellipse cx="24" cy="18" rx="10" ry="4.5" fill="#fff" opacity=".35"/>
-            <path class="gm-avatar-cap" d="M13 18 32 9l19 9-19 8z" fill="#123B32"/>
-            <path d="M47 20v8" stroke="#123B32" stroke-width="2" stroke-linecap="round"/><circle cx="47" cy="29.5" r="2" fill="#FFC24B" stroke="#123B32" stroke-width="1.4"/>
-          </g>
-          <g class="gm-avatar-face">
-            <g class="gm-avatar-eyes">
-              <g class="gm-avatar-eye"><ellipse cx="23" cy="35" rx="4.6" ry="5.6" fill="#1D2B28"/><circle cx="24.6" cy="33" r="1.5" fill="#fff"/></g>
-              <g class="gm-avatar-eye"><ellipse cx="41" cy="35" rx="4.6" ry="5.6" fill="#1D2B28"/><circle cx="42.6" cy="33" r="1.5" fill="#fff"/></g>
-              <path class="gm-avatar-happy" d="M18.5 36q4.5-6 9 0M36.5 36q4.5-6 9 0" fill="none" stroke="#1D2B28" stroke-width="2.6" stroke-linecap="round"/>
-            </g>
-            <ellipse cx="16" cy="44" rx="3.6" ry="2.2" fill="#F2764B" opacity=".45"/><ellipse cx="48" cy="44" rx="3.6" ry="2.2" fill="#F2764B" opacity=".45"/>
-            <path class="gm-avatar-mouth" d="M28 45q4 3.4 8 0" fill="none" stroke="#1D2B28" stroke-width="2.2" stroke-linecap="round"/>
-          </g>
+    /* Strobi, the study buddy: a standalone companion (bottom-left) rendered by
+       @bible-strong/avatar-web from avatar/strobi.avatar.json. It reacts to what the visitor
+       does: clicks, typing, a field filled in right or wrong, form submits, idling, reaching
+       the footer. Animations come from the definition; the inline SVG is only a fallback. */
+    function buddySvg() {
+        return `<svg class="gm-buddy-fallback" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+          <circle cx="32" cy="32" r="28" fill="#5b7fe5"/>
+          <ellipse cx="22" cy="17" rx="9" ry="4.5" fill="#fff" opacity=".28"/>
+          <ellipse class="gm-buddy-eye" cx="26" cy="31" rx="3.2" ry="7.6" fill="#111316"/>
+          <ellipse class="gm-buddy-eye" cx="38" cy="31" rx="3.2" ry="7.6" fill="#111316"/>
         </svg>`;
     }
 
-    function setupAvatar(fab, pageName) {
-        const avatar = fab.querySelector('.gm-avatar');
-        if (!avatar) return;
-        const face = avatar.querySelector('.gm-avatar-face');
+    function setupBuddy() {
+        const pageName = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
+        if (pageName === 'dashboard.html') return;
         const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-        const timers = [];
-        const later = (fn, ms) => timers.push(setTimeout(fn, ms));
+        let session = null;
+        try { session = window.sessionStorage; } catch (_) {}
+        const sessionGet = (key) => { try { return session?.getItem(key); } catch (_) { return null; } };
+        const sessionSet = (key, value) => { try { session?.setItem(key, value); } catch (_) {} };
 
-        /* Moods map to animations in strobi.avatar.json; the fallback SVG reads data-mood instead. */
-        const animationFor = { neutral: 'idle', happy: 'happy', greet: 'excited' };
+        const wrap = document.createElement('div');
+        wrap.className = 'gm-buddy';
+        wrap.innerHTML = `
+          <div class="gm-buddy-bubble" role="status" aria-live="polite" hidden>
+            <p class="gm-buddy-text"></p>
+            <div class="gm-buddy-actions" hidden></div>
+            <button type="button" class="gm-buddy-close" aria-label="Dismiss message"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>
+          </div>
+          <button type="button" class="gm-buddy-avatar" aria-label="Strobi, your study-abroad buddy. Show a tip">${buddySvg()}</button>`;
+        document.body.appendChild(wrap);
+
+        const button = wrap.querySelector('.gm-buddy-avatar');
+        const bubble = wrap.querySelector('.gm-buddy-bubble');
+        const text = wrap.querySelector('.gm-buddy-text');
+        const actions = wrap.querySelector('.gm-buddy-actions');
+
+        /* ── Animation state: a resting "base" plus short reactions that fall back to it. ── */
         let live = null;
-        let mood = 'neutral';
-        const setMood = (next) => {
-            mood = next;
-            fab.dataset.mood = next === 'greet' ? 'happy' : next;
-            live?.play(animationFor[next]);
+        let base = pageName === '404.html' ? 'sad' : 'idle';
+        let current = base;
+        let reactionTimer = 0;
+        const show = (animation) => {
+            current = animation;
+            wrap.dataset.mood = animation;
+            live?.play(animation);
         };
-        setMood('neutral');
+        function setBase(animation) {
+            base = animation;
+            if (!reactionTimer) show(animation);
+        }
+        function react(animation, ms = 1600) {
+            clearTimeout(reactionTimer);
+            show(animation);
+            reactionTimer = setTimeout(() => { reactionTimer = 0; show(base); }, ms);
+        }
+        show(base);
 
+        /* ── Speech bubble ── */
+        let bubbleTimer = 0;
+        function say(message, { ms = 4200, cta = false } = {}) {
+            clearTimeout(bubbleTimer);
+            text.textContent = message;
+            actions.hidden = !cta;
+            actions.innerHTML = cta ? '<button type="button" class="gm-buddy-cta">Talk to a counsellor</button>' : '';
+            bubble.hidden = false;
+            requestAnimationFrame(() => bubble.classList.add('is-visible'));
+            if (ms) bubbleTimer = setTimeout(hush, ms);
+        }
+        function hush() {
+            clearTimeout(bubbleTimer);
+            bubble.classList.remove('is-visible');
+            setTimeout(() => { if (!bubble.classList.contains('is-visible')) bubble.hidden = true; }, 250);
+        }
+        wrap.querySelector('.gm-buddy-close').addEventListener('click', hush);
+        actions.addEventListener('click', (event) => {
+            if (!event.target.closest('.gm-buddy-cta')) return;
+            hush();
+            if (window.__gmOpenPopup) window.__gmOpenPopup(false);
+            else window.location.href = page('free-consultation.html');
+        });
+
+        /* ── Load the real avatar; keep the SVG if the CDN or JSON is unavailable. ── */
         Promise.all([
             import(AVATAR_WEB_URL),
             fetch(AVATAR_DEFINITION_URL).then((res) => { if (!res.ok) throw new Error(`HTTP ${res.status}`); return res.json(); })
         ]).then(([{ createAvatar }, definition]) => {
             const mount = document.createElement('span');
-            mount.className = 'gm-avatar gm-avatar--live';
+            mount.className = 'gm-buddy-live';
             mount.setAttribute('aria-hidden', 'true');
-            live = createAvatar(mount, { definition, defaultAnimation: animationFor[mood], size: '100%', onError: () => {} });
+            live = createAvatar(mount, { definition, defaultAnimation: current, size: '100%', onError: () => {} });
             mount.querySelector('.bs-avatar')?.removeAttribute('role');
-            avatar.replaceWith(mount);
-        }).catch((error) => { console.warn('[Gradmire] Avatar fell back to the inline SVG:', error.message); });
+            button.querySelector('.gm-buddy-fallback')?.replaceWith(mount);
+        }).catch((error) => { console.warn('[Gradmire] Strobi fell back to the inline SVG:', error.message); });
 
-        /* Blink at slightly irregular intervals, like the lab's auto-blink. */
-        function scheduleBlink() {
-            later(() => {
-                if (!live && !reduced.matches && !document.hidden) {
-                    fab.classList.add('is-blinking');
-                    setTimeout(() => fab.classList.remove('is-blinking'), 140);
-                }
-                scheduleBlink();
-            }, 2600 + Math.random() * 3200);
-        }
-        scheduleBlink();
+        /* ── The buddy itself ── */
+        const tips = [
+            'Tip: shortlist courses by subject first, then compare countries.',
+            'Public universities in Germany charge little or no tuition.',
+            'Most UK master’s degrees take just one year.',
+            'Start scholarship applications 9–12 months before your intake.',
+            'Our counsellors can review your SOP for free.'
+        ];
+        let tipIndex = Math.floor(Math.random() * tips.length);
+        button.addEventListener('click', () => {
+            react('laughing', 2200);
+            say(tips[tipIndex++ % tips.length], { ms: 7000, cta: true });
+        });
+        button.addEventListener('pointerenter', () => { if (!reactionTimer) react('playful', 1800); });
 
-        /* Glance toward the pointer (fine pointers only; throttled to one update per frame). */
-        let frame = 0;
-        if (window.matchMedia('(pointer: fine)').matches) {
-            window.addEventListener('pointermove', (event) => {
-                if (live || frame || reduced.matches) return;
-                frame = requestAnimationFrame(() => {
-                    frame = 0;
-                    const box = avatar.getBoundingClientRect();
-                    const dx = event.clientX - (box.left + box.width / 2);
-                    const dy = event.clientY - (box.top + box.height / 2);
-                    const dist = Math.hypot(dx, dy) || 1;
-                    const reach = Math.min(1, dist / 260);
-                    face.style.transform = `translate(${(dx / dist) * 3.2 * reach}px, ${(dy / dist) * 2.6 * reach}px)`;
-                });
-            }, { passive: true });
-        }
+        /* ── Fields: listen while focused, work while typing, judge on leaving the field. ── */
+        const isField = (el) => el && el.matches?.('input:not([type=hidden]):not([type=checkbox]):not([type=radio]):not([type=submit]):not([type=button]), textarea, select');
+        const ownField = (el) => el.closest?.('.gm-buddy');
+        let typingTimer = 0;
+        document.addEventListener('focusin', (event) => {
+            if (isField(event.target) && !ownField(event.target)) setBase('listening');
+        });
+        document.addEventListener('focusout', (event) => {
+            if (!isField(event.target) || ownField(event.target)) return;
+            setTimeout(() => { if (!isField(document.activeElement)) setBase(pageName === '404.html' ? 'sad' : 'idle'); }, 0);
+            judge(event.target);
+        });
+        document.addEventListener('input', (event) => {
+            if (!isField(event.target) || ownField(event.target)) return;
+            clearTimeout(typingTimer);
+            if (current !== 'working') show('working');
+            typingTimer = setTimeout(() => { if (!reactionTimer) show(base); }, 900);
+        });
 
-        fab.addEventListener('pointerenter', () => setMood('happy'));
-        fab.addEventListener('pointerleave', () => setMood('neutral'));
-        fab.addEventListener('focus', () => setMood('happy'));
-        fab.addEventListener('blur', () => setMood('neutral'));
-
-        /* Greeting bubble: once per session, tailored to destination pages. */
-        let session = null;
-        try { session = window.sessionStorage; } catch (_) {}
-        const seen = (() => { try { return session?.getItem('gm-avatar-greeted'); } catch (_) { return null; } })();
-        if (seen) return;
-        const country = pageName.match(/^study-in-([a-z-]+)\.html$/)?.[1];
-        const match = country && destinations.find(([, slug]) => slug === country);
-        const message = match
-            ? `Hi! Thinking about studying in ${match[0]}? I can connect you with a counsellor.`
-            : 'Hi, I’m Strobi! Planning to study abroad? Ask me for a free counselling call.';
-
-        const bubble = document.createElement('div');
-        bubble.className = 'gm-avatar-bubble';
-        bubble.setAttribute('role', 'status');
-        bubble.hidden = true;
-        bubble.innerHTML = `<p>${message}</p><button type="button" class="gm-avatar-bubble-close" aria-label="Dismiss message"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>`;
-        document.body.appendChild(bubble);
-
-        const hide = () => {
-            if (bubble.hidden) return;
-            bubble.classList.remove('is-visible');
-            setMood('neutral');
-            setTimeout(() => { bubble.hidden = true; }, 250);
+        const labelOf = (field) => {
+            const label = field.labels?.[0]?.textContent || field.getAttribute('aria-label') || field.placeholder || field.name || 'this field';
+            return label.replace(/\(optional\)|\*/gi, '').trim().replace(/\s+/g, ' ').toLowerCase();
         };
-        bubble.querySelector('p').addEventListener('click', () => { hide(); fab.click(); });
-        bubble.querySelector('.gm-avatar-bubble-close').addEventListener('click', hide);
-        fab.addEventListener('click', hide);
+        function fieldProblem(field) {
+            const value = String(field.value || '').trim();
+            if (!value) return null; // empty: no verdict until submit
+            if (field.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return 'That email doesn’t look right. Check for a typo.';
+            if (field.type === 'tel' && value.replace(/\D/g, '').length < 10) return 'A phone number needs at least 10 digits.';
+            if (!field.checkValidity()) return field.validationMessage || `Please check ${labelOf(field)}.`;
+            return '';
+        }
+        const praise = ['Looks good!', 'Perfect.', 'Got it!', 'Nice, that’s right.'];
+        let praiseIndex = 0;
+        let lastPraise = 0;
+        function judge(field) {
+            const problem = fieldProblem(field);
+            if (problem === null) return;
+            if (problem) {
+                react('confused', 2600);
+                say(problem, { ms: 4200 });
+                return;
+            }
+            react('happy', 1500);
+            /* Praise in words only now and then, so a long form doesn't turn into chatter. */
+            if (Date.now() - lastPraise > 8000) { lastPraise = Date.now(); say(praise[praiseIndex++ % praise.length], { ms: 1800 }); }
+        }
 
-        later(() => {
-            if (document.documentElement.classList.contains('gm-popup-open') || document.documentElement.classList.contains('gm-consent-open')) return;
-            try { session?.setItem('gm-avatar-greeted', '1'); } catch (_) {}
-            bubble.hidden = false;
-            setMood('greet');
-            if (!reduced.matches) fab.classList.add('is-waving');
-            requestAnimationFrame(() => bubble.classList.add('is-visible'));
-            later(() => fab.classList.remove('is-waving'), 1400);
-            later(hide, 9000);
-        }, 4500);
+        /* ── Page scripts mark errors with aria-invalid or role="alert"; mirror those. ── */
+        new MutationObserver((records) => {
+            for (const record of records) {
+                const el = record.target;
+                if (ownField(el)) continue;
+                if (record.attributeName === 'aria-invalid' && el.getAttribute('aria-invalid') === 'true') {
+                    react('sad', 2600);
+                    return;
+                }
+                if (record.attributeName === 'hidden' && el.matches('[role="alert"]') && !el.hidden && el.textContent.trim()) {
+                    react('sad', 2800);
+                    say(el.textContent.trim(), { ms: 4500 });
+                    return;
+                }
+            }
+        }).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['aria-invalid', 'hidden'] });
+
+        /* ── Submits: celebrate a clean form, commiserate when the page reports a problem. ── */
+        document.addEventListener('submit', (event) => {
+            const form = event.target;
+            if (ownField(form)) return;
+            setTimeout(() => {
+                const invalid = form.querySelector('[aria-invalid="true"]') || [...form.querySelectorAll('input, textarea, select')].some((f) => !f.disabled && !f.checkValidity());
+                const alert = [...form.querySelectorAll('[role="alert"]')].find((el) => !el.hidden && el.textContent.trim());
+                if (invalid || alert) {
+                    react('sad', 2800);
+                    if (!alert) say('Something’s missing. Check the highlighted fields.', { ms: 4200 });
+                } else {
+                    react('celebrate', 3200);
+                    say('Great, that’s on its way!', { ms: 2600 });
+                }
+            }, 0);
+        }, true);
+
+        /* ── Clicks anywhere else: a quick, light reaction. ── */
+        document.addEventListener('click', (event) => {
+            const target = event.target.closest?.('a, button, [role="button"], summary, label');
+            if (!target || ownField(target) || target.closest('form')) return;
+            if (target.matches('.site-theme-toggle, [data-theme-toggle]')) { react('surprised', 1400); return; }
+            if (target.matches('.btn-primary, .nav-btn, .gm-consult-fab, [class*="cta"]')) { react('excited', 1800); return; }
+            if (target.matches('summary, .faq-q, [aria-expanded]')) { react('curious', 1500); return; }
+            react(Math.random() < .5 ? 'happy' : 'curious', 1200);
+        });
+
+        /* ── Idle: bored after 40s, drowsy after 90s; any activity wakes it with a start. ── */
+        let idleTimer = 0;
+        let drowsyTimer = 0;
+        let resting = false;
+        function wake() {
+            clearTimeout(idleTimer);
+            clearTimeout(drowsyTimer);
+            if (resting) { resting = false; setBase(pageName === '404.html' ? 'sad' : 'idle'); react('surprised', 1200); }
+            idleTimer = setTimeout(() => { resting = true; setBase('bored'); }, 40000);
+            drowsyTimer = setTimeout(() => { resting = true; setBase('drowsy'); }, 90000);
+        }
+        ['pointerdown', 'keydown', 'scroll', 'touchstart'].forEach((type) => window.addEventListener(type, wake, { passive: true }));
+        wake();
+
+        /* ── Reaching the footer once: point at the newsletter box. ── */
+        const footer = document.querySelector('footer.footer, .footer');
+        if (footer && 'IntersectionObserver' in window) {
+            const io = new IntersectionObserver((entries) => {
+                if (!entries.some((e) => e.isIntersecting)) return;
+                io.disconnect();
+                react('proud', 2200);
+                if (document.querySelector('.footer-subscribe') && !sessionGet('gm-buddy-footer')) {
+                    sessionSet('gm-buddy-footer', '1');
+                    say('You made it to the end! Leave your email for study-abroad updates.', { ms: 5000 });
+                }
+            }, { threshold: .25 });
+            io.observe(footer);
+        }
+
+        /* ── Hello, once per session; tailored on destination pages and the 404 page. ── */
+        if (!sessionGet('gm-buddy-greeted')) {
+            setTimeout(() => {
+                if (root.classList.contains('gm-popup-open') || root.classList.contains('gm-consent-open')) return;
+                sessionSet('gm-buddy-greeted', '1');
+                const country = pageName.match(/^study-in-([a-z-]+)\.html$/)?.[1];
+                const match = country && destinations.find(([, slug]) => slug === country);
+                const message = pageName === '404.html'
+                    ? 'Oops, this page went missing. Let’s get you back on track.'
+                    : match
+                        ? `Hi, I’m Strobi! Thinking about studying in ${match[0]}? Tap me for tips.`
+                        : 'Hi, I’m Strobi! I’ll keep you company while you explore. Tap me for tips.';
+                if (!reduced.matches) react('excited', 2600);
+                say(message, { ms: 6500 });
+            }, 3500);
+        }
+    }
+
+    /* Footer email box: subscribes the address as a "newsletter" lead. The leads client
+       (api.js) is only on some pages, so it is loaded on first use. */
+    function loadApi() {
+        if (window.GradmireAPI) return Promise.resolve(window.GradmireAPI);
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = new URL('api.js', ASSETS_URL).href;
+            script.onload = () => (window.GradmireAPI ? resolve(window.GradmireAPI) : reject(new Error('API unavailable')));
+            script.onerror = () => reject(new Error('API unavailable'));
+            document.head.appendChild(script);
+        });
+    }
+
+    function setupFooterSubscribe() {
+        document.querySelectorAll('.footer-subscribe').forEach((form) => {
+            const input = form.querySelector('input[type="email"]');
+            const button = form.querySelector('button[type="submit"]');
+            const msg = form.querySelector('.footer-subscribe-msg');
+            const note = `Occasional study-abroad updates by email. Unsubscribe anytime. <a href="${page('privacy.html')}">Privacy</a>`;
+            const status = (html, kind = '') => {
+                msg.innerHTML = html;
+                msg.className = `footer-subscribe-msg${kind ? ` is-${kind}` : ''}`;
+                msg.hidden = false;
+            };
+            input.addEventListener('focus', () => { if (msg.hidden) status(note); });
+            input.addEventListener('input', () => {
+                if (input.getAttribute('aria-invalid') === 'true') { input.removeAttribute('aria-invalid'); status(note); }
+            });
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                const email = input.value.trim();
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                    input.setAttribute('aria-invalid', 'true');
+                    status(email ? 'That email doesn’t look right.' : 'Please enter your email.', 'error');
+                    input.focus();
+                    return;
+                }
+                button.disabled = true;
+                try {
+                    const api = await loadApi();
+                    await api.submitLead({ source: 'newsletter', email, newsletterOptIn: true });
+                    form.reset();
+                    status('You’re subscribed. Watch your inbox!', 'success');
+                } catch (error) {
+                    input.setAttribute('aria-invalid', 'true');
+                    status('Couldn’t subscribe right now. Please try again in a moment.', 'error');
+                } finally {
+                    button.disabled = false;
+                }
+            });
+        });
     }
 
     function armAutoOpen() {
@@ -715,4 +884,6 @@
     setupMobileSliders();
     setupConsentBanner();
     setupConsultPopup();
+    setupBuddy();
+    setupFooterSubscribe();
 })();
