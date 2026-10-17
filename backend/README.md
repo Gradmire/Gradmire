@@ -20,10 +20,11 @@ The API listens on `http://localhost:4000` by default. Set `PORT` and `FRONTEND_
 
 ## Deployment
 
-The API runs as the Vercel project `gradmire-api` (https://gradmire-api.vercel.app), deployed from this folder with `vercel deploy --prod`. It is not connected to Git, so pushing does not redeploy it. The site project rewrites `/api/*` to it (`frontend/vercel.json`), so the browser calls the API on the site's own origin.
+The API runs as the Vercel project `gradmire-api` (https://gradmire-api.vercel.app), deployed from this folder with `vercel deploy --prod`. It is not connected to Git, so pushing does not redeploy it. The site calls it directly (`frontend/assets/api.js`), and `FRONTEND_ORIGIN` lists the site origins allowed by CORS.
 
 Production builds run `npm run vercel-build`, which applies pending migrations; preview builds skip them. Environment variables (Production):
 
 - `DATABASE_URL`: pooled Neon connection string for the `gradmire` database and role, in the shared `neon-green-garden` Neon project
 - `DATABASE_URL_UNPOOLED`: direct connection string, used by migrations
 - `ADMIN_API_TOKEN`: bearer token required by `GET /api/v1/leads`
+- `FRONTEND_ORIGIN`: `https://gradmire-1nfj.vercel.app` (comma-separate to add a custom domain)
