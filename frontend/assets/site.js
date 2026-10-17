@@ -1,5 +1,8 @@
 (() => {
     const root = document.documentElement;
+    /* Floating helper avatar: @bible-strong/avatar-web (AGPL-3.0) renders the definition below. */
+    const AVATAR_WEB_URL = 'https://cdn.jsdelivr.net/npm/@bible-strong/avatar-web@0.1.0/+esm';
+    const AVATAR_DEFINITION_URL = new URL('avatar/strobi.avatar.json', document.currentScript?.src || window.location.href).href;
 
     /* ── Consent: essential storage always; "preferences" and "analytics" only with opt-in.
        The choice itself is essential (it has to be remembered to be respected). ── */
@@ -396,8 +399,9 @@
         fab.type = 'button';
         fab.className = 'gm-consult-fab';
         fab.setAttribute('aria-haspopup', 'dialog');
-        fab.innerHTML = `<img src="${photo.replace('w=640&h=820', 'w=96&h=96')}" alt="" width="40" height="40" loading="lazy"><span><strong>Free counselling</strong><span>Talk to an expert</span></span>`;
+        fab.innerHTML = `${avatarSvg()}<span><strong>Free counselling</strong><span>Talk to an expert</span></span>`;
         document.body.appendChild(fab);
+        setupAvatar(fab, pageName);
 
         const card = popup.querySelector('.gm-popup-card');
         const form = popup.querySelector('form');
@@ -474,6 +478,139 @@
             return;
         }
         armAutoOpen();
+    }
+
+    /* "Strobi", the floating helper. The procedural avatar from @bible-strong/avatar-web replaces this
+       inline SVG once the module and definition load; the SVG stays as the fallback if either fails.
+       She idles, smiles on hover and says hello once per session. */
+    function avatarSvg() {
+        return `<svg class="gm-avatar" viewBox="0 0 64 64" width="44" height="44" aria-hidden="true" focusable="false">
+          <defs>
+            <radialGradient id="gm-avatar-body" cx="35%" cy="28%" r="80%">
+              <stop offset="0" stop-color="#FFE29A"/><stop offset=".55" stop-color="#FFC24B"/><stop offset="1" stop-color="#F29A2E"/>
+            </radialGradient>
+          </defs>
+          <g class="gm-avatar-body">
+            <rect x="6" y="8" width="52" height="50" rx="22" fill="url(#gm-avatar-body)"/>
+            <ellipse cx="24" cy="18" rx="10" ry="4.5" fill="#fff" opacity=".35"/>
+            <path class="gm-avatar-cap" d="M13 18 32 9l19 9-19 8z" fill="#123B32"/>
+            <path d="M47 20v8" stroke="#123B32" stroke-width="2" stroke-linecap="round"/><circle cx="47" cy="29.5" r="2" fill="#FFC24B" stroke="#123B32" stroke-width="1.4"/>
+          </g>
+          <g class="gm-avatar-face">
+            <g class="gm-avatar-eyes">
+              <g class="gm-avatar-eye"><ellipse cx="23" cy="35" rx="4.6" ry="5.6" fill="#1D2B28"/><circle cx="24.6" cy="33" r="1.5" fill="#fff"/></g>
+              <g class="gm-avatar-eye"><ellipse cx="41" cy="35" rx="4.6" ry="5.6" fill="#1D2B28"/><circle cx="42.6" cy="33" r="1.5" fill="#fff"/></g>
+              <path class="gm-avatar-happy" d="M18.5 36q4.5-6 9 0M36.5 36q4.5-6 9 0" fill="none" stroke="#1D2B28" stroke-width="2.6" stroke-linecap="round"/>
+            </g>
+            <ellipse cx="16" cy="44" rx="3.6" ry="2.2" fill="#F2764B" opacity=".45"/><ellipse cx="48" cy="44" rx="3.6" ry="2.2" fill="#F2764B" opacity=".45"/>
+            <path class="gm-avatar-mouth" d="M28 45q4 3.4 8 0" fill="none" stroke="#1D2B28" stroke-width="2.2" stroke-linecap="round"/>
+          </g>
+        </svg>`;
+    }
+
+    function setupAvatar(fab, pageName) {
+        const avatar = fab.querySelector('.gm-avatar');
+        if (!avatar) return;
+        const face = avatar.querySelector('.gm-avatar-face');
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+        const timers = [];
+        const later = (fn, ms) => timers.push(setTimeout(fn, ms));
+
+        /* Moods map to animations in strobi.avatar.json; the fallback SVG reads data-mood instead. */
+        const animationFor = { neutral: 'idle', happy: 'happy', greet: 'excited' };
+        let live = null;
+        let mood = 'neutral';
+        const setMood = (next) => {
+            mood = next;
+            fab.dataset.mood = next === 'greet' ? 'happy' : next;
+            live?.play(animationFor[next]);
+        };
+        setMood('neutral');
+
+        Promise.all([
+            import(AVATAR_WEB_URL),
+            fetch(AVATAR_DEFINITION_URL).then((res) => { if (!res.ok) throw new Error(`HTTP ${res.status}`); return res.json(); })
+        ]).then(([{ createAvatar }, definition]) => {
+            const mount = document.createElement('span');
+            mount.className = 'gm-avatar gm-avatar--live';
+            mount.setAttribute('aria-hidden', 'true');
+            live = createAvatar(mount, { definition, defaultAnimation: animationFor[mood], size: '100%', onError: () => {} });
+            mount.querySelector('.bs-avatar')?.removeAttribute('role');
+            avatar.replaceWith(mount);
+        }).catch((error) => { console.warn('[Gradmire] Avatar fell back to the inline SVG:', error.message); });
+
+        /* Blink at slightly irregular intervals, like the lab's auto-blink. */
+        function scheduleBlink() {
+            later(() => {
+                if (!live && !reduced.matches && !document.hidden) {
+                    fab.classList.add('is-blinking');
+                    setTimeout(() => fab.classList.remove('is-blinking'), 140);
+                }
+                scheduleBlink();
+            }, 2600 + Math.random() * 3200);
+        }
+        scheduleBlink();
+
+        /* Glance toward the pointer (fine pointers only; throttled to one update per frame). */
+        let frame = 0;
+        if (window.matchMedia('(pointer: fine)').matches) {
+            window.addEventListener('pointermove', (event) => {
+                if (live || frame || reduced.matches) return;
+                frame = requestAnimationFrame(() => {
+                    frame = 0;
+                    const box = avatar.getBoundingClientRect();
+                    const dx = event.clientX - (box.left + box.width / 2);
+                    const dy = event.clientY - (box.top + box.height / 2);
+                    const dist = Math.hypot(dx, dy) || 1;
+                    const reach = Math.min(1, dist / 260);
+                    face.style.transform = `translate(${(dx / dist) * 3.2 * reach}px, ${(dy / dist) * 2.6 * reach}px)`;
+                });
+            }, { passive: true });
+        }
+
+        fab.addEventListener('pointerenter', () => setMood('happy'));
+        fab.addEventListener('pointerleave', () => setMood('neutral'));
+        fab.addEventListener('focus', () => setMood('happy'));
+        fab.addEventListener('blur', () => setMood('neutral'));
+
+        /* Greeting bubble: once per session, tailored to destination pages. */
+        let session = null;
+        try { session = window.sessionStorage; } catch (_) {}
+        const seen = (() => { try { return session?.getItem('gm-avatar-greeted'); } catch (_) { return null; } })();
+        if (seen) return;
+        const country = pageName.match(/^study-in-([a-z-]+)\.html$/)?.[1];
+        const match = country && destinations.find(([, slug]) => slug === country);
+        const message = match
+            ? `Hi! Thinking about studying in ${match[0]}? I can connect you with a counsellor.`
+            : 'Hi, I’m Strobi! Planning to study abroad? Ask me for a free counselling call.';
+
+        const bubble = document.createElement('div');
+        bubble.className = 'gm-avatar-bubble';
+        bubble.setAttribute('role', 'status');
+        bubble.hidden = true;
+        bubble.innerHTML = `<p>${message}</p><button type="button" class="gm-avatar-bubble-close" aria-label="Dismiss message"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>`;
+        document.body.appendChild(bubble);
+
+        const hide = () => {
+            if (bubble.hidden) return;
+            bubble.classList.remove('is-visible');
+            setMood('neutral');
+            setTimeout(() => { bubble.hidden = true; }, 250);
+        };
+        bubble.querySelector('p').addEventListener('click', () => { hide(); fab.click(); });
+        bubble.querySelector('.gm-avatar-bubble-close').addEventListener('click', hide);
+        fab.addEventListener('click', hide);
+
+        later(() => {
+            if (document.documentElement.classList.contains('gm-popup-open') || document.documentElement.classList.contains('gm-consent-open')) return;
+            try { session?.setItem('gm-avatar-greeted', '1'); } catch (_) {}
+            bubble.hidden = false;
+            setMood('greet');
+            if (!reduced.matches) fab.classList.add('is-waving');
+            requestAnimationFrame(() => bubble.classList.add('is-visible'));
+            later(() => fab.classList.remove('is-waving'), 1400);
+            later(hide, 9000);
+        }, 4500);
     }
 
     function armAutoOpen() {

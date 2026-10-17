@@ -220,10 +220,12 @@
         display: none;
     }
     .destination-page .nav-ham { margin-left: 0 !important; }
+    /* clip (not hidden) so body never becomes a scroll container, which breaks position: sticky */
     html,
     body {
         max-width: 100%;
         overflow-x: hidden;
+        overflow-x: clip;
     }
     .tabs,
     .faq-tabs,
@@ -497,6 +499,7 @@
     /* Keep wide content inside the phone viewport. */
     body {
         overflow-x: hidden;
+        overflow-x: clip;
         font-size: 16px;
     }
 
@@ -903,6 +906,36 @@ html.gm-popup-open { overflow: hidden; }
 html.gm-popup-open .gm-consult-fab { visibility: hidden; }
 @keyframes gm-fab-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 
+/* The destination nav is sticky (in flow), so the old 68px offset for a fixed nav left an empty band above the hero. */
+.destination-page .dest-hero { margin-top: 0; }
+
+/* Pages with a sticky nav + sticky section tabs: land anchor jumps below both bars, not under them. */
+html:has(.subnav, .page-nav) { scroll-padding-top: 128px; }
+
+/* Floating helper avatar ("Strobi") inside the consultation button */
+.gm-avatar { flex: 0 0 auto; width: 44px; height: 44px; margin: -.2rem 0 -.2rem -.15rem; overflow: visible; filter: drop-shadow(0 3px 5px rgba(0, 40, 30, .28)); transform-origin: 50% 90%; animation: gm-avatar-bob 4.5s ease-in-out infinite; }
+.gm-avatar-face { transition: transform .18s ease-out; }
+.gm-avatar--live { display: inline-block; }
+.gm-avatar--live .bs-avatar { width: 100% !important; height: 100% !important; }
+.gm-avatar-eye { transform-box: fill-box; transform-origin: center; transition: transform .09s ease-in, opacity .12s; }
+.gm-avatar-happy { opacity: 0; transition: opacity .15s; }
+.gm-avatar-mouth { transform-box: fill-box; transform-origin: center top; transition: transform .2s cubic-bezier(.34, 1.56, .64, 1); }
+.gm-consult-fab.is-blinking .gm-avatar-eye { transform: scaleY(.1); }
+.gm-consult-fab[data-mood="happy"] .gm-avatar-eye { opacity: 0; }
+.gm-consult-fab[data-mood="happy"] .gm-avatar-happy { opacity: 1; }
+.gm-consult-fab[data-mood="happy"] .gm-avatar-mouth { transform: scale(1.35, 1.6); }
+.gm-consult-fab.is-waving .gm-avatar { animation: gm-avatar-wave 1.3s cubic-bezier(.36, .07, .19, .97) both; }
+@keyframes gm-avatar-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+@keyframes gm-avatar-wave { 0%, 100% { transform: rotate(0); } 15% { transform: rotate(-12deg) scale(1.08); } 35% { transform: rotate(10deg) scale(1.08); } 55% { transform: rotate(-7deg); } 75% { transform: rotate(4deg); } }
+
+.gm-avatar-bubble { position: fixed; right: max(1rem, env(safe-area-inset-right)); bottom: calc(max(1rem, env(safe-area-inset-bottom)) + 4.4rem); z-index: 1100; display: flex; align-items: flex-start; gap: .35rem; width: min(280px, calc(100vw - 2rem)); padding: .8rem .6rem .8rem 1rem; border: 1px solid var(--border, rgba(0, 0, 0, .1)); border-radius: 18px 18px 6px 18px; background: var(--surface, #fff); color: var(--text-p, #0E1420); font: 500 .86rem/1.45 var(--sans, system-ui, sans-serif); box-shadow: 0 16px 40px rgba(14, 20, 32, .18); opacity: 0; transform: translateY(10px) scale(.96); transform-origin: 90% 100%; transition: opacity .25s, transform .3s cubic-bezier(.16, 1, .3, 1); }
+.gm-avatar-bubble.is-visible { opacity: 1; transform: none; }
+.gm-avatar-bubble p { margin: 0; cursor: pointer; }
+.gm-avatar-bubble-close { flex: 0 0 auto; display: grid; place-items: center; width: 28px; height: 28px; margin: -.3rem -.1rem 0 0; border: 0; border-radius: 50%; background: transparent; color: var(--text-s, #5B6472); cursor: pointer; }
+.gm-avatar-bubble-close:hover { background: var(--accent-dim, rgba(0, 122, 90, .12)); color: var(--accent-text, #005C44); }
+.gm-avatar-bubble-close:focus-visible { outline: 3px solid var(--accent, #007A5A); outline-offset: 2px; }
+html.gm-popup-open .gm-avatar-bubble { display: none; }
+
 @media (max-width: 700px) {
     .gm-popup { align-items: end; padding: 0; }
     .gm-popup-card { grid-template-columns: 1fr; width: 100%; max-height: 92dvh; border-radius: 22px 22px 0 0; transform: translateY(40px); }
@@ -914,9 +947,11 @@ html.gm-popup-open .gm-consult-fab { visibility: hidden; }
     .gm-consult-fab { padding: .35rem .85rem .35rem .35rem; }
     .gm-consult-fab img { width: 34px; height: 34px; }
     .gm-consult-fab > span > span { display: none; }
+    .gm-avatar { width: 38px; height: 38px; }
+    .gm-avatar-bubble { bottom: calc(max(1rem, env(safe-area-inset-bottom)) + 3.8rem); font-size: .82rem; }
 }
 @media (prefers-reduced-motion: reduce) {
-    .gm-popup-backdrop, .gm-popup-card, .gm-consult-fab, .gm-popup-close { transition: none; animation: none; }
+    .gm-popup-backdrop, .gm-popup-card, .gm-consult-fab, .gm-popup-close, .gm-avatar, .gm-avatar-bubble, .gm-avatar-face, .gm-avatar-mouth { transition: none; animation: none; }
 }
 
 /* ─── Accessibility: green text on green-tinted chips/rows needs a darker green to reach 4.5:1 ─── */
