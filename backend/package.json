@@ -2,11 +2,18 @@
     "name": "gradmire-backend",
     "version": "0.1.0",
     "private": true,
-    "description": "Gradmire API starter for leads and platform health checks",
+    "description": "Gradmire API for leads and platform health checks",
     "type": "module",
     "scripts": {
         "dev": "node --watch src/server.js",
         "start": "node src/server.js",
-        "check": "node --check src/server.js && node --check src/routes/health.js && node --check src/routes/leads.js && node --check src/services/lead-store.js"
+        "migrate": "node scripts/migrate.js",
+        "check": "node --check src/server.js && node --check src/app.js && node --check api/index.js && node --check src/routes/health.js && node --check src/routes/leads.js && node --check src/services/db.js && node --check src/services/lead-store.js && node --check scripts/migrate.js"
+    },
+    "engines": {
+        "node": ">=20"
+    },
+    "dependencies": {
+        "pg": "8.23.1"
     }
 }

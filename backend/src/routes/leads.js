@@ -1,3 +1,4 @@
+import { timingSafeEqual } from 'node:crypto';
 import { createLead, listLeads } from '../services/lead-store.js';
 
 const jsonHeaders = { 'Content-Type': 'application/json' };
@@ -24,14 +25,19 @@ const TEXT_FIELDS = {
 
 const BOOLEAN_FIELDS = ['contactConsent', 'ageConfirmation', 'marketingOptIn', 'partnerInstitutionOptIn', 'newsletterOptIn'];
 
-export async function leadsRoute(request, response) {
-    if (request.url === '/api/v1/leads' && request.method === 'GET') {
-        response.writeHead(200, jsonHeaders);
-        response.end(JSON.stringify({ data: listLeads() }));
+export async function leadsRoute(request, response, pathname) {
+    if (pathname === '/api/v1/leads' && request.method === 'GET') {
+        // Leads hold students' contact details, so listing them needs the admin token.
+        if (!isAdmin(request)) {
+            response.writeHead(401, jsonHeaders);
+            response.end(JSON.stringify({ error: 'Unauthorized' }));
+            return true;
+        }
+        await respondWith(response, 200, async() => listLeads());
         return true;
     }
 
-    if (request.url !== '/api/v1/leads' || request.method !== 'POST') {
+    if (pathname !== '/api/v1/leads' || request.method !== 'POST') {
         return false;
     }
 
@@ -52,9 +58,29 @@ export async function leadsRoute(request, response) {
         return true;
     }
 
-    response.writeHead(201, jsonHeaders);
-    response.end(JSON.stringify({ data: createLead(lead) }));
+    await respondWith(response, 201, async() => createLead(lead));
     return true;
+}
+
+async function respondWith(response, status, load) {
+    try {
+        const data = await load();
+        response.writeHead(status, jsonHeaders);
+        response.end(JSON.stringify({ data }));
+    } catch (error) {
+        console.error('Lead storage failed', error);
+        response.writeHead(500, jsonHeaders);
+        response.end(JSON.stringify({ error: 'Could not save or load leads. Please try again.' }));
+    }
+}
+
+function isAdmin(request) {
+    const token = process.env.ADMIN_API_TOKEN;
+    const header = request.headers.authorization || '';
+    if (!token || !header.startsWith('Bearer ')) return false;
+    const given = Buffer.from(header.slice('Bearer '.length));
+    const expected = Buffer.from(token);
+    return given.length === expected.length && timingSafeEqual(given, expected);
 }
 
 /* Only known fields are stored, so a client cannot write arbitrary keys (or an id/createdAt) into a lead. */

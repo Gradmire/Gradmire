@@ -1,5 +1,5 @@
-export function healthRoute(request, response) {
-    if (request.method !== 'GET' || request.url !== '/api/v1/health') {
+export function healthRoute(request, response, pathname) {
+    if (request.method !== 'GET' || pathname !== '/api/v1/health') {
         return false;
     }
 

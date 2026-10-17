@@ -13,6 +13,25 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: gradmire
+          POSTGRES_PASSWORD: gradmire
+          POSTGRES_DB: gradmire
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U gradmire"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      DATABASE_URL: postgres://gradmire:gradmire@127.0.0.1:5432/gradmire
+      ADMIN_API_TOKEN: ci-admin-token
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -22,8 +41,17 @@ jobs:
         with:
           node-version: 22
 
+      - name: Install backend dependencies
+        run: npm ci --prefix backend
+
       - name: Validate backend JavaScript
         run: npm run check --prefix backend
+
+      - name: Run database migrations
+        run: |
+          npm run migrate --prefix backend
+          # A second run must be a no-op.
+          npm run migrate --prefix backend
 
       - name: Validate shared frontend JavaScript
         run: node --check frontend/assets/site.js
@@ -52,8 +80,19 @@ jobs:
           response=$(curl --fail --silent --show-error \
             -X POST http://127.0.0.1:4000/api/v1/leads \
             -H 'Content-Type: application/json' \
-            -d '{"firstName":"CI","email":"ci@example.com","phone":"+910000000000"}')
+            -d '{"source":"consultation","firstName":"CI","email":"ci@example.com","phone":"+910000000000","contactConsent":true}')
           echo "$response" | grep -q 'ci@example.com'
+
+          curl --fail --silent --show-error             -X POST http://127.0.0.1:4000/api/v1/leads             -H 'Content-Type: application/json'             -d '{"source":"contact","firstName":"CI","email":"ci@example.com","message":"CI contact enquiry"}' > /dev/null
+
+          status=$(curl --silent --output /dev/null --write-out '%{http_code}'             -X POST http://127.0.0.1:4000/api/v1/leads             -H 'Content-Type: application/json'             -d '{"source":"consultation","firstName":"CI","email":"ci@example.com"}')
+          test "$status" = 400
+
+          status=$(curl --silent --output /dev/null --write-out '%{http_code}' http://127.0.0.1:4000/api/v1/leads)
+          test "$status" = 401
+
+          count=$(curl --fail --silent --show-error http://127.0.0.1:4000/api/v1/leads             -H "Authorization: Bearer $ADMIN_API_TOKEN" | grep -o '"email":"ci@example.com"' | wc -l)
+          test "$count" -eq 2
 
       - name: Stop backend
         if: always()
