@@ -3,10 +3,18 @@ import { healthRoute } from './routes/health.js';
 import { leadsRoute } from './routes/leads.js';
 
 const port = Number(process.env.PORT || 4000);
-const frontendOrigin = process.env.FRONTEND_ORIGIN || 'http://localhost:8080';
+// Comma-separated list, e.g. "http://localhost:8080,https://gradmire.in".
+const allowedOrigins = (process.env.FRONTEND_ORIGIN || 'http://localhost:8080')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
 
 const server = createServer(async(request, response) => {
-    response.setHeader('Access-Control-Allow-Origin', frontendOrigin);
+    const origin = request.headers.origin;
+    if (origin && allowedOrigins.includes(origin)) {
+        response.setHeader('Access-Control-Allow-Origin', origin);
+        response.setHeader('Vary', 'Origin');
+    }
     response.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     response.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
 

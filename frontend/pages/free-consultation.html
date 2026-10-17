@@ -58,6 +58,8 @@ img{max-width:100%;display:block;}a{color:inherit;}
 .btn-next:active,.btn-back:active,.btn-submit:active{transform:scale(.97);}
 .btn-next,.btn-submit{background:var(--accent);color:#fff;}
 .btn-next:hover,.btn-submit:hover{background:#009066;}
+.btn-submit:disabled{opacity:.7;cursor:progress;}
+.submit-status{margin-top:1rem;font-size:.85rem;color:#D94040;line-height:1.5;}
 .btn-back{background:transparent;border:1.5px solid var(--border);color:var(--text-p);}
 .btn-back:hover{border-color:var(--text-p);}
 /* Branch cards */
@@ -384,6 +386,7 @@ img{max-width:100%;display:block;}a{color:inherit;}
         <button type="button" class="btn-back" onclick="goStep(2)">← Back</button>
         <button type="button" class="btn-submit" onclick="submitForm()">Book free consultation</button>
       </div>
+      <p class="submit-status" id="submit-status" role="alert" hidden></p>
     </div>
 
     <!-- Thank you -->
@@ -531,10 +534,49 @@ function goStep(n) {
   showStep(n);
 }
 
+let submitting = false;
+
 function submitForm() {
-  if (!validateStep(3)) return;
+  if (submitting || !validateStep(3)) return;
   const branch = document.querySelector('input[name="branch"]:checked');
   const branchName = branch ? branch.closest('.branch-card').querySelector('.branch-name').textContent.split('—')[0].trim() : '';
+  const value = (id) => document.getElementById(id).value.trim();
+  const checked = (id) => document.getElementById(id).checked;
+  const btn = document.querySelector('#step3 .btn-submit');
+  const status = document.getElementById('submit-status');
+  submitting = true;
+  btn.disabled = true;
+  btn.textContent = 'Booking…';
+  status.hidden = true;
+  GradmireAPI.submitLead({
+    source: 'consultation',
+    firstName: value('s1-first'),
+    lastName: value('s1-last'),
+    email: value('s1-email'),
+    phone: value('s1-phone'),
+    primaryDestination: value('s1-destination'),
+    intendedIntake: value('s1-intake'),
+    studyLevel: value('s1-level'),
+    serviceInterest: value('s1-interest'),
+    country: value('s2-country'),
+    branch: branch ? branch.value : '',
+    passportStatus: value('s3-passport'),
+    referralSource: value('s3-source'),
+    contactConsent: checked('consent-contact'),
+    ageConfirmation: checked('consent-age'),
+    marketingOptIn: checked('consent-comms'),
+    partnerInstitutionOptIn: checked('consent-partners')
+  }).then(() => showThankYou(branchName)).catch(() => {
+    status.textContent = "We couldn't book your consultation just now. Please check your connection and try again.";
+    status.hidden = false;
+  }).finally(() => {
+    submitting = false;
+    btn.disabled = false;
+    btn.textContent = 'Book free consultation';
+  });
+}
+
+function showThankYou(branchName) {
   if (branchName) document.getElementById('ty-branch').textContent = branchName;
   try { sessionStorage.removeItem('gradmire-consult-prefill'); } catch (_) {}
   document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
@@ -601,4 +643,5 @@ document.querySelectorAll('#step1 .form-input, #step1 .form-select, #consent-con
 
 <footer class="gm-legal-bar gm-legal-bar--light"><p class="gm-legal-entity">Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · <a href="mailto:privacy@gradmire.in">privacy@gradmire.in</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund-policy.html">Refunds &amp; fees</a><a href="cookie-policy.html">Cookies</a><a href="data-request.html">Your data rights</a><a href="grievance.html">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></footer>
 
+<script src="../assets/api.js?v=1"></script>
 <script src="../assets/site.js?v=13" defer></script>
