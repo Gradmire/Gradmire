@@ -8,6 +8,7 @@
         "dev": "node --watch src/server.js",
         "start": "node src/server.js",
         "migrate": "node scripts/migrate.js",
+        "vercel-build": "node scripts/migrate.js --vercel-build",
         "check": "node --check src/server.js && node --check src/app.js && node --check api/index.js && node --check src/routes/health.js && node --check src/routes/leads.js && node --check src/services/db.js && node --check src/services/lead-store.js && node --check scripts/migrate.js"
     },
     "engines": {

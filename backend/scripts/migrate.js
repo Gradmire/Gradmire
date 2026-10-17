@@ -1,6 +1,9 @@
 /* Applies schema/NNN_*.sql migrations in order, once each, recording them in
    schema_migrations. Rollback files (*.down.sql) are never applied here; run
-   them by hand. Usage: DATABASE_URL=... npm run migrate */
+   them by hand. Usage: DATABASE_URL=... npm run migrate
+
+   Vercel runs this as the build step (vercel-build). It only migrates production
+   builds, so a preview of an unmerged branch never changes the live schema. */
 import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -8,12 +11,20 @@ import pg from 'pg';
 
 const schemaDir = fileURLToPath(new URL('../schema/', import.meta.url));
 
-if (!process.env.DATABASE_URL) {
+if (process.argv.includes('--vercel-build') && process.env.VERCEL_ENV !== 'production') {
+    console.log(`skipping migrations for ${process.env.VERCEL_ENV || 'local'} build`);
+    process.exit(0);
+}
+
+// Neon's pooled URL runs through PgBouncer, which does not keep the advisory
+// lock below for the whole session, so prefer the direct connection.
+const connectionString = process.env.DATABASE_URL_UNPOOLED || process.env.DATABASE_URL;
+if (!connectionString) {
     console.error('DATABASE_URL is not set');
     process.exit(1);
 }
 
-const client = new pg.Client({ connectionString: process.env.DATABASE_URL });
+const client = new pg.Client({ connectionString });
 await client.connect();
 
 try {

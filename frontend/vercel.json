@@ -1,6 +1,7 @@
 {
     "rewrites": [
-        { "source": "/", "destination": "/pages/index.html" }
+        { "source": "/", "destination": "/pages/index.html" },
+        { "source": "/api/:path*", "destination": "https://gradmire-api.vercel.app/api/:path*" }
     ],
     "headers": [
         {
