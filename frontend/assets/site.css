@@ -944,7 +944,6 @@ html:has(.subnav, .page-nav) { scroll-padding-top: 128px; }
 .gm-buddy.is-flip.is-below .gm-buddy-bubble { border-radius: 18px 6px 18px 18px; transform-origin: 90% 0; }
 .gm-buddy.is-dragging .gm-buddy-avatar { cursor: grabbing; transform: scale(1.12) rotate(-6deg); transition: none; animation: none; }
 .gm-buddy.is-dragging .gm-buddy-bubble { display: none; }
-.gm-buddy-target { outline: 3px dashed #5b7fe5 !important; outline-offset: 4px; border-radius: 6px; transition: outline-color .15s; }
 .gm-buddy-cta:focus-visible { outline: 3px solid var(--accent, #007A5A); outline-offset: 2px; }
 .gm-buddy-close { grid-column: 2; grid-row: 1; display: grid; place-items: center; width: 28px; height: 28px; margin: -.3rem 0 0; border: 0; border-radius: 50%; background: transparent; color: var(--text-s, #5B6472); cursor: pointer; }
 .gm-buddy-close:hover { background: var(--accent-dim, rgba(0, 122, 90, .12)); color: var(--accent-text, #005C44); }

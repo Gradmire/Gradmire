@@ -592,12 +592,8 @@
         const fill = (s) => s.replace(/\{country\}/g, countryName || 'this country');
 
         let target = null;
-        const mark = (el) => {
-            if (target === el) return;
-            target?.classList.remove('gm-buddy-target');
-            target = el;
-            el?.classList.add('gm-buddy-target');
-        };
+        /* Remembers what Strobi is over (no visual outline) so a drop can fall back to it. */
+        const mark = (el) => { target = el; };
         function orient() {
             const r = button.getBoundingClientRect();
             wrap.classList.toggle('is-below', r.top < 220);
