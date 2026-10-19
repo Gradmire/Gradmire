@@ -24,6 +24,14 @@
     function readPref(key) {
         try { return (allows('preferences') ? localStorage.getItem(key) : null) ?? sessionStorage.getItem(key); } catch (_) { return null; }
     }
+    /* Keep Tab / Shift+Tab cycling inside `items` (a dialog or open menu). */
+    function trapTab(event, items) {
+        if (event.key !== 'Tab' || !items.length) return;
+        const first = items[0];
+        const last = items[items.length - 1];
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    }
     function writeConsent(choice) {
         const record = { v: CONSENT_VERSION, necessary: true, preferences: Boolean(choice.preferences), analytics: Boolean(choice.analytics), ts: new Date().toISOString() };
         try { localStorage.setItem(CONSENT_KEY, JSON.stringify(record)); } catch (_) {}
@@ -200,18 +208,8 @@
         });
         mobile.addEventListener('keydown', (event) => {
             if (event.key !== 'Tab' || !mobile.classList.contains('is-open')) return;
-            const focusable = [...mobile.querySelectorAll('a[href], button:not([disabled])')]
-                .filter((element) => element.getClientRects().length > 0);
-            if (!focusable.length) return;
-            const first = focusable[0];
-            const last = focusable[focusable.length - 1];
-            if (event.shiftKey && document.activeElement === first) {
-                event.preventDefault();
-                last.focus();
-            } else if (!event.shiftKey && document.activeElement === last) {
-                event.preventDefault();
-                first.focus();
-            }
+            trapTab(event, [...mobile.querySelectorAll('a[href], button:not([disabled])')]
+                .filter((element) => element.getClientRects().length > 0));
         });
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape' && mobile.classList.contains('is-open')) {
@@ -439,12 +437,7 @@
         popup.querySelectorAll('[data-popup-close]').forEach((el) => el.addEventListener('click', close));
         popup.addEventListener('keydown', (event) => {
             if (event.key === 'Escape') { event.preventDefault(); close(); return; }
-            if (event.key !== 'Tab') return;
-            const items = focusables();
-            const first = items[0];
-            const last = items[items.length - 1];
-            if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
-            else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+            if (event.key === 'Tab') trapTab(event, focusables());
         });
 
         form.addEventListener('submit', (event) => {
