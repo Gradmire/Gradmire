@@ -6,6 +6,7 @@
    so every access is checked (files are never shared by link). */
 import { getCalendarProvider } from '../integrations/calendar/index.js';
 import { getEmailProvider, getGmailSender, getMailbox } from '../integrations/email/index.js';
+import { googleAuthMode } from '../integrations/google/auth.js';
 import { getStorage } from '../integrations/storage/index.js';
 import { createRouter, notFound, readRawBody, sendError, sendFile, sendJson } from '../lib/http.js';
 import { query } from '../lib/db.js';
@@ -167,6 +168,7 @@ router.get('/api/v1/admin/integrations', async (ctx) => {
     const counsellors = (await query("SELECT COUNT(*) FILTER (WHERE is_active)::int AS active, COUNT(*) FILTER (WHERE is_active AND calendar_id IS NOT NULL)::int AS with_calendar FROM counsellors")).rows[0];
     // Names and booleans only: never keys, tokens or mailbox contents.
     return ok(ctx, {
+        google: { mode: googleAuthMode() },
         email: { provider: email.name, sending: email.configured },
         gmail: { sender: sender ? sender.sender : null, inbox: mailbox ? mailbox.mailbox : null },
         storage: { provider: storage.name, configured: storage.configured },

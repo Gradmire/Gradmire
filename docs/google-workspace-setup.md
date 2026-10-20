@@ -29,6 +29,38 @@ server-side (`backend/src/integrations/google/auth.js`). Sign in with Google
 4. **Mailbox** → create a shared mailbox such as `counselling@gradmire.com` (a normal Workspace user or a group with a mailbox). Use it for `GMAIL_SENDER` and `GMAIL_MAILBOX`.
 5. **Shared Drive** → create one (e.g. "Gradmire student documents"), add the service account as **Content manager**, create a folder in it and put the folder id (from its URL) in `GOOGLE_DRIVE_FOLDER_ID`. Restrict human membership to people who must handle documents directly; everyone else uses the dashboard.
 
+## 1b. Using a personal Gmail account instead (no Workspace)
+
+A personal account such as `hasanryan052@gmail.com` cannot use a service account
+with domain-wide delegation, so the API signs in **as that account with OAuth**:
+you consent once, and the API keeps a refresh token. Gmail, Drive, Calendar and
+Meet then all act as that one account.
+
+**Know the trade-offs before going live**
+- Gmail allows a personal account roughly **500 emails a day**; booking confirmations, reminders and verification emails all count.
+- Students see mail from an `@gmail.com` address, which is more likely to land in spam than a domain address.
+- Students' documents are stored in **your personal Drive** (in a folder only this app can see). Moving to Workspace later is only a change of environment variables.
+- Every consultation and interview event goes on **your** calendar.
+
+**Steps**
+1. Sign in to [Google Cloud console](https://console.cloud.google.com/) with the account, create a project (e.g. "Gradmire"), and enable the **Gmail API**, **Google Drive API** and **Google Calendar API**.
+2. **OAuth consent screen** → User type **External** → app name "Gradmire", support email = your account → add the scopes `gmail.send`, `gmail.readonly`, `drive.file`, `calendar` → add your account as a test user.
+3. **Publish the app** (Audience → *Publish app*). While it is in *Testing*, Google expires refresh tokens after 7 days and email would stop. Published-but-unverified is fine for your own account; you will see a "Google hasn't verified this app" warning once and can continue via *Advanced*.
+4. **Credentials → Create credentials → OAuth client ID → Desktop app.** Note the client id and secret.
+5. On your own computer, from `backend/`:
+   ```bash
+   GOOGLE_OAUTH_CLIENT_ID=… GOOGLE_OAUTH_CLIENT_SECRET=… npm run google-oauth -- --login-hint hasanryan052@gmail.com
+   ```
+   Approve in the browser. The script checks which account consented, creates the private "Gradmire documents (private)" folder in that Drive (`drive.file`: the app sees only files it created) and prints every value to store.
+6. Add each printed value to the API with `vercel env add <NAME> production` (the refresh token and client secret are secrets: never commit or paste them anywhere else), then redeploy the API.
+7. To put consultation bookings on your calendar with Meet links, give each consultant the calendar id `primary` (their password is not changed):
+   ```bash
+   DATABASE_URL=… npm run create-staff -- --email consultant@example.com --first-name Name --role counsellor --promote --calendar-id primary
+   ```
+8. Open **Admin → Overview → Google Workspace connections**: it should say the API uses "a personal Google account (OAuth)" and list Gmail, storage, calendar and Meet as connected.
+
+If Google ever revokes access (password change, removed at myaccount.google.com/permissions), emails fail with `invalid_grant`; run step 5 again and replace `GOOGLE_OAUTH_REFRESH_TOKEN`.
+
 ## 2. Environment variables
 
 | Variable | Example | Purpose |

@@ -1,7 +1,8 @@
-/* Google service-account access tokens over plain HTTPS (no SDK), shared by
-   Calendar, Gmail and Drive. OAuth 2.0 JWT bearer grant signed with the
-   service account key; with `subject` set, calls run as that Workspace user
-   (domain-wide delegation), which Gmail always needs and Meet links need.
+/* Google access tokens over plain HTTPS (no SDK), shared by Calendar, Gmail
+   and Drive. Two modes: a Workspace service account (below), or OAuth for one
+   personal account (createGoogleUserAuth). The service account uses the OAuth 2.0
+   JWT bearer grant signed with its key; with `subject` set, calls run as that
+   Workspace user (domain-wide delegation), which Gmail always needs and Meet links need.
    Tokens are cached per (scope, subject) until a minute before expiry.
    Credentials stay server-side; nothing here is returned to clients. */
 import { createSign } from 'node:crypto';
@@ -41,14 +42,58 @@ export function createGoogleAuth({ clientEmail, privateKey }) {
     };
 }
 
+/* OAuth for a personal Google account (e.g. an @gmail.com address, which has no
+   domain-wide delegation). The owner consents once (scripts/google-oauth.js);
+   the refresh token then yields access tokens for the scopes they granted.
+   `scope` and `subject` are ignored: every call acts as that one account. */
+export function createGoogleUserAuth({ clientId, clientSecret, refreshToken }) {
+    let cached = null;
+    return async function accessToken() {
+        if (cached && cached.expiresAt - 60_000 > Date.now()) return cached.token;
+        const response = await fetch(TOKEN_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({ grant_type: 'refresh_token', client_id: clientId, client_secret: clientSecret, refresh_token: refreshToken }),
+            signal: AbortSignal.timeout(8000),
+        });
+        const body = await response.json().catch(() => ({}));
+        if (!response.ok || !body.access_token) {
+            // invalid_grant: the refresh token was revoked or expired; run scripts/google-oauth.js again.
+            throw Object.assign(new Error(`Google token refresh failed (${response.status} ${body.error || ''})`.trim()), { permanent: body.error === 'invalid_grant' || body.error === 'invalid_client' });
+        }
+        cached = { token: body.access_token, expiresAt: Date.now() + (body.expires_in || 3600) * 1000 };
+        return cached.token;
+    };
+}
+
 let shared = null;
 
-/* The process-wide token source from GOOGLE_SERVICE_ACCOUNT_*; null when not configured. */
+/* Which way the API signs in to Google: 'oauth' (one personal account),
+   'service_account' (Workspace), or null when nothing is configured.
+   OAuth wins when both are set. */
+export function googleAuthMode() {
+    if (process.env.GOOGLE_OAUTH_CLIENT_ID && process.env.GOOGLE_OAUTH_CLIENT_SECRET && process.env.GOOGLE_OAUTH_REFRESH_TOKEN) return 'oauth';
+    const privateKey = process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY || '';
+    if (process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL && privateKey.includes('PRIVATE KEY')) return 'service_account';
+    return null;
+}
+
+/* The process-wide token source; null when Google is not configured. */
 export function googleAuthFromEnv() {
-    const clientEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
-    const privateKey = (process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY || '').replace(/\\n/g, '\n');
-    if (!clientEmail || !privateKey.includes('PRIVATE KEY')) return null;
-    shared ||= createGoogleAuth({ clientEmail, privateKey });
+    const mode = googleAuthMode();
+    if (!mode) return null;
+    if (mode === 'oauth') {
+        shared ||= createGoogleUserAuth({
+            clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
+            refreshToken: process.env.GOOGLE_OAUTH_REFRESH_TOKEN,
+        });
+        return shared;
+    }
+    shared ||= createGoogleAuth({
+        clientEmail: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+        privateKey: process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY.replace(/\\n/g, '\n'),
+    });
     return shared;
 }
 

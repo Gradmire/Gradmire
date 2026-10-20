@@ -152,6 +152,41 @@ describe('Gmail and Drive requests', () => {
         }
     });
 
+    test('a personal Google account works through OAuth: refresh tokens are exchanged once and cached', async () => {
+        const { createGoogleUserAuth, googleAuthMode } = await import('../src/integrations/google/auth.js');
+        const saved = { ...process.env };
+        try {
+            delete process.env.GOOGLE_OAUTH_CLIENT_ID;
+            delete process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+            assert.equal(googleAuthMode(), null);
+            Object.assign(process.env, { GOOGLE_OAUTH_CLIENT_ID: 'id', GOOGLE_OAUTH_CLIENT_SECRET: 'secret', GOOGLE_OAUTH_REFRESH_TOKEN: 'refresh' });
+            assert.equal(googleAuthMode(), 'oauth');
+        } finally {
+            for (const key of ['GOOGLE_OAUTH_CLIENT_ID', 'GOOGLE_OAUTH_CLIENT_SECRET', 'GOOGLE_OAUTH_REFRESH_TOKEN', 'GOOGLE_SERVICE_ACCOUNT_EMAIL']) {
+                if (saved[key] === undefined) delete process.env[key]; else process.env[key] = saved[key];
+            }
+        }
+        const realFetch = globalThis.fetch;
+        const bodies = [];
+        let answer = { status: 200, json: { access_token: 'at1', expires_in: 3600 } };
+        globalThis.fetch = async (url, init) => {
+            bodies.push(Object.fromEntries(new URLSearchParams(String(init.body))));
+            return new Response(JSON.stringify(answer.json), { status: answer.status });
+        };
+        try {
+            const token = createGoogleUserAuth({ clientId: 'id', clientSecret: 'secret', refreshToken: 'refresh' });
+            assert.equal(await token('any-scope', 'any-subject'), 'at1');
+            assert.equal(await token('other-scope'), 'at1', 'cached until it nearly expires');
+            assert.equal(bodies.length, 1);
+            assert.deepEqual(bodies[0], { grant_type: 'refresh_token', client_id: 'id', client_secret: 'secret', refresh_token: 'refresh' });
+            answer = { status: 400, json: { error: 'invalid_grant' } };
+            const revoked = createGoogleUserAuth({ clientId: 'id', clientSecret: 'secret', refreshToken: 'gone' });
+            await assert.rejects(revoked(), (error) => error.permanent === true, 'a revoked token is not retried forever');
+        } finally {
+            globalThis.fetch = realFetch;
+        }
+    });
+
     test('the development log email provider is refused in production', async () => {
         const { getEmailProvider, setEmailProvider } = await import('../src/integrations/email/index.js');
         setEmailProvider(null);

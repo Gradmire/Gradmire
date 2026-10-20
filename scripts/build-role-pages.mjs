@@ -165,7 +165,7 @@ page({
 /* ── Consultant ───────────────────────────────────────────────────────────── */
 
 page({
-    name: 'consultant-dashboard.html', area: 'consultant-dashboard', script: 'staff-area.js?v=2',
+    name: 'consultant-dashboard.html', area: 'consultant-dashboard', script: 'staff-area.js?v=3',
     title: 'My workspace | Gradmire staff', description: 'Your consultations, students, enquiries and follow-ups.',
     body: main(`${head('My workspace', 'Your consultations, students, enquiries and follow-ups.')}
   <div class="crm-stats" id="cd-stats" aria-label="Your workload"></div>
@@ -178,7 +178,7 @@ page({
 });
 
 page({
-    name: 'consultant-students.html', area: 'consultant-students', script: 'staff-area.js?v=2',
+    name: 'consultant-students.html', area: 'consultant-students', script: 'staff-area.js?v=3',
     title: 'My students | Gradmire staff', description: 'Students assigned to you.',
     body: main(`${head('Students', 'Students who booked with you or whose enquiry is assigned to you.')}
   <form class="crm-filters" id="st-filters" role="search" aria-label="Filter students">
@@ -206,11 +206,11 @@ const leadsBody = (admin) => main(`${head('Enquiries', admin ? 'Every enquiry fr
   ${pager('ld')}
   ${drawer('ld-drawer')}`);
 
-page({ name: 'consultant-leads.html', area: 'leads', script: 'staff-area.js?v=2', title: 'My enquiries | Gradmire staff', description: 'Enquiries assigned to you.', body: leadsBody(false) });
-page({ name: 'admin-leads.html', area: 'leads', script: 'staff-area.js?v=2', title: 'Enquiries | Gradmire admin', description: 'Manage enquiries and assign them to consultants.', body: leadsBody(true) });
+page({ name: 'consultant-leads.html', area: 'leads', script: 'staff-area.js?v=3', title: 'My enquiries | Gradmire staff', description: 'Enquiries assigned to you.', body: leadsBody(false) });
+page({ name: 'admin-leads.html', area: 'leads', script: 'staff-area.js?v=3', title: 'Enquiries | Gradmire admin', description: 'Manage enquiries and assign them to consultants.', body: leadsBody(true) });
 
 page({
-    name: 'consultant-follow-ups.html', area: 'follow-ups', script: 'staff-area.js?v=2',
+    name: 'consultant-follow-ups.html', area: 'follow-ups', script: 'staff-area.js?v=3',
     title: 'Follow-ups | Gradmire staff', description: 'Your follow-up tasks.',
     body: main(`${head('Follow-ups', 'Tasks for you, including follow-ups added on consultations.', '<button type="button" class="gp-btn gp-btn-primary gp-btn-sm" id="fu-new">New task</button>')}
   <div class="bk-tabs" role="tablist" aria-label="Filter tasks"><button type="button" class="bk-tab" role="tab" aria-selected="true" data-status="open">Open</button><button type="button" class="bk-tab" role="tab" aria-selected="false" data-status="done">Done</button><button type="button" class="bk-tab" role="tab" aria-selected="false" data-status="all">All</button></div>
@@ -220,7 +220,7 @@ page({
 /* ── Admin ────────────────────────────────────────────────────────────────── */
 
 page({
-    name: 'admin.html', area: 'admin-dashboard', script: 'staff-area.js?v=2',
+    name: 'admin.html', area: 'admin-dashboard', script: 'staff-area.js?v=3',
     title: 'Admin overview | Gradmire', description: 'Platform overview for Gradmire administrators.',
     body: main(`${head('Admin overview', 'Live figures from the database. Select a figure to open the matching list.')}
   <div class="crm-stats ws-stats-lg" id="ad-stats" aria-label="Platform figures"></div>
@@ -229,7 +229,7 @@ page({
 });
 
 page({
-    name: 'admin-users.html', area: 'admin-users', script: 'staff-area.js?v=2',
+    name: 'admin-users.html', area: 'admin-users', script: 'staff-area.js?v=3',
     title: 'Users | Gradmire admin', description: 'Search accounts, suspend or reactivate them and request access changes.',
     body: main(`${head('Users', 'Accounts, their roles and history. Roles change only through approved requests.')}
   <form class="crm-filters" id="us-filters" role="search" aria-label="Filter users">
@@ -244,7 +244,7 @@ page({
 });
 
 page({
-    name: 'admin-team.html', area: 'admin-team', script: 'staff-area.js?v=2',
+    name: 'admin-team.html', area: 'admin-team', script: 'staff-area.js?v=3',
     title: 'Team and hiring | Gradmire admin', description: 'Consultant applications, employee invitations and the team.',
     body: main(`${head('Team and hiring', 'Review consultant applications, invite employees and see the team.')}
   <div class="bk-tabs" role="tablist" aria-label="Team sections">
@@ -286,7 +286,7 @@ page({
 });
 
 page({
-    name: 'admin-approvals.html', area: 'admin-approvals', script: 'staff-area.js?v=2',
+    name: 'admin-approvals.html', area: 'admin-approvals', script: 'staff-area.js?v=3',
     title: 'Approvals | Gradmire admin', description: 'Access requests waiting for a decision.',
     body: main(`${head('Approvals', 'Every grant, change or removal of staff access. A request is decided by someone other than the requester and the person it affects.')}
   <form class="crm-filters" id="aq-filters" aria-label="Filter requests">
@@ -300,7 +300,7 @@ page({
 });
 
 page({
-    name: 'admin-audit.html', area: 'admin-audit', script: 'staff-area.js?v=2',
+    name: 'admin-audit.html', area: 'admin-audit', script: 'staff-area.js?v=3',
     title: 'Audit log | Gradmire admin', description: 'Who did what, and when.',
     body: main(`${head('Audit log', 'Sensitive account and staff actions. Passwords, tokens and one-time codes are never recorded.')}
   <form class="crm-filters" id="au-filters" role="search" aria-label="Filter the audit log">

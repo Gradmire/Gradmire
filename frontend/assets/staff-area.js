@@ -358,7 +358,9 @@
             ].join('');
             api('GET', '/api/v1/admin/integrations').then((g) => {
                 const row = (label, okay, detail) => `<li><span><strong>${esc(label)}</strong> <small>${esc(detail)}</small></span>${W.status(okay ? 'Connected' : 'Not connected', okay ? 'good' : 'warn')}</li>`;
+                const mode = { oauth: 'a personal Google account (OAuth)', service_account: 'a Workspace service account' }[g.google.mode];
                 $('ad-integrations').innerHTML = [
+                    row('Google sign-in for the API', Boolean(mode), mode ? `uses ${mode}` : 'no Google credentials set'),
                     row('Outgoing email', g.email.sending, `provider: ${g.email.provider}`),
                     row('Gmail for staff', Boolean(g.gmail.sender), g.gmail.sender ? `sends as ${g.gmail.sender}` : 'GMAIL_SENDER not set'),
                     row('Gmail inbox in the CRM', Boolean(g.gmail.inbox), g.gmail.inbox ? `reads ${g.gmail.inbox}` : 'GMAIL_MAILBOX not set'),
