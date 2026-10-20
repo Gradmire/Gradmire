@@ -83,7 +83,7 @@
     const navItems = [
         dropdown('Destinations', `<span class="nav-dropdown-label">Study destinations</span>${destinations.map(([name, slug]) => link(countryPage(slug), name)).join('')}${link(page('destinations.html'), 'All destinations →')}`),
         dropdown('Courses', `<span class="nav-dropdown-label">Explore study areas</span>${courseCategories.map(([label, query]) => link(`${page('find-courses.html')}?course=${encodeURIComponent(query)}`, label)).join('')}${link(page('find-courses.html'), 'Course Finder →')}`),
-        dropdown('MBBS Abroad', `<span class="nav-dropdown-label">Countries to explore</span>${mbbsCountries.map(([name, slug]) => link(consultationPage('mbbs-abroad', slug), name)).join('')}${link(consultationPage('mbbs-abroad'), 'Ask about MBBS abroad →')}`),
+        dropdown('MBBS Abroad', `<span class="nav-dropdown-label">Countries to explore</span>${mbbsCountries.map(([name, slug]) => link(page(`mbbs-in-${slug}.html`), `MBBS in ${name}`)).join('')}${link(page('mbbs-abroad.html'), 'Compare MBBS countries →')}`),
         dropdown('Student Services', `${studentServices.map(([label, interest]) => link(consultationPage(interest), label)).join('')}`),
         dropdown('Scholarships', `<span class="nav-dropdown-label">Explore by country</span>${destinations.map(([name, slug]) => link(scholarshipPage(slug), `Scholarships in ${name}`)).join('')}${link(page('scholarships.html'), 'All scholarships →')}`),
         dropdown('Student Tools', `${link(page('find-courses.html'), 'Course Finder')}${link(page('tools/roi-calculator.html'), 'Study cost calculator')}${link(page('tools/comparator.html'), 'Course comparator')}${link(page('tools/deadline-tracker.html'), 'Deadline tracker')}${link(page('tools/grade-converter.html'), 'GPA / CGPA / SGPA converter')}`)
@@ -362,7 +362,8 @@
         const DISMISS_DAYS = 3;
         const recentlyDismissed = Number(readPref('gm-consult-popup-dismissed') || 0) > Date.now() - DISMISS_DAYS * 864e5;
         const photo = 'https://images.unsplash.com/photo-1728141123512-87c415cecc9d?auto=format&fit=crop&w=640&h=820&q=80';
-        const options = destinations.map(([name, slug]) => `<option value="${slug}">${name}</option>`).join('');
+        const optionList = (list) => list.map(([name, slug]) => `<option value="${slug}">${name}</option>`).join('');
+        const options = `<optgroup label="Study destinations">${optionList(destinations)}</optgroup><optgroup label="MBBS destinations">${optionList(mbbsCountries)}</optgroup>`;
 
         const popup = document.createElement('div');
         popup.className = 'gm-popup';
@@ -434,6 +435,16 @@
 
         window.__gmOpenPopup = open;
         fab.addEventListener('click', () => open(false));
+        /* "Apply" / "Talk to a counsellor" links open the popup with their country preselected;
+           without JavaScript they still go to the booking page. */
+        document.addEventListener('click', (event) => {
+            const trigger = event.target.closest('[data-open-consult]');
+            if (!trigger || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey) return;
+            event.preventDefault();
+            const select = form.elements.destination;
+            if (select && trigger.dataset.country) select.value = trigger.dataset.country;
+            open(false);
+        });
         popup.querySelectorAll('[data-popup-close]').forEach((el) => el.addEventListener('click', close));
         popup.addEventListener('keydown', (event) => {
             if (event.key === 'Escape') { event.preventDefault(); close(); return; }
@@ -460,7 +471,8 @@
                 name: String(data.name).trim(), phone: String(data.phone).trim(),
                 email: String(data.email || '').trim(), destination: data.destination || ''
             }));
-            window.location.href = `${page('free-consultation.html')}?interest=counselling${data.destination ? `&country=${encodeURIComponent(data.destination)}` : ''}#book`;
+            const interest = mbbsCountries.some(([, slug]) => slug === data.destination) ? 'mbbs-abroad' : 'counselling';
+            window.location.href = `${consultationPage(interest, data.destination || '')}#book`;
         });
 
         /* Auto-open: once per session, and not again for a few days after a dismissal. */
@@ -968,6 +980,36 @@
         });
     }
 
+    /* Inline lead forms (e.g. the MBBS pages): same checks and hand-off as the consult popup. */
+    function setupInlineConsultForms() {
+        document.querySelectorAll('form[data-consult-form]').forEach((form) => {
+            const error = form.querySelector('[role="alert"]');
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+                const data = Object.fromEntries(new FormData(form).entries());
+                const name = String(data.name || '').trim();
+                const phoneOk = String(data.phone || '').replace(/[^\d]/g, '').length >= 10;
+                const email = String(data.email || '').trim();
+                const emailOk = !email || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+                form.querySelectorAll('input').forEach((input) => input.removeAttribute('aria-invalid'));
+                const bad = !name ? form.elements.name : !phoneOk ? form.elements.phone : !emailOk ? form.elements.email : null;
+                if (bad) {
+                    const problems = [!name && 'your name', !phoneOk && 'a valid phone number', !emailOk && 'a valid email or leave it blank'].filter(Boolean);
+                    error.hidden = false;
+                    error.textContent = `Please add ${problems.join(', ')}.`;
+                    bad.setAttribute('aria-invalid', 'true');
+                    bad.focus();
+                    return;
+                }
+                const country = form.dataset.country || '';
+                try {
+                    sessionStorage.setItem('gradmire-consult-prefill', JSON.stringify({ name, phone: String(data.phone).trim(), email, destination: country }));
+                } catch (_) {}
+                window.location.href = `${consultationPage(form.dataset.interest || 'counselling', country)}#book`;
+            });
+        });
+    }
+
     function setupFooterSubscribe() {
         document.querySelectorAll('.footer-subscribe').forEach((form) => {
             const input = form.querySelector('input[type="email"]');
@@ -1112,4 +1154,5 @@
     setupConsultPopup();
     setupBuddy();
     setupFooterSubscribe();
+    setupInlineConsultForms();
 })();
