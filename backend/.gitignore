@@ -4,3 +4,5 @@ node_modules/
 .local-pg/
 .env.local-staff
 .env.production-admin
+.local-uploads/
+.env.local-dev

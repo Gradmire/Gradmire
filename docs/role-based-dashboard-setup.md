@@ -151,9 +151,7 @@ All responses use `{ data }` or `{ error, code, fields? }`. Lists accept `page` 
 
 ## 9. Known limitations
 
-- **Documents and CV uploads** are not stored: there is no private object storage. Applicants may share an `https://` CV link visible only to reviewers. "My documents" is not built.
-- **Phone OTP** is not implemented (no SMS provider); identity rests on verified email.
-- **Changing a login email** is not self-service (it needs re-verification); students are told to contact support.
-- **Follow-up reminders** are shown as overdue counts and lists; no reminder email is scheduled yet.
-- **WhatsApp** remains a stub; no WhatsApp messages are sent.
-- **Cross-site cookies** on the two `*.vercel.app` hosts still need a shared custom domain for logins in Safari/Firefox (see the booking setup guide).
+- Gmail, Drive and Meet need the Google Workspace setup in [`google-workspace-setup.md`](google-workspace-setup.md); until then the dashboards say which features are not connected.
+- **Phone OTP** and **WhatsApp** are not implemented (no provider chosen); identity rests on verified email.
+- Staff accounts have no profile page yet, so a staff member's login email is changed by an administrator (the API endpoint works for any account).
+- **Cross-site cookies:** production now serves the API through the site's own origin (`/gm-api`), which avoids third-party cookie blocking.

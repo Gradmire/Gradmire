@@ -30,6 +30,85 @@
         return counsellors;
     }
 
+    const KIND_LABELS = { transcript: 'Academic transcript', passport: 'Passport', english_test: 'English test score', sop: 'Statement of purpose', recommendation: 'Recommendation letter', financial: 'Financial document', offer_letter: 'Offer letter', other: 'Other' };
+    const sizeLabel = (bytes) => (bytes >= 1048576 ? `${(bytes / 1048576).toFixed(1)} MB` : `${Math.max(1, Math.round(bytes / 1024))} KB`);
+
+    /* Documents of one student: download, and ask for new ones. */
+    async function documentsPanel(container, studentId) {
+        container.innerHTML = '<p class="bk-empty">Loading documents…</p>';
+        let data;
+        try {
+            data = await api('GET', `/api/v1/admin/students/${studentId}/documents`);
+        } catch (e) {
+            container.innerHTML = `<p class="bk-empty">${esc(e.message)}</p>`;
+            return;
+        }
+        container.innerHTML = `<ul class="ws-list">${data.documents.map((d) => `<li><span><strong>${esc(d.filename)}</strong> <small>${esc(KIND_LABELS[d.kind] || d.kind)} · ${esc(sizeLabel(d.sizeBytes))} · ${esc(W.fmtDate(d.uploadedAt))}</small></span><button type="button" class="gp-btn gp-btn-outline gp-btn-sm" data-doc="${esc(d.id)}">Download</button></li>`).join('') || '<li class="bk-empty">No documents uploaded.</li>'}</ul>
+            <h3 style="margin-top:1rem">Requests</h3>
+            <ul class="ws-list">${data.requests.map((r) => `<li><span>${esc(r.title)} <small>${esc(W.label(r.status))}${r.dueDate ? ` · due ${esc(W.fmtDate(r.dueDate))}` : ''}</small></span>${r.status === 'open' ? `<button type="button" class="gp-btn gp-btn-outline gp-btn-sm" data-cancel-req="${esc(r.id)}">Cancel</button>` : ''}</li>`).join('') || '<li class="bk-empty">Nothing requested.</li>'}</ul>
+            <button type="button" class="gp-btn gp-btn-primary gp-btn-sm" data-new-req style="margin-top:.7rem">Request a document</button>`;
+        container.querySelectorAll('[data-doc]').forEach((b) => b.addEventListener('click', () => GradmireAPI.downloadFile(`/api/v1/admin/documents/${b.dataset.doc}/download`).catch((e) => W.say(e.message))));
+        container.querySelectorAll('[data-cancel-req]').forEach((b) => b.addEventListener('click', async () => {
+            try { await api('POST', `/api/v1/admin/document-requests/${b.dataset.cancelReq}/cancel`, {}); documentsPanel(container, studentId); } catch (e) { W.say(e.message); }
+        }));
+        container.querySelector('[data-new-req]').addEventListener('click', async () => {
+            const values = await W.dialog({
+                title: 'Request a document', text: 'The student gets an email and sees the request in My documents.',
+                fields: [{ name: 'title', label: 'What should they upload?', required: true, max: 200 }, { name: 'kind', label: 'Type', type: 'select', options: Object.entries(KIND_LABELS) },
+                    { name: 'details', label: 'Details for the student', type: 'textarea', max: 1000 }, { name: 'dueDate', label: 'Due date', type: 'date' }],
+                confirm: 'Send request',
+            });
+            if (!values) return;
+            try {
+                await api('POST', `/api/v1/admin/students/${studentId}/document-requests`, { title: values.title, kind: values.kind, details: values.details || undefined, dueDate: values.dueDate || undefined });
+                W.say('Request sent to the student.', 'ok');
+                documentsPanel(container, studentId);
+            } catch (e) { W.say(e.message); }
+        });
+    }
+
+    /* Gmail threads with one person, a thread view, and compose/reply. basePath: /api/v1/admin/students/:id or /api/v1/admin/leads/:id */
+    async function emailPanel(container, basePath) {
+        container.innerHTML = '<p class="bk-empty">Loading email…</p>';
+        let data;
+        try {
+            data = await api('GET', `${basePath}/emails`);
+        } catch (e) {
+            container.innerHTML = `<p class="bk-empty">${esc(e.message)}</p>`;
+            return;
+        }
+        const notConnected = !data.connected ? '<p class="bk-fine">The shared Gmail inbox is not connected, so only emails sent from this dashboard are listed.</p>' : '';
+        container.innerHTML = `${notConnected}
+            <ul class="ws-list">${data.threads.map((t) => `<li><span><button type="button" class="crm-open" data-thread="${esc(t.id)}">${esc(t.subject || '(no subject)')}</button> <small>${esc(t.messageCount)} message(s) · last from ${esc(t.lastFrom)}${t.lastDate ? ` · ${esc(W.fmtDateTime(t.lastDate))}` : ''}</small></span></li>`).join('') || (data.connected ? '<li class="bk-empty">No emails with this address in the inbox.</li>' : '')}</ul>
+            ${data.sent.length ? `<h3 style="margin-top:1rem">Sent from the dashboard</h3><ul class="ws-list">${data.sent.map((s) => `<li><span>${esc(s.subject)} <small>${esc(s.sentBy)} · ${esc(W.fmtDateTime(s.at))}</small></span>${W.status(s.status, s.status === 'sent' ? 'good' : 'bad')}</li>`).join('')}</ul>` : ''}
+            <div id="em-thread"></div>
+            ${data.canSend ? '<button type="button" class="gp-btn gp-btn-primary gp-btn-sm" data-compose style="margin-top:.7rem">New email</button>' : '<p class="bk-fine">Sending needs Gmail to be connected by an administrator.</p>'}`;
+        const compose = async (threadId, subject) => {
+            const fields = threadId ? [] : [{ name: 'subject', label: 'Subject', required: true, max: 200 }];
+            fields.push({ name: 'body', label: 'Message', type: 'textarea', required: true, max: 8000 });
+            const values = await W.dialog({ title: threadId ? `Reply: ${subject}` : `Email ${data.email}`, text: `Sent from the Gradmire mailbox to ${data.email}, signed with your name, and recorded on this record.`, fields, confirm: 'Send email' });
+            if (!values) return;
+            try {
+                await api('POST', `${basePath}/emails`, { subject: values.subject || undefined, body: values.body, threadId: threadId || undefined });
+                W.say('Email sent.', 'ok');
+                emailPanel(container, basePath);
+            } catch (e) { W.say(e.message); }
+        };
+        container.querySelectorAll('[data-thread]').forEach((b) => b.addEventListener('click', async () => {
+            const box = container.querySelector('#em-thread');
+            box.innerHTML = '<p class="bk-empty">Loading…</p>';
+            try {
+                const thread = await api('GET', `${basePath}/emails/${b.dataset.thread}`);
+                const subject = thread.messages[0] ? thread.messages[0].subject : '';
+                box.innerHTML = `<h3 style="margin-top:1rem">${esc(subject)}</h3>${thread.messages.map((m) => `<div class="crm-note"><small>${esc(m.from)} → ${esc(m.to)}${m.date ? ` · ${esc(W.fmtDateTime(m.date))}` : ''}</small>${esc(m.text)}</div>`).join('')}
+                    ${data.canSend ? '<button type="button" class="gp-btn gp-btn-outline gp-btn-sm" data-reply style="margin-top:.6rem">Reply</button>' : ''}`;
+                if (data.canSend) box.querySelector('[data-reply]').addEventListener('click', () => compose(thread.id, subject));
+            } catch (e) { box.innerHTML = `<p class="bk-empty">${esc(e.message)}</p>`; }
+        }));
+        const button = container.querySelector('[data-compose]');
+        if (button) button.addEventListener('click', () => compose(null, ''));
+    }
+
     /* ── Consultant overview ────────────────────────────────────────────── */
 
     async function consultantDashboard() {
@@ -48,7 +127,7 @@
                 stat('Overdue tasks', d.counts.overdueFollowUps, 'consultant-follow-ups.html', true),
                 stat('Outcomes to record', d.counts.outcomesDue, 'admin-consultations.html', true),
             ].join('');
-            const session = (c) => `<li><span><a href="admin-consultations.html#id=${esc(c.id)}">${esc(c.student)}</a> <small>${esc(c.type)} · ${esc(W.label(c.meetingMethod))}</small></span><small>${esc(W.fmtDateTime(c.start))} · ${esc(W.label(c.status))}</small></li>`;
+            const session = (c) => `<li><span><a href="admin-consultations.html#id=${esc(c.id)}">${esc(c.student)}</a> <small>${esc(c.type)} · ${esc(W.label(c.meetingMethod))}</small></span><small>${esc(W.fmtDateTime(c.start))} · ${esc(W.label(c.status))}${c.meetingUrl ? ` · <a href="${esc(c.meetingUrl)}" target="_blank" rel="noopener noreferrer">Join Meet</a>` : ''}</small></li>`;
             $('cd-today').innerHTML = listOrEmpty(d.today, session, 'Nothing booked today.');
             $('cd-upcoming').innerHTML = listOrEmpty(d.upcoming, session, 'Nothing booked in the next week.');
             $('cd-leads').innerHTML = listOrEmpty(d.newLeads, (l) => `<li><a href="consultant-leads.html#lead=${esc(l.id)}">${esc(l.name)}</a><small>Received ${esc(W.fmtDate(l.createdAt))}</small></li>`, 'No new enquiries.');
@@ -70,7 +149,7 @@
                 const data = await api('GET', `/api/v1/consultant/students?${W.formQuery(form, { page: paging.state.page })}`);
                 paging.update(data);
                 rows.innerHTML = data.items.length ? data.items.map((s) => `<tr>
-                    <td><strong>${esc(s.name)}</strong><small>${esc(s.email)}${s.phone ? ` · ${esc(s.phone)}` : ''}</small></td>
+                    <td><button type="button" class="crm-open" data-student="${esc(s.id)}" data-name="${esc(s.name)}" data-email="${esc(s.email)}">${esc(s.name)}</button><small>${esc(s.email)}${s.phone ? ` · ${esc(s.phone)}` : ''}</small></td>
                     <td>${esc(s.destinations.join(', ') || '—')}</td><td>${esc(s.intake || '—')}</td>
                     <td>${s.applicationCount ? `${s.applicationCount} <small>${esc(W.label(s.latestApplicationStatus))}</small>` : '—'} <small><a href="admin-students.html">Manage</a></small></td>
                     <td>${esc(W.fmtDate(s.lastInteraction))}${s.nextConsultation ? `<small>Next: ${esc(W.fmtDate(s.nextConsultation))}</small>` : ''}</td>
@@ -79,6 +158,15 @@
                 rows.innerHTML = W.emptyRow(7, e.message);
             }
         }
+        const view = W.drawer('st-drawer');
+        rows.addEventListener('click', (event) => {
+            const button = event.target.closest('[data-student]');
+            if (!button) return;
+            view.open(button.dataset.name, button.dataset.email);
+            view.body.innerHTML = '<section><h3>Documents</h3><div id="st-docs"></div></section><section><h3>Email</h3><div id="st-email"></div></section>';
+            documentsPanel($('st-docs'), button.dataset.student);
+            emailPanel($('st-email'), `/api/v1/admin/students/${button.dataset.student}`);
+        });
         form.addEventListener('submit', (event) => { event.preventDefault(); paging.reset(); load(); });
         load();
     }
@@ -137,9 +225,11 @@
                 <label class="gp-field bk-wide"><span>Outcome or note (staff only)</span><textarea name="body" rows="2" maxlength="2000"></textarea></label>
                 <button class="gp-btn gp-btn-primary gp-btn-sm" type="submit">Add</button></form>
                 <button type="button" class="gp-btn gp-btn-outline gp-btn-sm" id="ld-task" style="margin-top:.6rem">Create follow-up task</button></section>
+              <section><h3>Email</h3><div id="ld-email"></div></section>
               <section><h3>History</h3><ul class="crm-timeline">${l.activities.map((a) => `<li><time datetime="${esc(a.at)}">${esc(W.fmtDateTime(a.at))}</time><span><strong>${esc(W.label(a.kind))}</strong>${a.channel ? ` (${esc(a.channel)})` : ''} · ${esc(a.actor)}${a.body ? `<br>${esc(a.body)}` : ''}${a.details && a.details.to && a.kind === 'status_changed' ? `<br>${esc(W.label(a.details.from))} → ${esc(W.label(a.details.to))}` : ''}</span></li>`).join('') || '<li>No activity yet.</li>'}</ul></section>
               ${l.consultations.length ? `<section><h3>Consultations</h3><ul class="ws-list">${l.consultations.map((c) => `<li><a href="admin-consultations.html#id=${esc(c.id)}">${esc(c.reference)}</a><small>${esc(W.fmtDateTime(c.start))} · ${esc(W.label(c.status))}</small></li>`).join('')}</ul></section>` : ''}
               ${l.possibleDuplicates.length ? `<section><h3>Other enquiries from the same email or phone</h3><p class="bk-fine">Shown for review; nothing is merged automatically.</p><ul class="ws-list">${l.possibleDuplicates.map((d) => `<li><button type="button" class="crm-open" data-lead="${esc(d.id)}">${esc(W.label(d.source))} · ${esc(W.fmtDate(d.createdAt))}</button><small>${esc(W.label(d.status))}${d.linked ? ' · linked to an account' : ''}</small></li>`).join('')}</ul></section>` : ''}`;
+            emailPanel($('ld-email'), `/api/v1/admin/leads/${l.id}`);
             $('ld-update').addEventListener('submit', async (event) => {
                 event.preventDefault();
                 const f = event.target.elements;
@@ -266,6 +356,17 @@
                 stat('Undelivered emails', d.undeliveredEmails, 'admin-consultations.html', true),
                 d.completionRate90d ? stat('Attended (90 days)', `${d.completionRate90d.rate}%`, 'admin-consultations.html') : '',
             ].join('');
+            api('GET', '/api/v1/admin/integrations').then((g) => {
+                const row = (label, okay, detail) => `<li><span><strong>${esc(label)}</strong> <small>${esc(detail)}</small></span>${W.status(okay ? 'Connected' : 'Not connected', okay ? 'good' : 'warn')}</li>`;
+                $('ad-integrations').innerHTML = [
+                    row('Outgoing email', g.email.sending, `provider: ${g.email.provider}`),
+                    row('Gmail for staff', Boolean(g.gmail.sender), g.gmail.sender ? `sends as ${g.gmail.sender}` : 'GMAIL_SENDER not set'),
+                    row('Gmail inbox in the CRM', Boolean(g.gmail.inbox), g.gmail.inbox ? `reads ${g.gmail.inbox}` : 'GMAIL_MAILBOX not set'),
+                    row('Document storage', g.storage.configured, `provider: ${g.storage.provider}`),
+                    row('Google Calendar', g.calendar.configured, `${g.calendar.consultantsWithCalendar} of ${g.calendar.activeConsultants} active consultants have a calendar`),
+                    row('Google Meet links', g.calendar.meetLinks, g.calendar.meetLinks ? 'video bookings and interviews get a Meet link' : 'GOOGLE_CALENDAR_CREATE_MEET is off'),
+                ].join('');
+            }).catch((e) => { $('ad-integrations').innerHTML = `<li class="bk-empty">${esc(e.message)}</li>`; });
             $('ad-approvals').innerHTML = listOrEmpty(approvals.items, (r) => `<li><a href="admin-approvals.html#request=${esc(r.id)}">${esc(r.target.name)}: ${esc(roleLabel(r.fromRole))} → ${esc(roleLabel(r.requestedRole))}</a><small>${esc(W.label(r.type))} · ${esc(W.fmtDate(r.createdAt))}</small></li>`, 'No requests are waiting.');
         } catch (e) {
             W.say(e.message);
@@ -418,7 +519,10 @@
                 ['Counselling experience', a.counsellingExperience], ['Additional information', a.additionalInfo], ['Interview', a.interviewAt ? W.fmtDateTime(a.interviewAt) : ''], ['Message to applicant', a.message]]
                 .filter(([, v]) => v).map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('');
             view.body.innerHTML = `
-              <section><h3>Application</h3><dl class="ws-dl">${dl}${a.cvUrl ? `<dt>CV</dt><dd><a href="${esc(a.cvUrl)}" target="_blank" rel="noopener noreferrer nofollow">Open the CV link</a> <small>(external site)</small></dd>` : ''}</dl></section>
+              <section><h3>Application</h3><dl class="ws-dl">${dl}${a.cvDocumentId ? '<dt>CV</dt><dd><button type="button" class="crm-open" id="ap-cv">Download the uploaded CV</button></dd>' : ''}${a.cvUrl ? `<dt>CV link</dt><dd><a href="${esc(a.cvUrl)}" target="_blank" rel="noopener noreferrer nofollow">Open the CV link</a> <small>(external site)</small></dd>` : ''}</dl></section>
+              ${a.status === 'interview_scheduled' ? `<section><h3>Interview meeting</h3><p>${esc(W.fmtDateTime(a.interviewAt))} · ${a.interviewMeeting.meetUrl ? `<a class="gp-btn gp-btn-primary gp-btn-sm" href="${esc(a.interviewMeeting.meetUrl)}" target="_blank" rel="noopener noreferrer">Join Google Meet</a>` : W.status(a.interviewMeeting.status === 'failed' ? 'Calendar failed' : 'No meeting link', a.interviewMeeting.status === 'failed' ? 'bad' : '')}</p>
+                ${a.interviewMeeting.status === 'failed' ? '<button type="button" class="gp-btn gp-btn-outline gp-btn-sm" id="ap-meet-retry">Try creating the meeting again</button>' : ''}
+                ${a.interviewMeeting.status === 'not_required' ? '<p class="bk-fine">No calendar is connected for you (or GOOGLE_INTERVIEW_CALENDAR_ID), so send the applicant a link yourself.</p>' : ''}</section>` : ''}
               <section><h3>Decision</h3>${next.length ? `<div class="bk-actions">${next.map((s) => `<button type="button" class="gp-btn ${s === 'rejected' ? 'gp-btn-outline' : 'gp-btn-primary'} gp-btn-sm" data-move="${s}">${esc(ACTION_LABEL[s])}</button>`).join('')}</div>` : '<p class="bk-fine">This application is closed.</p>'}
                 <p class="bk-fine">Approving records the hiring decision and emails an invitation. Consultant access starts only after onboarding is approved.</p>
                 <label class="gp-field"><span>Reviewer</span><select id="ap-reviewer"><option value="">Choose…</option>${staff.filter((s) => ADMINS.includes(s.role)).map((s) => `<option value="${esc(s.id)}"${a.reviewer && a.reviewer.id === s.id ? ' selected' : ''}>${esc(s.name)}</option>`).join('')}</select></label></section>
@@ -441,6 +545,10 @@
                     openApplication(a.id);
                 } catch (e) { W.say(e.message); }
             }));
+            if ($('ap-cv')) $('ap-cv').addEventListener('click', () => GradmireAPI.downloadFile(`/api/v1/admin/consultant-applications/${a.id}/cv`).catch((e) => W.say(e.message)));
+            if ($('ap-meet-retry')) $('ap-meet-retry').addEventListener('click', async () => {
+                try { await api('POST', `/api/v1/admin/consultant-applications/${a.id}/interview-meeting`, {}); openApplication(a.id); } catch (e) { W.say(e.message); }
+            });
             $('ap-reviewer').addEventListener('change', async (event) => {
                 if (!event.target.value) return;
                 try { await api('POST', `/api/v1/admin/consultant-applications/${a.id}/reviewer`, { reviewerId: event.target.value }); loadApplications(); } catch (e) { W.say(e.message); }

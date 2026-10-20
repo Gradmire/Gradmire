@@ -5,12 +5,12 @@
 <script>try{var c=JSON.parse(localStorage.getItem("gm-consent")||"null"),t=(c&&c.preferences&&localStorage.getItem("gradmire-theme"))||sessionStorage.getItem("gradmire-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Become a Gradmire consultant | Gradmire</title>
-<link rel="icon" type="image/png" href="/assets/favicon.png">
 <meta name="description" content="Apply to join Gradmire as a study-abroad consultant.">
+<link rel="icon" type="image/png" href="/assets/favicon.png">
 <link rel="stylesheet" href="../assets/site.css?v=27">
 <link rel="stylesheet" href="../assets/guide-pages.css?v=5">
 <link rel="stylesheet" href="../assets/booking.css?v=2">
-<link rel="stylesheet" href="../assets/workspace.css?v=1">
+<link rel="stylesheet" href="../assets/workspace.css?v=2">
 <meta name="robots" content="noindex, nofollow">
 </head>
 <body data-page="become-consultant" class="destination-page guide-page bk-page crm-page ws-page">
@@ -46,10 +46,11 @@
       <label class="gp-field bk-wide"><span>Education and qualifications</span><textarea name="education" rows="3" maxlength="2000" required></textarea></label>
       <label class="gp-field bk-wide"><span>Study-abroad or counselling experience <em>(optional)</em></span><textarea name="counsellingExperience" rows="3" maxlength="3000"></textarea></label>
       <label class="gp-field bk-wide"><span>Areas of expertise <em>(optional)</em></span><input name="expertise" maxlength="300" placeholder="e.g. UK, Canada, MBBS abroad, visas"></label>
-      <label class="gp-field bk-wide"><span>Link to your CV (https://) <em>(optional)</em></span><input name="cvUrl" type="url" maxlength="500" placeholder="https://drive.example.com/…" aria-describedby="bc-cv-help"></label>
+      <label class="gp-field bk-wide"><span>Upload your CV (PDF or Word, up to 4 MB) <em>(optional)</em></span><input name="cvFile" type="file" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" aria-describedby="bc-cv-help"></label>
+      <label class="gp-field bk-wide"><span>Or a link to your CV (https://) <em>(optional)</em></span><input name="cvUrl" type="url" maxlength="500" placeholder="https://…"></label>
       <label class="gp-field bk-wide"><span>Anything else we should know <em>(optional)</em></span><textarea name="additionalInfo" rows="3" maxlength="2000"></textarea></label>
     </div>
-    <p class="bk-fine" id="bc-cv-help">We cannot store uploaded files yet. Share a link that only people with the link can open; only Gradmire reviewers see it.</p>
+    <p class="bk-fine" id="bc-cv-help"><span id="bc-cv-current"></span>Your CV is stored privately and only Gradmire's hiring reviewers can open it.</p>
     <label class="bk-check" id="bc-consent-row"><input type="checkbox" name="consent"> I agree that Gradmire may use these details to assess my application and contact me about it.</label>
     <p class="bk-alert" id="bc-error" role="alert" hidden></p>
     <div class="bk-actions"><button type="button" class="gp-btn gp-btn-outline" id="bc-cancel" hidden>Cancel</button><button type="submit" class="gp-btn gp-btn-primary" id="bc-submit">Submit application</button></div>
@@ -113,9 +114,9 @@
   <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">© 2026 Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · Email: <a href="mailto:info@gradmire.com">info@gradmire.com</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund-policy.html">Refunds &amp; fees</a><a href="cookie-policy.html">Cookies</a><a href="data-request.html">Your data rights</a><a href="grievance.html">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
 </footer>
 <script src="../assets/site.js?v=30" defer></script>
-<script src="../assets/api.js?v=3" defer></script>
+<script src="../assets/api.js?v=4" defer></script>
 <script src="../assets/booking-common.js?v=1" defer></script>
-<script src="../assets/workspace.js?v=1" defer></script>
-<script src="../assets/student-area.js?v=1" defer></script>
+<script src="../assets/workspace.js?v=2" defer></script>
+<script src="../assets/student-area.js?v=3" defer></script>
 </body>
 </html>

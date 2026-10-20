@@ -133,7 +133,8 @@ function applicationInput(body, { partial }) {
         .text('education', { required, max: 2000, label: 'Education and qualifications' })
         .text('counsellingExperience', { max: 3000, label: 'Counselling experience' })
         .oneOf('availability', ['full_time', 'part_time', 'contract'], { required, label: 'Availability' })
-        .text('additionalInfo', { max: 2000, label: 'Additional information' });
+        .text('additionalInfo', { max: 2000, label: 'Additional information' })
+        .uuid('cvDocumentId', { label: 'CV' });
     if (required || body.yearsExperience !== undefined) {
         v.check(Number.isInteger(body.yearsExperience) && body.yearsExperience >= 0 && body.yearsExperience <= 60, 'yearsExperience', 'Years of experience must be a whole number from 0 to 60');
     }

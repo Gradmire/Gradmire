@@ -1,11 +1,79 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "api", "runtimeExecutable": "cmd", "runtimeArgs": ["/c", "set FRONTEND_ORIGIN=http://localhost:5500&& node backend/src/server.js"], "port": 4000 },
-    { "name": "frontend", "runtimeExecutable": "python", "runtimeArgs": ["-m", "http.server", "5500", "--directory", "frontend"], "port": 5500, "autoPort": false },
-    { "name": "booking-db", "runtimeExecutable": "node", "runtimeArgs": ["backend/scripts/local-db.js"], "port": 54320, "autoPort": false },
-    { "name": "booking-api", "runtimeExecutable": "cmd", "runtimeArgs": ["/c", "set DATABASE_URL=postgres://gradmire:gradmire-local@127.0.0.1:54320/gradmire&& set FRONTEND_ORIGIN=http://localhost:5600&& set SITE_URL=http://localhost:5600&& set CRON_SECRET=local-cron-secret&& set GOOGLE_CLIENT_ID=890289759079-9ccrs6qi08d9ajivncilsd31h4ppva2m.apps.googleusercontent.com&& node backend/scripts/migrate.js && node backend/src/server.js"], "port": 4000, "autoPort": false },
-    { "name": "applications-api", "runtimeExecutable": "cmd", "runtimeArgs": ["/c", "set DATABASE_URL=postgres://gradmire:gradmire-local@127.0.0.1:54320/gradmire&& set FRONTEND_ORIGIN=http://localhost:5600&& set SITE_URL=http://localhost:5600&& set CRON_SECRET=local-cron-secret&& set GOOGLE_CLIENT_ID=890289759079-9ccrs6qi08d9ajivncilsd31h4ppva2m.apps.googleusercontent.com&& set PORT=4100&& node backend/scripts/migrate.js && node backend/src/server.js"], "port": 4100, "autoPort": false },
-    { "name": "booking-frontend", "runtimeExecutable": "python", "runtimeArgs": ["-m", "http.server", "5600", "--directory", "frontend"], "port": 5600, "autoPort": false }
+    {
+      "name": "api",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": [
+        "/c",
+        "set FRONTEND_ORIGIN=http://localhost:5500&& node backend/src/server.js"
+      ],
+      "port": 4000
+    },
+    {
+      "name": "frontend",
+      "runtimeExecutable": "python",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "5500",
+        "--directory",
+        "frontend"
+      ],
+      "port": 5500,
+      "autoPort": false
+    },
+    {
+      "name": "booking-db",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "backend/scripts/local-db.js"
+      ],
+      "port": 54320,
+      "autoPort": false
+    },
+    {
+      "name": "booking-api",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": [
+        "/c",
+        "set DATABASE_URL=postgres://gradmire:gradmire-local@127.0.0.1:54320/gradmire&& set FRONTEND_ORIGIN=http://localhost:5600&& set SITE_URL=http://localhost:5600&& set CRON_SECRET=local-cron-secret&& set GOOGLE_CLIENT_ID=890289759079-9ccrs6qi08d9ajivncilsd31h4ppva2m.apps.googleusercontent.com&& node backend/scripts/migrate.js && node backend/src/server.js"
+      ],
+      "port": 4000,
+      "autoPort": false
+    },
+    {
+      "name": "applications-api",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": [
+        "/c",
+        "set DATABASE_URL=postgres://gradmire:gradmire-local@127.0.0.1:54320/gradmire&& set FRONTEND_ORIGIN=http://localhost:5600&& set SITE_URL=http://localhost:5600&& set CRON_SECRET=local-cron-secret&& set GOOGLE_CLIENT_ID=890289759079-9ccrs6qi08d9ajivncilsd31h4ppva2m.apps.googleusercontent.com&& set PORT=4100&& node backend/scripts/migrate.js && node backend/src/server.js"
+      ],
+      "port": 4100,
+      "autoPort": false
+    },
+    {
+      "name": "booking-frontend",
+      "runtimeExecutable": "python",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "5600",
+        "--directory",
+        "frontend"
+      ],
+      "port": 5600,
+      "autoPort": false
+    },
+    {
+      "name": "workspace-api",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": [
+        "/c",
+        "node --env-file=backend/.env.local-dev backend/scripts/migrate.js && node --env-file=backend/.env.local-dev backend/src/server.js"
+      ],
+      "port": 4000,
+      "autoPort": false
+    }
   ]
 }

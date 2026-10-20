@@ -18,6 +18,8 @@ export const LIMITS = {
     bookingResend: { limit: 5, windowSeconds: 3600 },
     invitation: { limit: 20, windowSeconds: 3600 },
     consultantApplication: { limit: 5, windowSeconds: 3600 },
+    upload: { limit: 30, windowSeconds: 3600 },
+    staffEmail: { limit: 60, windowSeconds: 3600 },
     googleLogin: { limit: 20, windowSeconds: 900 },
     passwordReset: { limit: 5, windowSeconds: 3600 },
 };

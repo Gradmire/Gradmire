@@ -141,5 +141,61 @@
         return `k${Date.now().toString(36)}${Math.random().toString(36).slice(2, 12)}`;
     }
 
-    window.GradmireAPI = { submitLead, request, getSession, login, signup, logout, safeNext, newIdempotencyKey, ApiError, apiBase };
+    /* Uploads a File as the raw request body (the API checks its type and size again). */
+    async function uploadFile(path, file) {
+        await getSession().catch(() => null);
+        const send = async () => {
+            const controller = new AbortController();
+            const timer = setTimeout(() => controller.abort(), 60000);
+            try {
+                const response = await fetch(`${apiBase()}${path}`, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: { 'Content-Type': file.type || 'application/octet-stream', ...(csrfToken ? { 'X-CSRF-Token': csrfToken } : {}) },
+                    body: file,
+                    signal: controller.signal,
+                });
+                const json = await response.json().catch(() => ({}));
+                if (!response.ok) throw new ApiError(json.error || `Upload failed (${response.status})`, response.status, json.code, json.fields);
+                return json.data;
+            } catch (error) {
+                if (error instanceof ApiError) throw error;
+                throw new ApiError('The upload did not finish. Check your connection and try again.', 0, 'NETWORK');
+            } finally {
+                clearTimeout(timer);
+            }
+        };
+        try {
+            return await send();
+        } catch (error) {
+            if (error.code !== 'CSRF_FAILED') throw error;
+            await getSession(true);
+            return send();
+        }
+    }
+
+    /* Downloads a protected file through the API and saves it with its own name. */
+    async function downloadFile(path) {
+        let response;
+        try {
+            response = await fetch(`${apiBase()}${path}`, { credentials: 'include' });
+        } catch (error) {
+            throw new ApiError('We could not reach Gradmire. Check your connection and try again.', 0, 'NETWORK');
+        }
+        if (!response.ok) {
+            const json = await response.json().catch(() => ({}));
+            throw new ApiError(json.error || `Download failed (${response.status})`, response.status, json.code);
+        }
+        const disposition = response.headers.get('Content-Disposition') || '';
+        const match = /filename\*=UTF-8''([^;]+)/i.exec(disposition) || /filename="([^"]+)"/i.exec(disposition);
+        const name = match ? decodeURIComponent(match[1]) : 'document';
+        const url = URL.createObjectURL(await response.blob());
+        const link = Object.assign(document.createElement('a'), { href: url, download: name, rel: 'noopener' });
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 30000);
+    }
+
+    window.GradmireAPI = { submitLead, request, getSession, login, signup, logout, safeNext, newIdempotencyKey, ApiError, apiBase, uploadFile, downloadFile };
 })();

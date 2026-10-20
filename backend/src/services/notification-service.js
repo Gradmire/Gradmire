@@ -7,14 +7,15 @@ import { config } from '../config.js';
 import { now } from '../lib/clock.js';
 import { query } from '../lib/db.js';
 import { getEmailProvider } from '../integrations/email/index.js';
-import { passwordResetToken, verificationToken } from './auth-service.js';
+import { emailChangeToken, passwordResetToken, verificationToken } from './auth-service.js';
 import { invitationToken } from './invitation-token.js';
 import { manageTokenFromSeed } from './manage-token.js';
 import { renderTemplate } from './notification-templates.js';
 
 const REMINDER_TEMPLATE = { 1440: 'reminder_24h', 60: 'reminder_1h' };
 /* Templates rendered from their stored payload alone (no consultation behind them). */
-const PAYLOAD_TEMPLATES = new Set(['password_changed', 'staff_calendar_failed', 'consultant_application_update', 'access_changed', 'lead_assigned']);
+const PAYLOAD_TEMPLATES = new Set(['password_changed', 'staff_calendar_failed', 'consultant_application_update', 'access_changed', 'lead_assigned',
+    'email_change_notice', 'email_changed', 'document_requested', 'follow_up_reminder']);
 
 export async function enqueueNotification(client, { consultationId = null, userId = null, template, recipient, dedupeKey, payload = {}, scheduledFor = null }) {
     await client.query(
@@ -107,6 +108,11 @@ async function buildMessage(row) {
     if (row.template === 'email_verification') {
         return renderTemplate(row.template, { ...row.payload, token: verificationToken(row.payload.verificationId) });
     }
+    if (row.template === 'email_change_confirm') {
+        const { rows } = await query('SELECT consumed_at, expires_at FROM email_change_requests WHERE id = $1', [row.payload.changeId]);
+        if (!rows[0] || rows[0].consumed_at || new Date(rows[0].expires_at) <= now()) return null;
+        return renderTemplate(row.template, { ...row.payload, token: emailChangeToken(row.payload.changeId) });
+    }
     if (row.template === 'employee_invitation') {
         // Only an invitation that can still be accepted is sent.
         const { rows } = await query("SELECT status, expires_at FROM employee_invitations WHERE id = $1", [row.payload.invitationId]);
@@ -168,7 +174,8 @@ export async function processNotifications({ limit = 20, consultationId = null }
                 results.skipped += 1;
                 continue;
             }
-            const sent = await provider.send({ to: row.recipient, subject: message.subject, text: message.text, html: message.html, idempotencyKey: row.dedupe_key });
+            // `retry` lets providers without idempotency keys (Gmail) check for an earlier copy first.
+            const sent = await provider.send({ to: row.recipient, subject: message.subject, text: message.text, html: message.html, idempotencyKey: row.dedupe_key, retry: row.attempts > 1 });
             await query(
                 "UPDATE notifications SET status = 'sent', provider = $2, provider_message_id = $3, sent_at = $4, last_error = NULL, locked_until = NULL, updated_at = NOW() WHERE id = $1",
                 [row.id, provider.name, sent.messageId, now()],

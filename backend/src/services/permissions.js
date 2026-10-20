@@ -13,12 +13,14 @@ export const ADMIN_ROLES = ['admin', 'super_admin'];
 export const PRIVILEGED_ROLES = ['admin', 'super_admin'];
 
 const STUDENT = [
-    'self.dashboard', 'self.profile', 'self.consultations', 'self.applications', 'self.notifications',
+    'self.dashboard', 'self.profile', 'self.consultations', 'self.applications', 'self.notifications', 'self.documents',
     'consultant_application.apply',
 ];
 const COUNSELLOR = [
     'self.notifications', 'staff.workspace',
     'consultations.assigned', 'students.assigned', 'leads.assigned', 'followups.own', 'availability.own',
+    // Documents and email of the students and enquiries they may already see.
+    'documents.assigned', 'email.assigned',
 ];
 const ADMIN = [
     ...COUNSELLOR,
@@ -27,7 +29,7 @@ const ADMIN = [
     'consultant_application.review', 'consultant_application.decide',
     'employees.view', 'employees.invite',
     'approvals.view', 'approvals.request', 'approvals.decide',
-    'audit.view', 'consultation_types.manage', 'notifications.manage',
+    'audit.view', 'consultation_types.manage', 'notifications.manage', 'integrations.view',
 ];
 const SUPER_ADMIN = [...ADMIN, 'roles.privileged'];
 
