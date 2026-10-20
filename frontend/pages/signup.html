@@ -498,7 +498,7 @@
             <h1 class="auth-form-title">Create your account</h1>
             <p class="auth-form-sub">Already have an account? <a href="login.html">Log in</a></p>
 
-            <form id="signup-form" novalidate>
+            <form id="signup-form" method="post" novalidate>
                 <div class="form-row">
                     <div class="form-field">
                         <label class="form-label" for="first-name">First name</label>
@@ -569,6 +569,7 @@
                     <input type="checkbox" id="partners" name="partner_institution_opt_in">
                     <label class="form-check-label" for="partners">I'm happy to receive information from partner universities and institutions.</label>
                 </div>
+                <p class="field-error" id="signup-error" role="alert" hidden style="margin:0 0 .75rem;color:#C0392B;font-size:.82rem;font-weight:600;"></p>
                 <button type="submit" class="btn-submit">Create free account</button>
             </form>
 
@@ -638,11 +639,41 @@
         document.getElementById('age-error').hidden = age.checked;
         if (!age.checked) { age.focus(); return; }
         const btn = this.querySelector('.btn-submit');
+        const error = document.getElementById('signup-error');
+        const f = this.elements;
+        const phone = f.phone.value.replace(/[\s().-]/g, '');
+        error.hidden = true;
+        if (f.password.value.length < 8) {
+            error.textContent = 'Use a password of at least 8 characters.';
+            error.hidden = false;
+            f.password.focus();
+            return;
+        }
+        if (phone && !/^\+[1-9]\d{6,14}$/.test(phone)) {
+            error.textContent = 'Enter the phone number with its country code, e.g. +91 98765 43210, or leave it empty.';
+            error.hidden = false;
+            f.phone.focus();
+            return;
+        }
         btn.textContent = 'Creating account…';
         btn.disabled = true;
-        setTimeout(() => {
-            window.location.href = 'dashboard.html';
-        }, 1400);
+        // Real account creation; the server always creates a student account.
+        GradmireAPI.signup({
+            firstName: f.first_name.value.trim(),
+            lastName: f.last_name.value.trim() || undefined,
+            email: f.email.value.trim(),
+            phone: phone || undefined,
+            password: f.password.value,
+            ageConfirmation: age.checked,
+        }).then(() => {
+            const next = new URLSearchParams(location.search).get('next');
+            window.location.href = GradmireAPI.safeNext(next, 'dashboard-consultations.html');
+        }).catch((err) => {
+            error.textContent = err.message;
+            error.hidden = false;
+            btn.textContent = 'Create free account';
+            btn.disabled = false;
+        });
     });
 </script>
 
@@ -704,4 +735,5 @@
   <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">© 2026 Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · <a href="mailto:privacy@gradmire.in">privacy@gradmire.in</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund-policy.html">Refunds &amp; fees</a><a href="cookie-policy.html">Cookies</a><a href="data-request.html">Your data rights</a><a href="grievance.html">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
 </footer>
 
+<script src="../assets/api.js?v=2"></script>
 <script src="../assets/site.js?v=28" defer></script>

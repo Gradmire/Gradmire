@@ -558,7 +558,7 @@
             <h1 class="auth-form-title">Log in to Gradmire</h1>
             <p class="auth-form-sub">Don't have an account? <a href="signup.html">Sign up free</a></p>
 
-            <form id="login-form" novalidate>
+            <form id="login-form" method="post" novalidate>
                 <div class="form-field">
                     <label class="form-label" for="email">Email address</label>
                     <input class="form-input" type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required>
@@ -574,6 +574,7 @@
                     </div>
                     <div class="form-forgot"><a href="contact.html?interest=password-reset">Forgot password? Contact support</a></div>
                 </div>
+                <p class="field-error" id="login-error" role="alert" hidden style="margin:0 0 .75rem;color:#C0392B;font-size:.82rem;font-weight:600;"></p>
                 <button type="submit" class="btn btn-primary">Log in</button>
             </form>
 
@@ -602,14 +603,32 @@
             btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
         });
     });
-    document.getElementById('login-form').addEventListener('submit', function(e) {
+    // Real sign-in against the Gradmire API (HttpOnly session cookie).
+    document.getElementById('login-form').addEventListener('submit', async function(e) {
         e.preventDefault();
         const btn = this.querySelector('[type="submit"]');
+        const error = document.getElementById('login-error');
+        const email = this.elements.email.value.trim();
+        const password = this.elements.password.value;
+        error.hidden = true;
+        if (!email || !password) {
+            error.textContent = 'Enter your email address and password.';
+            error.hidden = false;
+            return;
+        }
         btn.textContent = 'Logging in…';
         btn.disabled = true;
-        setTimeout(() => {
-            window.location.href = 'dashboard.html';
-        }, 1200);
+        try {
+            const user = await GradmireAPI.login(email, password);
+            const next = new URLSearchParams(location.search).get('next');
+            const fallback = user.role === 'student' ? 'dashboard-consultations.html' : 'admin-consultations.html';
+            window.location.href = GradmireAPI.safeNext(next, fallback);
+        } catch (err) {
+            error.textContent = err.message;
+            error.hidden = false;
+            btn.textContent = 'Log in';
+            btn.disabled = false;
+        }
     });
 </script>
 
@@ -671,4 +690,5 @@
   <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">© 2026 Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · <a href="mailto:privacy@gradmire.in">privacy@gradmire.in</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund-policy.html">Refunds &amp; fees</a><a href="cookie-policy.html">Cookies</a><a href="data-request.html">Your data rights</a><a href="grievance.html">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
 </footer>
 
+<script src="../assets/api.js?v=2"></script>
 <script src="../assets/site.js?v=28" defer></script>

@@ -2,19 +2,26 @@
     "name": "gradmire-backend",
     "version": "0.1.0",
     "private": true,
-    "description": "Gradmire API for leads and platform health checks",
+    "description": "Gradmire API for leads, accounts and consultation booking",
     "type": "module",
     "scripts": {
         "dev": "node --watch src/server.js",
         "start": "node src/server.js",
         "migrate": "node scripts/migrate.js",
         "vercel-build": "node scripts/migrate.js --vercel-build",
-        "check": "node --check src/server.js && node --check src/app.js && node --check api/index.js && node --check src/routes/health.js && node --check src/routes/leads.js && node --check src/services/db.js && node --check src/services/lead-store.js && node --check scripts/migrate.js"
+        "check": "node scripts/check-syntax.js",
+        "test": "node --test --test-concurrency=1 test/*.test.js",
+        "worker": "node scripts/worker.js",
+        "create-staff": "node scripts/create-staff.js",
+        "db:local": "node scripts/local-db.js"
     },
     "engines": {
         "node": ">=20"
     },
     "dependencies": {
         "pg": "8.23.1"
+    },
+    "devDependencies": {
+        "embedded-postgres": "16.13.0-beta.16"
     }
 }

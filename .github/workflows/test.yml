@@ -31,6 +31,8 @@ jobs:
     env:
       DATABASE_URL: postgres://gradmire:gradmire@127.0.0.1:5432/gradmire
       ADMIN_API_TOKEN: ci-admin-token
+      # The booking tests create (and drop) their own databases on this server.
+      TEST_DATABASE_URL: postgres://gradmire:gradmire@127.0.0.1:5432/postgres
 
     steps:
       - name: Check out repository
@@ -53,8 +55,14 @@ jobs:
           # A second run must be a no-op.
           npm run migrate --prefix backend
 
+      - name: Run backend tests (booking, auth, security, integration)
+        run: npm test --prefix backend
+
       - name: Validate shared frontend JavaScript
-        run: node --check frontend/assets/site.js
+        run: |
+          for file in site api booking-common booking manage-consultation my-consultations admin-consultations; do
+            node --check "frontend/assets/$file.js"
+          done
 
       - name: Validate frontend links and assets
         run: node scripts/check-frontend-links.mjs
