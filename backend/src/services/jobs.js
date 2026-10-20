@@ -5,11 +5,14 @@ import { query } from '../lib/db.js';
 import { processCalendarJobs, reconcileCalendar } from './calendar-sync.js';
 import { processNotifications } from './notification-service.js';
 import { purgeOldRateLimits } from './rate-limit.js';
+import { queueFollowUpReminders } from './reminder-service.js';
 import { runRetention } from './retention-service.js';
 
 export async function runDueJobs({ maxBatches = 5 } = {}) {
     const totals = { calendarRequeued: 0, calendar: { done: 0, failed: 0, skipped: 0 }, notifications: { sent: 0, failed: 0, skipped: 0, cancelled: 0 } };
     totals.calendarRequeued = await reconcileCalendar();
+    // Queued before the delivery loop below, so reminders go out in this same pass.
+    totals.followUpReminders = await queueFollowUpReminders();
     for (let i = 0; i < maxBatches; i += 1) {
         const calendar = await processCalendarJobs({ limit: 10 });
         const notifications = await processNotifications({ limit: 25 });

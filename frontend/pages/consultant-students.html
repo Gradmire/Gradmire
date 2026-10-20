@@ -5,12 +5,12 @@
 <script>try{var c=JSON.parse(localStorage.getItem("gm-consent")||"null"),t=(c&&c.preferences&&localStorage.getItem("gradmire-theme"))||sessionStorage.getItem("gradmire-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>My students | Gradmire staff</title>
-<link rel="icon" type="image/png" href="/assets/favicon.png">
 <meta name="description" content="Students assigned to you.">
+<link rel="icon" type="image/png" href="/assets/favicon.png">
 <link rel="stylesheet" href="../assets/site.css?v=27">
 <link rel="stylesheet" href="../assets/guide-pages.css?v=5">
 <link rel="stylesheet" href="../assets/booking.css?v=2">
-<link rel="stylesheet" href="../assets/workspace.css?v=1">
+<link rel="stylesheet" href="../assets/workspace.css?v=2">
 <meta name="robots" content="noindex, nofollow">
 </head>
 <body data-page="consultant-students" class="destination-page guide-page bk-page crm-page ws-page">
@@ -42,6 +42,10 @@
       <thead><tr><th scope="col">Student</th><th scope="col">Destinations</th><th scope="col">Intake</th><th scope="col">Applications</th><th scope="col">Last interaction</th><th scope="col">Next follow-up</th><th scope="col">Consultant</th></tr></thead>
       <tbody id="st-rows"><tr><td colspan="7">Loading…</td></tr></tbody></table></div>
   <div class="crm-pager"><span id="st-count" aria-live="polite"></span><span class="bk-actions"><button type="button" class="gp-btn gp-btn-outline gp-btn-sm" id="st-prev">Previous</button><button type="button" class="gp-btn gp-btn-outline gp-btn-sm" id="st-next">Next</button></span></div>
+  <div class="crm-drawer" id="st-drawer" role="dialog" aria-modal="true" aria-labelledby="st-drawer-title" hidden>
+    <div class="crm-drawer-head"><div><h2 id="st-drawer-title">Details</h2><p class="bk-fine" id="st-drawer-sub"></p></div><button type="button" class="gp-btn gp-btn-outline gp-btn-sm" data-close-drawer>Close</button></div>
+    <div class="crm-drawer-body" id="st-drawer-body"></div>
+  </div>
 </main></div>
 <footer class="gm-footer" aria-label="Site footer">
   <div class="gm-footer-inner">
@@ -101,9 +105,9 @@
   <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">© 2026 Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · Email: <a href="mailto:info@gradmire.com">info@gradmire.com</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund-policy.html">Refunds &amp; fees</a><a href="cookie-policy.html">Cookies</a><a href="data-request.html">Your data rights</a><a href="grievance.html">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
 </footer>
 <script src="../assets/site.js?v=30" defer></script>
-<script src="../assets/api.js?v=3" defer></script>
+<script src="../assets/api.js?v=4" defer></script>
 <script src="../assets/booking-common.js?v=1" defer></script>
-<script src="../assets/workspace.js?v=1" defer></script>
-<script src="../assets/staff-area.js?v=1" defer></script>
+<script src="../assets/workspace.js?v=2" defer></script>
+<script src="../assets/staff-area.js?v=3" defer></script>
 </body>
 </html>

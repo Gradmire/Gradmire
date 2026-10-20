@@ -6,10 +6,10 @@
 import { shell, write } from './page-shell.mjs';
 
 const BOOKING_CSS = 'booking.css?v=2';
-const API_JS = 'api.js?v=3';
+const API_JS = 'api.js?v=4';
 const COMMON_JS = 'booking-common.js?v=1';
-const WORKSPACE_CSS = 'workspace.css?v=1';
-const WORKSPACE_JS = 'workspace.js?v=1';
+const WORKSPACE_CSS = 'workspace.css?v=2';
+const WORKSPACE_JS = 'workspace.js?v=2';
 
 function page({ name, title, description, body, script, workspace = false }) {
     let html = shell({ title, description, body: workspace ? `<div class="ws-layout"><nav class="ws-nav" id="ws-nav" aria-label="Workspace"></nav>${body}</div>` : body, bodyClass: 'bk-page' });

@@ -84,6 +84,19 @@ export function renderTemplate(template, p) {
             return { subject: 'Reset your Gradmire password', ...layout('Reset your password', [`Hi ${p.firstName},`, 'We received a request to reset the password for your Gradmire account. Use the button below to choose a new password.', `The link works once and expires in ${p.minutes} minutes. If you did not ask for this, ignore this email; your password stays the same.`], [], { label: 'Choose a new password', url: pageUrl('reset-password.html', `#token=${encodeURIComponent(p.token)}`) }, ACCOUNT_FOOTER) };
         case 'password_changed':
             return { subject: 'Your Gradmire password was changed', ...layout('Your password was changed', [`Hi ${p.firstName},`, 'The password for your Gradmire account was just changed and every device was signed out.', 'If this was not you, reset your password straight away and contact info@gradmire.com.'], [], { label: 'Log in', url: pageUrl('login.html') }, ACCOUNT_FOOTER) };
+        case 'email_change_confirm':
+            return { subject: 'Confirm your new Gradmire email address', ...layout('Confirm your new email address', [`Hi ${p.firstName},`, 'You asked to use this address to log in to Gradmire. Confirm it with the button below. After confirming, you will be signed out everywhere and log in with this address.', 'The link expires in 24 hours. If you did not ask for this, ignore this email; nothing changes.'], [], { label: 'Confirm new email', url: pageUrl('dashboard-profile.html', `#email-change=${encodeURIComponent(p.token)}`) }, ACCOUNT_FOOTER) };
+        case 'email_change_notice':
+            return { subject: 'Your Gradmire login email is being changed', ...layout('Email change requested', [`Hi ${p.firstName},`, `Someone signed in to your account asked to change its login email to ${p.newEmail}. The change only happens if that address confirms it.`, 'If this was not you, change your password now and contact Gradmire support.'], [], { label: 'Log in', url: pageUrl('login.html') }, ACCOUNT_FOOTER) };
+        case 'email_changed':
+            return { subject: 'Your Gradmire login email was changed', ...layout('Login email changed', [`Hi ${p.firstName},`, `Your account now logs in with ${p.newEmail}. You have been signed out on all devices.`, 'If this was not you, contact Gradmire support immediately.'], [], null, ACCOUNT_FOOTER) };
+        case 'document_requested':
+            return { subject: `Document requested: ${p.title}`, ...layout('Your counsellor needs a document', [`Hi ${p.firstName},`, `Please upload: ${p.title}.`, ...(p.details ? [p.details] : []), ...(p.dueDate ? [`Please upload it by ${p.dueDate}.`] : [])], [], { label: 'Upload in My documents', url: pageUrl('dashboard-documents.html') }, ACCOUNT_FOOTER) };
+        case 'follow_up_reminder': {
+            const zone = p.timeZone || 'Asia/Kolkata';
+            const due = new Intl.DateTimeFormat('en-GB', { timeZone: zone, weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date(p.dueAt));
+            return { subject: `Follow-up due: ${p.title}`, ...layout('Follow-up reminder', [p.title, `Due ${due} (${zone}).`, ...(p.details ? [p.details] : [])], [], { label: 'Open my follow-ups', url: pageUrl(p.page || 'consultant-follow-ups.html') }, ACCOUNT_FOOTER) };
+        }
         case 'lead_assigned':
             return { subject: `New enquiry assigned to you: ${p.leadName}`, ...layout('An enquiry was assigned to you', [`${p.leadName} has been assigned to you. Please make contact and record the outcome.`], [], { label: 'Open my workspace', url: pageUrl('consultant-dashboard.html') }, ACCOUNT_FOOTER) };
         default:

@@ -142,14 +142,14 @@ export async function consultantOverview(staff, timezone) {
     const weekEnd = addMinutes(now(), 7 * 24 * 60);
     const [todayRows, upcomingRows, counts, deadlines, recentStudents] = await Promise.all([
         query(
-            `SELECT c.id, c.reference, c.status, c.scheduled_start, c.scheduled_end, c.student_name, c.meeting_method, t.name AS type_name
+            `SELECT c.id, c.reference, c.status, c.scheduled_start, c.scheduled_end, c.student_name, c.meeting_method, c.meeting_url, t.name AS type_name
              FROM consultations c JOIN consultation_types t ON t.id = c.consultation_type_id
              WHERE c.counsellor_id = $1 AND c.scheduled_start >= $2 AND c.scheduled_start < $3 AND c.status IN ('reserved', 'confirmed', 'completed', 'no_show')
              ORDER BY c.scheduled_start`,
             [scope, start, end],
         ),
         query(
-            `SELECT c.id, c.reference, c.status, c.scheduled_start, c.scheduled_end, c.student_name, c.meeting_method, t.name AS type_name
+            `SELECT c.id, c.reference, c.status, c.scheduled_start, c.scheduled_end, c.student_name, c.meeting_method, c.meeting_url, t.name AS type_name
              FROM consultations c JOIN consultation_types t ON t.id = c.consultation_type_id
              WHERE c.counsellor_id = $1 AND c.scheduled_start >= $2 AND c.scheduled_start < $3 AND c.status IN ('reserved', 'confirmed')
              ORDER BY c.scheduled_start LIMIT 10`,
@@ -182,7 +182,7 @@ export async function consultantOverview(staff, timezone) {
             [scope],
         ),
     ]);
-    const item = (c) => ({ id: c.id, reference: c.reference, status: c.status, start: iso(c.scheduled_start), end: iso(c.scheduled_end), student: c.student_name, type: c.type_name, meetingMethod: c.meeting_method });
+    const item = (c) => ({ id: c.id, reference: c.reference, status: c.status, start: iso(c.scheduled_start), end: iso(c.scheduled_end), student: c.student_name, type: c.type_name, meetingMethod: c.meeting_method, meetingUrl: c.status === 'confirmed' ? c.meeting_url : null });
     return {
         timezone,
         today: todayRows.rows.map(item),

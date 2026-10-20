@@ -127,3 +127,48 @@ export function parseCookies(header = '') {
     }
     return cookies;
 }
+
+/* The request body as bytes (file uploads). Stops reading past maxBytes. */
+export function readRawBody(request, maxBytes) {
+    return new Promise((resolve, reject) => {
+        const declared = Number(request.headers['content-length'] || 0);
+        if (declared > maxBytes) {
+            reject(new HttpError(413, `Files can be at most ${Math.floor(maxBytes / 1048576)} MB.`, 'FILE_TOO_LARGE'));
+            request.resume();
+            return;
+        }
+        const chunks = [];
+        let size = 0;
+        let tooLarge = false;
+        request.on('data', (chunk) => {
+            if (tooLarge) return;
+            size += chunk.length;
+            if (size > maxBytes) {
+                tooLarge = true;
+                chunks.length = 0;
+                reject(new HttpError(413, `Files can be at most ${Math.floor(maxBytes / 1048576)} MB.`, 'FILE_TOO_LARGE'));
+                return;
+            }
+            chunks.push(chunk);
+        });
+        request.on('end', () => {
+            if (!tooLarge) resolve(Buffer.concat(chunks));
+        });
+        request.on('error', reject);
+    });
+}
+
+/* Sends a stored file as a download. It is never rendered inline, cached or sniffed. */
+export function sendFile(response, { filename, mimeType, data }) {
+    const ascii = filename.replace(/[^\x20-\x7E]/g, '_').replace(/["\\]/g, '_');
+    response.writeHead(200, {
+        'Content-Type': mimeType,
+        'Content-Length': data.length,
+        'Content-Disposition': `attachment; filename="${ascii}"; filename*=UTF-8''${encodeURIComponent(filename)}`,
+        'Access-Control-Expose-Headers': 'Content-Disposition',
+        'Cache-Control': 'no-store',
+        'X-Content-Type-Options': 'nosniff',
+        'Content-Security-Policy': "default-src 'none'; sandbox",
+    });
+    response.end(data);
+}

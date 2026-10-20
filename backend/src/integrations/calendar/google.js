@@ -1,43 +1,16 @@
 /* Google Calendar v3 over plain HTTPS with a service account (no SDK).
-   - Auth: OAuth 2.0 JWT bearer grant signed with the service account key. With
+   - Auth: shared service-account tokens (integrations/google/auth.js). With
      GOOGLE_CALENDAR_IMPERSONATE set (Workspace domain-wide delegation) calls run
      as that user, which is also what allows Meet links and attendee invites.
    - Idempotency: each event uses a deterministic id, so a retried insert gets
      409 and we fetch the existing event instead of creating a duplicate.
    Credentials stay server-side; nothing here is returned to clients. */
-import { createSign } from 'node:crypto';
-
-const TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const API = 'https://www.googleapis.com/calendar/v3';
 const SCOPE = 'https://www.googleapis.com/auth/calendar';
 
-const b64url = (value) => Buffer.from(value).toString('base64url');
-
-export function createGoogleCalendarProvider({ clientEmail, privateKey, impersonate, createMeet, inviteAttendees }) {
-    let cached = null;
-
-    async function accessToken() {
-        if (cached && cached.expiresAt - 60_000 > Date.now()) return cached.token;
-        const issuedAt = Math.floor(Date.now() / 1000);
-        const header = b64url(JSON.stringify({ alg: 'RS256', typ: 'JWT' }));
-        const claims = b64url(JSON.stringify({
-            iss: clientEmail, scope: SCOPE, aud: TOKEN_URL, iat: issuedAt, exp: issuedAt + 3600,
-            ...(impersonate ? { sub: impersonate } : {}),
-        }));
-        const signer = createSign('RSA-SHA256');
-        signer.update(`${header}.${claims}`);
-        const assertion = `${header}.${claims}.${signer.sign(privateKey).toString('base64url')}`;
-        const response = await fetch(TOKEN_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams({ grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer', assertion }),
-            signal: AbortSignal.timeout(8000),
-        });
-        const body = await response.json().catch(() => ({}));
-        if (!response.ok || !body.access_token) throw new Error(`Google token request failed (${response.status} ${body.error || ''})`.trim());
-        cached = { token: body.access_token, expiresAt: Date.now() + (body.expires_in || 3600) * 1000 };
-        return cached.token;
-    }
+/* accessToken(scope, subject) comes from integrations/google/auth.js. */
+export function createGoogleCalendarProvider({ accessToken: token, impersonate, createMeet, inviteAttendees }) {
+    const accessToken = () => token(SCOPE, impersonate || '');
 
     async function call(method, path, body) {
         const response = await fetch(`${API}${path}`, {

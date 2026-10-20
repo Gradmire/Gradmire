@@ -11,7 +11,7 @@
     const ROLE_LABELS = { student: 'Student', counsellor: 'Consultant', admin: 'Administrator', super_admin: 'Super administrator' };
     const STUDENT_NAV = [
         ['dashboard.html', 'Overview'], ['dashboard-consultations.html', 'My consultations'], ['dashboard.html#applications', 'My applications'],
-        ['find-courses.html', 'Universities and courses'], ['dashboard-profile.html', 'My profile'], ['dashboard-notifications.html', 'Notifications', 'unread'],
+        ['find-courses.html', 'Universities and courses'], ['dashboard-documents.html', 'My documents'], ['dashboard-profile.html', 'My profile'], ['dashboard-notifications.html', 'Notifications', 'unread'],
         ['dashboard-become-consultant.html', 'Become a consultant'], ['contact.html', 'Support'],
     ];
     const CONSULTANT_NAV = [

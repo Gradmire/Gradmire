@@ -315,3 +315,63 @@ export async function confirmPasswordReset(token, password) {
         return { reset: true };
     });
 }
+
+/* ── Changing the login email ─────────────────────────────────────────────── */
+
+const EMAIL_CHANGE_TTL_HOURS = 24;
+/* token = HMAC(APP_SECRET, 'email-change:' + id); only its hash is stored. */
+export const emailChangeToken = (id) => hmac(config.appSecret(), `email-change:${id}`);
+
+export const maskEmail = (email) => {
+    const [name, domain] = String(email).split('@');
+    return `${name.slice(0, 2)}${'•'.repeat(Math.max(1, name.length - 2))}@${domain}`;
+};
+
+/* Asks for a change: the password proves it is the account holder, and a link to
+   the new address proves they own it. The current address is told as well. */
+export async function requestEmailChange(user, { newEmail, password }) {
+    if (!user.password_hash) {
+        throw conflict('Your account signs in with Google, so its email follows your Google account. Contact Gradmire support to change it.', 'GOOGLE_ACCOUNT');
+    }
+    if (!(await verifyPassword(password, user.password_hash))) throw forbidden('Your password is incorrect.');
+    if (newEmail === user.email.toLowerCase()) throw conflict('That is already your email address.', 'SAME_EMAIL');
+    return withTransaction(async (client) => {
+        const taken = (await client.query('SELECT 1 FROM users WHERE LOWER(email) = $1', [newEmail])).rows.length;
+        if (taken) throw conflict('That email address is already used by another account.', 'EMAIL_TAKEN');
+        // Only the latest request can be confirmed.
+        await client.query('UPDATE email_change_requests SET consumed_at = $2 WHERE user_id = $1 AND consumed_at IS NULL', [user.id, now()]);
+        const id = crypto.randomUUID();
+        await client.query(
+            'INSERT INTO email_change_requests (id, user_id, new_email, token_hash, expires_at) VALUES ($1, $2, $3, $4, $5)',
+            [id, user.id, newEmail, sha256(emailChangeToken(id)), new Date(now().getTime() + EMAIL_CHANGE_TTL_HOURS * 3600_000)],
+        );
+        await enqueueNotification(client, { userId: user.id, template: 'email_change_confirm', recipient: newEmail, dedupeKey: `email_change:${id}:confirm`, payload: { firstName: user.first_name, changeId: id } });
+        await enqueueNotification(client, { userId: user.id, template: 'email_change_notice', recipient: user.email, dedupeKey: `email_change:${id}:notice`, payload: { firstName: user.first_name, newEmail: maskEmail(newEmail) } });
+        await audit(client, { actorUserId: user.id, action: 'auth.email_change_requested', entityType: 'user', entityId: user.id });
+        return { sent: true, expiresInHours: EMAIL_CHANGE_TTL_HOURS };
+    });
+}
+
+export async function confirmEmailChange(token) {
+    return withTransaction(async (client) => {
+        const record = (await client.query('SELECT * FROM email_change_requests WHERE token_hash = $1 FOR UPDATE', [sha256(token)])).rows[0];
+        if (!record || record.consumed_at || new Date(record.expires_at) <= now()) {
+            throw new HttpError(400, 'This link is invalid or has expired. Request the change again from your profile.', 'INVALID_TOKEN');
+        }
+        const user = (await client.query('SELECT * FROM users WHERE id = $1 FOR UPDATE', [record.user_id])).rows[0];
+        if (!user || user.status !== 'active') throw new HttpError(400, 'This link is invalid or has expired.', 'INVALID_TOKEN');
+        try {
+            await client.query('UPDATE users SET email = $2, email_verified_at = $3, updated_at = NOW() WHERE id = $1', [user.id, record.new_email, now()]);
+        } catch (error) {
+            if (error.code === '23505') throw conflict('That email address is now used by another account.', 'EMAIL_TAKEN');
+            throw error;
+        }
+        await client.query('UPDATE email_change_requests SET consumed_at = $2 WHERE id = $1', [record.id, now()]);
+        // Sign out everywhere: whoever had the old sessions must log in with the new address.
+        await client.query('UPDATE sessions SET revoked_at = $2 WHERE user_id = $1 AND revoked_at IS NULL', [user.id, now()]);
+        const linked = await linkGuestRecords(client, user.id, record.new_email);
+        await enqueueNotification(client, { userId: user.id, template: 'email_changed', recipient: user.email, dedupeKey: `email_change:${record.id}:done`, payload: { firstName: user.first_name, newEmail: maskEmail(record.new_email) } });
+        await audit(client, { actorUserId: user.id, action: 'auth.email_changed', entityType: 'user', entityId: user.id, details: { before: { email: user.email }, after: { email: record.new_email }, ...linked } });
+        return { changed: true, email: record.new_email, ...linked };
+    });
+}

@@ -1,5 +1,6 @@
 # Local-only files that must never be uploaded to Vercel.
 .local-pg/
+.local-uploads/
 .env
 .env.*
 !.env.example

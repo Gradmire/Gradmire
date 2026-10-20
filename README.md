@@ -35,5 +35,7 @@ See [`docs/role-based-dashboard-setup.md`](docs/role-based-dashboard-setup.md) (
 [`docs/role-permissions-matrix.md`](docs/role-permissions-matrix.md),
 [`docs/approval-workflows.md`](docs/approval-workflows.md) and
 [`docs/role-based-dashboard-architecture.md`](docs/role-based-dashboard-architecture.md).
+Gmail (system email, CRM inbox, compose/reply), Google Drive (documents and CVs) and Google Meet
+(consultations and interviews) are set up as described in [`docs/google-workspace-setup.md`](docs/google-workspace-setup.md).
 
 See `frontend/README.md` and `backend/README.md` for local development notes.

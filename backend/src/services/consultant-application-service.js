@@ -15,7 +15,9 @@ import { now } from '../lib/clock.js';
 import { query, withTransaction } from '../lib/db.js';
 import { badRequest, conflict, forbidden, notFound } from '../lib/http.js';
 import { audit } from './audit.js';
+import { assertOwnCv } from './document-service.js';
 import { createInvitationInTransaction } from './employee-service.js';
+import { syncInterviewMeeting } from './interview-meeting.js';
 import { notifyUser } from './inbox.js';
 import { enqueueNotification } from './notification-service.js';
 
@@ -45,7 +47,7 @@ export const STATUS_LABELS = {
 const FIELDS = {
     fullName: 'full_name', phone: 'phone', location: 'location', yearsExperience: 'years_experience',
     professionalExperience: 'professional_experience', education: 'education', counsellingExperience: 'counselling_experience',
-    languages: 'languages', expertise: 'expertise', availability: 'availability', cvUrl: 'cv_url', additionalInfo: 'additional_info',
+    languages: 'languages', expertise: 'expertise', availability: 'availability', cvUrl: 'cv_url', cvDocumentId: 'cv_document_id', additionalInfo: 'additional_info',
 };
 
 const iso = (value) => (value ? new Date(value).toISOString() : null);
@@ -68,8 +70,11 @@ function applicantView(a) {
         expertise: a.expertise,
         availability: a.availability,
         cvUrl: a.cv_url,
+        cvDocumentId: a.cv_document_id || null,
         additionalInfo: a.additional_info,
         interviewAt: ['interview_scheduled'].includes(a.status) ? iso(a.interview_at) : null,
+        // Only a link that Google actually created is shown.
+        interviewMeetUrl: a.status === 'interview_scheduled' ? a.interview_meet_url || null : null,
         message: a.applicant_message,
         canEdit: EDITABLE.includes(a.status),
         canWithdraw: OPEN_STATUSES.includes(a.status),
@@ -87,6 +92,7 @@ function reviewerView(a, events = null) {
         accountEmail: a.account_email,
         reviewer: a.reviewer_user_id ? { id: a.reviewer_user_id, name: a.reviewer_name } : null,
         interviewAt: iso(a.interview_at),
+        interviewMeeting: { status: a.interview_calendar_status, meetUrl: a.interview_meet_url || null },
         allowedTransitions: REVIEW_TRANSITIONS[a.status],
         ...(events ? {
             history: events.map((e) => ({
@@ -133,16 +139,17 @@ export async function submit(user, input) {
     if (user.role !== 'student') throw forbidden('Only student accounts can apply to become a consultant.');
     if (!user.email_verified_at) throw forbidden('Verify your email address before applying.');
     return withTransaction(async (client) => {
+        if (input.cvDocumentId) await assertOwnCv(client, user.id, input.cvDocumentId);
         const id = crypto.randomUUID();
         let row;
         try {
             row = (await client.query(
                 `INSERT INTO consultant_applications (id, user_id, full_name, email, phone, location, years_experience, professional_experience,
-                   education, counselling_experience, languages, expertise, availability, cv_url, additional_info, consent_at, submitted_at)
-                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $16) RETURNING *`,
+                   education, counselling_experience, languages, expertise, availability, cv_url, cv_document_id, additional_info, consent_at, submitted_at)
+                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $17) RETURNING *`,
                 [id, user.id, input.fullName, user.email, input.phone, input.location, input.yearsExperience, input.professionalExperience,
                     input.education, input.counsellingExperience || null, input.languages || [], input.expertise || [], input.availability,
-                    input.cvUrl || null, input.additionalInfo || null, now()],
+                    input.cvUrl || null, input.cvDocumentId || null, input.additionalInfo || null, now()],
             )).rows[0];
         } catch (error) {
             if (error.code === '23505' && error.constraint === 'consultant_applications_one_open') {
@@ -168,6 +175,7 @@ export async function updateMine(user, id, input) {
         const a = (await client.query('SELECT * FROM consultant_applications WHERE id = $1 AND user_id = $2 FOR UPDATE', [id, user.id])).rows[0];
         if (!a) throw notFound('Application not found');
         if (!EDITABLE.includes(a.status)) throw conflict('This application is being reviewed and can no longer be edited.', 'NOT_EDITABLE');
+        if (input.cvDocumentId) await assertOwnCv(client, user.id, input.cvDocumentId);
         const sets = [];
         const values = [id];
         for (const [key, column] of Object.entries(FIELDS)) {
@@ -197,8 +205,8 @@ export async function withdrawMine(user, id) {
         const row = (await client.query("UPDATE consultant_applications SET status = 'withdrawn', decided_at = $2, updated_at = NOW() WHERE id = $1 RETURNING *", [id, now()])).rows[0];
         await recordEvent(client, { applicationId: id, actorUserId: user.id, event: 'withdrawn', from: a.status, to: 'withdrawn' });
         await audit(client, { actorUserId: user.id, action: 'consultant_application.withdrawn', entityType: 'consultant_application', entityId: id });
-        return applicantView(row);
-    });
+        return row;
+    }).then(async (row) => applicantView(row.interview_event_id ? await syncInterviewMeeting(id) : row));
 }
 
 /* ── Reviewers ────────────────────────────────────────────────────────────── */
@@ -258,7 +266,7 @@ async function getForReviewIn(client, id) {
 /* Moves the application along. `input`: { status, note (private), message (to the applicant),
    interviewAt, job (on approval: { department, jobTitle, startDate, managerUserId }) } */
 export async function transition(reviewer, id, input) {
-    return withTransaction(async (client) => {
+    const outcome = await withTransaction(async (client) => {
         const a = (await client.query('SELECT * FROM consultant_applications WHERE id = $1 FOR UPDATE', [id])).rows[0];
         if (!a) throw notFound('Application not found');
         if (a.user_id === reviewer.id) throw forbidden('You cannot decide your own application.');
@@ -273,6 +281,8 @@ export async function transition(reviewer, id, input) {
         const row = (await client.query(
             `UPDATE consultant_applications SET status = $2::text,
                interview_at = CASE WHEN $2::text = 'interview_scheduled' THEN $3::timestamptz ELSE interview_at END,
+               -- Each (re)scheduling gets a new calendar event.
+               interview_generation = interview_generation + CASE WHEN $2::text = 'interview_scheduled' THEN 1 ELSE 0 END,
                applicant_message = $4,
                reviewer_user_id = COALESCE(reviewer_user_id, $5),
                decided_by = CASE WHEN $6 THEN $5 ELSE decided_by END,
@@ -303,10 +313,36 @@ export async function transition(reviewer, id, input) {
         }
         const defaultMessage = to === 'approved'
             ? 'Congratulations, your application was approved. Check your email for an invitation to join the team; your consultant access starts once onboarding is approved.'
-            : to === 'interview_scheduled'
-                ? `Your interview is scheduled for ${new Date(input.interviewAt).toUTCString().replace(':00 GMT', ' UTC')}.`
-                : null;
-        if (to !== 'interview_completed') await tellApplicant(client, row, input.message || defaultMessage);
-        return { ...(await getForReviewIn(client, id)), invitation };
+            : null;
+        // Interview invitations wait until the calendar event (and its Meet link) exists.
+        if (!['interview_completed', 'interview_scheduled'].includes(to)) await tellApplicant(client, row, input.message || defaultMessage);
+        return { to, invitation, hadEvent: Boolean(a.interview_event_id) };
     });
+
+    if (outcome.to === 'interview_scheduled' || outcome.hadEvent) {
+        const fresh = await syncInterviewMeeting(id);
+        if (outcome.to === 'interview_scheduled') await withTransaction((client) => tellApplicant(client, fresh, interviewMessage(fresh, input.message)));
+    }
+    return { ...(await getForReviewIn({ query }, id)), invitation: outcome.invitation };
+}
+
+function interviewMessage(a, message) {
+    const when = new Date(a.interview_at).toUTCString().replace(':00 GMT', ' UTC');
+    const join = a.interview_meet_url ? `Join with Google Meet: ${a.interview_meet_url}` : 'The meeting link will be sent to you before the interview.';
+    return [message, `Your interview is scheduled for ${when}.`, join].filter(Boolean).join(' ');
+}
+
+/* Staff retry after a failed calendar sync. */
+export async function retryInterviewMeeting(reviewer, id) {
+    const a = (await query('SELECT status FROM consultant_applications WHERE id = $1', [id])).rows[0];
+    if (!a) throw notFound('Application not found');
+    if (a.status !== 'interview_scheduled') throw conflict('Only a scheduled interview has a meeting.', 'NOT_SCHEDULED');
+    await syncInterviewMeeting(id);
+    await withTransaction(async (client) => {
+        // A new updated_at gives the applicant's email a new de-duplication key.
+        const fresh = (await client.query('UPDATE consultant_applications SET updated_at = NOW() WHERE id = $1 RETURNING *', [id])).rows[0];
+        await audit(client, { actorUserId: reviewer.id, action: 'consultant_application.meeting_retried', entityType: 'consultant_application', entityId: id, details: { status: fresh.interview_calendar_status } });
+        if (fresh.interview_meet_url) await tellApplicant(client, fresh, interviewMessage(fresh, null));
+    });
+    return getForReviewIn({ query }, id);
 }

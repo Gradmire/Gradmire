@@ -14,7 +14,8 @@
         "worker": "node scripts/worker.js",
         "create-staff": "node scripts/create-staff.js",
         "db:local": "node scripts/local-db.js",
-        "smoke": "node scripts/smoke-test.js"
+        "smoke": "node scripts/smoke-test.js",
+        "google-oauth": "node scripts/google-oauth.js"
     },
     "engines": {
         "node": ">=20"

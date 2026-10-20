@@ -26,9 +26,12 @@ leads, applications) stay attached to the same id throughout.
 | Browse public pages, book, send enquiries, resend a booking link | ✓ | ✓ | ✓ | ✓ | ✓ |
 | `self.dashboard`, `self.profile`, `self.consultations`, `self.applications` | | ✓ | | | |
 | `self.notifications` (notification centre) | | ✓ | ✓ | ✓ | ✓ |
+| `self.documents` (My documents, upload/download/delete own) | | ✓ | | | |
+| Change own login email (password + link to new address) | | ✓ | ✓ | ✓ | ✓ |
 | `consultant_application.apply` | | ✓ (verified email) | | | |
 | `staff.workspace` (consultant overview) | | | ✓ | ✓ | ✓ |
 | `consultations.assigned`, `students.assigned`, `leads.assigned`, `followups.own`, `availability.own` | | | ✓ | ✓ | ✓ |
+| `documents.assigned`, `email.assigned` (documents and Gmail of people they may see; never CVs) | | | ✓ | ✓ | ✓ |
 | `consultations.all`, `students.all`, `leads.all`, `followups.all`, `availability.all` | | | | ✓ | ✓ |
 | `admin.dashboard`, `users.view`, `audit.view` | | | | ✓ | ✓ |
 | `users.suspend` (students and consultants) | | | | ✓ | ✓ |
@@ -36,7 +39,8 @@ leads, applications) stay attached to the same id throughout.
 | `consultant_application.review`, `consultant_application.decide` | | | | ✓ | ✓ |
 | `employees.view`, `employees.invite` | | | | ✓ | ✓ |
 | `approvals.view`, `approvals.request`, `approvals.decide` | | | | ✓ | ✓ |
-| `consultation_types.manage`, `notifications.manage` | | | | ✓ | ✓ |
+| `consultation_types.manage`, `notifications.manage`, `integrations.view` | | | | ✓ | ✓ |
+| Open consultant CVs (with `consultant_application.review`) | | | | ✓ | ✓ |
 | `roles.privileged` — decide any change to admin/super-admin access; suspend or manage admins | | | | | ✓ |
 
 ## Rules that are not a single permission
@@ -62,7 +66,7 @@ home page (`user.home`); this is a convenience only — the API is the barrier.
 
 | Pages | Roles |
 |---|---|
-| `dashboard`, `dashboard-consultations`, `dashboard-profile`, `dashboard-become-consultant` | student |
+| `dashboard`, `dashboard-consultations`, `dashboard-documents`, `dashboard-profile`, `dashboard-become-consultant` | student |
 | `dashboard-notifications` | any signed-in user |
 | `consultant-dashboard`, `consultant-students`, `consultant-leads`, `consultant-follow-ups`, `admin-consultations`, `admin-students` | consultant, admin, super admin |
 | `admin`, `admin-users`, `admin-leads`, `admin-team`, `admin-approvals`, `admin-audit` | admin, super admin |
