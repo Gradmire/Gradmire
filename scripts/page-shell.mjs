@@ -28,6 +28,7 @@ ${themeBoot}
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
+<link rel="icon" type="image/png" href="/assets/favicon.png">
 <link rel="stylesheet" href="../assets/${siteCss}">
 <link rel="stylesheet" href="../assets/${GUIDE_CSS}">
 </head>
