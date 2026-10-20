@@ -6,8 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Course Finder: Bachelor’s &amp; Master’s Courses Abroad | Gradmire</title>
 <meta name="description" content="Find bachelor’s and master’s courses at leading universities in the UK, USA, Canada, Australia, Germany, Ireland, New Zealand, Italy and Finland. Filter by level, subject and country.">
-<link rel="stylesheet" href="../assets/site.css?v=25">
-<link rel="stylesheet" href="../assets/guide-pages.css?v=4">
+<link rel="stylesheet" href="../assets/site.css?v=26">
+<link rel="stylesheet" href="../assets/guide-pages.css?v=5">
 </head>
 <body class="destination-page guide-page">
 <nav class="nav destination-nav" aria-label="Main navigation">
@@ -31,7 +31,7 @@
       <nav class="gp-crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> <span aria-hidden="true">/</span> <span aria-current="page">Course Finder</span></nav>
       <span class="gp-eyebrow">Course Finder</span>
       <h1>Find bachelor’s and master’s courses abroad.</h1>
-      <p>Browse 45 leading universities in 9 countries. Filter by level, subject and destination, then apply with a counsellor’s help.</p>
+      <p>Browse 68 leading universities in 9 countries. Filter by level, subject and destination, then apply with a counsellor’s help.</p>
       <form class="gp-finder-search" role="search" onsubmit="return false">
         <label class="sr-only" for="finder-search">Search by course or university</label>
         <input id="finder-search" type="search" placeholder="Search a course or university, e.g. Data Science" autocomplete="off">
@@ -54,15 +54,19 @@
     <section class="gp-results" aria-labelledby="results-title">
       <h2 id="results-title" class="sr-only">Results</h2>
       <div class="gp-results-bar">
-        <p class="gp-results-count" aria-live="polite"><strong>45</strong> universities · <strong>124</strong> courses</p>
+        <p class="gp-results-count" aria-live="polite"><strong>68</strong> universities · <strong>171</strong> courses</p>
         <label class="gp-sort">Sort by <select id="finder-sort"><option value="rank">QS rank (high to low)</option><option value="name">University name (A–Z)</option><option value="oldest">Oldest first</option></select></label>
+      </div>
+      <div class="gp-uni-filter" role="status" hidden>
+        <p>Showing courses at <strong class="gp-uni-filter-name"></strong></p>
+        <button type="button" class="gp-uni-filter-clear">Show all universities</button>
       </div>
       <div class="gp-results-empty" hidden>
         <h3>No courses match those filters</h3>
         <p>Try removing a filter, or <a href="free-consultation.html?interest=course-selection#book" data-open-consult>ask a counsellor</a>. We can search well beyond these example listings.</p>
       </div>
       <div class="gp-results-list">
-<article class="gp-uni-result" data-country="uk" data-type="public" data-qs="2" data-name="Imperial College London" data-founded="1907">
+<article class="gp-uni-result" id="uni-imperial-college-london" data-slug="imperial-college-london" data-country="uk" data-type="public" data-qs="2" data-name="Imperial College London" data-founded="1907">
       <header class="gp-uni-result-head">
         <div>
           <h3>Imperial College London</h3>
@@ -140,7 +144,7 @@
       </ul>
       <button type="button" class="gp-show-more" aria-expanded="false">Show 1 more course</button>
     </article>
-<article class="gp-uni-result" data-country="uk" data-type="public" data-qs="4" data-name="University of Oxford" data-founded="1096">
+<article class="gp-uni-result" id="uni-university-of-oxford" data-slug="university-of-oxford" data-country="uk" data-type="public" data-qs="4" data-name="University of Oxford" data-founded="1096">
       <header class="gp-uni-result-head">
         <div>
           <h3>University of Oxford</h3>
@@ -202,7 +206,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="uk" data-type="public" data-qs="6" data-name="University of Cambridge" data-founded="1209">
+<article class="gp-uni-result" id="uni-university-of-cambridge" data-slug="university-of-cambridge" data-country="uk" data-type="public" data-qs="6" data-name="University of Cambridge" data-founded="1209">
       <header class="gp-uni-result-head">
         <div>
           <h3>University of Cambridge</h3>
@@ -264,7 +268,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="uk" data-type="public" data-qs="9" data-name="UCL (University College London)" data-founded="1826">
+<article class="gp-uni-result" id="uni-ucl" data-slug="ucl" data-country="uk" data-type="public" data-qs="9" data-name="UCL (University College London)" data-founded="1826">
       <header class="gp-uni-result-head">
         <div>
           <h3>UCL (University College London)</h3>
@@ -342,7 +346,7 @@
       </ul>
       <button type="button" class="gp-show-more" aria-expanded="false">Show 1 more course</button>
     </article>
-<article class="gp-uni-result" data-country="uk" data-type="public" data-qs="31" data-name="King's College London" data-founded="1829">
+<article class="gp-uni-result" id="uni-king-s-college-london" data-slug="king-s-college-london" data-country="uk" data-type="public" data-qs="31" data-name="King's College London" data-founded="1829">
       <header class="gp-uni-result-head">
         <div>
           <h3>King's College London</h3>
@@ -404,7 +408,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="uk" data-type="public" data-qs="34" data-name="University of Edinburgh" data-founded="1583">
+<article class="gp-uni-result" id="uni-university-of-edinburgh" data-slug="university-of-edinburgh" data-country="uk" data-type="public" data-qs="34" data-name="University of Edinburgh" data-founded="1583">
       <header class="gp-uni-result-head">
         <div>
           <h3>University of Edinburgh</h3>
@@ -466,7 +470,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="uk" data-type="public" data-qs="35" data-name="University of Manchester" data-founded="1824">
+<article class="gp-uni-result" id="uni-university-of-manchester" data-slug="university-of-manchester" data-country="uk" data-type="public" data-qs="35" data-name="University of Manchester" data-founded="1824">
       <header class="gp-uni-result-head">
         <div>
           <h3>University of Manchester</h3>
@@ -528,7 +532,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="uk" data-type="public" data-qs="74" data-name="University of Warwick" data-founded="1965">
+<article class="gp-uni-result" id="uni-university-of-warwick" data-slug="university-of-warwick" data-country="uk" data-type="public" data-qs="74" data-name="University of Warwick" data-founded="1965">
       <header class="gp-uni-result-head">
         <div>
           <h3>University of Warwick</h3>
@@ -590,7 +594,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="usa" data-type="private" data-qs="1" data-name="Massachusetts Institute of Technology (MIT)" data-founded="1861">
+<article class="gp-uni-result" id="uni-massachusetts-institute-of-technology" data-slug="massachusetts-institute-of-technology" data-country="usa" data-type="private" data-qs="1" data-name="Massachusetts Institute of Technology (MIT)" data-founded="1861">
       <header class="gp-uni-result-head">
         <div>
           <h3>Massachusetts Institute of Technology (MIT)</h3>
@@ -652,7 +656,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="usa" data-type="private" data-qs="3" data-name="Stanford University" data-founded="1885">
+<article class="gp-uni-result" id="uni-stanford-university" data-slug="stanford-university" data-country="usa" data-type="private" data-qs="3" data-name="Stanford University" data-founded="1885">
       <header class="gp-uni-result-head">
         <div>
           <h3>Stanford University</h3>
@@ -714,7 +718,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="usa" data-type="private" data-qs="5" data-name="Harvard University" data-founded="1636">
+<article class="gp-uni-result" id="uni-harvard-university" data-slug="harvard-university" data-country="usa" data-type="private" data-qs="5" data-name="Harvard University" data-founded="1636">
       <header class="gp-uni-result-head">
         <div>
           <h3>Harvard University</h3>
@@ -776,7 +780,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="usa" data-type="private" data-qs="38" data-name="Columbia University" data-founded="1754">
+<article class="gp-uni-result" id="uni-columbia-university" data-slug="columbia-university" data-country="usa" data-type="private" data-qs="38" data-name="Columbia University" data-founded="1754">
       <header class="gp-uni-result-head">
         <div>
           <h3>Columbia University</h3>
@@ -838,7 +842,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="usa" data-type="public" data-qs="45" data-name="University of Michigan" data-founded="1817">
+<article class="gp-uni-result" id="uni-university-of-michigan" data-slug="university-of-michigan" data-country="usa" data-type="public" data-qs="45" data-name="University of Michigan" data-founded="1817">
       <header class="gp-uni-result-head">
         <div>
           <h3>University of Michigan</h3>
@@ -900,7 +904,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="usa" data-type="private" data-qs="52" data-name="Carnegie Mellon University" data-founded="1900">
+<article class="gp-uni-result" id="uni-carnegie-mellon-university" data-slug="carnegie-mellon-university" data-country="usa" data-type="private" data-qs="52" data-name="Carnegie Mellon University" data-founded="1900">
       <header class="gp-uni-result-head">
         <div>
           <h3>Carnegie Mellon University</h3>
@@ -962,7 +966,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="usa" data-type="public" data-qs="70" data-name="University of Illinois Urbana-Champaign" data-founded="1867">
+<article class="gp-uni-result" id="uni-university-of-illinois-urbana-champaign" data-slug="university-of-illinois-urbana-champaign" data-country="usa" data-type="public" data-qs="70" data-name="University of Illinois Urbana-Champaign" data-founded="1867">
       <header class="gp-uni-result-head">
         <div>
           <h3>University of Illinois Urbana-Champaign</h3>
@@ -1024,7 +1028,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="usa" data-type="public" data-qs="88" data-name="Purdue University" data-founded="1869">
+<article class="gp-uni-result" id="uni-purdue-university" data-slug="purdue-university" data-country="usa" data-type="public" data-qs="88" data-name="Purdue University" data-founded="1869">
       <header class="gp-uni-result-head">
         <div>
           <h3>Purdue University</h3>
@@ -1086,7 +1090,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="canada" data-type="public" data-qs="27" data-name="McGill University" data-founded="1821">
+<article class="gp-uni-result" id="uni-mcgill-university" data-slug="mcgill-university" data-country="canada" data-type="public" data-qs="27" data-name="McGill University" data-founded="1821">
       <header class="gp-uni-result-head">
         <div>
           <h3>McGill University</h3>
@@ -1148,7 +1152,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="canada" data-type="public" data-qs="29" data-name="University of Toronto" data-founded="1827">
+<article class="gp-uni-result" id="uni-university-of-toronto" data-slug="university-of-toronto" data-country="canada" data-type="public" data-qs="29" data-name="University of Toronto" data-founded="1827">
       <header class="gp-uni-result-head">
         <div>
           <h3>University of Toronto</h3>
@@ -1210,7 +1214,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="canada" data-type="public" data-qs="40" data-name="University of British Columbia" data-founded="1908">
+<article class="gp-uni-result" id="uni-university-of-british-columbia" data-slug="university-of-british-columbia" data-country="canada" data-type="public" data-qs="40" data-name="University of British Columbia" data-founded="1908">
       <header class="gp-uni-result-head">
         <div>
           <h3>University of British Columbia</h3>
@@ -1272,7 +1276,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="canada" data-type="public" data-qs="119" data-name="University of Waterloo" data-founded="1957">
+<article class="gp-uni-result" id="uni-university-of-waterloo" data-slug="university-of-waterloo" data-country="canada" data-type="public" data-qs="119" data-name="University of Waterloo" data-founded="1957">
       <header class="gp-uni-result-head">
         <div>
           <h3>University of Waterloo</h3>
@@ -1334,7 +1338,195 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="australia" data-type="public" data-qs="19" data-name="University of Melbourne" data-founded="1853">
+<article class="gp-uni-result" id="uni-western-university" data-slug="western-university" data-country="canada" data-type="public" data-qs="151" data-name="Western University" data-founded="1878">
+      <header class="gp-uni-result-head">
+        <div>
+          <h3>Western University</h3>
+          <p class="gp-uni-result-place">London, Ontario, Canada</p>
+        </div>
+        <span class="gp-qs" title="QS World University Rankings 2026">QS 2026 · #151</span>
+      </header>
+      <dl class="gp-uni-result-facts">
+        <div><dt>Founded</dt><dd>1878</dd></div>
+        <div><dt>Institution type</dt><dd>Public</dd></div>
+        <div><dt>QS world rank</dt><dd>#151</dd></div>
+        <div><dt>Destination guide</dt><dd><a href="study-in-canada.html">Study in Canada</a></dd></div>
+      </dl>
+      <ul class="gp-course-list">
+        <li class="gp-course" data-subject="business" data-level="ug">
+          <div class="gp-course-main">
+            <h4>Business Administration (Ivey HBA)</h4>
+            <span class="gp-course-subject">Business &amp; Management</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Bachelor’s (UG)</dd></div>
+            <div><dt>Typical length</dt><dd>4 years</dd></div>
+            <div><dt>Intake</dt><dd>Sep (some Jan, May)</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=canada#book" data-open-consult data-country="canada" data-course="Business Administration (Ivey HBA) (UG), Western University">Apply</a>
+            <a class="gp-course-link" href="https://welcome.uwo.ca/" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Western University website (opens in a new tab)</span></a>
+          </div>
+        </li>
+        <li class="gp-course" data-subject="computing" data-level="ug">
+          <div class="gp-course-main">
+            <h4>Computer Science</h4>
+            <span class="gp-course-subject">Computer Science &amp; IT</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Bachelor’s (UG)</dd></div>
+            <div><dt>Typical length</dt><dd>4 years</dd></div>
+            <div><dt>Intake</dt><dd>Sep (some Jan, May)</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=canada#book" data-open-consult data-country="canada" data-course="Computer Science (UG), Western University">Apply</a>
+            <a class="gp-course-link" href="https://welcome.uwo.ca/" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Western University website (opens in a new tab)</span></a>
+          </div>
+        </li>
+      </ul>
+    </article>
+<article class="gp-uni-result" id="uni-queen-s-university" data-slug="queen-s-university" data-country="canada" data-type="public" data-qs="191" data-name="Queen's University" data-founded="1841">
+      <header class="gp-uni-result-head">
+        <div>
+          <h3>Queen's University</h3>
+          <p class="gp-uni-result-place">Kingston, Canada</p>
+        </div>
+        <span class="gp-qs" title="QS World University Rankings 2026">QS 2026 · #191</span>
+      </header>
+      <dl class="gp-uni-result-facts">
+        <div><dt>Founded</dt><dd>1841</dd></div>
+        <div><dt>Institution type</dt><dd>Public</dd></div>
+        <div><dt>QS world rank</dt><dd>#191</dd></div>
+        <div><dt>Destination guide</dt><dd><a href="study-in-canada.html">Study in Canada</a></dd></div>
+      </dl>
+      <ul class="gp-course-list">
+        <li class="gp-course" data-subject="business" data-level="ug">
+          <div class="gp-course-main">
+            <h4>Commerce</h4>
+            <span class="gp-course-subject">Business &amp; Management</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Bachelor’s (UG)</dd></div>
+            <div><dt>Typical length</dt><dd>4 years</dd></div>
+            <div><dt>Intake</dt><dd>Sep (some Jan, May)</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=canada#book" data-open-consult data-country="canada" data-course="Commerce (UG), Queen's University">Apply</a>
+            <a class="gp-course-link" href="https://www.queensu.ca/admission/" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Queen's University website (opens in a new tab)</span></a>
+          </div>
+        </li>
+        <li class="gp-course" data-subject="engineering" data-level="ug">
+          <div class="gp-course-main">
+            <h4>Engineering</h4>
+            <span class="gp-course-subject">Engineering</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Bachelor’s (UG)</dd></div>
+            <div><dt>Typical length</dt><dd>4 years</dd></div>
+            <div><dt>Intake</dt><dd>Sep (some Jan, May)</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=canada#book" data-open-consult data-country="canada" data-course="Engineering (UG), Queen's University">Apply</a>
+            <a class="gp-course-link" href="https://www.queensu.ca/admission/" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Queen's University website (opens in a new tab)</span></a>
+          </div>
+        </li>
+      </ul>
+    </article>
+<article class="gp-uni-result" id="uni-dalhousie-university" data-slug="dalhousie-university" data-country="canada" data-type="public" data-qs="283" data-name="Dalhousie University" data-founded="1818">
+      <header class="gp-uni-result-head">
+        <div>
+          <h3>Dalhousie University</h3>
+          <p class="gp-uni-result-place">Halifax, Canada</p>
+        </div>
+        <span class="gp-qs" title="QS World University Rankings 2026">QS 2026 · #283</span>
+      </header>
+      <dl class="gp-uni-result-facts">
+        <div><dt>Founded</dt><dd>1818</dd></div>
+        <div><dt>Institution type</dt><dd>Public</dd></div>
+        <div><dt>QS world rank</dt><dd>#283</dd></div>
+        <div><dt>Destination guide</dt><dd><a href="study-in-canada.html">Study in Canada</a></dd></div>
+      </dl>
+      <ul class="gp-course-list">
+        <li class="gp-course" data-subject="computing" data-level="ug">
+          <div class="gp-course-main">
+            <h4>Computer Science</h4>
+            <span class="gp-course-subject">Computer Science &amp; IT</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Bachelor’s (UG)</dd></div>
+            <div><dt>Typical length</dt><dd>4 years</dd></div>
+            <div><dt>Intake</dt><dd>Sep (some Jan, May)</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=canada#book" data-open-consult data-country="canada" data-course="Computer Science (UG), Dalhousie University">Apply</a>
+            <a class="gp-course-link" href="https://www.dal.ca/admissions.html" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Dalhousie University website (opens in a new tab)</span></a>
+          </div>
+        </li>
+        <li class="gp-course" data-subject="computing" data-level="pg">
+          <div class="gp-course-main">
+            <h4>Applied Computer Science (MACS)</h4>
+            <span class="gp-course-subject">Computer Science &amp; IT</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Master’s (PG)</dd></div>
+            <div><dt>Typical length</dt><dd>1–2 years</dd></div>
+            <div><dt>Intake</dt><dd>Sep (some Jan, May)</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=canada#book" data-open-consult data-country="canada" data-course="Applied Computer Science (MACS) (PG), Dalhousie University">Apply</a>
+            <a class="gp-course-link" href="https://www.dal.ca/admissions.html" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Dalhousie University website (opens in a new tab)</span></a>
+          </div>
+        </li>
+      </ul>
+    </article>
+<article class="gp-uni-result" id="uni-simon-fraser-university" data-slug="simon-fraser-university" data-country="canada" data-type="public" data-qs="308" data-name="Simon Fraser University" data-founded="1965">
+      <header class="gp-uni-result-head">
+        <div>
+          <h3>Simon Fraser University</h3>
+          <p class="gp-uni-result-place">Burnaby, Vancouver, Canada</p>
+        </div>
+        <span class="gp-qs" title="QS World University Rankings 2026">QS 2026 · #308</span>
+      </header>
+      <dl class="gp-uni-result-facts">
+        <div><dt>Founded</dt><dd>1965</dd></div>
+        <div><dt>Institution type</dt><dd>Public</dd></div>
+        <div><dt>QS world rank</dt><dd>#308</dd></div>
+        <div><dt>Destination guide</dt><dd><a href="study-in-canada.html">Study in Canada</a></dd></div>
+      </dl>
+      <ul class="gp-course-list">
+        <li class="gp-course" data-subject="computing" data-level="ug">
+          <div class="gp-course-main">
+            <h4>Computing Science</h4>
+            <span class="gp-course-subject">Computer Science &amp; IT</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Bachelor’s (UG)</dd></div>
+            <div><dt>Typical length</dt><dd>4 years</dd></div>
+            <div><dt>Intake</dt><dd>Sep (some Jan, May)</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=canada#book" data-open-consult data-country="canada" data-course="Computing Science (UG), Simon Fraser University">Apply</a>
+            <a class="gp-course-link" href="https://www.sfu.ca/students/admission.html" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Simon Fraser University website (opens in a new tab)</span></a>
+          </div>
+        </li>
+        <li class="gp-course" data-subject="data" data-level="pg">
+          <div class="gp-course-main">
+            <h4>Professional Computer Science (Big Data)</h4>
+            <span class="gp-course-subject">Data Science &amp; AI</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Master’s (PG)</dd></div>
+            <div><dt>Typical length</dt><dd>1–2 years</dd></div>
+            <div><dt>Intake</dt><dd>Sep (some Jan, May)</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=canada#book" data-open-consult data-country="canada" data-course="Professional Computer Science (Big Data) (PG), Simon Fraser University">Apply</a>
+            <a class="gp-course-link" href="https://www.sfu.ca/students/admission.html" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Simon Fraser University website (opens in a new tab)</span></a>
+          </div>
+        </li>
+      </ul>
+    </article>
+<article class="gp-uni-result" id="uni-university-of-melbourne" data-slug="university-of-melbourne" data-country="australia" data-type="public" data-qs="19" data-name="University of Melbourne" data-founded="1853">
       <header class="gp-uni-result-head">
         <div>
           <h3>University of Melbourne</h3>
@@ -1396,7 +1588,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="australia" data-type="public" data-qs="20" data-name="UNSW Sydney" data-founded="1949">
+<article class="gp-uni-result" id="uni-unsw-sydney" data-slug="unsw-sydney" data-country="australia" data-type="public" data-qs="20" data-name="UNSW Sydney" data-founded="1949">
       <header class="gp-uni-result-head">
         <div>
           <h3>UNSW Sydney</h3>
@@ -1458,7 +1650,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="australia" data-type="public" data-qs="25" data-name="University of Sydney" data-founded="1850">
+<article class="gp-uni-result" id="uni-university-of-sydney" data-slug="university-of-sydney" data-country="australia" data-type="public" data-qs="25" data-name="University of Sydney" data-founded="1850">
       <header class="gp-uni-result-head">
         <div>
           <h3>University of Sydney</h3>
@@ -1520,7 +1712,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="australia" data-type="public" data-qs="32" data-name="Australian National University" data-founded="1946">
+<article class="gp-uni-result" id="uni-australian-national-university" data-slug="australian-national-university" data-country="australia" data-type="public" data-qs="32" data-name="Australian National University" data-founded="1946">
       <header class="gp-uni-result-head">
         <div>
           <h3>Australian National University</h3>
@@ -1582,7 +1774,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="australia" data-type="public" data-qs="36" data-name="Monash University" data-founded="1958">
+<article class="gp-uni-result" id="uni-monash-university" data-slug="monash-university" data-country="australia" data-type="public" data-qs="36" data-name="Monash University" data-founded="1958">
       <header class="gp-uni-result-head">
         <div>
           <h3>Monash University</h3>
@@ -1644,7 +1836,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="australia" data-type="public" data-qs="42" data-name="University of Queensland" data-founded="1909">
+<article class="gp-uni-result" id="uni-university-of-queensland" data-slug="university-of-queensland" data-country="australia" data-type="public" data-qs="42" data-name="University of Queensland" data-founded="1909">
       <header class="gp-uni-result-head">
         <div>
           <h3>University of Queensland</h3>
@@ -1706,7 +1898,115 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="germany" data-type="public" data-qs="22" data-name="Technical University of Munich (TUM)" data-founded="1868">
+<article class="gp-uni-result" id="uni-adelaide-university" data-slug="adelaide-university" data-country="australia" data-type="public" data-qs="82" data-name="Adelaide University" data-founded="2026">
+      <header class="gp-uni-result-head">
+        <div>
+          <h3>Adelaide University</h3>
+          <p class="gp-uni-result-place">Adelaide, Australia</p>
+        </div>
+        <span class="gp-qs" title="QS World University Rankings 2026">QS 2026 · #82</span>
+      </header>
+      <dl class="gp-uni-result-facts">
+        <div><dt>Founded</dt><dd>2026 (merger of Adelaide and UniSA)</dd></div>
+        <div><dt>Institution type</dt><dd>Public</dd></div>
+        <div><dt>QS world rank</dt><dd>#82</dd></div>
+        <div><dt>Destination guide</dt><dd><a href="study-in-australia.html">Study in Australia</a></dd></div>
+      </dl>
+      <ul class="gp-course-list">
+        <li class="gp-course" data-subject="business" data-level="ug">
+          <div class="gp-course-main">
+            <h4>Commerce</h4>
+            <span class="gp-course-subject">Business &amp; Management</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Bachelor’s (UG)</dd></div>
+            <div><dt>Typical length</dt><dd>3 years</dd></div>
+            <div><dt>Intake</dt><dd>Feb, Jul</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=australia#book" data-open-consult data-country="australia" data-course="Commerce (UG), Adelaide University">Apply</a>
+            <a class="gp-course-link" href="https://adelaideuni.edu.au/" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Adelaide University website (opens in a new tab)</span></a>
+          </div>
+        </li>
+        <li class="gp-course" data-subject="computing" data-level="pg">
+          <div class="gp-course-main">
+            <h4>Information Technology</h4>
+            <span class="gp-course-subject">Computer Science &amp; IT</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Master’s (PG)</dd></div>
+            <div><dt>Typical length</dt><dd>1.5–2 years</dd></div>
+            <div><dt>Intake</dt><dd>Feb, Jul</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=australia#book" data-open-consult data-country="australia" data-course="Information Technology (PG), Adelaide University">Apply</a>
+            <a class="gp-course-link" href="https://adelaideuni.edu.au/" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Adelaide University website (opens in a new tab)</span></a>
+          </div>
+        </li>
+      </ul>
+    </article>
+<article class="gp-uni-result" id="uni-macquarie-university" data-slug="macquarie-university" data-country="australia" data-type="public" data-qs="9999" data-name="Macquarie University" data-founded="1964">
+      <header class="gp-uni-result-head">
+        <div>
+          <h3>Macquarie University</h3>
+          <p class="gp-uni-result-place">Sydney, Australia</p>
+        </div>
+      </header>
+      <dl class="gp-uni-result-facts">
+        <div><dt>Founded</dt><dd>1964</dd></div>
+        <div><dt>Institution type</dt><dd>Public</dd></div>
+        <div><dt>QS world rank</dt><dd>Not confirmed</dd></div>
+        <div><dt>Destination guide</dt><dd><a href="study-in-australia.html">Study in Australia</a></dd></div>
+      </dl>
+      <ul class="gp-course-list">
+        <li class="gp-course" data-subject="business" data-level="ug">
+          <div class="gp-course-main">
+            <h4>Commerce</h4>
+            <span class="gp-course-subject">Business &amp; Management</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Bachelor’s (UG)</dd></div>
+            <div><dt>Typical length</dt><dd>3 years</dd></div>
+            <div><dt>Intake</dt><dd>Feb, Jul</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=australia#book" data-open-consult data-country="australia" data-course="Commerce (UG), Macquarie University">Apply</a>
+            <a class="gp-course-link" href="https://www.mq.edu.au/study" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Macquarie University website (opens in a new tab)</span></a>
+          </div>
+        </li>
+        <li class="gp-course" data-subject="computing" data-level="pg">
+          <div class="gp-course-main">
+            <h4>Information Technology</h4>
+            <span class="gp-course-subject">Computer Science &amp; IT</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Master’s (PG)</dd></div>
+            <div><dt>Typical length</dt><dd>1.5–2 years</dd></div>
+            <div><dt>Intake</dt><dd>Feb, Jul</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=australia#book" data-open-consult data-country="australia" data-course="Information Technology (PG), Macquarie University">Apply</a>
+            <a class="gp-course-link" href="https://www.mq.edu.au/study" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Macquarie University website (opens in a new tab)</span></a>
+          </div>
+        </li>
+        <li class="gp-course" data-subject="business" data-level="pg">
+          <div class="gp-course-main">
+            <h4>Business Analytics</h4>
+            <span class="gp-course-subject">Business &amp; Management</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Master’s (PG)</dd></div>
+            <div><dt>Typical length</dt><dd>1.5–2 years</dd></div>
+            <div><dt>Intake</dt><dd>Feb, Jul</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=australia#book" data-open-consult data-country="australia" data-course="Business Analytics (PG), Macquarie University">Apply</a>
+            <a class="gp-course-link" href="https://www.mq.edu.au/study" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Macquarie University website (opens in a new tab)</span></a>
+          </div>
+        </li>
+      </ul>
+    </article>
+<article class="gp-uni-result" id="uni-technical-university-of-munich" data-slug="technical-university-of-munich" data-country="germany" data-type="public" data-qs="22" data-name="Technical University of Munich (TUM)" data-founded="1868">
       <header class="gp-uni-result-head">
         <div>
           <h3>Technical University of Munich (TUM)</h3>
@@ -1768,7 +2068,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="germany" data-type="public" data-qs="58" data-name="Ludwig Maximilian University (LMU)" data-founded="1472">
+<article class="gp-uni-result" id="uni-ludwig-maximilian-university" data-slug="ludwig-maximilian-university" data-country="germany" data-type="public" data-qs="58" data-name="Ludwig Maximilian University (LMU)" data-founded="1472">
       <header class="gp-uni-result-head">
         <div>
           <h3>Ludwig Maximilian University (LMU)</h3>
@@ -1815,7 +2115,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="germany" data-type="public" data-qs="80" data-name="Heidelberg University" data-founded="1386">
+<article class="gp-uni-result" id="uni-heidelberg-university" data-slug="heidelberg-university" data-country="germany" data-type="public" data-qs="80" data-name="Heidelberg University" data-founded="1386">
       <header class="gp-uni-result-head">
         <div>
           <h3>Heidelberg University</h3>
@@ -1862,7 +2162,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="germany" data-type="public" data-qs="9999" data-name="RWTH Aachen University" data-founded="1870">
+<article class="gp-uni-result" id="uni-rwth-aachen-university" data-slug="rwth-aachen-university" data-country="germany" data-type="public" data-qs="9999" data-name="RWTH Aachen University" data-founded="1870">
       <header class="gp-uni-result-head">
         <div>
           <h3>RWTH Aachen University</h3>
@@ -1908,7 +2208,191 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="ireland" data-type="public" data-qs="75" data-name="Trinity College Dublin" data-founded="1592">
+<article class="gp-uni-result" id="uni-humboldt-university-of-berlin" data-slug="humboldt-university-of-berlin" data-country="germany" data-type="public" data-qs="9999" data-name="Humboldt University of Berlin" data-founded="1810">
+      <header class="gp-uni-result-head">
+        <div>
+          <h3>Humboldt University of Berlin</h3>
+          <p class="gp-uni-result-place">Berlin, Germany</p>
+        </div>
+      </header>
+      <dl class="gp-uni-result-facts">
+        <div><dt>Founded</dt><dd>1810</dd></div>
+        <div><dt>Institution type</dt><dd>Public</dd></div>
+        <div><dt>QS world rank</dt><dd>Not confirmed</dd></div>
+        <div><dt>Destination guide</dt><dd><a href="study-in-germany.html">Study in Germany</a></dd></div>
+      </dl>
+      <ul class="gp-course-list">
+        <li class="gp-course" data-subject="economics" data-level="pg">
+          <div class="gp-course-main">
+            <h4>Economics and Management Science</h4>
+            <span class="gp-course-subject">Economics &amp; Finance</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Master’s (PG)</dd></div>
+            <div><dt>Typical length</dt><dd>2 years</dd></div>
+            <div><dt>Intake</dt><dd>Oct (some Apr)</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=germany#book" data-open-consult data-country="germany" data-course="Economics and Management Science (PG), Humboldt University of Berlin">Apply</a>
+            <a class="gp-course-link" href="https://www.hu-berlin.de/en/studies" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Humboldt University of Berlin website (opens in a new tab)</span></a>
+          </div>
+        </li>
+        <li class="gp-course" data-subject="data" data-level="pg">
+          <div class="gp-course-main">
+            <h4>Statistics</h4>
+            <span class="gp-course-subject">Data Science &amp; AI</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Master’s (PG)</dd></div>
+            <div><dt>Typical length</dt><dd>2 years</dd></div>
+            <div><dt>Intake</dt><dd>Oct (some Apr)</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=germany#book" data-open-consult data-country="germany" data-course="Statistics (PG), Humboldt University of Berlin">Apply</a>
+            <a class="gp-course-link" href="https://www.hu-berlin.de/en/studies" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Humboldt University of Berlin website (opens in a new tab)</span></a>
+          </div>
+        </li>
+      </ul>
+    </article>
+<article class="gp-uni-result" id="uni-technical-university-of-berlin" data-slug="technical-university-of-berlin" data-country="germany" data-type="public" data-qs="9999" data-name="Technical University of Berlin" data-founded="1879">
+      <header class="gp-uni-result-head">
+        <div>
+          <h3>Technical University of Berlin</h3>
+          <p class="gp-uni-result-place">Berlin, Germany</p>
+        </div>
+      </header>
+      <dl class="gp-uni-result-facts">
+        <div><dt>Founded</dt><dd>1879</dd></div>
+        <div><dt>Institution type</dt><dd>Public</dd></div>
+        <div><dt>QS world rank</dt><dd>Not confirmed</dd></div>
+        <div><dt>Destination guide</dt><dd><a href="study-in-germany.html">Study in Germany</a></dd></div>
+      </dl>
+      <ul class="gp-course-list">
+        <li class="gp-course" data-subject="computing" data-level="pg">
+          <div class="gp-course-main">
+            <h4>Computer Science</h4>
+            <span class="gp-course-subject">Computer Science &amp; IT</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Master’s (PG)</dd></div>
+            <div><dt>Typical length</dt><dd>2 years</dd></div>
+            <div><dt>Intake</dt><dd>Oct (some Apr)</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=germany#book" data-open-consult data-country="germany" data-course="Computer Science (PG), Technical University of Berlin">Apply</a>
+            <a class="gp-course-link" href="https://www.tu.berlin/en/studying" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Technical University of Berlin website (opens in a new tab)</span></a>
+          </div>
+        </li>
+        <li class="gp-course" data-subject="engineering" data-level="pg">
+          <div class="gp-course-main">
+            <h4>Mechanical Engineering</h4>
+            <span class="gp-course-subject">Engineering</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Master’s (PG)</dd></div>
+            <div><dt>Typical length</dt><dd>2 years</dd></div>
+            <div><dt>Intake</dt><dd>Oct (some Apr)</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=germany#book" data-open-consult data-country="germany" data-course="Mechanical Engineering (PG), Technical University of Berlin">Apply</a>
+            <a class="gp-course-link" href="https://www.tu.berlin/en/studying" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Technical University of Berlin website (opens in a new tab)</span></a>
+          </div>
+        </li>
+      </ul>
+    </article>
+<article class="gp-uni-result" id="uni-university-of-stuttgart" data-slug="university-of-stuttgart" data-country="germany" data-type="public" data-qs="9999" data-name="University of Stuttgart" data-founded="1829">
+      <header class="gp-uni-result-head">
+        <div>
+          <h3>University of Stuttgart</h3>
+          <p class="gp-uni-result-place">Stuttgart, Germany</p>
+        </div>
+      </header>
+      <dl class="gp-uni-result-facts">
+        <div><dt>Founded</dt><dd>1829</dd></div>
+        <div><dt>Institution type</dt><dd>Public</dd></div>
+        <div><dt>QS world rank</dt><dd>Not confirmed</dd></div>
+        <div><dt>Destination guide</dt><dd><a href="study-in-germany.html">Study in Germany</a></dd></div>
+      </dl>
+      <ul class="gp-course-list">
+        <li class="gp-course" data-subject="engineering" data-level="pg">
+          <div class="gp-course-main">
+            <h4>Computational Mechanics of Materials and Structures (COMMAS)</h4>
+            <span class="gp-course-subject">Engineering</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Master’s (PG)</dd></div>
+            <div><dt>Typical length</dt><dd>2 years</dd></div>
+            <div><dt>Intake</dt><dd>Oct (some Apr)</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=germany#book" data-open-consult data-country="germany" data-course="Computational Mechanics of Materials and Structures (COMMAS) (PG), University of Stuttgart">Apply</a>
+            <a class="gp-course-link" href="https://www.uni-stuttgart.de/en/study/" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the University of Stuttgart website (opens in a new tab)</span></a>
+          </div>
+        </li>
+        <li class="gp-course" data-subject="engineering" data-level="pg">
+          <div class="gp-course-main">
+            <h4>Information Technology (INFOTECH)</h4>
+            <span class="gp-course-subject">Engineering</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Master’s (PG)</dd></div>
+            <div><dt>Typical length</dt><dd>2 years</dd></div>
+            <div><dt>Intake</dt><dd>Oct (some Apr)</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=germany#book" data-open-consult data-country="germany" data-course="Information Technology (INFOTECH) (PG), University of Stuttgart">Apply</a>
+            <a class="gp-course-link" href="https://www.uni-stuttgart.de/en/study/" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the University of Stuttgart website (opens in a new tab)</span></a>
+          </div>
+        </li>
+      </ul>
+    </article>
+<article class="gp-uni-result" id="uni-frankfurt-school-of-finance-and-management" data-slug="frankfurt-school-of-finance-and-management" data-country="germany" data-type="private" data-qs="9999" data-name="Frankfurt School of Finance &amp; Management" data-founded="1957">
+      <header class="gp-uni-result-head">
+        <div>
+          <h3>Frankfurt School of Finance &amp; Management</h3>
+          <p class="gp-uni-result-place">Frankfurt, Germany</p>
+        </div>
+      </header>
+      <dl class="gp-uni-result-facts">
+        <div><dt>Founded</dt><dd>1957</dd></div>
+        <div><dt>Institution type</dt><dd>Private</dd></div>
+        <div><dt>QS world rank</dt><dd>Not confirmed</dd></div>
+        <div><dt>Destination guide</dt><dd><a href="study-in-germany.html">Study in Germany</a></dd></div>
+      </dl>
+      <ul class="gp-course-list">
+        <li class="gp-course" data-subject="economics" data-level="pg">
+          <div class="gp-course-main">
+            <h4>Master in Finance</h4>
+            <span class="gp-course-subject">Economics &amp; Finance</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Master’s (PG)</dd></div>
+            <div><dt>Typical length</dt><dd>2 years</dd></div>
+            <div><dt>Intake</dt><dd>Oct (some Apr)</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=germany#book" data-open-consult data-country="germany" data-course="Master in Finance (PG), Frankfurt School of Finance &amp; Management">Apply</a>
+            <a class="gp-course-link" href="https://www.frankfurt-school.de/en/home/programmes" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Frankfurt School of Finance &amp; Management website (opens in a new tab)</span></a>
+          </div>
+        </li>
+        <li class="gp-course" data-subject="business" data-level="ug">
+          <div class="gp-course-main">
+            <h4>Business Administration</h4>
+            <span class="gp-course-subject">Business &amp; Management</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Bachelor’s (UG)</dd></div>
+            <div><dt>Typical length</dt><dd>3–3.5 years</dd></div>
+            <div><dt>Intake</dt><dd>Oct (some Apr)</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=germany#book" data-open-consult data-country="germany" data-course="Business Administration (UG), Frankfurt School of Finance &amp; Management">Apply</a>
+            <a class="gp-course-link" href="https://www.frankfurt-school.de/en/home/programmes" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Frankfurt School of Finance &amp; Management website (opens in a new tab)</span></a>
+          </div>
+        </li>
+      </ul>
+    </article>
+<article class="gp-uni-result" id="uni-trinity-college-dublin" data-slug="trinity-college-dublin" data-country="ireland" data-type="public" data-qs="75" data-name="Trinity College Dublin" data-founded="1592">
       <header class="gp-uni-result-head">
         <div>
           <h3>Trinity College Dublin</h3>
@@ -1970,7 +2454,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="ireland" data-type="public" data-qs="118" data-name="University College Dublin" data-founded="1854">
+<article class="gp-uni-result" id="uni-university-college-dublin" data-slug="university-college-dublin" data-country="ireland" data-type="public" data-qs="118" data-name="University College Dublin" data-founded="1854">
       <header class="gp-uni-result-head">
         <div>
           <h3>University College Dublin</h3>
@@ -2032,7 +2516,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="ireland" data-type="public" data-qs="246" data-name="University College Cork" data-founded="1845">
+<article class="gp-uni-result" id="uni-university-college-cork" data-slug="university-college-cork" data-country="ireland" data-type="public" data-qs="246" data-name="University College Cork" data-founded="1845">
       <header class="gp-uni-result-head">
         <div>
           <h3>University College Cork</h3>
@@ -2079,7 +2563,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="ireland" data-type="public" data-qs="284" data-name="University of Galway" data-founded="1845">
+<article class="gp-uni-result" id="uni-university-of-galway" data-slug="university-of-galway" data-country="ireland" data-type="public" data-qs="284" data-name="University of Galway" data-founded="1845">
       <header class="gp-uni-result-head">
         <div>
           <h3>University of Galway</h3>
@@ -2126,7 +2610,195 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="newzealand" data-type="public" data-qs="65" data-name="University of Auckland" data-founded="1883">
+<article class="gp-uni-result" id="uni-university-of-limerick" data-slug="university-of-limerick" data-country="ireland" data-type="public" data-qs="401" data-name="University of Limerick" data-founded="1972">
+      <header class="gp-uni-result-head">
+        <div>
+          <h3>University of Limerick</h3>
+          <p class="gp-uni-result-place">Limerick, Ireland</p>
+        </div>
+        <span class="gp-qs" title="QS World University Rankings 2026">QS 2026 · #401</span>
+      </header>
+      <dl class="gp-uni-result-facts">
+        <div><dt>Founded</dt><dd>1972</dd></div>
+        <div><dt>Institution type</dt><dd>Public</dd></div>
+        <div><dt>QS world rank</dt><dd>#401</dd></div>
+        <div><dt>Destination guide</dt><dd><a href="study-in-ireland.html">Study in Ireland</a></dd></div>
+      </dl>
+      <ul class="gp-course-list">
+        <li class="gp-course" data-subject="computing" data-level="ug">
+          <div class="gp-course-main">
+            <h4>Computer Systems</h4>
+            <span class="gp-course-subject">Computer Science &amp; IT</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Bachelor’s (UG)</dd></div>
+            <div><dt>Typical length</dt><dd>3–4 years</dd></div>
+            <div><dt>Intake</dt><dd>Sep</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=ireland#book" data-open-consult data-country="ireland" data-course="Computer Systems (UG), University of Limerick">Apply</a>
+            <a class="gp-course-link" href="https://www.ul.ie/courses" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the University of Limerick website (opens in a new tab)</span></a>
+          </div>
+        </li>
+        <li class="gp-course" data-subject="business" data-level="pg">
+          <div class="gp-course-main">
+            <h4>Business Analytics</h4>
+            <span class="gp-course-subject">Business &amp; Management</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Master’s (PG)</dd></div>
+            <div><dt>Typical length</dt><dd>1 year</dd></div>
+            <div><dt>Intake</dt><dd>Sep</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=ireland#book" data-open-consult data-country="ireland" data-course="Business Analytics (PG), University of Limerick">Apply</a>
+            <a class="gp-course-link" href="https://www.ul.ie/courses" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the University of Limerick website (opens in a new tab)</span></a>
+          </div>
+        </li>
+      </ul>
+    </article>
+<article class="gp-uni-result" id="uni-dublin-city-university" data-slug="dublin-city-university" data-country="ireland" data-type="public" data-qs="410" data-name="Dublin City University" data-founded="1975">
+      <header class="gp-uni-result-head">
+        <div>
+          <h3>Dublin City University</h3>
+          <p class="gp-uni-result-place">Dublin, Ireland</p>
+        </div>
+        <span class="gp-qs" title="QS World University Rankings 2026">QS 2026 · #410</span>
+      </header>
+      <dl class="gp-uni-result-facts">
+        <div><dt>Founded</dt><dd>1975</dd></div>
+        <div><dt>Institution type</dt><dd>Public</dd></div>
+        <div><dt>QS world rank</dt><dd>#410</dd></div>
+        <div><dt>Destination guide</dt><dd><a href="study-in-ireland.html">Study in Ireland</a></dd></div>
+      </dl>
+      <ul class="gp-course-list">
+        <li class="gp-course" data-subject="computing" data-level="pg">
+          <div class="gp-course-main">
+            <h4>Computing</h4>
+            <span class="gp-course-subject">Computer Science &amp; IT</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Master’s (PG)</dd></div>
+            <div><dt>Typical length</dt><dd>1 year</dd></div>
+            <div><dt>Intake</dt><dd>Sep</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=ireland#book" data-open-consult data-country="ireland" data-course="Computing (PG), Dublin City University">Apply</a>
+            <a class="gp-course-link" href="https://www.dcu.ie/courses" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Dublin City University website (opens in a new tab)</span></a>
+          </div>
+        </li>
+        <li class="gp-course" data-subject="business" data-level="ug">
+          <div class="gp-course-main">
+            <h4>Business Studies</h4>
+            <span class="gp-course-subject">Business &amp; Management</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Bachelor’s (UG)</dd></div>
+            <div><dt>Typical length</dt><dd>3–4 years</dd></div>
+            <div><dt>Intake</dt><dd>Sep</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=ireland#book" data-open-consult data-country="ireland" data-course="Business Studies (UG), Dublin City University">Apply</a>
+            <a class="gp-course-link" href="https://www.dcu.ie/courses" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Dublin City University website (opens in a new tab)</span></a>
+          </div>
+        </li>
+      </ul>
+    </article>
+<article class="gp-uni-result" id="uni-maynooth-university" data-slug="maynooth-university" data-country="ireland" data-type="public" data-qs="771" data-name="Maynooth University" data-founded="1795">
+      <header class="gp-uni-result-head">
+        <div>
+          <h3>Maynooth University</h3>
+          <p class="gp-uni-result-place">Maynooth, Ireland</p>
+        </div>
+        <span class="gp-qs" title="QS World University Rankings 2026">QS 2026 · #771</span>
+      </header>
+      <dl class="gp-uni-result-facts">
+        <div><dt>Founded</dt><dd>1795</dd></div>
+        <div><dt>Institution type</dt><dd>Public</dd></div>
+        <div><dt>QS world rank</dt><dd>#771</dd></div>
+        <div><dt>Destination guide</dt><dd><a href="study-in-ireland.html">Study in Ireland</a></dd></div>
+      </dl>
+      <ul class="gp-course-list">
+        <li class="gp-course" data-subject="computing" data-level="pg">
+          <div class="gp-course-main">
+            <h4>Computer Science</h4>
+            <span class="gp-course-subject">Computer Science &amp; IT</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Master’s (PG)</dd></div>
+            <div><dt>Typical length</dt><dd>1 year</dd></div>
+            <div><dt>Intake</dt><dd>Sep</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=ireland#book" data-open-consult data-country="ireland" data-course="Computer Science (PG), Maynooth University">Apply</a>
+            <a class="gp-course-link" href="https://www.maynoothuniversity.ie/study-maynooth" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Maynooth University website (opens in a new tab)</span></a>
+          </div>
+        </li>
+        <li class="gp-course" data-subject="business" data-level="ug">
+          <div class="gp-course-main">
+            <h4>Business</h4>
+            <span class="gp-course-subject">Business &amp; Management</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Bachelor’s (UG)</dd></div>
+            <div><dt>Typical length</dt><dd>3–4 years</dd></div>
+            <div><dt>Intake</dt><dd>Sep</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=ireland#book" data-open-consult data-country="ireland" data-course="Business (UG), Maynooth University">Apply</a>
+            <a class="gp-course-link" href="https://www.maynoothuniversity.ie/study-maynooth" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Maynooth University website (opens in a new tab)</span></a>
+          </div>
+        </li>
+      </ul>
+    </article>
+<article class="gp-uni-result" id="uni-technological-university-dublin" data-slug="technological-university-dublin" data-country="ireland" data-type="public" data-qs="781" data-name="Technological University Dublin" data-founded="2019">
+      <header class="gp-uni-result-head">
+        <div>
+          <h3>Technological University Dublin</h3>
+          <p class="gp-uni-result-place">Dublin, Ireland</p>
+        </div>
+        <span class="gp-qs" title="QS World University Rankings 2026">QS 2026 · #781</span>
+      </header>
+      <dl class="gp-uni-result-facts">
+        <div><dt>Founded</dt><dd>2019</dd></div>
+        <div><dt>Institution type</dt><dd>Public</dd></div>
+        <div><dt>QS world rank</dt><dd>#781</dd></div>
+        <div><dt>Destination guide</dt><dd><a href="study-in-ireland.html">Study in Ireland</a></dd></div>
+      </dl>
+      <ul class="gp-course-list">
+        <li class="gp-course" data-subject="computing" data-level="pg">
+          <div class="gp-course-main">
+            <h4>Computer Science</h4>
+            <span class="gp-course-subject">Computer Science &amp; IT</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Master’s (PG)</dd></div>
+            <div><dt>Typical length</dt><dd>1 year</dd></div>
+            <div><dt>Intake</dt><dd>Sep</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=ireland#book" data-open-consult data-country="ireland" data-course="Computer Science (PG), Technological University Dublin">Apply</a>
+            <a class="gp-course-link" href="https://www.tudublin.ie/study/" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Technological University Dublin website (opens in a new tab)</span></a>
+          </div>
+        </li>
+        <li class="gp-course" data-subject="hospitality" data-level="ug">
+          <div class="gp-course-main">
+            <h4>Hospitality Management</h4>
+            <span class="gp-course-subject">Hospitality &amp; Tourism</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Bachelor’s (UG)</dd></div>
+            <div><dt>Typical length</dt><dd>3–4 years</dd></div>
+            <div><dt>Intake</dt><dd>Sep</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=ireland#book" data-open-consult data-country="ireland" data-course="Hospitality Management (UG), Technological University Dublin">Apply</a>
+            <a class="gp-course-link" href="https://www.tudublin.ie/study/" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Technological University Dublin website (opens in a new tab)</span></a>
+          </div>
+        </li>
+      </ul>
+    </article>
+<article class="gp-uni-result" id="uni-university-of-auckland" data-slug="university-of-auckland" data-country="newzealand" data-type="public" data-qs="65" data-name="University of Auckland" data-founded="1883">
       <header class="gp-uni-result-head">
         <div>
           <h3>University of Auckland</h3>
@@ -2188,7 +2860,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="newzealand" data-type="public" data-qs="197" data-name="University of Otago" data-founded="1869">
+<article class="gp-uni-result" id="uni-university-of-otago" data-slug="university-of-otago" data-country="newzealand" data-type="public" data-qs="197" data-name="University of Otago" data-founded="1869">
       <header class="gp-uni-result-head">
         <div>
           <h3>University of Otago</h3>
@@ -2235,7 +2907,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="newzealand" data-type="public" data-qs="240" data-name="Victoria University of Wellington" data-founded="1897">
+<article class="gp-uni-result" id="uni-victoria-university-of-wellington" data-slug="victoria-university-of-wellington" data-country="newzealand" data-type="public" data-qs="240" data-name="Victoria University of Wellington" data-founded="1897">
       <header class="gp-uni-result-head">
         <div>
           <h3>Victoria University of Wellington</h3>
@@ -2282,7 +2954,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="newzealand" data-type="public" data-qs="261" data-name="University of Canterbury" data-founded="1873">
+<article class="gp-uni-result" id="uni-university-of-canterbury" data-slug="university-of-canterbury" data-country="newzealand" data-type="public" data-qs="261" data-name="University of Canterbury" data-founded="1873">
       <header class="gp-uni-result-head">
         <div>
           <h3>University of Canterbury</h3>
@@ -2329,7 +3001,195 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="italy" data-type="public" data-qs="98" data-name="Politecnico di Milano" data-founded="1863">
+<article class="gp-uni-result" id="uni-massey-university" data-slug="massey-university" data-country="newzealand" data-type="public" data-qs="230" data-name="Massey University" data-founded="1927">
+      <header class="gp-uni-result-head">
+        <div>
+          <h3>Massey University</h3>
+          <p class="gp-uni-result-place">Palmerston North, Auckland, Wellington, New Zealand</p>
+        </div>
+        <span class="gp-qs" title="QS World University Rankings 2026">QS 2026 · #230</span>
+      </header>
+      <dl class="gp-uni-result-facts">
+        <div><dt>Founded</dt><dd>1927</dd></div>
+        <div><dt>Institution type</dt><dd>Public</dd></div>
+        <div><dt>QS world rank</dt><dd>#230</dd></div>
+        <div><dt>Destination guide</dt><dd><a href="study-in-newzealand.html">Study in New Zealand</a></dd></div>
+      </dl>
+      <ul class="gp-course-list">
+        <li class="gp-course" data-subject="business" data-level="ug">
+          <div class="gp-course-main">
+            <h4>Business</h4>
+            <span class="gp-course-subject">Business &amp; Management</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Bachelor’s (UG)</dd></div>
+            <div><dt>Typical length</dt><dd>3 years</dd></div>
+            <div><dt>Intake</dt><dd>Feb, Jul</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=newzealand#book" data-open-consult data-country="newzealand" data-course="Business (UG), Massey University">Apply</a>
+            <a class="gp-course-link" href="https://www.massey.ac.nz/study/" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Massey University website (opens in a new tab)</span></a>
+          </div>
+        </li>
+        <li class="gp-course" data-subject="computing" data-level="pg">
+          <div class="gp-course-main">
+            <h4>Information Sciences</h4>
+            <span class="gp-course-subject">Computer Science &amp; IT</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Master’s (PG)</dd></div>
+            <div><dt>Typical length</dt><dd>1–2 years</dd></div>
+            <div><dt>Intake</dt><dd>Feb, Jul</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=newzealand#book" data-open-consult data-country="newzealand" data-course="Information Sciences (PG), Massey University">Apply</a>
+            <a class="gp-course-link" href="https://www.massey.ac.nz/study/" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Massey University website (opens in a new tab)</span></a>
+          </div>
+        </li>
+      </ul>
+    </article>
+<article class="gp-uni-result" id="uni-university-of-waikato" data-slug="university-of-waikato" data-country="newzealand" data-type="public" data-qs="281" data-name="University of Waikato" data-founded="1964">
+      <header class="gp-uni-result-head">
+        <div>
+          <h3>University of Waikato</h3>
+          <p class="gp-uni-result-place">Hamilton, New Zealand</p>
+        </div>
+        <span class="gp-qs" title="QS World University Rankings 2026">QS 2026 · #281</span>
+      </header>
+      <dl class="gp-uni-result-facts">
+        <div><dt>Founded</dt><dd>1964</dd></div>
+        <div><dt>Institution type</dt><dd>Public</dd></div>
+        <div><dt>QS world rank</dt><dd>#281</dd></div>
+        <div><dt>Destination guide</dt><dd><a href="study-in-newzealand.html">Study in New Zealand</a></dd></div>
+      </dl>
+      <ul class="gp-course-list">
+        <li class="gp-course" data-subject="computing" data-level="ug">
+          <div class="gp-course-main">
+            <h4>Computer Science</h4>
+            <span class="gp-course-subject">Computer Science &amp; IT</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Bachelor’s (UG)</dd></div>
+            <div><dt>Typical length</dt><dd>3 years</dd></div>
+            <div><dt>Intake</dt><dd>Feb, Jul</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=newzealand#book" data-open-consult data-country="newzealand" data-course="Computer Science (UG), University of Waikato">Apply</a>
+            <a class="gp-course-link" href="https://www.waikato.ac.nz/study/" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the University of Waikato website (opens in a new tab)</span></a>
+          </div>
+        </li>
+        <li class="gp-course" data-subject="business" data-level="pg">
+          <div class="gp-course-main">
+            <h4>Management Studies</h4>
+            <span class="gp-course-subject">Business &amp; Management</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Master’s (PG)</dd></div>
+            <div><dt>Typical length</dt><dd>1–2 years</dd></div>
+            <div><dt>Intake</dt><dd>Feb, Jul</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=newzealand#book" data-open-consult data-country="newzealand" data-course="Management Studies (PG), University of Waikato">Apply</a>
+            <a class="gp-course-link" href="https://www.waikato.ac.nz/study/" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the University of Waikato website (opens in a new tab)</span></a>
+          </div>
+        </li>
+      </ul>
+    </article>
+<article class="gp-uni-result" id="uni-lincoln-university" data-slug="lincoln-university" data-country="newzealand" data-type="public" data-qs="407" data-name="Lincoln University" data-founded="1878">
+      <header class="gp-uni-result-head">
+        <div>
+          <h3>Lincoln University</h3>
+          <p class="gp-uni-result-place">Lincoln, near Christchurch, New Zealand</p>
+        </div>
+        <span class="gp-qs" title="QS World University Rankings 2026">QS 2026 · #407</span>
+      </header>
+      <dl class="gp-uni-result-facts">
+        <div><dt>Founded</dt><dd>1878</dd></div>
+        <div><dt>Institution type</dt><dd>Public</dd></div>
+        <div><dt>QS world rank</dt><dd>#407</dd></div>
+        <div><dt>Destination guide</dt><dd><a href="study-in-newzealand.html">Study in New Zealand</a></dd></div>
+      </dl>
+      <ul class="gp-course-list">
+        <li class="gp-course" data-subject="science" data-level="ug">
+          <div class="gp-course-main">
+            <h4>Agricultural Science</h4>
+            <span class="gp-course-subject">Natural Sciences</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Bachelor’s (UG)</dd></div>
+            <div><dt>Typical length</dt><dd>3 years</dd></div>
+            <div><dt>Intake</dt><dd>Feb, Jul</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=newzealand#book" data-open-consult data-country="newzealand" data-course="Agricultural Science (UG), Lincoln University">Apply</a>
+            <a class="gp-course-link" href="https://www.lincoln.ac.nz/study/" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Lincoln University website (opens in a new tab)</span></a>
+          </div>
+        </li>
+        <li class="gp-course" data-subject="hospitality" data-level="ug">
+          <div class="gp-course-main">
+            <h4>Tourism Management</h4>
+            <span class="gp-course-subject">Hospitality &amp; Tourism</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Bachelor’s (UG)</dd></div>
+            <div><dt>Typical length</dt><dd>3 years</dd></div>
+            <div><dt>Intake</dt><dd>Feb, Jul</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=newzealand#book" data-open-consult data-country="newzealand" data-course="Tourism Management (UG), Lincoln University">Apply</a>
+            <a class="gp-course-link" href="https://www.lincoln.ac.nz/study/" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Lincoln University website (opens in a new tab)</span></a>
+          </div>
+        </li>
+      </ul>
+    </article>
+<article class="gp-uni-result" id="uni-auckland-university-of-technology" data-slug="auckland-university-of-technology" data-country="newzealand" data-type="public" data-qs="410" data-name="Auckland University of Technology (AUT)" data-founded="2000">
+      <header class="gp-uni-result-head">
+        <div>
+          <h3>Auckland University of Technology (AUT)</h3>
+          <p class="gp-uni-result-place">Auckland, New Zealand</p>
+        </div>
+        <span class="gp-qs" title="QS World University Rankings 2026">QS 2026 · #410</span>
+      </header>
+      <dl class="gp-uni-result-facts">
+        <div><dt>Founded</dt><dd>2000</dd></div>
+        <div><dt>Institution type</dt><dd>Public</dd></div>
+        <div><dt>QS world rank</dt><dd>#410</dd></div>
+        <div><dt>Destination guide</dt><dd><a href="study-in-newzealand.html">Study in New Zealand</a></dd></div>
+      </dl>
+      <ul class="gp-course-list">
+        <li class="gp-course" data-subject="hospitality" data-level="ug">
+          <div class="gp-course-main">
+            <h4>International Hospitality Management</h4>
+            <span class="gp-course-subject">Hospitality &amp; Tourism</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Bachelor’s (UG)</dd></div>
+            <div><dt>Typical length</dt><dd>3 years</dd></div>
+            <div><dt>Intake</dt><dd>Feb, Jul</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=newzealand#book" data-open-consult data-country="newzealand" data-course="International Hospitality Management (UG), Auckland University of Technology (AUT)">Apply</a>
+            <a class="gp-course-link" href="https://www.aut.ac.nz/study" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Auckland University of Technology (AUT) website (opens in a new tab)</span></a>
+          </div>
+        </li>
+        <li class="gp-course" data-subject="computing" data-level="pg">
+          <div class="gp-course-main">
+            <h4>Computer and Information Sciences</h4>
+            <span class="gp-course-subject">Computer Science &amp; IT</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Master’s (PG)</dd></div>
+            <div><dt>Typical length</dt><dd>1–2 years</dd></div>
+            <div><dt>Intake</dt><dd>Feb, Jul</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=newzealand#book" data-open-consult data-country="newzealand" data-course="Computer and Information Sciences (PG), Auckland University of Technology (AUT)">Apply</a>
+            <a class="gp-course-link" href="https://www.aut.ac.nz/study" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Auckland University of Technology (AUT) website (opens in a new tab)</span></a>
+          </div>
+        </li>
+      </ul>
+    </article>
+<article class="gp-uni-result" id="uni-politecnico-di-milano" data-slug="politecnico-di-milano" data-country="italy" data-type="public" data-qs="98" data-name="Politecnico di Milano" data-founded="1863">
       <header class="gp-uni-result-head">
         <div>
           <h3>Politecnico di Milano</h3>
@@ -2391,7 +3251,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="italy" data-type="public" data-qs="128" data-name="Sapienza University of Rome" data-founded="1303">
+<article class="gp-uni-result" id="uni-sapienza-university-of-rome" data-slug="sapienza-university-of-rome" data-country="italy" data-type="public" data-qs="128" data-name="Sapienza University of Rome" data-founded="1303">
       <header class="gp-uni-result-head">
         <div>
           <h3>Sapienza University of Rome</h3>
@@ -2438,7 +3298,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="italy" data-type="public" data-qs="138" data-name="University of Bologna" data-founded="1088">
+<article class="gp-uni-result" id="uni-university-of-bologna" data-slug="university-of-bologna" data-country="italy" data-type="public" data-qs="138" data-name="University of Bologna" data-founded="1088">
       <header class="gp-uni-result-head">
         <div>
           <h3>University of Bologna</h3>
@@ -2485,7 +3345,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="italy" data-type="public" data-qs="242" data-name="Politecnico di Torino" data-founded="1859">
+<article class="gp-uni-result" id="uni-politecnico-di-torino" data-slug="politecnico-di-torino" data-country="italy" data-type="public" data-qs="242" data-name="Politecnico di Torino" data-founded="1859">
       <header class="gp-uni-result-head">
         <div>
           <h3>Politecnico di Torino</h3>
@@ -2532,7 +3392,193 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="finland" data-type="public" data-qs="114" data-name="Aalto University" data-founded="2010">
+<article class="gp-uni-result" id="uni-university-of-padua" data-slug="university-of-padua" data-country="italy" data-type="public" data-qs="233" data-name="University of Padua" data-founded="1222">
+      <header class="gp-uni-result-head">
+        <div>
+          <h3>University of Padua</h3>
+          <p class="gp-uni-result-place">Padua, Italy</p>
+        </div>
+        <span class="gp-qs" title="QS World University Rankings 2026">QS 2026 · #233</span>
+      </header>
+      <dl class="gp-uni-result-facts">
+        <div><dt>Founded</dt><dd>1222</dd></div>
+        <div><dt>Institution type</dt><dd>Public</dd></div>
+        <div><dt>QS world rank</dt><dd>#233</dd></div>
+        <div><dt>Destination guide</dt><dd><a href="study-in-italy.html">Study in Italy</a></dd></div>
+      </dl>
+      <ul class="gp-course-list">
+        <li class="gp-course" data-subject="data" data-level="pg">
+          <div class="gp-course-main">
+            <h4>Data Science</h4>
+            <span class="gp-course-subject">Data Science &amp; AI</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Master’s (PG)</dd></div>
+            <div><dt>Typical length</dt><dd>2 years</dd></div>
+            <div><dt>Intake</dt><dd>Sep–Oct</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=italy#book" data-open-consult data-country="italy" data-course="Data Science (PG), University of Padua">Apply</a>
+            <a class="gp-course-link" href="https://www.unipd.it/en/educational-offer" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the University of Padua website (opens in a new tab)</span></a>
+          </div>
+        </li>
+        <li class="gp-course" data-subject="computing" data-level="pg">
+          <div class="gp-course-main">
+            <h4>Computer Engineering</h4>
+            <span class="gp-course-subject">Computer Science &amp; IT</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Master’s (PG)</dd></div>
+            <div><dt>Typical length</dt><dd>2 years</dd></div>
+            <div><dt>Intake</dt><dd>Sep–Oct</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=italy#book" data-open-consult data-country="italy" data-course="Computer Engineering (PG), University of Padua">Apply</a>
+            <a class="gp-course-link" href="https://www.unipd.it/en/educational-offer" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the University of Padua website (opens in a new tab)</span></a>
+          </div>
+        </li>
+      </ul>
+    </article>
+<article class="gp-uni-result" id="uni-university-of-milan" data-slug="university-of-milan" data-country="italy" data-type="public" data-qs="276" data-name="University of Milan" data-founded="1924">
+      <header class="gp-uni-result-head">
+        <div>
+          <h3>University of Milan</h3>
+          <p class="gp-uni-result-place">Milan, Italy</p>
+        </div>
+        <span class="gp-qs" title="QS World University Rankings 2026">QS 2026 · #276</span>
+      </header>
+      <dl class="gp-uni-result-facts">
+        <div><dt>Founded</dt><dd>1924</dd></div>
+        <div><dt>Institution type</dt><dd>Public</dd></div>
+        <div><dt>QS world rank</dt><dd>#276</dd></div>
+        <div><dt>Destination guide</dt><dd><a href="study-in-italy.html">Study in Italy</a></dd></div>
+      </dl>
+      <ul class="gp-course-list">
+        <li class="gp-course" data-subject="data" data-level="pg">
+          <div class="gp-course-main">
+            <h4>Data Science and Economics</h4>
+            <span class="gp-course-subject">Data Science &amp; AI</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Master’s (PG)</dd></div>
+            <div><dt>Typical length</dt><dd>2 years</dd></div>
+            <div><dt>Intake</dt><dd>Sep–Oct</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=italy#book" data-open-consult data-country="italy" data-course="Data Science and Economics (PG), University of Milan">Apply</a>
+            <a class="gp-course-link" href="https://www.unimi.it/en/education" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the University of Milan website (opens in a new tab)</span></a>
+          </div>
+        </li>
+        <li class="gp-course" data-subject="social" data-level="ug">
+          <div class="gp-course-main">
+            <h4>International Politics, Law and Economics</h4>
+            <span class="gp-course-subject">Social Sciences &amp; Humanities</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Bachelor’s (UG)</dd></div>
+            <div><dt>Typical length</dt><dd>3 years</dd></div>
+            <div><dt>Intake</dt><dd>Sep–Oct</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=italy#book" data-open-consult data-country="italy" data-course="International Politics, Law and Economics (UG), University of Milan">Apply</a>
+            <a class="gp-course-link" href="https://www.unimi.it/en/education" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the University of Milan website (opens in a new tab)</span></a>
+          </div>
+        </li>
+      </ul>
+    </article>
+<article class="gp-uni-result" id="uni-bocconi-university" data-slug="bocconi-university" data-country="italy" data-type="private" data-qs="9999" data-name="Bocconi University" data-founded="1902">
+      <header class="gp-uni-result-head">
+        <div>
+          <h3>Bocconi University</h3>
+          <p class="gp-uni-result-place">Milan, Italy</p>
+        </div>
+      </header>
+      <dl class="gp-uni-result-facts">
+        <div><dt>Founded</dt><dd>1902</dd></div>
+        <div><dt>Institution type</dt><dd>Private</dd></div>
+        <div><dt>QS world rank</dt><dd>Not confirmed</dd></div>
+        <div><dt>Destination guide</dt><dd><a href="study-in-italy.html">Study in Italy</a></dd></div>
+      </dl>
+      <ul class="gp-course-list">
+        <li class="gp-course" data-subject="economics" data-level="ug">
+          <div class="gp-course-main">
+            <h4>Economics and Management</h4>
+            <span class="gp-course-subject">Economics &amp; Finance</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Bachelor’s (UG)</dd></div>
+            <div><dt>Typical length</dt><dd>3 years</dd></div>
+            <div><dt>Intake</dt><dd>Sep–Oct</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=italy#book" data-open-consult data-country="italy" data-course="Economics and Management (UG), Bocconi University">Apply</a>
+            <a class="gp-course-link" href="https://www.unibocconi.it/en/programs" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Bocconi University website (opens in a new tab)</span></a>
+          </div>
+        </li>
+        <li class="gp-course" data-subject="economics" data-level="pg">
+          <div class="gp-course-main">
+            <h4>Finance</h4>
+            <span class="gp-course-subject">Economics &amp; Finance</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Master’s (PG)</dd></div>
+            <div><dt>Typical length</dt><dd>2 years</dd></div>
+            <div><dt>Intake</dt><dd>Sep–Oct</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=italy#book" data-open-consult data-country="italy" data-course="Finance (PG), Bocconi University">Apply</a>
+            <a class="gp-course-link" href="https://www.unibocconi.it/en/programs" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the Bocconi University website (opens in a new tab)</span></a>
+          </div>
+        </li>
+      </ul>
+    </article>
+<article class="gp-uni-result" id="uni-university-of-florence" data-slug="university-of-florence" data-country="italy" data-type="public" data-qs="9999" data-name="University of Florence" data-founded="1321">
+      <header class="gp-uni-result-head">
+        <div>
+          <h3>University of Florence</h3>
+          <p class="gp-uni-result-place">Florence, Italy</p>
+        </div>
+      </header>
+      <dl class="gp-uni-result-facts">
+        <div><dt>Founded</dt><dd>1321</dd></div>
+        <div><dt>Institution type</dt><dd>Public</dd></div>
+        <div><dt>QS world rank</dt><dd>Not confirmed</dd></div>
+        <div><dt>Destination guide</dt><dd><a href="study-in-italy.html">Study in Italy</a></dd></div>
+      </dl>
+      <ul class="gp-course-list">
+        <li class="gp-course" data-subject="hospitality" data-level="pg">
+          <div class="gp-course-main">
+            <h4>Design of Sustainable Tourism Systems</h4>
+            <span class="gp-course-subject">Hospitality &amp; Tourism</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Master’s (PG)</dd></div>
+            <div><dt>Typical length</dt><dd>2 years</dd></div>
+            <div><dt>Intake</dt><dd>Sep–Oct</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=italy#book" data-open-consult data-country="italy" data-course="Design of Sustainable Tourism Systems (PG), University of Florence">Apply</a>
+            <a class="gp-course-link" href="https://www.unifi.it/en/study" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the University of Florence website (opens in a new tab)</span></a>
+          </div>
+        </li>
+        <li class="gp-course" data-subject="economics" data-level="pg">
+          <div class="gp-course-main">
+            <h4>Economics and Development</h4>
+            <span class="gp-course-subject">Economics &amp; Finance</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Master’s (PG)</dd></div>
+            <div><dt>Typical length</dt><dd>2 years</dd></div>
+            <div><dt>Intake</dt><dd>Sep–Oct</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=italy#book" data-open-consult data-country="italy" data-course="Economics and Development (PG), University of Florence">Apply</a>
+            <a class="gp-course-link" href="https://www.unifi.it/en/study" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the University of Florence website (opens in a new tab)</span></a>
+          </div>
+        </li>
+      </ul>
+    </article>
+<article class="gp-uni-result" id="uni-aalto-university" data-slug="aalto-university" data-country="finland" data-type="public" data-qs="114" data-name="Aalto University" data-founded="2010">
       <header class="gp-uni-result-head">
         <div>
           <h3>Aalto University</h3>
@@ -2594,7 +3640,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="finland" data-type="public" data-qs="116" data-name="University of Helsinki" data-founded="1640">
+<article class="gp-uni-result" id="uni-university-of-helsinki" data-slug="university-of-helsinki" data-country="finland" data-type="public" data-qs="116" data-name="University of Helsinki" data-founded="1640">
       <header class="gp-uni-result-head">
         <div>
           <h3>University of Helsinki</h3>
@@ -2641,7 +3687,7 @@
         </li>
       </ul>
     </article>
-<article class="gp-uni-result" data-country="finland" data-type="public" data-qs="423" data-name="Tampere University" data-founded="2019">
+<article class="gp-uni-result" id="uni-tampere-university" data-slug="tampere-university" data-country="finland" data-type="public" data-qs="423" data-name="Tampere University" data-founded="2019">
       <header class="gp-uni-result-head">
         <div>
           <h3>Tampere University</h3>
@@ -2688,6 +3734,53 @@
         </li>
       </ul>
     </article>
+<article class="gp-uni-result" id="uni-university-of-turku" data-slug="university-of-turku" data-country="finland" data-type="public" data-qs="366" data-name="University of Turku" data-founded="1920">
+      <header class="gp-uni-result-head">
+        <div>
+          <h3>University of Turku</h3>
+          <p class="gp-uni-result-place">Turku, Finland</p>
+        </div>
+        <span class="gp-qs" title="QS World University Rankings 2026">QS 2026 · #366</span>
+      </header>
+      <dl class="gp-uni-result-facts">
+        <div><dt>Founded</dt><dd>1920</dd></div>
+        <div><dt>Institution type</dt><dd>Public</dd></div>
+        <div><dt>QS world rank</dt><dd>#366</dd></div>
+        <div><dt>Destination guide</dt><dd><a href="study-in-finland.html">Study in Finland</a></dd></div>
+      </dl>
+      <ul class="gp-course-list">
+        <li class="gp-course" data-subject="computing" data-level="pg">
+          <div class="gp-course-main">
+            <h4>Information and Communication Technology</h4>
+            <span class="gp-course-subject">Computer Science &amp; IT</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Master’s (PG)</dd></div>
+            <div><dt>Typical length</dt><dd>2 years</dd></div>
+            <div><dt>Intake</dt><dd>Aug–Sep</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=finland#book" data-open-consult data-country="finland" data-course="Information and Communication Technology (PG), University of Turku">Apply</a>
+            <a class="gp-course-link" href="https://www.utu.fi/en/study-at-utu" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the University of Turku website (opens in a new tab)</span></a>
+          </div>
+        </li>
+        <li class="gp-course" data-subject="science" data-level="pg">
+          <div class="gp-course-main">
+            <h4>Biomedical Sciences</h4>
+            <span class="gp-course-subject">Natural Sciences</span>
+          </div>
+          <dl class="gp-course-facts">
+            <div><dt>Level</dt><dd>Master’s (PG)</dd></div>
+            <div><dt>Typical length</dt><dd>2 years</dd></div>
+            <div><dt>Intake</dt><dd>Aug–Sep</dd></div>
+          </dl>
+          <div class="gp-course-actions">
+            <a class="gp-btn gp-btn-primary gp-btn-sm" href="free-consultation.html?interest=course-selection&amp;country=finland#book" data-open-consult data-country="finland" data-course="Biomedical Sciences (PG), University of Turku">Apply</a>
+            <a class="gp-course-link" href="https://www.utu.fi/en/study-at-utu" target="_blank" rel="noopener noreferrer">Course details <span aria-hidden="true">↗</span><span class="sr-only"> on the University of Turku website (opens in a new tab)</span></a>
+          </div>
+        </li>
+      </ul>
+    </article>
       </div>
       <p class="gp-note">Example programmes at leading universities, with typical course lengths and intakes for each country. QS ranks are from the QS World University Rankings 2026. Always confirm the exact course title, fees, entry requirements and intake on the university’s website. Last reviewed October 2026.</p>
     </section>
@@ -2704,6 +3797,9 @@
   const count = root.querySelector('.gp-results-count');
   const empty = root.querySelector('.gp-results-empty');
   const badge = root.querySelector('.gp-filter-count');
+  const uniBar = root.querySelector('.gp-uni-filter');
+  /* ?university=<slug> (from destination pages and the homepage logos) shows one university. */
+  let uniFilter = '';
   const checked = (name) => [...root.querySelectorAll('input[name="' + name + '"]:checked')].map((i) => i.value);
   const norm = (s) => s.toLowerCase().replace(/[&/+]+/g, ' and ').replace(/\s+/g, ' ').trim();
 
@@ -2712,8 +3808,8 @@
     const q = norm(search.value);
     let unis = 0, courses = 0;
     cards.forEach((card) => {
-      const cardMatch = (!countries.length || countries.includes(card.dataset.country)) && (!types.length || types.includes(card.dataset.type));
-      const filtering = levels.length || subjects.length || q;
+      const cardMatch = (!uniFilter || card.dataset.slug === uniFilter) && (!countries.length || countries.includes(card.dataset.country)) && (!types.length || types.includes(card.dataset.type));
+      const filtering = levels.length || subjects.length || q || uniFilter;
       let shown = 0;
       card.querySelectorAll('.gp-course').forEach((row) => {
         const text = norm(row.textContent + ' ' + card.dataset.name);
@@ -2733,7 +3829,8 @@
     });
     count.innerHTML = '<strong>' + unis + '</strong> universit' + (unis === 1 ? 'y' : 'ies') + ' · <strong>' + courses + '</strong> course' + (courses === 1 ? '' : 's');
     empty.hidden = unis > 0;
-    const active = levels.length + subjects.length + countries.length + types.length + (q ? 1 : 0);
+    const active = levels.length + subjects.length + countries.length + types.length + (q ? 1 : 0) + (uniFilter ? 1 : 0);
+    uniBar.hidden = !uniFilter;
     badge.textContent = active ? '(' + active + ')' : '';
   }
 
@@ -2754,12 +3851,26 @@
   if (courseParam) { if (!tick('subject', ALIASES[courseParam] || '')) search.value = params.get('course') || params.get('subject') || params.get('q'); }
   const countryParam = (params.get('country') || '').toLowerCase().replace(/[^a-z]/g, '');
   if (countryParam) tick('country', { unitedkingdom: 'uk', us: 'usa', unitedstates: 'usa' }[countryParam] || countryParam);
+  const uniParam = (params.get('university') || '').toLowerCase();
+  const uniCard = cards.find((c) => c.dataset.slug === uniParam);
+  if (uniCard) {
+    uniFilter = uniParam;
+    root.querySelector('.gp-uni-filter-name').textContent = uniCard.dataset.name;
+  }
   const levelParam = (params.get('level') || '').toLowerCase();
   if (levelParam === 'ug' || levelParam === 'pg') tick('level', levelParam);
 
   root.addEventListener('change', (e) => { if (e.target.matches('input[type="checkbox"]')) apply(); if (e.target === sort) { order(); } });
   search.addEventListener('input', apply);
+  const clearUni = () => {
+    uniFilter = '';
+    const url = new URL(location.href);
+    url.searchParams.delete('university');
+    history.replaceState(null, '', url.pathname + url.search);
+  };
+  uniBar.querySelector('.gp-uni-filter-clear').addEventListener('click', () => { clearUni(); apply(); search.focus(); });
   root.querySelector('.gp-filter-reset').addEventListener('click', () => {
+    clearUni();
     root.querySelectorAll('.gp-filters input').forEach((i) => { i.checked = false; });
     search.value = '';
     history.replaceState(null, '', location.pathname);
@@ -2839,6 +3950,6 @@
   </div>
   <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">© 2026 Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · <a href="mailto:privacy@gradmire.in">privacy@gradmire.in</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund-policy.html">Refunds &amp; fees</a><a href="cookie-policy.html">Cookies</a><a href="data-request.html">Your data rights</a><a href="grievance.html">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
 </footer>
-<script src="../assets/site.js?v=28" defer></script>
+<script src="../assets/site.js?v=29" defer></script>
 </body>
 </html>

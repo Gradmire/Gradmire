@@ -485,7 +485,7 @@
         background: rgba(10, 13, 22, .88);
     }
 </style>
-<link rel="stylesheet" href="../assets/site.css?v=25">
+<link rel="stylesheet" href="../assets/site.css?v=26">
 <link rel="stylesheet" href="../assets/auth.css?v=1">
 <style>
 @media(max-width:900px){.auth-wrap{grid-template-columns:1fr!important}}
@@ -621,7 +621,7 @@
         try {
             const user = await GradmireAPI.login(email, password);
             const next = new URLSearchParams(location.search).get('next');
-            const fallback = user.role === 'student' ? 'dashboard-consultations.html' : 'admin-consultations.html';
+            const fallback = user.role === 'student' ? 'dashboard.html' : 'admin-consultations.html';
             window.location.href = GradmireAPI.safeNext(next, fallback);
         } catch (err) {
             error.textContent = err.message;
@@ -691,4 +691,4 @@
 </footer>
 
 <script src="../assets/api.js?v=2"></script>
-<script src="../assets/site.js?v=28" defer></script>
+<script src="../assets/site.js?v=29" defer></script>

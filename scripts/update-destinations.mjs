@@ -6,12 +6,23 @@
    Run from the repository root:  node scripts/update-destinations.mjs */
 import fs from 'node:fs';
 import path from 'node:path';
-import { pages, RANK_LABEL } from './destination-data.mjs';
+import { pages, RANK_LABEL, finderNames } from './destination-data.mjs';
+import { universities, uniSlug } from './course-data.mjs';
 
 const dir = path.resolve('frontend/pages');
 const badge = (rank) => `<span class="gm-rank-badge" aria-label="${RANK_LABEL} world rank ${rank}">${RANK_LABEL} · #${rank}</span>`;
 const countBadge = (list, override) => `<span class="gm-city-count">${override || `${list.length}${list.length > 1 ? '+' : ''}`} ${list.length === 1 && !override ? 'university' : 'universities'}</span>`;
-const strip = (html) => html.replace(/<span class="gm-rank-badge"[^>]*>[^<]*<\/span>/g, '').replace(/<span class="gm-city-count">[^<]*<\/span>/g, '');
+const finderSet = new Set(universities.map((u) => u.name));
+/* Link to the Course Finder filtered to this university, or null if it is not listed there. */
+const finderHref = (name) => {
+    const target = finderNames[name] || name.replace(/&amp;/g, '&');
+    return finderSet.has(target) ? `find-courses.html?university=${uniSlug(target)}` : null;
+};
+const uniLink = (name) => {
+    const href = finderHref(name.trim());
+    return href ? `<a class="gm-uni-link" href="${href}"><span class="sr-only">See courses at ${name.trim()} in the Course Finder</span></a>` : '';
+};
+const strip = (html) => html.replace(/<a class="gm-uni-link"[^>]*><span class="sr-only">[^<]*<\/span><\/a>/g, '').replace(/<span class="gm-rank-badge"[^>]*>[^<]*<\/span>/g, '').replace(/<span class="gm-city-count">[^<]*<\/span>/g, '');
 
 for (const [slug, data] of Object.entries(pages)) {
     const file = path.join(dir, data.file);
@@ -23,21 +34,26 @@ for (const [slug, data] of Object.entries(pages)) {
     /* Template A: <div class="uni-thumb"><img …><div class="uni-thumb-name">Name</div> */
     html = html.replace(/(<div class="uni-thumb">\s*<img[^>]*>)(\s*<div class="uni-thumb-name">)([^<]*)(<\/div>)/g, (m, img, open, name, close) => {
         const rank = data.ranks[name.trim()];
-        return `${img}${rank ? badge(rank) : ''}${open}${name}${close}`;
+        if (!finderHref(name.trim())) missing.push(`finder:${name}`);
+        return `${img}${rank ? badge(rank) : ''}${open}${name}${close}${uniLink(name)}`;
     });
     /* Template B: <div class="uni-card-img"><img …></div><div class="uni-card-body"><div class="uni-card-rank">…</div><div class="uni-card-name">Name</div> */
     html = html.replace(/(<div class="uni-card-img"><img[^>]*>)(<\/div>\s*<div class="uni-card-body"><div class="uni-card-rank">)([^<]*)(<\/div><div class="uni-card-name">)([^<]*)/g, (m, img, mid, label, mid2, name) => {
         const rank = data.ranks[name.trim()];
         /* Keep the descriptive part of the old label ("TU9", "Founded 1592"); the rank moves onto the picture. */
         const descriptor = label.split('·').map((s) => s.trim()).filter((s) => !/^QS\s*#/i.test(s)).join(' · ') || (rank ? 'Ranked university' : label);
-        return `${img}${rank ? badge(rank) : ''}${mid}${rank ? descriptor : label.replace(/QS\s*#[\d–-]+\s*·?\s*/i, '').trim() || label}${mid2}${name}`;
+        if (!finderHref(name.trim())) missing.push(`finder:${name}`);
+        return `${img}${rank ? badge(rank) : ''}${mid}${rank ? descriptor : label.replace(/QS\s*#[\d–-]+\s*·?\s*/i, '').trim() || label}${mid2}${name}${uniLink(name)}`;
     });
     /* Finland: plain list items. */
+    html = html.replace(/<a class="gm-uni-name-link" href="[^"]*">([^<]*)<\/a>/g, '$1');
     html = html.replace(/<div class="university">([^<]*)<\/div>/g, (m, name) => {
         const rank = data.ranks[name.trim()];
-        return `<div class="university">${name}${rank ? badge(rank) : ''}</div>`;
+        const href = finderHref(name.trim());
+        if (!href) missing.push(`finder:${name}`);
+        return `<div class="university">${href ? `<a class="gm-uni-name-link" href="${href}">${name}</a>` : name}${rank ? badge(rank) : ''}</div>`;
     });
-    for (const name of Object.keys(data.ranks)) if (!html.includes(`${name}</div>`) && !html.includes(`>${name}<span class="gm-rank`)) missing.push(`uni:${name}`);
+    for (const name of Object.keys(data.ranks)) if (!html.includes(`aria-label="${RANK_LABEL} world rank ${data.ranks[name]}"`)) missing.push(`rank:${name}`);
 
     /* Template A cities: city-name + city-meta → count badge, meta lists the universities. */
     html = html.replace(/(<div class="city-card">\s*<img[^>]*>)(\s*<div class="city-overlay"><div class="city-name">)([^<]*)(<\/div><div class="city-meta">)[^<]*(<\/div>)/g, (m, img, open, city, metaOpen, close) => {

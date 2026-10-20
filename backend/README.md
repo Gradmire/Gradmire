@@ -3,6 +3,7 @@
 The API for the static frontend. It provides:
 
 - Accounts (sign-up, login, sessions, email verification), consultation booking, the student consultations area, the staff CRM and background jobs — see [`docs/consultation-booking-setup.md`](../docs/consultation-booking-setup.md) for every endpoint
+- Student applications (migration `005`): counsellors record each university application and its status on `admin-students.html`; students see them on `dashboard.html`. Endpoints: `GET /api/v1/me/applications` (student), `GET /api/v1/admin/students?q=`, `GET|POST /api/v1/admin/students/:id/applications`, `PATCH|DELETE /api/v1/admin/applications/:id` (staff; counsellors only reach students who have a consultation with them)
 - `GET /api/v1/health`
 - `GET /api/v1/leads`
 - `POST /api/v1/leads` — used by the contact form (`source: "contact"`, needs `firstName`, `email`, `message`) and the free-consultation form (`source: "consultation"`, needs `firstName`, `email`, `phone`, `contactConsent`). Unknown fields are dropped.
@@ -17,7 +18,7 @@ npm run db:local        # real local PostgreSQL without Docker (separate termina
 export DATABASE_URL=postgres://gradmire:gradmire-local@127.0.0.1:54320/gradmire
 npm run migrate
 npm run check
-npm test                # 45 tests against real PostgreSQL
+npm test                # 49 tests against real PostgreSQL
 npm start
 ```
 
