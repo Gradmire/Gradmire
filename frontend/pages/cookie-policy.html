@@ -552,7 +552,7 @@
                 <p class="section-num">01</p>
                 <h2>Overview</h2>
                 <div class="highlight-box">
-                    <p>gradmire.in does not set any cookies. We use a small amount of browser storage (localStorage and sessionStorage) to run the site and, only if you agree, to remember your preferences. We do not use advertising or cross-site tracking.</p>
+                    <p>We use browser storage (localStorage and sessionStorage) to run the site and, only if you agree, to remember your preferences. Signed-in users also receive a strictly necessary, HttpOnly session cookie to keep their account session secure. We do not use advertising or cross-site tracking.</p>
                 </div>
                 <p>This policy explains each item we store and the third-party services that load on our pages. It should be read with our <a href="privacy.html">Privacy Policy</a>.</p>
             </section>
@@ -566,6 +566,7 @@
                 <div class="table-scroll"><table class="store-table">
                     <thead><tr><th>Name</th><th>Purpose</th><th>Category</th><th>How long</th></tr></thead>
                     <tbody>
+<tr><td><code>gm_session</code> / <code>__Host-gm_session</code></td><td>Keeps your signed-in account session active. The cookie is HttpOnly and is not available to page scripts.</td><td>Essential (only while signed in)</td><td>Until sign-out or session expiry</td></tr>
 <tr><td><code>gm-consent</code></td><td>Remembers your cookie and storage choices so we can respect them.</td><td>Essential</td><td>Until you change it or clear your browser storage</td></tr>
 <tr><td><code>gm-consult-popup-shown</code></td><td>Stops the consultation pop-up from opening more than once per visit.</td><td>Essential</td><td>Until you close the tab</td></tr>
 <tr><td><code>gradmire-consult-prefill</code></td><td>Carries the details you typed in the pop-up to the booking form, so you don't type them twice. Never sent in the web address.</td><td>Essential (only if you use the pop-up)</td><td>Until you finish booking or close the tab</td></tr>
@@ -589,10 +590,11 @@
             <section class="section" id="third-parties">
                 <p class="section-num">04</p>
                 <h2>Third-party services</h2>
-                <p>To display the site, your browser fetches some files directly from these providers. Like any web request, they receive your IP address and basic browser information. None of them set cookies through our pages.</p>
+                <p>To display the site and provide optional sign-in, your browser fetches some files directly from these providers. Like any web request, they receive your IP address and basic browser information. Google Identity Services is loaded only to offer Google Sign-In. Google's own privacy practices apply to its services.</p>
                 <ul>
                     <li><strong>Unsplash</strong> (images.unsplash.com): photographs on our pages</li>
                     <li><strong>jsDelivr, unpkg and cdnjs</strong>: open-source code libraries and the world map used by the homepage globe</li>
+                    <li><strong>Google Identity Services</strong> (accounts.google.com): optional Google Sign-In</li>
                     <li><strong>Vercel</strong>: hosts gradmire.in and keeps short-lived server logs for security and reliability</li>
                 </ul>
             </section>
@@ -682,7 +684,7 @@
       </ul>
     </nav>
   </div>
-  <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">© 2026 Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · <a href="mailto:privacy@gradmire.in">privacy@gradmire.in</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund-policy.html">Refunds &amp; fees</a><a href="cookie-policy.html">Cookies</a><a href="data-request.html">Your data rights</a><a href="grievance.html">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
+  <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">© 2026 Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · Privacy: <a href="mailto:privacy@gradmire.in">privacy@gradmire.in</a> · General information: <a href="mailto:info@gradmire.com">info@gradmire.com</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund-policy.html">Refunds &amp; fees</a><a href="cookie-policy.html">Cookies</a><a href="data-request.html">Your data rights</a><a href="grievance.html">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
 </footer>
 
 <script>

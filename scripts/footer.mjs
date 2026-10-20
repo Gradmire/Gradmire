@@ -47,6 +47,6 @@ ${links.map(([label, path]) => `        <li><a href="${href(path)}">${label}</a>
     </div>
 ${cols}
   </div>
-  <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">© 2026 Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · <a href="mailto:privacy@gradmire.in">privacy@gradmire.in</a></p><nav class="gm-legal-links" aria-label="Legal">${legal.map(([label, path]) => `<a href="${href(path)}">${label}</a>`).join('')}<button type="button" data-cookie-settings>Cookie settings</button></nav></div>
+  <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">© 2026 Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · Privacy: <a href="mailto:privacy@gradmire.in">privacy@gradmire.in</a> · General information: <a href="mailto:info@gradmire.com">info@gradmire.com</a></p><nav class="gm-legal-links" aria-label="Legal">${legal.map(([label, path]) => `<a href="${href(path)}">${label}</a>`).join('')}<button type="button" data-cookie-settings>Cookie settings</button></nav></div>
 </footer>`;
 }
