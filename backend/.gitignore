@@ -3,3 +3,4 @@ node_modules/
 .vercel
 .local-pg/
 .env.local-staff
+.env.production-admin
