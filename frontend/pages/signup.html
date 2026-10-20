@@ -437,7 +437,7 @@
         background: rgba(10, 13, 22, .88);
     }
 </style>
-<link rel="stylesheet" href="../assets/site.css?v=25">
+<link rel="stylesheet" href="../assets/site.css?v=26">
 <link rel="stylesheet" href="../assets/auth.css?v=1">
 <style>
 @media(max-width:900px){.auth-wrap{grid-template-columns:1fr!important}}
@@ -667,7 +667,7 @@
             ageConfirmation: age.checked,
         }).then(() => {
             const next = new URLSearchParams(location.search).get('next');
-            window.location.href = GradmireAPI.safeNext(next, 'dashboard-consultations.html');
+            window.location.href = GradmireAPI.safeNext(next, 'dashboard.html');
         }).catch((err) => {
             error.textContent = err.message;
             error.hidden = false;
@@ -736,4 +736,4 @@
 </footer>
 
 <script src="../assets/api.js?v=2"></script>
-<script src="../assets/site.js?v=28" defer></script>
+<script src="../assets/site.js?v=29" defer></script>

@@ -7,6 +7,7 @@ import { badRequest, createRouter, HttpError, notFound, sendError, sendJson } fr
 import { parseDateOnly, parseTimeOfDay } from '../lib/time.js';
 import { createValidator, isUuid } from '../lib/validate.js';
 import * as admin from '../services/admin-service.js';
+import * as applications from '../services/application-service.js';
 import * as auth from '../services/auth-service.js';
 import * as booking from '../services/booking-service.js';
 import { runDueJobs } from '../services/jobs.js';
@@ -180,6 +181,57 @@ router.post('/api/v1/me/consultations/:id/reschedule', async (ctx) => {
     const user = await requireStudent(ctx);
     const input = createValidator(await ctx.body()).instant('start').timeZone('timezone', { required: false }).done();
     return ok(ctx, await booking.rescheduleConsultation({ id: param(ctx), scope: { studentUserId: user.id }, userId: user.id, start: input.start, timezone: input.timezone }));
+});
+
+router.get('/api/v1/me/applications', async (ctx) => {
+    const user = await requireStudent(ctx);
+    return ok(ctx, await applications.listForStudent(user.id));
+});
+
+/* ── Student applications (staff) ─────────────────────────────────────────── */
+
+const CLEARABLE = ['country', 'intake', 'deadline', 'studentNote'];
+
+function applicationInput(body, { partial }) {
+    const v = createValidator(body)
+        .text('university', { required: !partial, max: 200, label: 'University' })
+        .text('course', { required: !partial, max: 200, label: 'Course' })
+        .text('country', { max: 80, label: 'Country' })
+        .text('intake', { max: 40, label: 'Intake' })
+        .oneOf('status', applications.APPLICATION_STATUSES, { label: 'Status' })
+        .text('studentNote', { max: 1000, label: 'Note for the student' });
+    if (body?.deadline) v.check(Boolean(parseDateOnly(body.deadline)), 'deadline', 'Deadline must be a date (YYYY-MM-DD)');
+    const input = v.done();
+    if (body?.deadline && parseDateOnly(body.deadline)) input.deadline = String(body.deadline);
+    // On updates, an empty value clears an optional field.
+    if (partial) for (const key of CLEARABLE) if (body?.[key] === '' || body?.[key] === null) input[key] = '';
+    return input;
+}
+
+router.get('/api/v1/admin/students', async (ctx) => {
+    const staff = await requireStaff(ctx);
+    const { q } = createValidator(Object.fromEntries(ctx.query)).text('q', { max: 100 }).done();
+    return ok(ctx, await applications.searchStudents(staff, q));
+});
+
+router.get('/api/v1/admin/students/:id/applications', async (ctx) => {
+    const staff = await requireStaff(ctx);
+    return ok(ctx, await applications.listForStaff(staff, param(ctx)));
+});
+
+router.post('/api/v1/admin/students/:id/applications', async (ctx) => {
+    const staff = await requireStaff(ctx);
+    return ok(ctx, await applications.create(staff, param(ctx), applicationInput(await ctx.body(), { partial: false })), 201);
+});
+
+router.patch('/api/v1/admin/applications/:id', async (ctx) => {
+    const staff = await requireStaff(ctx);
+    return ok(ctx, await applications.update(staff, param(ctx), applicationInput(await ctx.body(), { partial: true })));
+});
+
+router.delete('/api/v1/admin/applications/:id', async (ctx) => {
+    const staff = await requireStaff(ctx);
+    return ok(ctx, await applications.remove(staff, param(ctx)));
 });
 
 /* ── Staff CRM ────────────────────────────────────────────────────────────── */

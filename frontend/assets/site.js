@@ -153,6 +153,9 @@
         }
         const desktop = nav.querySelector('.nav-links');
         if (desktop) desktop.innerHTML = navItems.join('');
+        /* Student login, next to the consultation button. */
+        const cta = navInner.querySelector('.nav-btn');
+        if (cta && !navInner.querySelector('.nav-login')) cta.insertAdjacentHTML('beforebegin', `<a class="nav-login" href="${page('login.html')}">Log in</a>`);
 
         let mobile = document.querySelector('.nav-mobile');
         if (!mobile) {
@@ -162,6 +165,7 @@
             nav.insertAdjacentElement('afterend', mobile);
         }
         mobile.innerHTML = `<ul class="nav-mobile-links" role="list">${navItems.join('')}
+          <li><a href="${page('login.html')}" class="nav-login-mobile">Student login</a></li>
           <li><a href="${page('free-consultation.html')}" class="btn btn-primary">Book free consultation</a></li>
         </ul>`;
         mobile.id = mobile.id || 'mobile-nav';
@@ -239,6 +243,7 @@
                 const clone = item.cloneNode(true);
                 clone.setAttribute('aria-hidden', 'true');
                 clone.querySelector('img')?.setAttribute('alt', '');
+                clone.querySelectorAll('a').forEach((a) => a.setAttribute('tabindex', '-1'));
                 track.appendChild(clone);
             });
 

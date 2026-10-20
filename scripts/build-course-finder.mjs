@@ -2,7 +2,7 @@
    example courses, filtered by study level (UG/PG), subject, country and institution type.
    Run from the repository root:  node scripts/build-course-finder.mjs
    Data lives in course-data.mjs. ?course=, ?country= and ?level= preset the filters. */
-import { subjects, countries, universities, REVIEWED } from './course-data.mjs';
+import { subjects, countries, universities, uniSlug, REVIEWED } from './course-data.mjs';
 import { esc, consultHref, shell, write } from './page-shell.mjs';
 
 const levelName = { ug: 'Bachelor’s (UG)', pg: 'Master’s (PG)' };
@@ -32,7 +32,7 @@ function courseRow(u, [subject, title, level], index) {
 function uniCard(u) {
     const c = countries[u.country];
     const extra = u.courses.length - VISIBLE_COURSES;
-    return `<article class="gp-uni-result" data-country="${u.country}" data-type="${u.type.toLowerCase()}" data-qs="${u.qs ?? 9999}" data-name="${esc(u.name)}" data-founded="${parseInt(u.founded.replace(/\D/g, ''), 10)}">
+    return `<article class="gp-uni-result" id="uni-${uniSlug(u.name)}" data-slug="${uniSlug(u.name)}" data-country="${u.country}" data-type="${u.type.toLowerCase()}" data-qs="${u.qs ?? 9999}" data-name="${esc(u.name)}" data-founded="${parseInt(u.founded.replace(/\D/g, ''), 10)}">
       <header class="gp-uni-result-head">
         <div>
           <h3>${esc(u.name)}</h3>
@@ -80,6 +80,9 @@ const script = `<script>
   const count = root.querySelector('.gp-results-count');
   const empty = root.querySelector('.gp-results-empty');
   const badge = root.querySelector('.gp-filter-count');
+  const uniBar = root.querySelector('.gp-uni-filter');
+  /* ?university=<slug> (from destination pages and the homepage logos) shows one university. */
+  let uniFilter = '';
   const checked = (name) => [...root.querySelectorAll('input[name="' + name + '"]:checked')].map((i) => i.value);
   const norm = (s) => s.toLowerCase().replace(/[&/+]+/g, ' and ').replace(/\\s+/g, ' ').trim();
 
@@ -88,8 +91,8 @@ const script = `<script>
     const q = norm(search.value);
     let unis = 0, courses = 0;
     cards.forEach((card) => {
-      const cardMatch = (!countries.length || countries.includes(card.dataset.country)) && (!types.length || types.includes(card.dataset.type));
-      const filtering = levels.length || subjects.length || q;
+      const cardMatch = (!uniFilter || card.dataset.slug === uniFilter) && (!countries.length || countries.includes(card.dataset.country)) && (!types.length || types.includes(card.dataset.type));
+      const filtering = levels.length || subjects.length || q || uniFilter;
       let shown = 0;
       card.querySelectorAll('.gp-course').forEach((row) => {
         const text = norm(row.textContent + ' ' + card.dataset.name);
@@ -109,7 +112,8 @@ const script = `<script>
     });
     count.innerHTML = '<strong>' + unis + '</strong> universit' + (unis === 1 ? 'y' : 'ies') + ' · <strong>' + courses + '</strong> course' + (courses === 1 ? '' : 's');
     empty.hidden = unis > 0;
-    const active = levels.length + subjects.length + countries.length + types.length + (q ? 1 : 0);
+    const active = levels.length + subjects.length + countries.length + types.length + (q ? 1 : 0) + (uniFilter ? 1 : 0);
+    uniBar.hidden = !uniFilter;
     badge.textContent = active ? '(' + active + ')' : '';
   }
 
@@ -130,12 +134,26 @@ const script = `<script>
   if (courseParam) { if (!tick('subject', ALIASES[courseParam] || '')) search.value = params.get('course') || params.get('subject') || params.get('q'); }
   const countryParam = (params.get('country') || '').toLowerCase().replace(/[^a-z]/g, '');
   if (countryParam) tick('country', { unitedkingdom: 'uk', us: 'usa', unitedstates: 'usa' }[countryParam] || countryParam);
+  const uniParam = (params.get('university') || '').toLowerCase();
+  const uniCard = cards.find((c) => c.dataset.slug === uniParam);
+  if (uniCard) {
+    uniFilter = uniParam;
+    root.querySelector('.gp-uni-filter-name').textContent = uniCard.dataset.name;
+  }
   const levelParam = (params.get('level') || '').toLowerCase();
   if (levelParam === 'ug' || levelParam === 'pg') tick('level', levelParam);
 
   root.addEventListener('change', (e) => { if (e.target.matches('input[type="checkbox"]')) apply(); if (e.target === sort) { order(); } });
   search.addEventListener('input', apply);
+  const clearUni = () => {
+    uniFilter = '';
+    const url = new URL(location.href);
+    url.searchParams.delete('university');
+    history.replaceState(null, '', url.pathname + url.search);
+  };
+  uniBar.querySelector('.gp-uni-filter-clear').addEventListener('click', () => { clearUni(); apply(); search.focus(); });
   root.querySelector('.gp-filter-reset').addEventListener('click', () => {
+    clearUni();
     root.querySelectorAll('.gp-filters input').forEach((i) => { i.checked = false; });
     search.value = '';
     history.replaceState(null, '', location.pathname);
@@ -181,6 +199,10 @@ const body = `<header class="gp-hero gp-hero--compact">
       <div class="gp-results-bar">
         <p class="gp-results-count" aria-live="polite"><strong>${universities.length}</strong> universities · <strong>${totalCourses}</strong> courses</p>
         <label class="gp-sort">Sort by <select id="finder-sort"><option value="rank">QS rank (high to low)</option><option value="name">University name (A–Z)</option><option value="oldest">Oldest first</option></select></label>
+      </div>
+      <div class="gp-uni-filter" role="status" hidden>
+        <p>Showing courses at <strong class="gp-uni-filter-name"></strong></p>
+        <button type="button" class="gp-uni-filter-clear">Show all universities</button>
       </div>
       <div class="gp-results-empty" hidden>
         <h3>No courses match those filters</h3>

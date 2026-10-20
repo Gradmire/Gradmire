@@ -10,7 +10,7 @@ const template = fs.readFileSync(path.join(pagesDir, 'study-in-finland.html'), '
 const navHtml = template.match(/<nav class="nav[\s\S]*?<\/nav>/)[0];
 const siteCss = template.match(/site\.css\?v=\d+/)[0];
 const siteJs = fs.readFileSync(path.join(pagesDir, 'index.html'), 'utf8').match(/site\.js\?v=\d+/)[0];
-const GUIDE_CSS = 'guide-pages.css?v=4';
+const GUIDE_CSS = 'guide-pages.css?v=5';
 
 export const esc = (value) => String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 /* Text that may carry a link we wrote ourselves is passed through; everything else is escaped. */

@@ -114,3 +114,27 @@ export const pages = {
         }
     }
 };
+
+/* Displayed university name on a destination page → its Course Finder entry (course-data.mjs).
+   Names that already match exactly are not listed. */
+export const finderNames = {
+    'UCL, London': 'UCL (University College London)',
+    MIT: 'Massachusetts Institute of Technology (MIT)',
+    'Carnegie Mellon': 'Carnegie Mellon University',
+    'Univ. of Michigan': 'University of Michigan',
+    'Univ. of Illinois': 'University of Illinois Urbana-Champaign',
+    'UBC, Vancouver': 'University of British Columbia',
+    'Univ. of Melbourne': 'University of Melbourne',
+    'ANU, Canberra': 'Australian National University',
+    'Univ. of Sydney': 'University of Sydney',
+    'Univ. of Queensland': 'University of Queensland',
+    'Technical University of Munich': 'Technical University of Munich (TUM)',
+    'RWTH Aachen University': 'RWTH Aachen University',
+    'Frankfurt School of Finance &amp; Management': 'Frankfurt School of Finance & Management',
+    'University College Dublin (UCD)': 'University College Dublin',
+    'University College Cork (UCC)': 'University College Cork',
+    'University of Galway (NUIG)': 'University of Galway',
+    'University of Limerick (UL)': 'University of Limerick',
+    'Dublin City University (DCU)': 'Dublin City University',
+    'AUT — Auckland Univ. of Technology': 'Auckland University of Technology (AUT)'
+};
