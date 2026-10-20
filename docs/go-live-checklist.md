@@ -20,13 +20,13 @@ Logins use an HttpOnly cookie. On the two default hosts (`gradmire-1nfj.vercel.a
 `gradmire-api.vercel.app`), browsers treat it as a third-party cookie and Safari and
 privacy-mode browsers drop it.
 
-1. [ ] Vercel → project **gradmire** (the site) → *Settings → Domains* → add `gradmire.in`
-       (and `www.gradmire.in` redirecting to it).
-2. [ ] Vercel → project **gradmire-api** → *Settings → Domains* → add `api.gradmire.in`.
+1. [ ] Vercel → project **gradmire** (the site) → *Settings → Domains* → add `gradmire.com`
+       (and `www.gradmire.com` redirecting to it).
+2. [ ] Vercel → project **gradmire-api** → *Settings → Domains* → add `api.gradmire.com`.
 3. [ ] At your DNS provider, add the records Vercel shows (an `A`/`ALIAS` record for the apex
        and `CNAME api → cname.vercel-dns.com`). Wait until both show "Valid".
 4. [ ] Point the site at the new API: in `frontend/assets/api.js` set
-       `const PRODUCTION_API = 'https://api.gradmire.in';` (*me or you*: a one-line change).
+       `const PRODUCTION_API = 'https://api.gradmire.com';` (*me or you*: a one-line change).
 
 ## 2. API environment variables (you, in Vercel → gradmire-api → Settings → Environment Variables, Production)
 
@@ -40,8 +40,8 @@ node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"
 |---|---|
 | `APP_SECRET` | a new random value (never reuse; changing it invalidates emailed links) |
 | `CRON_SECRET` | another new random value |
-| `FRONTEND_ORIGIN` | `https://gradmire.in` (add `,https://www.gradmire.in` if used) |
-| `SITE_URL` | `https://gradmire.in` |
+| `FRONTEND_ORIGIN` | `https://gradmire.com` (add `,https://gradmire.com` if used) |
+| `SITE_URL` | `https://gradmire.com` |
 | `GOOGLE_CLIENT_ID` | from step 3 |
 | `EMAIL_PROVIDER`, `RESEND_API_KEY`, `EMAIL_FROM` | from step 4 |
 | `ADMIN_ALERT_EMAIL` | the inbox that should hear about calendar failures |
@@ -53,10 +53,10 @@ node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"
 
 1. [ ] Google Cloud Console → create or choose a project → *APIs & Services → OAuth consent
        screen*: user type **External**, app name "Gradmire", support email, logo optional,
-       authorised domain `gradmire.in`, scopes: only the defaults (`openid`, `email`,
+       authorised domain `gradmire.com`, scopes: only the defaults (`openid`, `email`,
        `profile`). Publish the app (until it is published, only listed test users can sign in).
 2. [ ] *Credentials → Create credentials → OAuth client ID → Web application*.
-       **Authorised JavaScript origins:** `https://gradmire.in` (plus
+       **Authorised JavaScript origins:** `https://gradmire.com` (plus
        `http://localhost:8080` and `http://localhost:5600` for local testing).
        No redirect URI is needed (the button uses a popup).
 3. [ ] Copy the **Client ID** (`…apps.googleusercontent.com`) into `GOOGLE_CLIENT_ID`. The
@@ -73,11 +73,11 @@ How it behaves:
 
 ## 4. Email through Resend (you)
 
-1. [ ] resend.com → *Domains → Add* `gradmire.in` → add the DNS records it lists (SPF/DKIM)
+1. [ ] resend.com → *Domains → Add* `gradmire.com` → add the DNS records it lists (SPF/DKIM)
        → wait for "Verified".
-2. [ ] *API Keys → Create* (permission: *Sending access*, domain `gradmire.in`).
+2. [ ] *API Keys → Create* (permission: *Sending access*, domain `gradmire.com`).
 3. [ ] Set `EMAIL_PROVIDER=resend`, `RESEND_API_KEY=…`,
-       `EMAIL_FROM=Gradmire <consultations@gradmire.in>`, optionally `EMAIL_REPLY_TO`.
+       `EMAIL_FROM=Gradmire <info@gradmire.com>`, optionally `EMAIL_REPLY_TO`.
 
 Without this, booking confirmations, verification and **password reset emails are not
 sent** (they are recorded as "skipped" in the CRM).
@@ -98,8 +98,8 @@ Then create the first super admin and counsellors against production (use the
 **unpooled** URL; the password is your choice and is never printed when you set it):
 
 ```bash
-DATABASE_URL="<DATABASE_URL_UNPOOLED>" STAFF_PASSWORD='…' npm run create-staff -- --email you@gradmire.in --first-name You --role super_admin
-DATABASE_URL="<DATABASE_URL_UNPOOLED>" STAFF_PASSWORD='…' npm run create-staff -- --email priya@gradmire.in --first-name Priya --last-name Mehta --role counsellor
+DATABASE_URL="<DATABASE_URL_UNPOOLED>" STAFF_PASSWORD='…' npm run create-staff -- --email hasanryan052@gmail.com --first-name Hasan --role super_admin
+DATABASE_URL="<DATABASE_URL_UNPOOLED>" STAFF_PASSWORD='…' npm run create-staff -- --email priya@gradmire.com --first-name Priya --last-name Mehta --role counsellor
 ```
 
 Deploy the site (push to the branch Vercel builds, or `vercel deploy --prod` from `frontend/`).
@@ -108,7 +108,7 @@ Deploy the site (push to the branch Vercel builds, or `vercel deploy --prod` fro
 
 Pick one (details in §9 of the setup guide):
 - [ ] **GitHub Actions (free):** repository → *Settings → Secrets and variables → Actions* →
-      add `BOOKING_JOBS_URL = https://api.gradmire.in/api/v1/internal/jobs/run` and
+      add `BOOKING_JOBS_URL = https://api.gradmire.com/api/v1/internal/jobs/run` and
       `CRON_SECRET` (same value as the API). The workflow `booking-jobs.yml` runs every 10
       minutes once it is on the default branch.
 - [ ] **Vercel Pro:** add the cron entry to `backend/vercel.json`.
@@ -117,8 +117,8 @@ Pick one (details in §9 of the setup guide):
 
 ```bash
 cd backend
-API_URL=https://api.gradmire.in SITE_ORIGIN=https://gradmire.in CRON_SECRET='…' npm run smoke
-API_URL=https://api.gradmire.in SITE_ORIGIN=https://gradmire.in npm run smoke -- --book you@yourdomain.com
+API_URL=https://api.gradmire.com SITE_ORIGIN=https://gradmire.com CRON_SECRET='…' npm run smoke
+API_URL=https://api.gradmire.com SITE_ORIGIN=https://gradmire.com npm run smoke -- --book you@yourdomain.com
 ```
 
 The first checks health, CORS, the database and migrations, availability, Google

@@ -83,7 +83,7 @@ export function renderTemplate(template, p) {
         case 'password_reset':
             return { subject: 'Reset your Gradmire password', ...layout('Reset your password', [`Hi ${p.firstName},`, 'We received a request to reset the password for your Gradmire account. Use the button below to choose a new password.', `The link works once and expires in ${p.minutes} minutes. If you did not ask for this, ignore this email; your password stays the same.`], [], { label: 'Choose a new password', url: pageUrl('reset-password.html', `#token=${encodeURIComponent(p.token)}`) }, ACCOUNT_FOOTER) };
         case 'password_changed':
-            return { subject: 'Your Gradmire password was changed', ...layout('Your password was changed', [`Hi ${p.firstName},`, 'The password for your Gradmire account was just changed and every device was signed out.', 'If this was not you, reset your password straight away and contact privacy@gradmire.in.'], [], { label: 'Log in', url: pageUrl('login.html') }, ACCOUNT_FOOTER) };
+            return { subject: 'Your Gradmire password was changed', ...layout('Your password was changed', [`Hi ${p.firstName},`, 'The password for your Gradmire account was just changed and every device was signed out.', 'If this was not you, reset your password straight away and contact info@gradmire.com.'], [], { label: 'Log in', url: pageUrl('login.html') }, ACCOUNT_FOOTER) };
         case 'lead_assigned':
             return { subject: `New enquiry assigned to you: ${p.leadName}`, ...layout('An enquiry was assigned to you', [`${p.leadName} has been assigned to you. Please make contact and record the outcome.`], [], { label: 'Open my workspace', url: pageUrl('consultant-dashboard.html') }, ACCOUNT_FOOTER) };
         default:

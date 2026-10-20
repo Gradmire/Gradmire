@@ -133,7 +133,7 @@
 
     function downloadIcs(c) {
         const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Gradmire//Consultations//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', 'BEGIN:VEVENT',
-            `UID:${c.id}@gradmire.in`, `DTSTAMP:${icsDate(new Date().toISOString())}`, `DTSTART:${icsDate(c.start)}`, `DTEND:${icsDate(c.end)}`,
+            `UID:${c.id}@gradmire.com`, `DTSTAMP:${icsDate(new Date().toISOString())}`, `DTSTART:${icsDate(c.start)}`, `DTEND:${icsDate(c.end)}`,
             `SUMMARY:${icsText(`Gradmire: ${c.type.name}`)}`,
             `DESCRIPTION:${icsText(`${METHOD_LABELS[c.meetingMethod] || ''} with ${c.counsellor.name}. Reference ${c.reference}.${c.meetingUrl ? ` Join: ${c.meetingUrl}` : ''}`)}`,
             ...(c.meetingUrl ? [`URL:${icsText(c.meetingUrl)}`] : []),

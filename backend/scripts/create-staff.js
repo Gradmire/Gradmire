@@ -3,8 +3,8 @@
 
    Usage (from backend/):
      DATABASE_URL=... STAFF_PASSWORD='…' npm run create-staff -- \
-       --email priya@gradmire.in --first-name Priya --last-name Mehta --role counsellor \
-       [--timezone Asia/Kolkata] [--calendar-id priya@gradmire.in] [--buffer 10] [--no-default-hours] [--promote]
+       --email priya@gradmire.com --first-name Priya --last-name Mehta --role counsellor \
+       [--timezone Asia/Kolkata] [--calendar-id priya@gradmire.com] [--buffer 10] [--no-default-hours] [--promote]
 
    This is the bootstrap path (e.g. the first super_admin). Once two privileged
    people exist, grant and remove access through approval requests in the admin
