@@ -143,8 +143,8 @@
     ],
     "rewrites": [
         {
-            "source": "/api/:path*",
-            "destination": "https://gradmire-api.vercel.app/api/:path*"
+            "source": "/gm-api/:path*",
+            "destination": "https://gradmire-api.vercel.app/:path*"
         },
         {
             "source": "/",
