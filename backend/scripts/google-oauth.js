@@ -1,7 +1,11 @@
 /* One-time Google authorization for a personal Google account (for example an
    @gmail.com address). Run it on your own computer:
 
-     GOOGLE_OAUTH_CLIENT_ID=… GOOGLE_OAUTH_CLIENT_SECRET=… npm run google-oauth -- --login-hint you@gmail.com
+     GOOGLE_OAUTH_CLIENT_ID=… npm run google-oauth -- --login-hint you@gmail.com --from "Gradmire <info@gradmire.com>"
+
+   The client secret is asked for with hidden input (or taken from
+   GOOGLE_OAUTH_CLIENT_SECRET). --from sets the From address printed for
+   EMAIL_FROM; it must be a verified "Send mail as" address of the account.
 
    It opens Google's consent screen, receives the answer on a loopback address
    (127.0.0.1, PKCE-protected), confirms which account consented, creates the
@@ -9,7 +13,10 @@
    can see files it creates there: drive.file scope), and prints the values to
    store as API environment variables. The refresh token is a secret: store it
    with `vercel env add`, never in the repository or a chat.
-   Options: --login-hint EMAIL, --folder-id ID (reuse a folder this app created), --no-folder */
+   The OAuth client must allow the redirect URI http://127.0.0.1:53682 (add it
+   under "Authorized redirect URIs" for a Web application client; Desktop app
+   clients accept it as is).
+   Options: --port N (default 53682), --login-hint EMAIL, --folder-id ID (reuse a folder this app created), --no-folder */
 import { createHash, randomBytes } from 'node:crypto';
 import { exec } from 'node:child_process';
 import { createServer } from 'node:http';
@@ -22,11 +29,39 @@ const SCOPES = [
     'https://www.googleapis.com/auth/calendar',
 ];
 
-const { values } = parseArgs({ options: { 'login-hint': { type: 'string' }, 'folder-id': { type: 'string' }, 'no-folder': { type: 'boolean', default: false } } });
+const { values } = parseArgs({ options: { port: { type: 'string', default: '53682' }, from: { type: 'string' }, 'login-hint': { type: 'string' }, 'folder-id': { type: 'string' }, 'no-folder': { type: 'boolean', default: false } } });
+/* Reads a line without echoing it, so a secret typed here never shows on screen. */
+function askHidden(question) {
+    return new Promise((resolve) => {
+        process.stdout.write(question);
+        const input = process.stdin;
+        let value = '';
+        input.setRawMode?.(true);
+        input.resume();
+        input.setEncoding('utf8');
+        const onData = (chunk) => {
+            for (const char of chunk) {
+                if (char === '\r' || char === '\n') {
+                    input.setRawMode?.(false);
+                    input.pause();
+                    input.off('data', onData);
+                    process.stdout.write('\n');
+                    resolve(value.trim());
+                    return;
+                }
+                if (char === '\u0003') process.exit(1); // Ctrl+C
+                if (char === '\u007f' || char === '\b') value = value.slice(0, -1);
+                else value += char;
+            }
+        };
+        input.on('data', onData);
+    });
+}
+
 const clientId = process.env.GOOGLE_OAUTH_CLIENT_ID;
-const clientSecret = process.env.GOOGLE_OAUTH_CLIENT_SECRET;
+const clientSecret = process.env.GOOGLE_OAUTH_CLIENT_SECRET || (clientId && process.stdin.isTTY ? await askHidden('OAuth client secret (input hidden): ') : '');
 if (!clientId || !clientSecret) {
-    console.error('Set GOOGLE_OAUTH_CLIENT_ID and GOOGLE_OAUTH_CLIENT_SECRET (an OAuth client of type "Desktop app") first.');
+    console.error('Set GOOGLE_OAUTH_CLIENT_ID (and the client secret, typed when asked) of an OAuth client of type "Desktop app".');
     process.exit(1);
 }
 
@@ -48,9 +83,12 @@ const code = await new Promise((resolve, reject) => {
         if (url.searchParams.get('state') !== state) return done(400, 'State mismatch. Close this tab and run the script again.') || reject(new Error('State mismatch'));
         if (url.searchParams.get('error')) return done(400, `Google said: ${url.searchParams.get('error')}`) || reject(new Error(url.searchParams.get('error')));
         done(200, 'Gradmire is authorized. You can close this tab and return to the terminal.');
-        resolve({ code: url.searchParams.get('code'), redirectUri: `http://127.0.0.1:${server.address().port}` });
+        // The port is fixed (--port), so the redirect URI is known without asking the closed server.
+        resolve({ code: url.searchParams.get('code'), redirectUri: `http://127.0.0.1:${values.port}` });
     });
-    server.listen(0, '127.0.0.1', () => {
+    // A fixed port, because "Web application" clients only accept redirect URIs registered exactly.
+    server.on('error', (error) => reject(new Error(`Cannot listen on 127.0.0.1:${values.port} (${error.code}). Close whatever uses it or pass --port.`)));
+    server.listen(Number(values.port), '127.0.0.1', () => {
         const redirectUri = `http://127.0.0.1:${server.address().port}`;
         const auth = new URL('https://accounts.google.com/o/oauth2/v2/auth');
         auth.search = new URLSearchParams({
@@ -108,7 +146,8 @@ GOOGLE_OAUTH_CLIENT_ID=${clientId}
 GOOGLE_OAUTH_CLIENT_SECRET=(the client secret you used here)
 GOOGLE_OAUTH_REFRESH_TOKEN=${tokens.refresh_token}
 EMAIL_PROVIDER=gmail
-EMAIL_FROM=Gradmire <${account || 'you@gmail.com'}>
+EMAIL_FROM=${values.from || `Gradmire <${account || 'you@gmail.com'}>`}
+EMAIL_REPLY_TO=${values.from ? values.from.replace(/^.*<([^>]+)>.*$/, '$1') : ''}
 GMAIL_SENDER=${account || 'you@gmail.com'}
 STORAGE_PROVIDER=drive
 GOOGLE_DRIVE_FOLDER_ID=${folderId || '(not created)'}
