@@ -8,11 +8,13 @@ import { shell, write } from './page-shell.mjs';
 const BOOKING_CSS = 'booking.css?v=2';
 const API_JS = 'api.js?v=2';
 const COMMON_JS = 'booking-common.js?v=1';
+const WORKSPACE_CSS = 'workspace.css?v=1';
+const WORKSPACE_JS = 'workspace.js?v=1';
 
-function page({ name, title, description, body, script }) {
-    let html = shell({ title, description, body, bodyClass: 'bk-page' });
-    html = html.replace('</head>', `<link rel="stylesheet" href="../assets/${BOOKING_CSS}">\n<meta name="robots" content="noindex, nofollow">\n</head>`);
-    html = html.replace('</body>', `<script src="../assets/${API_JS}" defer></script>\n<script src="../assets/${COMMON_JS}" defer></script>\n<script src="../assets/${script}" defer></script>\n</body>`);
+function page({ name, title, description, body, script, workspace = false }) {
+    let html = shell({ title, description, body: workspace ? `<div class="ws-layout"><nav class="ws-nav" id="ws-nav" aria-label="Workspace"></nav>${body}</div>` : body, bodyClass: 'bk-page' });
+    html = html.replace('</head>', `<link rel="stylesheet" href="../assets/${BOOKING_CSS}">\n${workspace ? `<link rel="stylesheet" href="../assets/${WORKSPACE_CSS}">\n` : ''}<meta name="robots" content="noindex, nofollow">\n</head>`);
+    html = html.replace('</body>', `<script src="../assets/${API_JS}" defer></script>\n<script src="../assets/${COMMON_JS}" defer></script>\n${workspace ? `<script src="../assets/${WORKSPACE_JS}" defer></script>\n` : ''}<script src="../assets/${script}" defer></script>\n</body>`);
     write(name, html);
 }
 
@@ -26,13 +28,29 @@ const STAGES = [
     ['enrolled', 'Enrolled']
 ];
 
-const dashboardBody = `<main class="bk-main sd-main" id="main">
+const dashboardBody = `<main class="bk-main sd-main ws-main" id="main">
   <div class="crm-head">
     <div><h1 id="sd-title">My dashboard</h1><p id="sd-greeting">Loading your account…</p></div>
-    <div class="bk-actions"><a class="gp-btn gp-btn-outline gp-btn-sm" href="dashboard-consultations.html">My consultations</a><a class="gp-btn gp-btn-primary gp-btn-sm" href="book-consultation.html">Book a consultation</a><button type="button" class="gp-btn gp-btn-outline gp-btn-sm" id="sd-logout" hidden>Log out</button></div>
+    <div class="bk-actions"><a class="gp-btn gp-btn-outline gp-btn-sm" href="find-courses.html">Explore universities</a><a class="gp-btn gp-btn-primary gp-btn-sm" href="book-consultation.html">Book a consultation</a></div>
   </div>
   <p class="bk-alert" id="sd-alert" role="status" hidden></p>
+  <p class="bk-alert" id="ws-alert" role="status" hidden></p>
   <div id="sd-verify" class="bk-alert bk-alert--info" hidden></div>
+
+  <div class="crm-stats" id="sd-stats" aria-label="Your summary"></div>
+  <div class="ws-grid">
+    <section class="bk-panel" aria-labelledby="sd-steps-title">
+      <h2 id="sd-steps-title" class="bk-step-title">Recommended next steps</h2>
+      <div class="ws-meter" id="sd-meter" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Profile completion"><span></span></div>
+      <p class="bk-fine" id="sd-meter-text"></p>
+      <ul class="ws-list" id="sd-steps"><li class="bk-empty">Loading…</li></ul>
+    </section>
+    <section class="bk-panel" aria-labelledby="sd-notes-title">
+      <h2 id="sd-notes-title" class="bk-step-title">Recent notifications</h2>
+      <ul class="ws-list" id="sd-notes"><li class="bk-empty">Loading…</li></ul>
+      <p class="bk-fine"><a href="dashboard-notifications.html">All notifications</a></p>
+    </section>
+  </div>
 
   <section class="bk-panel sd-journey" aria-labelledby="sd-journey-title">
     <h2 id="sd-journey-title" class="bk-step-title">Your study-abroad journey</h2>
@@ -43,7 +61,7 @@ ${STAGES.map(([key, label]) => `      <li class="sd-stage" data-stage="${key}"><
   </section>
 
   <div class="sd-grid">
-    <section class="bk-panel" aria-labelledby="sd-apps-title">
+    <section class="bk-panel" id="applications" aria-labelledby="sd-apps-title">
       <h2 id="sd-apps-title" class="bk-step-title">Application status</h2>
       <div id="sd-apps" class="sd-apps" aria-live="polite"><p class="bk-empty">Loading your applications…</p></div>
     </section>
@@ -66,7 +84,7 @@ ${STAGES.map(([key, label]) => `      <li class="sd-stage" data-stage="${key}"><
   </div>
 </main>`;
 
-page({ name: 'dashboard.html', title: 'My dashboard | Gradmire', description: 'Your study-abroad journey, application status and consultations with Gradmire.', body: dashboardBody, script: 'student-dashboard.js?v=1' });
+page({ name: 'dashboard.html', title: 'My dashboard | Gradmire', description: 'Your study-abroad journey, application status and consultations with Gradmire.', body: dashboardBody, script: 'student-dashboard.js?v=2', workspace: true });
 
 const STATUS_OPTIONS = [
     ['shortlisted', 'Shortlisted'], ['preparing', 'Preparing application'], ['submitted', 'Submitted'],

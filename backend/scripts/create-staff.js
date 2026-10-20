@@ -6,6 +6,10 @@
        --email priya@gradmire.in --first-name Priya --last-name Mehta --role counsellor \
        [--timezone Asia/Kolkata] [--calendar-id priya@gradmire.in] [--buffer 10] [--no-default-hours] [--promote]
 
+   This is the bootstrap path (e.g. the first super_admin). Once two privileged
+   people exist, grant and remove access through approval requests in the admin
+   workspace instead, so every change has a second approver.
+
    Without STAFF_PASSWORD a random password is generated and printed once.
    Counsellors get Mon–Sat 10:00–18:00 in their timezone unless --no-default-hours. */
 import { randomBytes } from 'node:crypto';
@@ -30,7 +34,7 @@ const fail = (message) => {
 const email = (values.email || '').trim().toLowerCase();
 if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) fail('--email is required');
 if (!values['first-name']) fail('--first-name is required');
-if (!['counsellor', 'admin'].includes(values.role)) fail('--role must be counsellor or admin');
+if (!['counsellor', 'admin', 'super_admin'].includes(values.role)) fail('--role must be counsellor, admin or super_admin');
 if (!isValidTimeZone(values.timezone)) fail('--timezone must be an IANA timezone');
 const buffer = Number.parseInt(values.buffer, 10);
 if (!(buffer >= 0 && buffer <= 120)) fail('--buffer must be 0–120 minutes');

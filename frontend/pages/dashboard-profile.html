@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script>try{var c=JSON.parse(localStorage.getItem("gm-consent")||"null"),t=(c&&c.preferences&&localStorage.getItem("gradmire-theme"))||sessionStorage.getItem("gradmire-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My profile | Gradmire</title>
+<meta name="description" content="Your study-abroad preferences and contact details.">
+<link rel="stylesheet" href="../assets/site.css?v=26">
+<link rel="stylesheet" href="../assets/guide-pages.css?v=5">
+<link rel="stylesheet" href="../assets/booking.css?v=2">
+<link rel="stylesheet" href="../assets/workspace.css?v=1">
+<meta name="robots" content="noindex, nofollow">
+</head>
+<body data-page="student-profile" class="destination-page guide-page bk-page crm-page ws-page">
+<nav class="nav destination-nav" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><img src="../assets/gradmire-logo.png" alt="Gradmire" height="34" loading="eager"></a>
+    <ul class="nav-links" role="list">
+      <li><a href="destinations.html">Destinations</a></li>
+      <li><a href="find-courses.html">Courses</a></li>
+      <li><a href="find-universities.html">Universities</a></li>
+      <li><a href="scholarships.html">Scholarships</a></li>
+      <li><a href="tools/roi-calculator.html">Tools</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+    <a href="free-consultation.html" class="nav-btn">Book free consultation</a>
+  </div>
+</nav>
+<div class="ws-layout"><nav class="ws-nav" id="ws-nav" aria-label="Workspace"></nav><main class="bk-main crm-main ws-main" id="main" tabindex="-1">
+  <div class="crm-head"><div><h1>My profile</h1><p id="ws-intro">Your counsellor uses these details to plan your options. We only ask for what counselling needs.</p></div></div>
+  <p class="bk-alert" id="ws-alert" role="status" hidden></p>
+  <section class="bk-panel" aria-labelledby="pf-progress-title"><h2 id="pf-progress-title" class="bk-step-title">Profile completion</h2>
+    <div class="ws-meter" id="pf-meter" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-labelledby="pf-progress-title"><span></span></div><p class="bk-fine" id="pf-meter-text"></p></section>
+  <form id="pf-form" class="bk-panel" novalidate>
+    <h2 class="bk-step-title">About you</h2>
+    <div class="bk-grid">
+      <label class="gp-field"><span>First name</span><input name="firstName" maxlength="120" autocomplete="given-name" required></label>
+      <label class="gp-field"><span>Last name <em>(optional)</em></span><input name="lastName" maxlength="120" autocomplete="family-name"></label>
+      <label class="gp-field"><span>Email</span><input name="email" type="email" readonly aria-describedby="pf-email-help"></label>
+      <label class="gp-field"><span>Phone (with country code)</span><input name="phone" type="tel" maxlength="30" autocomplete="tel" placeholder="+91 98765 43210"></label>
+    </div>
+    <p class="bk-fine" id="pf-email-help">To change your email address, contact Gradmire support so we can verify the new one.</p>
+    <h2 class="bk-step-title">Study plans</h2>
+    <fieldset class="bk-fieldset"><legend class="bk-help">Preferred destinations (up to 5)</legend>
+      <div class="ws-checks"><label class="bk-check"><input type="checkbox" name="destinations" value="United Kingdom"> United Kingdom</label><label class="bk-check"><input type="checkbox" name="destinations" value="USA"> USA</label><label class="bk-check"><input type="checkbox" name="destinations" value="Canada"> Canada</label><label class="bk-check"><input type="checkbox" name="destinations" value="Australia"> Australia</label><label class="bk-check"><input type="checkbox" name="destinations" value="Germany"> Germany</label><label class="bk-check"><input type="checkbox" name="destinations" value="Ireland"> Ireland</label><label class="bk-check"><input type="checkbox" name="destinations" value="New Zealand"> New Zealand</label><label class="bk-check"><input type="checkbox" name="destinations" value="Italy"> Italy</label><label class="bk-check"><input type="checkbox" name="destinations" value="Finland"> Finland</label><label class="bk-check"><input type="checkbox" name="destinations" value="MBBS abroad"> MBBS abroad</label></div></fieldset>
+    <div class="bk-grid">
+      <label class="gp-field"><span>Intended intake</span><input name="intendedIntake" maxlength="40" placeholder="e.g. September 2027"></label>
+      <label class="gp-field"><span>Study level</span><select name="studyLevel"><option value="">Choose…</option><option value="Undergraduate">Undergraduate</option><option value="Postgraduate">Postgraduate</option><option value="PhD / Research">PhD / Research</option><option value="MBBS / Medicine">MBBS / Medicine</option><option value="Foundation / Diploma">Foundation / Diploma</option></select></label>
+      <label class="gp-field bk-wide"><span>Preferred course or field</span><input name="preferredCourse" maxlength="200"></label>
+      <label class="gp-field"><span>Highest qualification</span><input name="highestQualification" maxlength="200" placeholder="e.g. B.Tech Computer Science"></label>
+      <label class="gp-field"><span>Score <em>(optional)</em></span><input name="academicScore" maxlength="80" placeholder="e.g. 8.1 CGPA"></label>
+      <label class="gp-field"><span>English test</span><select name="englishTest"><option value="">Choose…</option><option value="IELTS">IELTS</option><option value="TOEFL">TOEFL</option><option value="PTE">PTE</option><option value="Duolingo">Duolingo</option><option value="Not taken yet">Not taken yet</option><option value="Not required">Not required</option></select></label>
+      <label class="gp-field"><span>English score <em>(optional)</em></span><input name="englishScore" maxlength="40"></label>
+      <label class="gp-field"><span>Budget per year</span><select name="budgetRange"><option value="">Choose…</option><option value="Under ₹10 lakh">Under ₹10 lakh</option><option value="₹10–20 lakh">₹10–20 lakh</option><option value="₹20–35 lakh">₹20–35 lakh</option><option value="Over ₹35 lakh">Over ₹35 lakh</option><option value="Not sure yet">Not sure yet</option></select></label>
+      <label class="gp-field"><span>Consultation language</span><select name="consultationLanguage"><option value="">Choose…</option><option value="English">English</option><option value="Hindi">Hindi</option><option value="Either">English or Hindi</option></select></label>
+    </div>
+    <p class="bk-alert" id="pf-error" role="alert" hidden></p>
+    <div class="bk-actions"><button type="submit" class="gp-btn gp-btn-primary">Save profile</button></div>
+  </form>
+</main></div>
+<footer class="gm-footer" aria-label="Site footer">
+  <div class="gm-footer-inner">
+    <div class="gm-footer-brand">
+      <a class="gm-footer-logo" href="index.html" aria-label="Gradmire home"><img src="../assets/gradmire-logo-white.png" alt="Gradmire" width="200" height="54" loading="lazy" decoding="async"></a>
+      <p class="gm-footer-tagline">Study abroad, organized by subject — not by flag.</p>
+      <form class="footer-subscribe" novalidate><label class="sr-only" for="footer-email">Email address for study-abroad updates</label><input id="footer-email" type="email" name="email" autocomplete="email" placeholder="you@email.com" required><button type="submit" aria-label="Subscribe to updates"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><p class="footer-subscribe-msg" role="status" hidden></p></form>
+    </div>
+    <nav class="gm-footer-col" aria-label="Destinations">
+      <h2 class="gm-footer-title">Destinations</h2>
+      <ul class="gm-footer-links">
+        <li><a href="study-in-uk.html">United Kingdom</a></li>
+        <li><a href="study-in-usa.html">USA</a></li>
+        <li><a href="study-in-canada.html">Canada</a></li>
+        <li><a href="study-in-australia.html">Australia</a></li>
+        <li><a href="study-in-germany.html">Germany</a></li>
+        <li><a href="study-in-ireland.html">Ireland</a></li>
+        <li><a href="study-in-newzealand.html">New Zealand</a></li>
+        <li><a href="study-in-italy.html">Italy</a></li>
+        <li><a href="study-in-finland.html">Finland</a></li>
+        <li><a href="mbbs-abroad.html">MBBS abroad</a></li>
+      </ul>
+    </nav>
+    <nav class="gm-footer-col" aria-label="Services">
+      <h2 class="gm-footer-title">Services</h2>
+      <ul class="gm-footer-links">
+        <li><a href="free-consultation.html?interest=counselling">Free counselling</a></li>
+        <li><a href="test-preparation.html">Test preparation</a></li>
+        <li><a href="visa-assistance.html">Visa assistance</a></li>
+        <li><a href="application-assistance.html">Application assistance</a></li>
+        <li><a href="course-selection-guidance.html">Course selection guidance</a></li>
+        <li><a href="scholarships.html">Scholarships</a></li>
+      </ul>
+    </nav>
+    <nav class="gm-footer-col" aria-label="Tools">
+      <h2 class="gm-footer-title">Tools</h2>
+      <ul class="gm-footer-links">
+        <li><a href="find-courses.html">Course finder</a></li>
+        <li><a href="tools/roi-calculator.html">Study cost calculator</a></li>
+        <li><a href="tools/comparator.html">Course comparator</a></li>
+        <li><a href="tools/deadline-tracker.html">Deadline tracker</a></li>
+        <li><a href="tools/grade-converter.html">GPA / CGPA / SGPA converter</a></li>
+      </ul>
+    </nav>
+    <nav class="gm-footer-col" aria-label="Company">
+      <h2 class="gm-footer-title">Company</h2>
+      <ul class="gm-footer-links">
+        <li><a href="about.html">About us</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="faq.html">FAQs</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="login.html">Student login</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">© 2026 Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · <a href="mailto:privacy@gradmire.in">privacy@gradmire.in</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund-policy.html">Refunds &amp; fees</a><a href="cookie-policy.html">Cookies</a><a href="data-request.html">Your data rights</a><a href="grievance.html">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
+</footer>
+<script src="../assets/site.js?v=29" defer></script>
+<script src="../assets/api.js?v=2" defer></script>
+<script src="../assets/booking-common.js?v=1" defer></script>
+<script src="../assets/workspace.js?v=1" defer></script>
+<script src="../assets/student-area.js?v=1" defer></script>
+</body>
+</html>

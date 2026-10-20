@@ -2,7 +2,8 @@
 import { config } from '../config.js';
 import { sha256, safeEqual } from '../lib/crypto.js';
 import { clientIp, forbidden, HttpError, readJsonBody, unauthorized } from '../lib/http.js';
-import { loadSession, STAFF_ROLES } from '../services/auth-service.js';
+import { loadSession } from '../services/auth-service.js';
+import { ADMIN_ROLES, can, STAFF_ROLES } from '../services/permissions.js';
 import { getPool } from '../services/db.js';
 
 const STATE_CHANGING = new Set(['POST', 'PATCH', 'DELETE']);
@@ -63,4 +64,11 @@ export async function requireUser(ctx, roles = null) {
 
 export const requireStudent = (ctx) => requireUser(ctx, ['student']);
 export const requireStaff = (ctx) => requireUser(ctx, STAFF_ROLES);
-export const requireAdmin = (ctx) => requireUser(ctx, ['admin']);
+export const requireAdmin = (ctx) => requireUser(ctx, ADMIN_ROLES);
+
+/* The check every new endpoint uses: the server-side permission, never a role sent by the browser. */
+export async function requirePermission(ctx, permission) {
+    const user = await requireUser(ctx);
+    if (!can(user, permission)) throw forbidden();
+    return user;
+}

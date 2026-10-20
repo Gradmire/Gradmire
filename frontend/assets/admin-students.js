@@ -131,6 +131,8 @@
         }
         if (!session.user) { location.replace('login.html?next=admin-students.html'); return; }
         if (session.user.role === 'student') { location.replace('dashboard.html'); return; }
+        const home = GradmireAPI.safeNext(session.user.home, 'consultant-dashboard.html');
+        document.querySelector('.crm-head .bk-actions').insertAdjacentHTML('afterbegin', `<a class="gp-btn gp-btn-outline gp-btn-sm" href="${home}">My workspace</a>`);
         $('as-greeting').textContent = `Signed in as ${session.user.firstName} (${session.user.role}). Students see each application’s status and note on their dashboard.`;
         search('');
     }

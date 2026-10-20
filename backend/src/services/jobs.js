@@ -5,6 +5,7 @@ import { query } from '../lib/db.js';
 import { processCalendarJobs, reconcileCalendar } from './calendar-sync.js';
 import { processNotifications } from './notification-service.js';
 import { purgeOldRateLimits } from './rate-limit.js';
+import { runRetention } from './retention-service.js';
 
 export async function runDueJobs({ maxBatches = 5 } = {}) {
     const totals = { calendarRequeued: 0, calendar: { done: 0, failed: 0, skipped: 0 }, notifications: { sent: 0, failed: 0, skipped: 0, cancelled: 0 } };
@@ -17,6 +18,8 @@ export async function runDueJobs({ maxBatches = 5 } = {}) {
         const handled = Object.values(calendar).reduce((a, b) => a + b, 0) + Object.values(notifications).reduce((a, b) => a + b, 0);
         if (!handled) break;
     }
+    // Off unless RETENTION_ENABLED=true (see retention-service.js).
+    totals.retention = await runRetention();
     await purgeOldRateLimits({ query });
     await query("DELETE FROM sessions WHERE expires_at < NOW() - INTERVAL '7 days' OR revoked_at < NOW() - INTERVAL '7 days'");
     return totals;

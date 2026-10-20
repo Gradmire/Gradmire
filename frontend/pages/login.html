@@ -572,7 +572,7 @@
                             <svg class="eye-off" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
                         </button>
                     </div>
-                    <div class="form-forgot"><a href="contact.html?interest=password-reset">Forgot password? Contact support</a></div>
+                    <div class="form-forgot"><a href="reset-password.html">Forgot password?</a></div>
                 </div>
                 <p class="field-error" id="login-error" role="alert" hidden style="margin:0 0 .75rem;color:#C0392B;font-size:.82rem;font-weight:600;"></p>
                 <button type="submit" class="btn btn-primary">Log in</button>
@@ -621,7 +621,7 @@
         try {
             const user = await GradmireAPI.login(email, password);
             const next = new URLSearchParams(location.search).get('next');
-            const fallback = user.role === 'student' ? 'dashboard.html' : 'admin-consultations.html';
+            const fallback = user.home || (user.role === 'student' ? 'dashboard.html' : 'consultant-dashboard.html');
             window.location.href = GradmireAPI.safeNext(next, fallback);
         } catch (err) {
             error.textContent = err.message;
@@ -691,4 +691,5 @@
 </footer>
 
 <script src="../assets/api.js?v=2"></script>
+<script src="../assets/google-signin.js?v=1" defer></script>
 <script src="../assets/site.js?v=29" defer></script>

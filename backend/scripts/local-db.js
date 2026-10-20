@@ -13,7 +13,7 @@ try {
     await server.initialise();
 } catch (error) {
     // Already initialised on an earlier run.
-    if (!/already exists|not empty/i.test(String(error.message))) throw error;
+    if (!/already exist|not empty/i.test(String(error?.message ?? error))) throw error;
 }
 await server.start();
 const admin = new pg.Client({ connectionString: `postgres://gradmire:gradmire-local@127.0.0.1:${port}/postgres` });

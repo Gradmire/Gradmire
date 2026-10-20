@@ -13,7 +13,8 @@
         "test": "node --test --test-concurrency=1 test/*.test.js",
         "worker": "node scripts/worker.js",
         "create-staff": "node scripts/create-staff.js",
-        "db:local": "node scripts/local-db.js"
+        "db:local": "node scripts/local-db.js",
+        "smoke": "node scripts/smoke-test.js"
     },
     "engines": {
         "node": ">=20"

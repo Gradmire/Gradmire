@@ -10,7 +10,9 @@ import * as admin from '../services/admin-service.js';
 import * as applications from '../services/application-service.js';
 import * as auth from '../services/auth-service.js';
 import * as booking from '../services/booking-service.js';
+import { googleLoginConfigured, googleClientIds, InvalidGoogleToken, verifyGoogleIdToken } from '../integrations/google-identity.js';
 import { runDueJobs } from '../services/jobs.js';
+import { previewRetention } from '../services/retention-service.js';
 import { retryNotification } from '../services/notification-service.js';
 import { enforceRateLimit } from '../services/rate-limit.js';
 import { checkCsrf, checkOrigin, createContext, requireAdmin, requireStaff, requireStudent, requireUser } from './context.js';
@@ -76,6 +78,43 @@ router.post('/api/v1/auth/verify-email/confirm', async (ctx) => {
     await enforceRateLimit('verifyEmail', ctx.ip);
     const { token } = createValidator(await ctx.body()).text('token', { required: true, max: 100 }).done();
     return ok(ctx, await auth.confirmVerification(token));
+});
+
+/* Sign in with Google: the browser gets an ID token from Google Identity
+   Services and posts it here; the server verifies it before trusting anything in it. */
+router.get('/api/v1/auth/google/config', async (ctx) => ok(ctx, { enabled: googleLoginConfigured(), clientId: googleClientIds()[0] || null }));
+
+router.post('/api/v1/auth/google', async (ctx) => {
+    await enforceRateLimit('googleLogin', ctx.ip);
+    if (!googleLoginConfigured()) throw new HttpError(503, 'Google sign-in is not set up yet. Use your email and password instead.', 'GOOGLE_NOT_CONFIGURED');
+    const body = await ctx.body();
+    const { credential, ageConfirmation } = createValidator(body).text('credential', { required: true, max: 4096, label: 'Google credential' }).boolean('ageConfirmation').done();
+    let identity;
+    try {
+        identity = await verifyGoogleIdToken(credential);
+    } catch (error) {
+        if (error instanceof InvalidGoogleToken) throw new HttpError(401, 'Google sign-in could not be verified. Please try again.', 'GOOGLE_TOKEN_INVALID');
+        throw error;
+    }
+    const result = await auth.googleSignIn(identity, { userAgent: ctx.userAgent, ageConfirmation });
+    return ok(ctx, { user: result.user, csrfToken: result.csrfToken, created: result.created }, result.created ? 201 : 200, { 'Set-Cookie': result.cookie });
+});
+
+router.post('/api/v1/auth/password-reset/request', async (ctx) => {
+    await enforceRateLimit('passwordReset', ctx.ip);
+    const { email } = createValidator(await ctx.body()).email('email').done();
+    await enforceRateLimit('passwordReset', `email:${email}`);
+    await auth.requestPasswordReset(email);
+    // Same answer whether or not the account exists.
+    return ok(ctx, { sent: true });
+});
+
+router.post('/api/v1/auth/password-reset/confirm', async (ctx) => {
+    await enforceRateLimit('passwordReset', ctx.ip);
+    const body = await ctx.body();
+    const { token } = createValidator(body).text('token', { required: true, max: 100 }).password('password').done();
+    const result = await auth.confirmPasswordReset(token, String(body.password));
+    return ok(ctx, result, 200, { 'Set-Cookie': auth.clearSessionCookie() });
 });
 
 /* ── Public booking ───────────────────────────────────────────────────────── */
@@ -401,6 +440,11 @@ router.post('/api/v1/admin/notifications/:id/retry', async (ctx) => {
     const result = await retryNotification(param(ctx));
     if (!result) throw new HttpError(409, 'Only failed or skipped notifications can be retried.', 'NOT_RETRYABLE');
     return ok(ctx, result);
+});
+
+router.get('/api/v1/admin/retention', async (ctx) => {
+    await requireAdmin(ctx);
+    return ok(ctx, await previewRetention());
 });
 
 /* ── Background jobs (cron) ───────────────────────────────────────────────── */

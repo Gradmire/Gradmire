@@ -211,4 +211,27 @@ const adminBody = `<main class="bk-main crm-main" id="main">
 
 page({ name: 'admin-consultations.html', title: 'Consultations CRM | Gradmire staff', description: 'Gradmire staff consultations dashboard.', body: adminBody, script: 'admin-consultations.js?v=1', bodyClass: 'bk-page crm-page', noindex: true });
 
-console.log('Built booking pages: book-consultation, manage-consultation, dashboard-consultations, admin-consultations');
+/* ── Password reset ───────────────────────────────────────────────────────── */
+
+const resetBody = `<main class="bk-main" id="main">
+  <section class="bk-panel crm-login" aria-labelledby="rp-title">
+    <h1 class="bk-step-title" id="rp-title">Reset your password</h1>
+    <p class="bk-alert" id="rp-alert" role="status" hidden></p>
+    <form id="rp-request" method="post" novalidate>
+      <p class="bk-help">Enter the email address of your Gradmire account. If it exists, we will email you a link to choose a new password. The link works once and expires in 60 minutes.</p>
+      ${field('Email address', '<input name="email" type="email" autocomplete="email" maxlength="320" required>')}
+      <button class="gp-btn gp-btn-primary" type="submit" style="width:100%;margin-top:.8rem">Email me a reset link</button>
+    </form>
+    <form id="rp-confirm" method="post" novalidate hidden>
+      <p class="bk-help">Choose a new password with at least 8 characters. Every device signed in to your account will be signed out.</p>
+      ${field('New password', '<input name="password" type="password" autocomplete="new-password" minlength="8" maxlength="200" required>')}
+      ${field('Repeat new password', '<input name="repeat" type="password" autocomplete="new-password" minlength="8" maxlength="200" required>')}
+      <button class="gp-btn gp-btn-primary" type="submit" style="width:100%;margin-top:.8rem">Save new password</button>
+    </form>
+    <p class="bk-fine"><a href="login.html">Back to log in</a></p>
+  </section>
+</main>`;
+
+page({ name: 'reset-password.html', title: 'Reset your password | Gradmire', description: 'Reset the password for your Gradmire account.', body: resetBody, script: 'reset-password.js?v=1', bodyClass: 'bk-page', noindex: true });
+
+console.log('Built booking pages: book-consultation, manage-consultation, dashboard-consultations, admin-consultations, reset-password');

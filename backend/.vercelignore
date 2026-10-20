@@ -1,0 +1,7 @@
+# Local-only files that must never be uploaded to Vercel.
+.local-pg/
+.env
+.env.*
+!.env.example
+node_modules/
+test/

@@ -15,6 +15,11 @@ export const LIMITS = {
     login: { limit: 10, windowSeconds: 900 },
     signup: { limit: 6, windowSeconds: 3600 },
     verifyEmail: { limit: 6, windowSeconds: 3600 },
+    bookingResend: { limit: 5, windowSeconds: 3600 },
+    invitation: { limit: 20, windowSeconds: 3600 },
+    consultantApplication: { limit: 5, windowSeconds: 3600 },
+    googleLogin: { limit: 20, windowSeconds: 900 },
+    passwordReset: { limit: 5, windowSeconds: 3600 },
 };
 
 export async function enforceRateLimit(name, key) {

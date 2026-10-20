@@ -164,6 +164,24 @@ Never put any of these in frontend files. The frontend only knows the API base U
      link **and** a verified account email that matches the booking.
 
   A name or a typed-in email never links anything.
+- **Sign in with Google** (`GOOGLE_CLIENT_ID`): the Google button on login and sign-up
+  posts Google's signed ID token to `POST /api/v1/auth/google`. The server verifies the
+  signature (Google's published keys), issuer, audience, expiry and that Google verified
+  the email, then:
+  - logs in the account already linked to that Google identity; or
+  - links an account with the same email. If that account's email was never verified,
+    its password and sessions are revoked first, to stop pre-registration takeover.
+  - Otherwise it creates a verified student account, after the person confirms their age.
+
+  Guest bookings with that email are linked. Setup: `docs/go-live-checklist.md` §3.
+- **Password reset**: *Forgot password?* on the login page →
+  `reset-password.html` → `POST /api/v1/auth/password-reset/request`.
+  - The answer is the same whether or not the account exists.
+  - The emailed link is single-use and expires after 60 minutes. Only the newest link
+    works.
+  - `/confirm` sets the new password, signs out every session, verifies the email
+    and sends a "password changed" email.
+  - Google-only accounts can use it to add a password.
 - **Staff** accounts are never created through the public API. Use the CLI:
 
 ```bash
@@ -357,6 +375,9 @@ requests from a signed-in browser need `X-CSRF-Token` (from `GET /auth/session`)
 | `GET/POST /api/v1/admin/consultation-types`, `PATCH /…/:id` | staff / admin | Catalogue |
 | `GET /api/v1/admin/notifications`, `POST /…/:id/retry` | admin | Delivery log and retry |
 | `GET\|POST /api/v1/internal/jobs/run` | `CRON_SECRET` | Worker pass |
+| `GET /api/v1/auth/google/config`, `POST /api/v1/auth/google` | — | Sign in with Google |
+| `POST /api/v1/auth/password-reset/request` · `confirm` | — | Password reset (rate-limited) |
+| `GET /api/v1/admin/retention` | admin | Retention settings and records due |
 
 Existing `GET /api/v1/health`, `GET/POST /api/v1/leads` are unchanged.
 
@@ -364,18 +385,23 @@ Existing `GET /api/v1/health`, `GET/POST /api/v1/leads` are unchanged.
 
 - **Cross-site cookies** on the default Vercel hosts (§8). This must be resolved for
   student logins in production.
-- **No password reset** flow yet; the login page still points to support. Needs an
-  emailed reset token, reusing the verification-token pattern.
-- **Google sign-in buttons** on the login/signup pages are still non-functional (existing UI).
-- **`dashboard.html`** (the older overview page) still shows its original sample content.
-  Only the new Consultations link was added. Real data lives at `/dashboard/consultations`.
+- **Google sign-in** and **password reset** work end to end in tests (signed test tokens,
+  fake mailbox) but need `GOOGLE_CLIENT_ID` and Resend before they work for real
+  (`docs/go-live-checklist.md`).
 - Email delivery and Google Calendar have been tested with fakes only. **Live
   credentials have not been exercised.** Run the smoke test in §12 after configuring them.
 - Rate limits are per IP/email fixed windows in PostgreSQL. Consider a CAPTCHA if spam
   appears (none is added, to avoid third-party scripts).
 - Staff accounts have no 2FA. The admin UI has no user management (CLI only).
-- Data retention: no automatic purge of old consultations or leads yet. Define a retention
-  period and add a scheduled scrub, in line with the privacy policy and DPDP obligations.
+- **Data retention** (`services/retention-service.js`) is built but **off** until
+  `RETENTION_ENABLED=true`. When on, each worker pass anonymises:
+  - guest consultations that ended more than `RETENTION_CONSULTATION_MONTHS` (24) ago;
+  - leads without an account untouched for `RETENTION_LEAD_MONTHS` (24), except live
+    newsletter subscribers and leads with recent or active bookings.
+
+  It also deletes expired tokens. Account-owned history is kept while the account exists.
+  `GET /api/v1/admin/retention` previews the counts. The periods need owner and legal
+  sign-off.
 - Reminder timing depends on the scheduler frequency (§9).
 - Reassigning to another counsellor checks overlaps but not that counsellor's working hours
   (an admin override, by design).

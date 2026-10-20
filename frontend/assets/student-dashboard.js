@@ -96,31 +96,39 @@
             : `<p class="bk-fine">No consultation booked.</p><a class="gp-btn gp-btn-primary gp-btn-sm" href="book-consultation.html">Book a free consultation</a>`;
     }
 
+    function renderOverview(d) {
+        const stat = (label, value, href) => `<a class="crm-stat" href="${href}"><span>${esc(label)}</span><strong>${esc(value)}</strong></a>`;
+        $('sd-stats').innerHTML = [
+            stat('Upcoming consultations', d.consultations.upcoming, 'dashboard-consultations.html'),
+            stat('Applications', d.applications.total, '#applications'),
+            stat('Offers', d.applications.offers, '#applications'),
+            stat('Deadlines in 30 days', d.applications.upcomingDeadlines.length, '#applications'),
+            stat('Unread notifications', d.notifications.unread, 'dashboard-notifications.html'),
+        ].join('');
+        const meter = $('sd-meter');
+        meter.setAttribute('aria-valuenow', d.profile.completion);
+        meter.querySelector('span').style.width = `${d.profile.completion}%`;
+        $('sd-meter-text').innerHTML = `Profile ${esc(d.profile.completion)}% complete · <a href="dashboard-profile.html">Update profile</a>`;
+        $('sd-steps').innerHTML = d.nextSteps.length
+            ? d.nextSteps.map((s) => `<li><a href="${esc(GradmireAPI.safeNext(s.href, 'dashboard.html'))}">${esc(s.label)}</a></li>`).join('')
+            : '<li class="bk-empty">You are all set. Your counsellor will update your applications here.</li>';
+        if (d.consultantApplication) {
+            $('sd-steps').insertAdjacentHTML('beforeend', `<li><a href="dashboard-become-consultant.html">Consultant application: ${esc(d.consultantApplication.statusLabel)}</a></li>`);
+        }
+        $('sd-notes').innerHTML = d.notifications.recent.length
+            ? d.notifications.recent.map((n) => `<li><span>${n.read ? '' : '<strong>New</strong> '}${esc(n.title)}</span><small>${esc(new Date(n.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }))}</small></li>`).join('')
+            : '<li class="bk-empty">No notifications yet.</li>';
+    }
+
     async function init() {
-        let session;
-        try {
-            session = await GradmireAPI.getSession();
-        } catch (error) {
-            $('sd-greeting').textContent = error.message;
-            return;
-        }
-        const user = session.user;
+        // The workspace shell checks the session, sends staff to their own workspace and draws the sidebar.
+        const user = await window.GMWorkspace.boot({ allow: ['student'] });
         if (!user) {
-            location.replace('login.html?next=dashboard.html');
-            return;
-        }
-        if (user.role !== 'student') {
-            location.replace('admin-students.html');
+            $('sd-greeting').textContent = '';
             return;
         }
         $('sd-title').textContent = `Hi ${user.firstName}`;
         $('sd-greeting').textContent = `Signed in as ${user.email}.`;
-        const logout = $('sd-logout');
-        logout.hidden = false;
-        logout.addEventListener('click', async () => {
-            await GradmireAPI.logout().catch(() => {});
-            location.href = 'login.html';
-        });
         if (!user.emailVerified) {
             const verify = $('sd-verify');
             verify.innerHTML = 'Please verify your email address. <button type="button" class="crm-open" id="sd-resend">Send the verification email again</button>';
@@ -134,10 +142,12 @@
                 }
             });
         }
-        const [consultations, applications] = await Promise.all([
+        const [overview, consultations, applications] = await Promise.all([
+            GradmireAPI.request('GET', '/api/v1/me/dashboard').catch((error) => { say(error.message); return null; }),
             GradmireAPI.request('GET', '/api/v1/me/consultations').catch((error) => { say(error.message); return []; }),
             GradmireAPI.request('GET', '/api/v1/me/applications').catch((error) => { say(error.message); return []; })
         ]);
+        if (overview) renderOverview(overview);
         renderJourney(reachedStage(consultations, applications));
         renderApplications(applications);
         renderNext(consultations);

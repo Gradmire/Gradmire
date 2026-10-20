@@ -10,7 +10,7 @@
     const state = { staff: null, page: 1, pageSize: 25, total: 0, filters: {}, counsellors: [], types: [], openId: null };
     const WEEKDAYS = ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     const OUTCOMES = [['', 'No outcome yet'], ['qualified', 'Qualified'], ['follow_up', 'Needs follow-up'], ['application_started', 'Application started'], ['not_interested', 'Not interested'], ['other', 'Other']];
-    const isAdmin = () => state.staff && state.staff.role === 'admin';
+    const isAdmin = () => state.staff && ['admin', 'super_admin'].includes(state.staff.role);
 
     function say(message, ok) {
         const el = $('crm-alert');
@@ -390,7 +390,8 @@
         state.staff = user;
         $('crm-login').hidden = true;
         $('crm-app').hidden = false;
-        $('crm-who').textContent = `${user.firstName} · ${user.role === 'admin' ? 'Administrator (all consultations)' : 'Counsellor (your assigned consultations)'}`;
+        $('crm-who').textContent = `${user.firstName} · ${isAdmin() ? 'Administrator (all consultations)' : 'Counsellor (your assigned consultations)'}`;
+        if (user.home && !$('crm-home')) $('crm-who').insertAdjacentHTML('afterend', `<p id="crm-home"><a href="${esc(GradmireAPI.safeNext(user.home, 'dashboard.html'))}">← Back to my workspace</a></p>`);
         try {
             const [counsellors, types] = await Promise.all([
                 GradmireAPI.request('GET', '/api/v1/admin/counsellors'),

@@ -176,7 +176,7 @@
             return;
         }
         if (user.role !== 'student') {
-            list.innerHTML = '<div class="bk-empty-state"><h2>This page is for students</h2><p>Staff can manage bookings in the consultations CRM.</p><a class="gp-btn gp-btn-primary" href="admin-consultations.html">Open the CRM</a></div>';
+            list.innerHTML = `<div class="bk-empty-state"><h2>This page is for students</h2><p>Staff can manage bookings in the consultations CRM.</p><a class="gp-btn gp-btn-primary" href="${esc(GradmireAPI.safeNext(user.home, 'admin-consultations.html'))}">Open my workspace</a></div>`;
             return;
         }
         document.getElementById('mc-greeting').textContent = `Signed in as ${user.firstName} (${user.email}).`;

@@ -15,14 +15,17 @@ export function formatWhen(startIso, endIso, timeZone) {
 
 const pageUrl = (page, hash = '') => `${config.siteUrl()}${config.pagesPath()}/${page}${hash}`;
 
-function layout(title, paragraphs, rows = [], action = null) {
+const ACCOUNT_FOOTER = 'This is a service message about your Gradmire account.';
+const BOOKING_FOOTER = 'This is a transactional message about your consultation.';
+
+function layout(title, paragraphs, rows = [], action = null, footer = BOOKING_FOOTER) {
     const text = [title, '', ...paragraphs, '', ...rows.map(([label, value]) => `${label}: ${value}`), ...(action ? ['', `${action.label}: ${action.url}`] : []), '', '— Gradmire'].join('\n');
     const html = `<!doctype html><html><body style="font-family:system-ui,sans-serif;color:#0E1420;line-height:1.55;max-width:560px;margin:auto;padding:24px">
 <h1 style="font-size:20px;margin:0 0 12px">${esc(title)}</h1>
 ${paragraphs.map((p) => `<p style="margin:0 0 12px">${esc(p)}</p>`).join('\n')}
 ${rows.length ? `<table style="border-collapse:collapse;margin:8px 0 16px">${rows.map(([label, value]) => `<tr><td style="padding:4px 16px 4px 0;color:#556270">${esc(label)}</td><td style="padding:4px 0"><strong>${esc(value)}</strong></td></tr>`).join('')}</table>` : ''}
 ${action ? `<p><a href="${esc(action.url)}" style="display:inline-block;background:#007A5A;color:#fff;padding:10px 18px;border-radius:999px;text-decoration:none;font-weight:700">${esc(action.label)}</a></p>` : ''}
-<p style="color:#556270;font-size:13px;margin-top:24px">Gradmire Education Pvt. Ltd. · This is a transactional message about your consultation.</p>
+<p style="color:#556270;font-size:13px;margin-top:24px">Gradmire Education Pvt. Ltd. · ${esc(footer)}</p>
 </body></html>`;
     return { text, html };
 }
@@ -69,6 +72,20 @@ export function renderTemplate(template, p) {
             return { subject: `Action needed: calendar sync failed (${p.reference})`, ...layout('Calendar sync failed', ['A booking is reserved but its calendar event could not be created after several attempts. Confirm it manually or retry the sync.', `Last error: ${p.error}`], [['Reference', p.reference]], { label: 'Open booking', url: pageUrl('admin-consultations.html', `#id=${p.consultationId}`) }) };
         case 'email_verification':
             return { subject: 'Verify your Gradmire email address', ...layout('Confirm your email address', [`Hi ${p.firstName},`, 'Confirm this address to finish setting up your account. Once it is verified, consultations you booked with this email appear in your dashboard.', 'The link expires in 48 hours. If you did not create a Gradmire account, ignore this email.'], [], { label: 'Verify email', url: pageUrl('dashboard-consultations.html', `#verify=${encodeURIComponent(p.token)}`) }) };
+        case 'booking_link':
+            return { subject: `Your Gradmire booking: ${p.typeName} on ${formatWhen(p.start, p.end, p.timeZone).date}`, ...layout('Here is your booking link', [`Hi ${p.firstName},`, 'You asked us to resend the link for your consultation. Use it to view, reschedule or cancel. If you did not ask for this, you can ignore this email; the link only works for this booking.'], bookingRows(p), manage) };
+        case 'consultant_application_update':
+            return { subject: `Your Gradmire consultant application: ${p.statusLabel}`, ...layout('Your application was updated', [`Hi ${p.firstName},`, `The status of your application to join Gradmire as a consultant is now: ${p.statusLabel}.`, ...(p.message ? [p.message] : []), 'You can follow your application in your dashboard.'], [], { label: 'View my application', url: pageUrl('dashboard-become-consultant.html') }, ACCOUNT_FOOTER) };
+        case 'employee_invitation':
+            return { subject: 'You are invited to join the Gradmire team', ...layout('Join the Gradmire team', [`Hi ${p.fullName},`, `You have been invited to join Gradmire as ${p.jobTitle} (${p.department}).`, 'Open the link, then log in or create an account with this email address and verify it. An administrator approves your access after you accept.', `The invitation expires on ${new Date(p.expiresAt).toUTCString().slice(0, 16)}. If you were not expecting it, ignore this email.`], [], { label: 'Accept the invitation', url: pageUrl('join-team.html', `#token=${encodeURIComponent(p.token)}`) }, ACCOUNT_FOOTER) };
+        case 'access_changed':
+            return { subject: p.subject, ...layout(p.subject, [`Hi ${p.firstName},`, p.message, 'Log in again to see your updated workspace.'], [], { label: 'Log in', url: pageUrl('login.html') }, ACCOUNT_FOOTER) };
+        case 'password_reset':
+            return { subject: 'Reset your Gradmire password', ...layout('Reset your password', [`Hi ${p.firstName},`, 'We received a request to reset the password for your Gradmire account. Use the button below to choose a new password.', `The link works once and expires in ${p.minutes} minutes. If you did not ask for this, ignore this email; your password stays the same.`], [], { label: 'Choose a new password', url: pageUrl('reset-password.html', `#token=${encodeURIComponent(p.token)}`) }, ACCOUNT_FOOTER) };
+        case 'password_changed':
+            return { subject: 'Your Gradmire password was changed', ...layout('Your password was changed', [`Hi ${p.firstName},`, 'The password for your Gradmire account was just changed and every device was signed out.', 'If this was not you, reset your password straight away and contact privacy@gradmire.in.'], [], { label: 'Log in', url: pageUrl('login.html') }, ACCOUNT_FOOTER) };
+        case 'lead_assigned':
+            return { subject: `New enquiry assigned to you: ${p.leadName}`, ...layout('An enquiry was assigned to you', [`${p.leadName} has been assigned to you. Please make contact and record the outcome.`], [], { label: 'Open my workspace', url: pageUrl('consultant-dashboard.html') }, ACCOUNT_FOOTER) };
         default:
             throw Object.assign(new Error(`Unknown template ${template}`), { permanent: true });
     }

@@ -9,11 +9,13 @@ import { query, withTransaction } from '../lib/db.js';
 import { conflict, forbidden, HttpError, parseCookies, unauthorized } from '../lib/http.js';
 import { audit } from './audit.js';
 import { enqueueNotification } from './notification-service.js';
+import { notifyUser } from './inbox.js';
+import { HOME_PAGE } from './permissions.js';
 
 const MAX_FAILED_LOGINS = 10;
 const LOCK_MINUTES = 15;
 const VERIFY_TTL_HOURS = 48;
-export const STAFF_ROLES = ['counsellor', 'admin'];
+export { STAFF_ROLES } from './permissions.js';
 
 export const cookieName = () => (config.cookieSecure() ? '__Host-gm_session' : 'gm_session');
 
@@ -26,6 +28,8 @@ export function publicUser(row) {
         firstName: row.first_name,
         lastName: row.last_name,
         phone: row.phone,
+        // Where the site sends this person after login; authorisation never relies on it.
+        home: HOME_PAGE[row.role] || 'dashboard.html',
     };
 }
 
@@ -178,6 +182,13 @@ export async function confirmVerification(token) {
         await client.query('UPDATE email_verification_tokens SET consumed_at = $2 WHERE id = $1', [record.id, now()]);
         await client.query('UPDATE users SET email_verified_at = COALESCE(email_verified_at, $2), updated_at = $2 WHERE id = $1', [record.user_id, now()]);
         const linked = await linkGuestRecords(client, record.user_id, record.email);
+        if (linked.linkedConsultations || linked.linkedLeads) {
+            await notifyUser(client, record.user_id, {
+                kind: 'records_linked', title: 'Your earlier bookings are now in your account',
+                body: `We linked ${linked.linkedConsultations} consultation(s) and ${linked.linkedLeads} enquiry(ies) made with your verified email address.`,
+                link: 'dashboard-consultations.html',
+            });
+        }
         await audit(client, { actorUserId: record.user_id, action: 'auth.email_verified', entityType: 'user', entityId: record.user_id, details: linked });
         return { verified: true, ...linked };
     });
@@ -189,8 +200,118 @@ export async function linkGuestRecords(client, userId, email) {
         [userId, email],
     );
     const leads = await client.query(
-        'UPDATE leads SET user_id = $1, updated_at = NOW() WHERE user_id IS NULL AND LOWER(email) = LOWER($2) RETURNING id',
+        "UPDATE leads SET user_id = $1, status = CASE WHEN status IN ('not_interested', 'closed') THEN status ELSE 'converted' END, updated_at = NOW() WHERE user_id IS NULL AND LOWER(email) = LOWER($2) RETURNING id",
         [userId, email],
     );
     return { linkedConsultations: consultations.rowCount, linkedLeads: leads.rowCount };
+}
+
+/* ── Sign in with Google ──────────────────────────────────────────────────── */
+
+/* Resolves a verified Google identity to an account:
+   1. an account already linked to this Google identity;
+   2. otherwise an account with the same email (Google has verified the
+      person owns it). If that account's email was never verified, someone
+      else may have registered it first, so its password and sessions are
+      revoked before linking ("pre-account takeover");
+   3. otherwise a new student account, but only with age confirmation. */
+export async function googleSignIn(identity, { userAgent, ageConfirmation = false }) {
+    return withTransaction(async (client) => {
+        let user = (await client.query('SELECT * FROM users WHERE google_sub = $1 FOR UPDATE', [identity.sub])).rows[0];
+        let created = false;
+        if (!user) {
+            const byEmail = (await client.query('SELECT * FROM users WHERE LOWER(email) = $1 FOR UPDATE', [identity.email])).rows[0];
+            if (byEmail) {
+                if (byEmail.google_sub && byEmail.google_sub !== identity.sub) {
+                    throw conflict('This email is already linked to a different Google account.', 'GOOGLE_ACCOUNT_MISMATCH');
+                }
+                const unverified = !byEmail.email_verified_at;
+                user = (await client.query(
+                    `UPDATE users SET google_sub = $2, email_verified_at = COALESCE(email_verified_at, $3),
+                       password_hash = CASE WHEN $4 THEN NULL ELSE password_hash END, updated_at = $3
+                     WHERE id = $1 RETURNING *`,
+                    [byEmail.id, identity.sub, now(), unverified],
+                )).rows[0];
+                if (unverified) await client.query('UPDATE sessions SET revoked_at = $2 WHERE user_id = $1 AND revoked_at IS NULL', [byEmail.id, now()]);
+                await audit(client, { actorUserId: user.id, action: 'auth.google_linked', entityType: 'user', entityId: user.id, details: { revokedUnverifiedPassword: unverified } });
+            } else {
+                if (!ageConfirmation) {
+                    throw new HttpError(409, 'Please confirm your age to create your Gradmire account with Google.', 'GOOGLE_SIGNUP_NEEDS_CONSENT');
+                }
+                const id = crypto.randomUUID();
+                const firstName = (identity.givenName || identity.name || identity.email.split('@')[0]).slice(0, 120);
+                user = (await client.query(
+                    `INSERT INTO users (id, email, email_verified_at, password_hash, google_sub, role, first_name, last_name)
+                     VALUES ($1, $2, $3, NULL, $4, 'student', $5, $6) RETURNING *`,
+                    [id, identity.email, now(), identity.sub, firstName, identity.familyName ? identity.familyName.slice(0, 120) : null],
+                )).rows[0];
+                created = true;
+                await audit(client, { actorUserId: id, action: 'auth.signup_google', entityType: 'user', entityId: id });
+            }
+        }
+        if (user.status !== 'active') throw forbidden('This account is disabled. Contact Gradmire support.');
+        await linkGuestRecords(client, user.id, user.email);
+        await client.query('UPDATE users SET failed_login_count = 0, locked_until = NULL WHERE id = $1', [user.id]);
+        await audit(client, { actorUserId: user.id, action: 'auth.login_google', entityType: 'user', entityId: user.id });
+        const session = await createSession(client, user.id, userAgent);
+        return { user: publicUser(user), created, ...session };
+    });
+}
+
+/* ── Password reset ───────────────────────────────────────────────────────── */
+
+const RESET_TTL_MINUTES = 60;
+/* Same pattern as verification: the emailed token is HMAC(APP_SECRET, id). */
+export const passwordResetToken = (id) => hmac(config.appSecret(), `reset:${id}`);
+
+/* Always answers the same way, so it cannot be used to discover accounts. */
+export async function requestPasswordReset(email) {
+    await withTransaction(async (client) => {
+        const user = (await client.query("SELECT * FROM users WHERE LOWER(email) = $1 AND status = 'active'", [email])).rows[0];
+        if (!user) return;
+        // Only the newest link works.
+        await client.query('UPDATE password_reset_tokens SET consumed_at = $2 WHERE user_id = $1 AND consumed_at IS NULL', [user.id, now()]);
+        const id = crypto.randomUUID();
+        await client.query(
+            'INSERT INTO password_reset_tokens (id, user_id, token_hash, email, expires_at) VALUES ($1, $2, $3, $4, $5)',
+            [id, user.id, sha256(passwordResetToken(id)), user.email, new Date(now().getTime() + RESET_TTL_MINUTES * 60_000)],
+        );
+        await enqueueNotification(client, {
+            userId: user.id, template: 'password_reset', recipient: user.email, dedupeKey: `reset:${id}`,
+            payload: { firstName: user.first_name, resetId: id, minutes: RESET_TTL_MINUTES },
+        });
+        await audit(client, { actorUserId: user.id, action: 'auth.password_reset_requested', entityType: 'user', entityId: user.id });
+    });
+    return { sent: true };
+}
+
+/* Sets the new password, signs out every session and confirms the email
+   (opening the link proves the person receives mail at that address). */
+export async function confirmPasswordReset(token, password) {
+    const passwordHash = await hashPassword(password);
+    return withTransaction(async (client) => {
+        const record = (await client.query(
+            `SELECT t.*, u.email AS current_email, u.status, u.first_name FROM password_reset_tokens t JOIN users u ON u.id = t.user_id
+             WHERE t.token_hash = $1 FOR UPDATE OF t`,
+            [sha256(token)],
+        )).rows[0];
+        if (!record || record.consumed_at || new Date(record.expires_at) <= now() || record.status !== 'active'
+            || record.email.toLowerCase() !== record.current_email.toLowerCase()) {
+            throw new HttpError(400, 'This reset link is invalid or has expired. Request a new one.', 'INVALID_TOKEN');
+        }
+        await client.query('UPDATE password_reset_tokens SET consumed_at = $2 WHERE id = $1', [record.id, now()]);
+        await client.query(
+            `UPDATE users SET password_hash = $2, password_changed_at = $3, failed_login_count = 0, locked_until = NULL,
+               email_verified_at = COALESCE(email_verified_at, $3), updated_at = $3 WHERE id = $1`,
+            [record.user_id, passwordHash, now()],
+        );
+        await client.query('UPDATE sessions SET revoked_at = $2 WHERE user_id = $1 AND revoked_at IS NULL', [record.user_id, now()]);
+        await linkGuestRecords(client, record.user_id, record.email);
+        await enqueueNotification(client, {
+            userId: record.user_id, template: 'password_changed', recipient: record.email, dedupeKey: `password_changed:${record.id}`,
+            payload: { firstName: record.first_name },
+        });
+        await audit(client, { actorUserId: record.user_id, action: 'auth.password_reset', entityType: 'user', entityId: record.user_id });
+        return { reset: true };
+    });
 }

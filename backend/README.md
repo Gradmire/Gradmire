@@ -4,6 +4,7 @@ The API for the static frontend. It provides:
 
 - Accounts (sign-up, login, sessions, email verification), consultation booking, the student consultations area, the staff CRM and background jobs — see [`docs/consultation-booking-setup.md`](../docs/consultation-booking-setup.md) for every endpoint
 - Student applications (migration `005`): counsellors record each university application and its status on `admin-students.html`; students see them on `dashboard.html`. Endpoints: `GET /api/v1/me/applications` (student), `GET /api/v1/admin/students?q=`, `GET|POST /api/v1/admin/students/:id/applications`, `PATCH|DELETE /api/v1/admin/applications/:id` (staff; counsellors only reach students who have a consultation with them)
+- Role-based workspaces (migration `006`): student profile and overview, notification centre, consultant applications, employee invitations and onboarding, approval requests (two-person rule), user, lead and follow-up management, audit log. Endpoints and setup: [`docs/role-based-dashboard-setup.md`](../docs/role-based-dashboard-setup.md)
 - `GET /api/v1/health`
 - `GET /api/v1/leads`
 - `POST /api/v1/leads` — used by the contact form (`source: "contact"`, needs `firstName`, `email`, `message`) and the free-consultation form (`source: "consultation"`, needs `firstName`, `email`, `phone`, `contactConsent`). Unknown fields are dropped.
@@ -18,11 +19,11 @@ npm run db:local        # real local PostgreSQL without Docker (separate termina
 export DATABASE_URL=postgres://gradmire:gradmire-local@127.0.0.1:54320/gradmire
 npm run migrate
 npm run check
-npm test                # 49 tests against real PostgreSQL
+npm test                # 70 tests against real PostgreSQL
 npm start
 ```
 
-Other scripts: `npm run create-staff` (staff accounts), `npm run worker` (background jobs on a long-running host).
+Other scripts: `npm run create-staff` (bootstrap staff accounts, including the first `super_admin`), `npm run worker` (background jobs on a long-running host).
 
 The API listens on `http://localhost:4000` by default. Set `PORT` and `FRONTEND_ORIGIN` (comma-separated list of allowed origins) in the environment to change them; see `.env.example`. Pages load `frontend/assets/api.js`, which calls `http://localhost:4000` on localhost and the same origin elsewhere, unless a page sets `<meta name="gm-api-base" content="…">`.
 

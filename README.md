@@ -27,4 +27,13 @@ calendar/email configuration, background jobs and deployment are in
 [`docs/consultation-booking-setup.md`](docs/consultation-booking-setup.md). The pre-build audit is in
 [`docs/consultation-booking-audit.md`](docs/consultation-booking-audit.md).
 
+## Role-based workspaces
+
+Students, consultants and administrators each have their own workspace (`/dashboard`, `/consultant/dashboard`, `/admin`).
+Staff access is granted, changed and removed only through approval requests decided by a second person.
+See [`docs/role-based-dashboard-setup.md`](docs/role-based-dashboard-setup.md) (setup, API),
+[`docs/role-permissions-matrix.md`](docs/role-permissions-matrix.md),
+[`docs/approval-workflows.md`](docs/approval-workflows.md) and
+[`docs/role-based-dashboard-architecture.md`](docs/role-based-dashboard-architecture.md).
+
 See `frontend/README.md` and `backend/README.md` for local development notes.

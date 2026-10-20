@@ -2,6 +2,7 @@ import { config } from './config.js';
 import { bookingApiRoute } from './routes/booking-api.js';
 import { healthRoute } from './routes/health.js';
 import { leadsRoute } from './routes/leads.js';
+import { platformApiRoute } from './routes/platform-api.js';
 
 /* Plain (request, response) handler shared by the local server and the Vercel function. */
 export async function handleRequest(request, response) {
@@ -24,7 +25,8 @@ export async function handleRequest(request, response) {
     }
 
     const { pathname } = new URL(request.url, 'http://localhost');
-    if (healthRoute(request, response, pathname) || await leadsRoute(request, response, pathname) || await bookingApiRoute(request, response, pathname)) {
+    if (healthRoute(request, response, pathname) || await leadsRoute(request, response, pathname) || await bookingApiRoute(request, response, pathname)
+        || await platformApiRoute(request, response, pathname)) {
         return;
     }
 
