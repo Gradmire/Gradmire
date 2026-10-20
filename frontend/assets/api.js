@@ -1,14 +1,16 @@
 /* Gradmire API client.
    The base URL comes from <meta name="gm-api-base" content="https://api.example.com">
-   when a page sets one; local previews talk to the dev API on port 4000, and the
-   deployed site calls the gradmire-api Vercel project, which allows this site's
-   origin through FRONTEND_ORIGIN.
+   when a page sets one; local previews talk to the dev API on port 4000. The
+   deployed site calls its own origin: frontend/vercel.json proxies /gm-api/* to the
+   gradmire-api project (Vercel reserves /api on the site for its own functions), so the login cookie is first-party in every browser
+   (Safari and privacy modes drop cookies set by a different site).
    Account calls send the HttpOnly session cookie (credentials: 'include') and the
    per-session CSRF token from GET /api/v1/auth/session in X-CSRF-Token. */
 (function () {
     'use strict';
 
-    const PRODUCTION_API = 'https://gradmire-api.vercel.app';
+    // Same origin as the page (see the /gm-api rewrite in frontend/vercel.json).
+    const PRODUCTION_API = '/gm-api';
 
     function apiBase() {
         const meta = document.querySelector('meta[name="gm-api-base"]');

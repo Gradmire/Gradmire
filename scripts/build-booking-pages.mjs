@@ -8,7 +8,7 @@
 import { esc, hero, shell, write } from './page-shell.mjs';
 
 const BOOKING_CSS = 'booking.css?v=2';
-const API_JS = 'api.js?v=2';
+const API_JS = 'api.js?v=3';
 const COMMON_JS = 'booking-common.js?v=1';
 
 /* Adds the booking stylesheet, robots policy and page scripts to a shell page. */
