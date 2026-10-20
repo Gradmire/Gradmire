@@ -188,6 +188,21 @@
             ham.setAttribute('aria-expanded', String(open));
             ham.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
             document.body.classList.toggle('nav-open', open);
+            document.documentElement.classList.toggle('nav-open', open);
+            // Keep the logo bar on screen above the menu, and start the menu exactly
+            // below it. An in-flow header is pinned with matching body padding so
+            // the page underneath does not jump.
+            if (open) {
+                const height = nav.getBoundingClientRect().height;
+                document.documentElement.style.setProperty('--gm-nav-h', `${height}px`);
+                if (getComputedStyle(nav).position !== 'fixed') {
+                    nav.classList.add('nav-pinned');
+                    document.body.style.paddingTop = `${parseFloat(getComputedStyle(document.body).paddingTop) + height}px`;
+                }
+            } else if (nav.classList.contains('nav-pinned')) {
+                nav.classList.remove('nav-pinned');
+                document.body.style.paddingTop = '';
+            }
             if (open) {
                 let attempts = 0;
                 const focusFirstVisible = () => {
