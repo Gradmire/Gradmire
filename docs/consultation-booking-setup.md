@@ -138,7 +138,7 @@ reads the process environment; it does not load `.env` files itself.
 | `DATABASE_URL_UNPOOLED` | Neon | Direct URL for migrations |
 | `APP_SECRET` | **Production** | 32+ random chars. Signs manage/verification links and rate-limit keys. In production, requests that need it fail with an error until it is set. |
 | `FRONTEND_ORIGIN` | Yes | Comma-separated site origins allowed by CORS (with credentials) and the Origin check |
-| `SITE_URL`, `SITE_PAGES_PATH` | Yes | Used to build links in emails (`https://gradmire.in` + `/pages`) |
+| `SITE_URL`, `SITE_PAGES_PATH` | Yes | Used to build links in emails (`https://gradmire.com` + `/pages`) |
 | `CRON_SECRET` | Yes | Bearer token for the job endpoint |
 | `SESSION_COOKIE_SAMESITE` | Optional | `Lax` (default). `None` only for a cross-site API (see §8). |
 | `SESSION_COOKIE_SECURE` | Optional | Defaults on in production |
@@ -187,8 +187,8 @@ Never put any of these in frontend files. The frontend only knows the API base U
 ```bash
 cd backend
 DATABASE_URL=… STAFF_PASSWORD='a-long-unique-password' npm run create-staff -- \
-  --email priya@gradmire.in --first-name Priya --last-name Mehta --role counsellor \
-  --timezone Asia/Kolkata --calendar-id priya@gradmire.in
+  --email priya@gradmire.com --first-name Priya --last-name Mehta --role counsellor \
+  --timezone Asia/Kolkata --calendar-id priya@gradmire.com
 ```
 
   Counsellors get Mon–Sat 10:00–18:00 in their timezone (change it in the CRM, or pass
@@ -233,7 +233,7 @@ slots come from the database only (the booking itself is still protected).
 ## 7. Email (Resend) and WhatsApp
 
 1. Create a Resend account, verify your sending domain, create an API key.
-2. Set `EMAIL_PROVIDER=resend`, `RESEND_API_KEY`, `EMAIL_FROM="Gradmire <consultations@gradmire.in>"`.
+2. Set `EMAIL_PROVIDER=resend`, `RESEND_API_KEY`, `EMAIL_FROM="Gradmire <info@gradmire.com>"`.
 3. Messages: booking confirmed or rescheduled (with manage link), cancelled, reminders,
    counsellor notices, email verification, staff calendar alerts.
 4. Students opt in or out of reminders on the booking form. Transactional messages need
@@ -254,10 +254,10 @@ third-party there and Safari, Firefox and privacy-mode Chrome will drop it, so *
 will not work reliably on the two default `*.vercel.app` hosts.** Guest booking does not
 need cookies and works everywhere. Pick one:
 
-- **Recommended:** custom domains on one registrable domain, e.g. site `gradmire.in` and
-  API `api.gradmire.in`. Set `FRONTEND_ORIGIN=https://gradmire.in`,
-  `SITE_URL=https://gradmire.in`, and add
-  `<meta name="gm-api-base" content="https://api.gradmire.in">` (or change
+- **Recommended:** custom domains on one registrable domain, e.g. site `gradmire.com` and
+  API `api.gradmire.com`. Set `FRONTEND_ORIGIN=https://gradmire.com`,
+  `SITE_URL=https://gradmire.com`, and add
+  `<meta name="gm-api-base" content="https://api.gradmire.com">` (or change
   `PRODUCTION_API` in `frontend/assets/api.js`). Keep `SameSite=Lax`.
 - Or serve the API under the site's own origin (a working `/api` rewrite or proxy).
 - Last resort: `SESSION_COOKIE_SAMESITE=None` (forces `Secure`). It works only where the

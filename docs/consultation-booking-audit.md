@@ -111,7 +111,7 @@ field whitelisting; migration runner.
    hosts, which are different *sites* (`vercel.app` is on the Public Suffix
    List). Any cookie-based session will be third-party there and blocked by
    Safari/Firefox and by Chrome when third-party cookies are disabled. A
-   custom domain pair (`gradmire.in` + `api.gradmire.in`) or a working
+   custom domain pair (`gradmire.com` + `api.gradmire.com`) or a working
    same-origin rewrite is required for production logins (see setup doc).
 5. `GET /leads` returns PII with no pagination or field scoping.
 6. Error handler logs full `pg` errors (may include values) — acceptable today

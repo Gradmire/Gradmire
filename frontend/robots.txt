@@ -1,0 +1,14 @@
+# Gradmire: https://gradmire.com
+User-agent: *
+Allow: /
+
+# Signed-in workspaces and the API proxy have nothing for search results.
+Disallow: /gm-api/
+Disallow: /admin
+Disallow: /consultant/
+Disallow: /dashboard
+Disallow: /pages/admin
+Disallow: /pages/consultant-
+Disallow: /pages/dashboard
+
+Sitemap: https://gradmire.com/sitemap.xml

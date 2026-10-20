@@ -1,6 +1,6 @@
 /* Post-deploy smoke test against a running API. Read-only by default.
    Usage:
-     API_URL=https://api.gradmire.in SITE_ORIGIN=https://gradmire.in npm run smoke
+     API_URL=https://api.gradmire.com SITE_ORIGIN=https://gradmire.com npm run smoke
      ... CRON_SECRET=… npm run smoke                 also runs one worker pass
      ... npm run smoke -- --book you@yourdomain.com  also books a guest test slot and cancels it
    Exits non-zero if any check fails. Prints no secrets. */

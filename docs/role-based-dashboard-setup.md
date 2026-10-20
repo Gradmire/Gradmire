@@ -29,7 +29,7 @@ Additive and safe on existing data: existing leads get a status (`converted` if 
 
 ```bash
 cd backend
-STAFF_PASSWORD='…at least 12 characters…' npm run create-staff -- --email you@gradmire.in --first-name Your --role super_admin
+STAFF_PASSWORD='…at least 12 characters…' npm run create-staff -- --email hasanryan052@gmail.com --first-name Hasan --role super_admin
 ```
 
 Create at least two privileged people (two super admins, or a super admin and an admin) so requests can be approved by someone other than the requester. After that, add staff only through **Team and hiring → Invitations**, and change or remove access only through **Users → Request role change / Request access removal**, approved on **Approvals**. Existing staff created by the CLI keep working; they get an employee profile at their first approved change.
