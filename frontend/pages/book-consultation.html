@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script>try{var c=JSON.parse(localStorage.getItem("gm-consent")||"null"),t=(c&&c.preferences&&localStorage.getItem("gradmire-theme"))||sessionStorage.getItem("gradmire-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Book a consultation | Gradmire</title>
+<meta name="description" content="Book a free study-abroad consultation with a Gradmire counsellor: pick a topic, a date and a time that suits you.">
+<link rel="stylesheet" href="../assets/site.css?v=25">
+<link rel="stylesheet" href="../assets/guide-pages.css?v=4">
+<link rel="stylesheet" href="../assets/booking.css?v=2">
+</head>
+<body class="destination-page guide-page bk-page">
+<nav class="nav destination-nav" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><img src="../assets/gradmire-logo.png" alt="Gradmire" height="34" loading="eager"></a>
+    <ul class="nav-links" role="list">
+      <li><a href="destinations.html">Destinations</a></li>
+      <li><a href="find-courses.html">Courses</a></li>
+      <li><a href="find-universities.html">Universities</a></li>
+      <li><a href="scholarships.html">Scholarships</a></li>
+      <li><a href="tools/roi-calculator.html">Tools</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+    <a href="free-consultation.html" class="nav-btn">Book free consultation</a>
+  </div>
+</nav>
+<header class="gp-hero bk-hero">
+  <div class="gp-hero-inner">
+    <div class="gp-hero-copy">
+      <nav class="gp-crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> <span aria-hidden="true">/</span> <span aria-current="page">Book a consultation</span></nav>
+      <span class="gp-eyebrow">Book a consultation</span>
+      <h1>Pick a time to talk with a Gradmire counsellor</h1>
+      <p>Choose what you want to cover, pick a slot that suits you and tell us a little about your plans. You do not need an account to book.</p>
+      <div class="gp-hero-actions"><ul class="bk-facts"><li>Real-time availability</li><li>Video or phone</li><li>Reschedule or cancel online</li></ul></div>
+    </div>
+    
+  </div>
+</header>
+<main class="bk-main" id="main">
+  <noscript><p class="bk-alert">Booking needs JavaScript. You can also <a href="free-consultation.html">send a consultation request</a> and we will call you back.</p></noscript>
+  <div id="bk-flow">
+  <form id="bk-form" class="bk-layout" method="post" novalidate>
+    <div>
+      <p class="bk-alert" id="bk-error" role="alert" hidden></p>
+      <section class="bk-panel" aria-labelledby="bk-step-type">
+        <h2 class="bk-step-title" id="bk-step-type"><span class="bk-step-num">1</span>What would you like to discuss?</h2>
+        <fieldset class="bk-fieldset">
+          <legend class="sr-only">Consultation type</legend>
+          <div class="bk-types" id="bk-types" aria-live="polite"><p class="bk-empty">Loading consultation types…</p></div>
+        </fieldset>
+        <fieldset class="bk-fieldset">
+          <legend class="sr-only">Meeting method</legend>
+          <div class="bk-methods" id="bk-methods"></div>
+        </fieldset>
+      </section>
+
+      <section class="bk-panel" aria-labelledby="bk-step-time">
+        <h2 class="bk-step-title" id="bk-step-time"><span class="bk-step-num">2</span>Choose a date and time</h2>
+        <div class="bk-dates" id="bk-dates" role="group" aria-label="Dates"></div>
+        <div class="bk-tz"><label for="bk-tz">Times shown in</label><select id="bk-tz"></select></div>
+        <div class="bk-slots" id="bk-slots" role="group" aria-label="Available times" aria-live="polite"></div>
+        <span class="bk-field-error" data-error-for="start" hidden></span>
+      </section>
+
+      <section class="bk-panel" aria-labelledby="bk-step-details">
+        <h2 class="bk-step-title" id="bk-step-details"><span class="bk-step-num">3</span>Your details</h2>
+        <div id="bk-signed-in" class="bk-signed-in" hidden></div>
+        <div class="bk-grid" id="bk-contact">
+          <label class="gp-field bk-wide"><span>Full name</span><input name="fullName" type="text" autocomplete="name" maxlength="240" required><span class="bk-field-error" data-error-for="fullName" hidden></span></label>
+          <label class="gp-field"><span>Email address</span><input name="email" type="email" autocomplete="email" maxlength="320" required><span class="bk-field-error" data-error-for="email" hidden></span></label>
+          <label class="gp-field"><span>Phone number</span><span class="bk-phone"><select name="phoneCode" aria-label="Country code"><option value="+91">+91 India</option><option value="+977">+977 Nepal</option><option value="+880">+880 Bangladesh</option><option value="+94">+94 Sri Lanka</option><option value="+92">+92 Pakistan</option><option value="+971">+971 UAE</option><option value="+966">+966 Saudi Arabia</option><option value="+974">+974 Qatar</option><option value="+65">+65 Singapore</option><option value="+60">+60 Malaysia</option><option value="+44">+44 UK</option><option value="+1">+1 USA / Canada</option><option value="+61">+61 Australia</option><option value="+64">+64 New Zealand</option><option value="+353">+353 Ireland</option><option value="+49">+49 Germany</option><option value="+39">+39 Italy</option><option value="+358">+358 Finland</option><option value="+234">+234 Nigeria</option><option value="+254">+254 Kenya</option></select><input name="phoneNumber" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" required aria-label="Phone number"></span><span class="bk-field-error" data-error-for="phone" hidden></span></label>
+        </div>
+        <div class="bk-grid" style="margin-top:.8rem">
+          <label class="gp-field"><span>Preferred destination <em>(optional)</em></span><select name="destination"><option value="">Select a destination</option><option>United Kingdom</option><option>USA</option><option>Canada</option><option>Australia</option><option>Germany</option><option>Ireland</option><option>New Zealand</option><option>Italy</option><option>Finland</option><option>MBBS abroad</option><option>Not sure yet</option></select></label>
+          <label class="gp-field"><span>Intended degree <em>(optional)</em></span><select name="degree"><option value="">Select a level</option><option>Undergraduate</option><option>Postgraduate</option><option>PhD / Research</option><option>MBBS / Medicine</option><option>Foundation / Diploma</option><option>Not sure yet</option></select></label>
+          <label class="gp-field"><span>Preferred course <em>(optional)</em></span><input name="course" type="text" maxlength="200" placeholder="e.g. MSc Data Science, or not sure yet"></label>
+          <label class="gp-field"><span>Intended intake <em>(optional)</em></span><select name="intake" id="bk-intake"><option value="">Select an intake</option></select></label>
+          <label class="gp-field bk-wide"><span>Academic background <em>(optional)</em></span><input name="academicSummary" type="text" maxlength="500" placeholder="e.g. B.Tech CSE, 8.1 CGPA, IELTS 7.0"></label>
+          <label class="gp-field bk-wide"><span>Anything we should know? <em>(optional)</em></span><textarea name="message" maxlength="2000" rows="3"></textarea><span class="bk-field-error" data-error-for="message" hidden></span></label>
+        </div>
+        <div class="bk-hp" aria-hidden="true"><label>Leave this empty<input name="website" type="text" tabindex="-1" autocomplete="off"></label></div>
+        <label class="bk-check"><input type="checkbox" name="contactConsent" required><span>Gradmire may contact me by email and phone about this consultation. (Required)</span></label>
+        <span class="bk-field-error" data-error-for="contactConsent" hidden></span>
+        <label class="bk-check"><input type="checkbox" name="remindersOptIn" checked><span>Email me reminders 24 hours and 1 hour before the session.</span></label>
+        <label class="bk-check"><input type="checkbox" name="marketingOptIn"><span>Send me occasional scholarship tips and event invites.</span></label>
+        <p class="bk-fine">We only ask for what we need to prepare for your consultation. Please do not share passport or bank details here. Under 18? Ask a parent or guardian to join you. <a href="privacy.html">Privacy policy</a></p>
+      </section>
+    </div>
+
+    <aside class="bk-panel bk-summary" aria-labelledby="bk-summary-title">
+      <h2 id="bk-summary-title">Your booking</h2>
+      <dl>
+        <div><dt>Consultation</dt><dd id="bk-sum-type">Not chosen yet</dd></div>
+        <div><dt>When</dt><dd id="bk-sum-when">Not chosen yet</dd></div>
+        <div><dt>How</dt><dd id="bk-sum-method">—</dd></div>
+      </dl>
+      <button type="submit" class="gp-btn gp-btn-primary" id="bk-submit">Confirm booking</button>
+      <p class="bk-fine">Free of charge. You can reschedule or cancel online up to 24 hours before. <span id="bk-account-note">Have an account? <a href="login.html?next=book-consultation.html">Log in</a> to see bookings in your dashboard.</span></p>
+    </aside>
+  </form>
+  </div>
+  <section id="bk-done" class="bk-panel bk-done" hidden tabindex="-1" aria-live="polite"></section>
+</main>
+<footer class="gm-footer" aria-label="Site footer">
+  <div class="gm-footer-inner">
+    <div class="gm-footer-brand">
+      <a class="gm-footer-logo" href="index.html" aria-label="Gradmire home"><img src="../assets/gradmire-logo-white.png" alt="Gradmire" width="200" height="54" loading="lazy" decoding="async"></a>
+      <p class="gm-footer-tagline">Study abroad, organized by subject — not by flag.</p>
+      <form class="footer-subscribe" novalidate><label class="sr-only" for="footer-email">Email address for study-abroad updates</label><input id="footer-email" type="email" name="email" autocomplete="email" placeholder="you@email.com" required><button type="submit" aria-label="Subscribe to updates"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><p class="footer-subscribe-msg" role="status" hidden></p></form>
+    </div>
+    <nav class="gm-footer-col" aria-label="Destinations">
+      <h2 class="gm-footer-title">Destinations</h2>
+      <ul class="gm-footer-links">
+        <li><a href="study-in-uk.html">United Kingdom</a></li>
+        <li><a href="study-in-usa.html">USA</a></li>
+        <li><a href="study-in-canada.html">Canada</a></li>
+        <li><a href="study-in-australia.html">Australia</a></li>
+        <li><a href="study-in-germany.html">Germany</a></li>
+        <li><a href="study-in-ireland.html">Ireland</a></li>
+        <li><a href="study-in-newzealand.html">New Zealand</a></li>
+        <li><a href="study-in-italy.html">Italy</a></li>
+        <li><a href="study-in-finland.html">Finland</a></li>
+        <li><a href="mbbs-abroad.html">MBBS abroad</a></li>
+      </ul>
+    </nav>
+    <nav class="gm-footer-col" aria-label="Services">
+      <h2 class="gm-footer-title">Services</h2>
+      <ul class="gm-footer-links">
+        <li><a href="free-consultation.html?interest=counselling">Free counselling</a></li>
+        <li><a href="test-preparation.html">Test preparation</a></li>
+        <li><a href="visa-assistance.html">Visa assistance</a></li>
+        <li><a href="application-assistance.html">Application assistance</a></li>
+        <li><a href="course-selection-guidance.html">Course selection guidance</a></li>
+        <li><a href="scholarships.html">Scholarships</a></li>
+      </ul>
+    </nav>
+    <nav class="gm-footer-col" aria-label="Tools">
+      <h2 class="gm-footer-title">Tools</h2>
+      <ul class="gm-footer-links">
+        <li><a href="find-courses.html">Course finder</a></li>
+        <li><a href="tools/roi-calculator.html">Study cost calculator</a></li>
+        <li><a href="tools/comparator.html">Course comparator</a></li>
+        <li><a href="tools/deadline-tracker.html">Deadline tracker</a></li>
+        <li><a href="tools/grade-converter.html">GPA / CGPA / SGPA converter</a></li>
+      </ul>
+    </nav>
+    <nav class="gm-footer-col" aria-label="Company">
+      <h2 class="gm-footer-title">Company</h2>
+      <ul class="gm-footer-links">
+        <li><a href="about.html">About us</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="faq.html">FAQs</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="login.html">Student login</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">© 2026 Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · <a href="mailto:privacy@gradmire.in">privacy@gradmire.in</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund-policy.html">Refunds &amp; fees</a><a href="cookie-policy.html">Cookies</a><a href="data-request.html">Your data rights</a><a href="grievance.html">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
+</footer>
+<script src="../assets/site.js?v=28" defer></script>
+<script src="../assets/api.js?v=2" defer></script>
+<script src="../assets/booking-common.js?v=1" defer></script>
+<script src="../assets/booking.js?v=1" defer></script>
+</body>
+</html>

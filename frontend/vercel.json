@@ -1,4 +1,9 @@
 {
+    "redirects": [
+        { "source": "/book-consultation", "destination": "/pages/book-consultation.html", "permanent": false },
+        { "source": "/dashboard/consultations", "destination": "/pages/dashboard-consultations.html", "permanent": false },
+        { "source": "/admin/consultations", "destination": "/pages/admin-consultations.html", "permanent": false }
+    ],
     "rewrites": [
         { "source": "/", "destination": "/pages/index.html" }
     ],

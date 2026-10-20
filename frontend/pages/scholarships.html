@@ -1,436 +1,261 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+<head>
 <meta charset="UTF-8">
 <script>try{var c=JSON.parse(localStorage.getItem("gm-consent")||"null"),t=(c&&c.preferences&&localStorage.getItem("gradmire-theme"))||sessionStorage.getItem("gradmire-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
-<link rel="preconnect" href="https://images.unsplash.com">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Scholarships for Indian Students Abroad 2026 — Gradmire</title>
-<meta name="description" content="Discover government and university scholarships for Indian students to study in the UK, USA, Canada, Australia, Germany and New Zealand. Deadlines, amounts and eligibility — updated for 2026-27.">
-<link rel="canonical" href="https://gradmire.in/scholarships.html">
-<link rel="preload" href="../assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/fonts/fonts.css">
-<style>
-:root{--bg:#F0F2F7;--surface:#FFFFFF;--surface-tint:#E8EBF4;--text-p:#0E1420;--text-s:#556270;--brand:#1A4870;--accent:#007A5A;--accent-dim:rgba(0,122,90,.12);--border:rgba(14,20,32,.1);--sans:'Bricolage Grotesque',system-ui,sans-serif;--mono:'JetBrains Mono','Menlo',monospace;--r-sm:8px;--r-md:16px;--r-lg:24px;--w:1280px;--gutter:clamp(1.25rem,5vw,3rem);--sec:clamp(4rem,8vw,6rem);--ease:cubic-bezier(.16,1,.3,1);}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--accent:#2DB88C;--accent-hover:#27A07B;--accent-dim:rgba(45,184,140,.18);--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(45,184,140,.18);}}
-:root[data-theme="dark"]{--accent:#2DB88C;--accent-hover:#27A07B;--accent-dim:rgba(45,184,140,.18);--bg:#0A0D16;--surface:#121825;--surface-tint:#1A2136;--text-p:#EEF1F8;--text-s:#8893B8;--brand:#4D8FBF;--border:rgba(238,241,248,.1);--accent-dim:rgba(45,184,140,.18);}
-*,*::before,*::after{box-sizing:border-box;margin:0;}
-body{background:var(--bg);color:var(--text-p);font-family:var(--sans);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;}
-img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
-.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:100;background:rgba(240,242,247,.82);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid var(--border);height:68px;}
-.nav-inner{max-width:var(--w);margin:0 auto;padding:0 var(--gutter);height:100%;display:flex;align-items:center;gap:2.5rem;}
-.nav-logo{font-size:1.2rem;font-weight:800;letter-spacing:-.03em;color:var(--brand);}
-.nav-links{list-style:none;padding:0;display:flex;gap:2rem;flex:1;}
-.nav-links a{color:var(--text-s);font-size:.88rem;font-weight:500;transition:color .2s;}
-.nav-links a:hover{color:var(--text-p);}
-.nav-links a[aria-current]{color:var(--text-p);font-weight:700;}
-.nav-btn{display:inline-flex;align-items:center;padding:.55em 1.3em;border-radius:100px;font-family:var(--sans);font-size:.85rem;font-weight:600;background:var(--accent);color:#fff;border:none;cursor:pointer;white-space:nowrap;transition:background .2s,transform .15s;}
-.nav-btn:hover{background:#006649;}
-.nav-btn:active{transform:scale(.97);}
-.nav-ham{display:none;background:none;border:none;cursor:pointer;padding:.5rem;color:var(--text-p);}
-/* Hero */
-.page-hero{max-width:var(--w);margin:0 auto;padding:clamp(3rem,7vw,6rem) var(--gutter) 0;}
-.page-hero-tag{font-family:var(--mono);font-size:.75rem;text-transform:uppercase;letter-spacing:.14em;color:var(--accent);margin-bottom:.75rem;}
-.page-hero-title{font-size:clamp(2.2rem,5vw,4rem);font-weight:800;letter-spacing:-.035em;line-height:.95;margin-bottom:1rem;text-wrap:balance;}
-.page-hero-sub{color:var(--text-s);font-size:1rem;max-width:48ch;line-height:1.65;}
-/* Filter bar */
-.filter-wrap{max-width:var(--w);margin:2.5rem auto 0;padding:0 var(--gutter);}
-.filter-row{display:flex;gap:.65rem;flex-wrap:wrap;align-items:center;}
-.filter-select{padding:.5em 1.1em;border-radius:100px;border:1.5px solid var(--border);font-family:var(--sans);font-size:.85rem;font-weight:500;background:var(--surface);color:var(--text-s);cursor:pointer;transition:border-color .2s;outline:none;}
-.filter-select:focus{border-color:var(--accent);}
-.filter-chip{padding:.45em 1.1em;border-radius:100px;border:1.5px solid var(--border);font-family:var(--sans);font-size:.85rem;font-weight:500;background:var(--surface);color:var(--text-s);cursor:pointer;transition:border-color .2s,background .2s,color .2s;}
-.filter-chip.active{background:#1A4870;border-color:var(--brand);color:#fff;}
-/* Bento featured section */
-.bento-wrap{max-width:var(--w);margin:3rem auto 0;padding:0 var(--gutter);}
-.bento-grid{display:grid;grid-template-columns:3fr 2fr;grid-template-rows:auto auto;gap:.875rem;}
-.bento-hero{grid-row:span 2;border-radius:var(--r-lg);overflow:hidden;position:relative;background:var(--brand-deep,#0d2340);min-height:360px;display:flex;flex-direction:column;justify-content:flex-end;}
-.bento-hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;opacity:.4;}
-.bento-hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,14,26,.95) 30%,transparent 70%);}
-.bento-hero-content{position:relative;padding:2rem;}
-.bento-tag{display:inline-flex;align-items:center;gap:.4rem;padding:.3em .8em;border-radius:100px;font-family:var(--mono);font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.875rem;}
-.tag-featured{background:rgba(255,215,0,.15);color:#FFD700;border:1px solid rgba(255,215,0,.3);}
-.tag-deadline{background:rgba(239,68,68,.12);color:#EF4444;border:1px solid rgba(239,68,68,.25);}
-.tag-dest{background:var(--accent-dim);color:var(--accent);border:1px solid rgba(0,168,120,.25);}
-.bento-hero-amount{font-family:var(--mono);font-size:clamp(1.8rem,3vw,2.8rem);font-weight:700;color:var(--accent);letter-spacing:-.04em;line-height:1;margin-bottom:.5rem;}
-.bento-hero-name{font-size:clamp(1.2rem,2vw,1.6rem);font-weight:800;color:#fff;letter-spacing:-.02em;margin-bottom:.5rem;line-height:1.1;}
-.bento-hero-sub{font-size:.85rem;color:rgba(255,255,255,.6);line-height:1.5;max-width:36ch;margin-bottom:1.25rem;}
-.bento-side-card{background:var(--surface);border-radius:var(--r-md);padding:1.5rem;border:1px solid var(--border);display:flex;flex-direction:column;justify-content:space-between;}
-.bento-side-amount{font-family:var(--mono);font-size:1.5rem;font-weight:700;color:var(--brand);letter-spacing:-.03em;line-height:1;margin-bottom:.4rem;}
-.bento-side-name{font-size:1rem;font-weight:700;letter-spacing:-.01em;margin-bottom:.3rem;line-height:1.2;}
-.bento-side-sub{font-size:.82rem;color:var(--text-s);line-height:1.45;margin-bottom:.875rem;}
-/* Scholarship cards grid */
-.schol-section{max-width:var(--w);margin:3rem auto;padding:0 var(--gutter);}
-.schol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;}
-.schol-card{background:var(--surface);border-radius:var(--r-md);border:1px solid var(--border);padding:1.5rem;display:flex;flex-direction:column;gap:.875rem;transition:transform .35s var(--ease),box-shadow .35s var(--ease);}
-.schol-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(10,14,26,.1);}
-.schol-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;}
-.schol-year{font-family:var(--mono);font-size:.72rem;color:var(--text-s);letter-spacing:.06em;}
-.schol-amount{font-family:var(--mono);font-size:1.3rem;font-weight:700;color:var(--accent);letter-spacing:-.03em;line-height:1;}
-.schol-name{font-size:1rem;font-weight:700;letter-spacing:-.01em;line-height:1.2;}
-.schol-dest{display:inline-flex;align-items:center;gap:.35rem;font-size:.8rem;color:var(--text-s);margin-top:.3rem;}
-.schol-body{font-size:.85rem;color:var(--text-s);line-height:1.55;flex:1;}
-.schol-meta{display:flex;gap:1rem;align-items:center;justify-content:space-between;padding-top:.75rem;border-top:1px solid var(--border);}
-.schol-deadline{font-family:var(--mono);font-size:.72rem;color:var(--text-s);}
-.schol-cta{font-size:.82rem;font-weight:700;color:var(--accent);}
-.btn-sm{display:inline-flex;align-items:center;gap:.4em;padding:.55em 1.25em;border-radius:100px;font-family:var(--sans);font-size:.85rem;font-weight:600;border:none;cursor:pointer;transition:transform .15s,background .2s;text-decoration:none;}
-.btn-sm:active{transform:scale(.97);}
-.btn-sm-primary{background:var(--accent);color:#fff;}
-.btn-sm-primary:hover{background:#006649;}
-.btn-sm-outline{background:transparent;border:1.5px solid var(--border);color:var(--text-p);}
-.btn-sm-outline:hover{border-color:var(--text-p);}
-/* CTA strip */
-.cta-strip{background:#1A4870;padding:clamp(3.5rem,7vw,6rem) var(--gutter);text-align:center;margin-top:var(--sec);}
-.cta-strip-title{font-size:clamp(1.8rem,3.5vw,3rem);font-weight:800;color:#fff;letter-spacing:-.03em;line-height:1.05;margin-bottom:1rem;text-wrap:balance;}
-.cta-strip-sub{color:rgba(255,255,255,.7);font-size:1rem;margin-bottom:2rem;}
-/* Footer */
-.footer{background:var(--surface);border-top:1px solid var(--border);padding:clamp(3rem,6vw,5rem) var(--gutter) 2rem;}
-.footer-inner{max-width:var(--w);margin:0 auto;display:grid;grid-template-columns:2fr repeat(4,minmax(0,1fr));gap:2rem;margin-bottom:3rem;}
-.footer-brand{font-size:1.3rem;font-weight:800;letter-spacing:-.03em;color:var(--brand);display:block;margin-bottom:.75rem;}
-.footer-tagline{font-size:.875rem;color:var(--text-s);line-height:1.6;max-width:28ch;}
-.footer-col-title{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text-s);margin-bottom:1rem;}
-.footer-links{list-style:none;padding:0;display:flex;flex-direction:column;gap:.6rem;}
-.footer-links a{color:var(--text-s);font-size:.875rem;transition:color .2s;}
-.footer-links a:hover{color:var(--text-p);}
-.footer-bottom{max-width:var(--w);margin:0 auto;padding-top:2rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
-.footer-legal{font-size:.8rem;color:var(--text-s);}
-.reveal{opacity:0;transform:translateY(20px);transition:opacity .65s var(--ease),transform .65s var(--ease);}
-.reveal.on{opacity:1;transform:translateY(0);}
-@media(max-width:960px){.bento-grid{grid-template-columns:1fr;}.bento-hero{grid-row:span 1;min-height:280px;}.schol-grid{grid-template-columns:1fr 1fr;}.footer-inner{grid-template-columns:1fr 1fr;}}
-@media(max-width:640px){.nav-links,.nav-btn{display:none;}.nav-ham{display:flex;}.schol-grid{grid-template-columns:1fr;}.footer-inner{grid-template-columns:1fr;}}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .nav{background:rgba(10,13,22,.88);}}
-:root[data-theme="dark"] .nav{background:rgba(10,13,22,.88);}
-.country-scholarship-intro{max-width:var(--w);margin:1.5rem auto 0;padding:0 var(--gutter)} .country-scholarship-inner{padding:1.5rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md)} .country-scholarship-inner p:last-child{max-width:75ch;color:var(--text-s);font-size:.9rem} .schol-card[hidden],.bento-side-card[hidden],.bento-hero[hidden]{display:none!important}
-</style>
-<link rel="stylesheet" href="../assets/site.css?v=22">
-
-<nav class="nav" aria-label="Main navigation">
+<title>Scholarships to Study Abroad: Bachelor’s &amp; Master’s by Country | Gradmire</title>
+<meta name="description" content="Scholarships for bachelor’s and master’s study in the UK, USA, Canada, Australia, Germany, Ireland, New Zealand, Italy and Finland, with official links and application help.">
+<link rel="stylesheet" href="../assets/site.css?v=25">
+<link rel="stylesheet" href="../assets/guide-pages.css?v=4">
+</head>
+<body class="destination-page guide-page">
+<nav class="nav destination-nav" aria-label="Main navigation">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo"><img src="../assets/gradmire-logo.png" alt="Gradmire" height="34" style="display:block;max-width:155px;"></a>
+    <a href="index.html" class="nav-logo"><img src="../assets/gradmire-logo.png" alt="Gradmire" height="34" loading="eager"></a>
     <ul class="nav-links" role="list">
       <li><a href="destinations.html">Destinations</a></li>
       <li><a href="find-courses.html">Courses</a></li>
       <li><a href="find-universities.html">Universities</a></li>
-      <li><a href="scholarships.html" aria-current="page">Scholarships</a></li>
+      <li><a href="scholarships.html">Scholarships</a></li>
       <li><a href="tools/roi-calculator.html">Tools</a></li>
       <li><a href="faq.html">FAQ</a></li>
       <li><a href="about.html">About</a></li>
     </ul>
-    <div style="display:flex;gap:.75rem;align-items:center">
-      <a href="login.html" class="nav-btn" style="background:transparent;color:var(--text-p);border:1.5px solid var(--border)">Log in</a>
-      <a href="free-consultation.html" class="nav-btn">Free consultation</a>
-    </div>
-    <button class="nav-ham" aria-label="Open menu"><svg width="22" height="16" viewBox="0 0 22 16" fill="none"><rect y="0" width="22" height="2" rx="1" fill="currentColor"/><rect y="7" width="22" height="2" rx="1" fill="currentColor"/><rect y="14" width="22" height="2" rx="1" fill="currentColor"/></svg></button>
+    <a href="free-consultation.html" class="nav-btn">Book free consultation</a>
   </div>
 </nav>
-
-<div class="page-hero reveal">
-  <div class="page-hero-tag">Scholarships & Funding</div>
-  <h1 class="page-hero-title">₹ Crores in scholarships.<br>Waiting for you.</h1>
-  <p class="page-hero-sub">Our counsellors help shortlist scholarships that may fit your profile, then support your applications. Explore university and country funding options across nine study destinations.</p>
-</div>
-<section class="country-scholarship-intro" id="scholarship-country-intro" hidden aria-live="polite"></section>
-
-<div class="filter-wrap">
-  <div class="filter-row">
-    <select class="filter-select" aria-label="Filter by destination">
-      <option>All destinations</option>
-      <option>United Kingdom</option>
-      <option>USA</option>
-      <option>Canada</option>
-      <option>Australia</option>
-      <option>Germany</option>
-      <option>Ireland</option>
-      <option>Italy</option>
-      <option>New Zealand</option>
-      <option>Finland</option>
-    </select>
-    <select class="filter-select" aria-label="Filter by degree level">
-      <option>All levels</option>
-      <option>Undergraduate</option>
-      <option>Postgraduate</option>
-      <option>PhD / Research</option>
-      <option>Foundation</option>
-    </select>
-    <select class="filter-select" aria-label="Filter by subject">
-      <option>All subjects</option>
-      <option>Engineering</option>
-      <option>Business & MBA</option>
-      <option>Computer Science</option>
-      <option>Medicine</option>
-      <option>Arts & Humanities</option>
-      <option>Law</option>
-    </select>
-    <button class="filter-chip active">Government</button>
-    <button class="filter-chip">University</button>
-    <button class="filter-chip">Merit-based</button>
-    <button class="filter-chip">Need-based</button>
+<script>(function(){var c=(new URLSearchParams(location.search).get('country')||'').toLowerCase().replace(/[^a-z]/g,'');var ok=["uk","usa","canada","australia","germany","ireland","newzealand","italy","finland"];if(ok.indexOf(c)>-1)location.replace('scholarships-in-'+c+'.html');})();</script>
+<header class="gp-hero">
+  <div class="gp-hero-inner">
+    <div class="gp-hero-copy">
+      <nav class="gp-crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> <span aria-hidden="true">/</span> <span aria-current="page">Scholarships</span></nav>
+      <span class="gp-eyebrow">Scholarships</span>
+      <h1>Scholarships for bachelor’s and master’s study abroad.</h1>
+      <p>Explore government, university and foundation scholarships in nine study destinations. See what each covers and who can apply, then get help putting together a strong application.</p>
+      <div class="gp-hero-actions"><a class="gp-btn gp-btn-primary" href="#countries">Choose a country</a>
+        <a class="gp-btn gp-btn-ghost" href="#how-we-help">How we help</a></div>
+    </div>
+    <form class="gp-lead" data-consult-form data-interest="scholarship" data-country="" novalidate aria-labelledby="lead-title-schol-hub">
+  <p class="gp-lead-eyebrow">Free scholarship guidance</p>
+  <h2 class="gp-lead-title" id="lead-title-schol-hub">Find scholarships that fit your profile</h2>
+  <label class="gp-field"><span>Full name</span><input name="name" type="text" autocomplete="name" required></label>
+  <label class="gp-field"><span>Phone number</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" required></label>
+  <label class="gp-field"><span>Email <em>(optional)</em></span><input name="email" type="email" autocomplete="email"></label>
+  <p class="gp-lead-error" role="alert" hidden></p>
+  <button type="submit" class="gp-btn gp-btn-primary">Book my free counselling <span aria-hidden="true">→</span></button>
+  <p class="gp-lead-fine">You’ll confirm your details and consent on the next step. Under 18? Please ask a parent or guardian first. <a href="privacy.html">Privacy policy</a></p>
+</form>
   </div>
-</div>
-
-<!-- Bento featured -->
-<div class="bento-wrap">
-  <div class="bento-grid reveal">
-    <div class="bento-hero">
-      <img class="bento-hero-img" src="https://images.unsplash.com/photo-1580537659466-0a9bfa916a54?auto=format&fit=crop&w=900&q=80" alt="Oxford University">
-      <div class="bento-hero-overlay"></div>
-      <div class="bento-hero-content">
-        <span class="bento-tag tag-featured">★ Featured scholarship</span>
-        <div class="bento-hero-amount">Full tuition + £18,000/yr</div>
-        <div class="bento-hero-name">Chevening Scholarship</div>
-        <p class="bento-hero-sub">The UK government's flagship scholarship for future leaders. Covers full tuition, travel, and a living allowance for any master's degree at any UK university.</p>
-        <div style="display:flex;gap:.75rem;">
-          <a href="free-consultation.html?interest=scholarship" class="btn-sm btn-sm-primary">Get help applying</a>
-          <a href="free-consultation.html?interest=scholarship" class="btn-sm btn-sm-outline" style="color:#fff;border-color:rgba(255,255,255,.3)">Get counselling</a>
-        </div>
-      </div>
-    </div>
-    <div class="bento-side-card">
-      <div>
-        <span class="bento-tag tag-dest">🇺🇸 USA</span>
-        <div class="bento-side-amount">Up to $65,000/yr</div>
-        <div class="bento-side-name">Fulbright-Nehru Master's Fellowship</div>
-        <p class="bento-side-sub">US-government funded. For outstanding Indian students pursuing a master's in the USA.</p>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;">
-        <span style="font-family:var(--mono);font-size:.72rem;color:var(--text-s)">Deadline: 15 Jul 2027</span>
-        <a href="free-consultation.html?interest=scholarship" class="schol-cta">Get application support →</a>
-      </div>
-    </div>
-    <div class="bento-side-card">
-      <div>
-        <span class="bento-tag tag-dest">🇦🇺 Australia</span>
-        <div class="bento-side-amount">Full tuition + AUD 33,000</div>
-        <div class="bento-side-name">Australia Awards Scholarship</div>
-        <p class="bento-side-sub">Australian government scholarship covering tuition, flights, health cover, and monthly stipend.</p>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;">
-        <span style="font-family:var(--mono);font-size:.72rem;color:var(--text-s)">Deadline: 30 Apr 2027</span>
-        <a href="free-consultation.html?interest=scholarship" class="schol-cta">Get application support →</a>
-      </div>
-    </div>
+</header>
+<main id="main">
+<section class="gp-section" id="countries">
+  <span class="gp-tag">By country</span>
+  <h2>Scholarships by destination</h2>
+  <div class="gp-tile-grid">
+    <a class="gp-tile" href="scholarships-in-uk.html">
+      <span class="gp-tile-name">Scholarships in UK</span>
+      <span class="gp-tile-meta">6 scholarships and award types</span>
+      <span class="gp-tile-meta">Bachelor’s · Master’s</span>
+      <span class="gp-tile-go" aria-hidden="true">→</span>
+    </a>
+    <a class="gp-tile" href="scholarships-in-usa.html">
+      <span class="gp-tile-name">Scholarships in USA</span>
+      <span class="gp-tile-meta">5 scholarships and award types</span>
+      <span class="gp-tile-meta">Bachelor’s · Master’s</span>
+      <span class="gp-tile-go" aria-hidden="true">→</span>
+    </a>
+    <a class="gp-tile" href="scholarships-in-canada.html">
+      <span class="gp-tile-name">Scholarships in Canada</span>
+      <span class="gp-tile-meta">4 scholarships and award types</span>
+      <span class="gp-tile-meta">Bachelor’s · Master’s</span>
+      <span class="gp-tile-go" aria-hidden="true">→</span>
+    </a>
+    <a class="gp-tile" href="scholarships-in-australia.html">
+      <span class="gp-tile-name">Scholarships in Australia</span>
+      <span class="gp-tile-meta">4 scholarships and award types</span>
+      <span class="gp-tile-meta">Bachelor’s · Master’s</span>
+      <span class="gp-tile-go" aria-hidden="true">→</span>
+    </a>
+    <a class="gp-tile" href="scholarships-in-germany.html">
+      <span class="gp-tile-name">Scholarships in Germany</span>
+      <span class="gp-tile-meta">4 scholarships and award types</span>
+      <span class="gp-tile-meta">Bachelor’s · Master’s</span>
+      <span class="gp-tile-go" aria-hidden="true">→</span>
+    </a>
+    <a class="gp-tile" href="scholarships-in-ireland.html">
+      <span class="gp-tile-name">Scholarships in Ireland</span>
+      <span class="gp-tile-meta">2 scholarships and award types</span>
+      <span class="gp-tile-meta">Bachelor’s · Master’s</span>
+      <span class="gp-tile-go" aria-hidden="true">→</span>
+    </a>
+    <a class="gp-tile" href="scholarships-in-newzealand.html">
+      <span class="gp-tile-name">Scholarships in New Zealand</span>
+      <span class="gp-tile-meta">3 scholarships and award types</span>
+      <span class="gp-tile-meta">Bachelor’s · Master’s</span>
+      <span class="gp-tile-go" aria-hidden="true">→</span>
+    </a>
+    <a class="gp-tile" href="scholarships-in-italy.html">
+      <span class="gp-tile-name">Scholarships in Italy</span>
+      <span class="gp-tile-meta">4 scholarships and award types</span>
+      <span class="gp-tile-meta">Bachelor’s · Master’s</span>
+      <span class="gp-tile-go" aria-hidden="true">→</span>
+    </a>
+    <a class="gp-tile" href="scholarships-in-finland.html">
+      <span class="gp-tile-name">Scholarships in Finland</span>
+      <span class="gp-tile-meta">2 scholarships and award types</span>
+      <span class="gp-tile-meta">Bachelor’s · Master’s</span>
+      <span class="gp-tile-go" aria-hidden="true">→</span>
+    </a>
   </div>
-</div>
+</section>
 
-<!-- Scholarship grid -->
-<div class="schol-section">
-  <h2 class="reveal" style="font-size:clamp(1.3rem,2.2vw,1.75rem);font-weight:800;letter-spacing:-.02em;margin-bottom:2rem;">All scholarships</h2>
-  <div class="schol-grid" id="schol-grid">
-
-    <div class="schol-card reveal">
-      <div class="schol-card-top">
-        <div><div class="schol-year">2026–27</div><span class="bento-tag tag-dest" style="margin-top:.4rem;margin-bottom:0">🇬🇧 UK</span></div>
-        <div class="schol-amount">£10,000</div>
-      </div>
-      <div class="schol-name">Commonwealth Shared Scholarship</div>
-      <p class="schol-body">For students from developing Commonwealth countries. Covers fees, airfare, and monthly stipend. Offered by UK universities and the Commonwealth Scholarship Commission.</p>
-      <div class="schol-meta">
-        <span class="schol-deadline">Deadline: 22 Nov 2026</span>
-        <a href="free-consultation.html?interest=scholarship" class="schol-cta">Get application support →</a>
-      </div>
+<section class="gp-section" id="from-india">
+  <span class="gp-tag">For Indian students</span>
+  <h2>Programmes that fund study in several countries</h2>
+  <p class="gp-lead-text">Indian trusts and foundations that support postgraduate study abroad, wherever you are admitted.</p>
+  <div class="gp-schol-list">
+<article class="gp-schol" data-levels="pg">
+  <div class="gp-schol-main">
+    <div class="gp-schol-head">
+      <h3>Inlaks Shivdasani Scholarships</h3>
+      <div class="gp-schol-levels"><span>Master’s</span></div>
     </div>
-
-    <div class="schol-card reveal" style="transition-delay:.05s">
-      <div class="schol-card-top">
-        <div><div class="schol-year">2026–27</div><span class="bento-tag tag-dest" style="margin-top:.4rem;margin-bottom:0">🇨🇦 Canada</span></div>
-        <div class="schol-amount">CAD 12,000</div>
-      </div>
-      <div class="schol-name">Vanier Canada Graduate Scholarship</div>
-      <p class="schol-body">For doctoral students. CAD $50,000/year for up to 3 years. Awarded by Canada's three federal research councils to world-class doctoral students.</p>
-      <div class="schol-meta">
-        <span class="schol-deadline">Deadline: 1 Nov 2026</span>
-        <a href="free-consultation.html?interest=scholarship" class="schol-cta">Get application support →</a>
-      </div>
-    </div>
-
-    <div class="schol-card reveal" style="transition-delay:.1s">
-      <div class="schol-card-top">
-        <div><div class="schol-year">2026–27</div><span class="bento-tag tag-dest" style="margin-top:.4rem;margin-bottom:0">🇩🇪 Germany</span></div>
-        <div class="schol-amount">€850/month</div>
-      </div>
-      <div class="schol-name">DAAD Scholarship</div>
-      <p class="schol-body">Germany's premier academic exchange programme. Open to postgraduate and doctoral students. Covers living costs, health insurance, and travel.</p>
-      <div class="schol-meta">
-        <span class="schol-deadline">Deadline: 15 Oct 2026</span>
-        <a href="free-consultation.html?interest=scholarship" class="schol-cta">Get application support →</a>
-      </div>
-    </div>
-
-    <div class="schol-card reveal" style="transition-delay:.15s">
-      <div class="schol-card-top">
-        <div><div class="schol-year">2026–27</div><span class="bento-tag tag-dest" style="margin-top:.4rem;margin-bottom:0">🇬🇧 UK</span></div>
-        <div class="schol-amount">Full tuition</div>
-      </div>
-      <div class="schol-name">Gates Cambridge Scholarship</div>
-      <p class="schol-body">Awarded to outstanding applicants from outside the UK. Covers full tuition, maintenance, travel, and academic development funding for Cambridge postgraduate degrees.</p>
-      <div class="schol-meta">
-        <span class="schol-deadline">Deadline: 5 Dec 2026</span>
-        <a href="free-consultation.html?interest=scholarship" class="schol-cta">Get application support →</a>
-      </div>
-    </div>
-
-    <div class="schol-card reveal" style="transition-delay:.2s">
-      <div class="schol-card-top">
-        <div><div class="schol-year">2026–27</div><span class="bento-tag tag-dest" style="margin-top:.4rem;margin-bottom:0">🇮🇪 Ireland</span></div>
-        <div class="schol-amount">€10,000</div>
-      </div>
-      <div class="schol-name">Government of Ireland International Education Scholarship</div>
-      <p class="schol-body">Prestigious scholarship for one year of study in Ireland. 60 scholarships per year for students from any country outside the EU/EEA.</p>
-      <div class="schol-meta">
-        <span class="schol-deadline">Deadline: 28 Feb 2027</span>
-        <a href="free-consultation.html?interest=scholarship" class="schol-cta">Get application support →</a>
-      </div>
-    </div>
-
-    <div class="schol-card reveal" style="transition-delay:.25s">
-      <div class="schol-card-top">
-        <div><div class="schol-year">2026–27</div><span class="bento-tag tag-dest" style="margin-top:.4rem;margin-bottom:0">🇦🇺 Australia</span></div>
-        <div class="schol-amount">AUD 28,000</div>
-      </div>
-      <div class="schol-name">Destination Australia Scholarship</div>
-      <p class="schol-body">Supports domestic and international students to study and live in regional Australia. Worth up to AUD $15,000 per year for up to two years.</p>
-      <div class="schol-meta">
-        <span class="schol-deadline">Deadline: 31 Mar 2027</span>
-        <a href="free-consultation.html?interest=scholarship" class="schol-cta">Get application support →</a>
-      </div>
-    </div>
-
-    <div class="schol-card reveal">
-      <div class="schol-card-top">
-        <div><div class="schol-year">2026–27</div><span class="bento-tag tag-dest" style="margin-top:.4rem;margin-bottom:0">🇺🇸 USA</span></div>
-        <div class="schol-amount">$50,000/yr</div>
-      </div>
-      <div class="schol-name">Inlaks Scholarship</div>
-      <p class="schol-body">Exclusively for Indian nationals to study at top-ranked universities in the USA, UK, and Europe. Covers full fees plus living expenses.</p>
-      <div class="schol-meta">
-        <span class="schol-deadline">Deadline: 25 Jan 2027</span>
-        <a href="free-consultation.html?interest=scholarship" class="schol-cta">Get application support →</a>
-      </div>
-    </div>
-
-    <div class="schol-card reveal" style="transition-delay:.05s">
-      <div class="schol-card-top">
-        <div><div class="schol-year">2026–27</div><span class="bento-tag tag-dest" style="margin-top:.4rem;margin-bottom:0">🇳🇿 NZ</span></div>
-        <div class="schol-amount">NZD 30,000</div>
-      </div>
-      <div class="schol-name">New Zealand Excellence Awards</div>
-      <p class="schol-body">For postgraduate students from South Asia. Awarded by the New Zealand government to build international connections through shared education.</p>
-      <div class="schol-meta">
-        <span class="schol-deadline">Deadline: 28 Feb 2027</span>
-        <a href="free-consultation.html?interest=scholarship" class="schol-cta">Get application support →</a>
-      </div>
-    </div>
-
-    <div class="schol-card reveal" style="transition-delay:.1s">
-      <div class="schol-card-top">
-        <div><div class="schol-year">2026–27</div><span class="bento-tag tag-dest" style="margin-top:.4rem;margin-bottom:0">🇬🇧 UK</span></div>
-        <div class="schol-amount">£5,000–£13,000</div>
-      </div>
-      <div class="schol-name">University of Edinburgh Global Scholarship</div>
-      <p class="schol-body">Awarded to exceptional international undergraduates and postgraduates entering Edinburgh. Competitive — fewer than 100 per year globally.</p>
-      <div class="schol-meta">
-        <span class="schol-deadline">Deadline: 1 Apr 2027</span>
-        <a href="free-consultation.html?interest=scholarship" class="schol-cta">Get application support →</a>
-      </div>
-    </div>
-
-    <div class="schol-card reveal">
-      <div class="schol-card-top">
-        <div><div class="schol-year">Check current call</div><span class="bento-tag tag-dest" style="margin-top:.4rem;margin-bottom:0">🇮🇹 Italy</span></div>
-        <div class="schol-amount">Varies</div>
-      </div>
-      <div class="schol-name">Regional DSU Scholarship opportunities</div>
-      <p class="schol-body">Regional student-support awards may combine fee reductions and living assistance. Availability, eligibility and benefits vary by region, university and annual application call.</p>
-      <div class="schol-meta">
-        <span class="schol-deadline">Check the current deadline</span>
-        <a href="free-consultation.html?interest=scholarship" class="schol-cta">Get application support →</a>
-      </div>
-    </div>
-
-    <div class="schol-card reveal">
-      <div class="schol-card-top">
-        <div><div class="schol-year">University-specific</div><span class="bento-tag tag-dest" style="margin-top:.4rem;margin-bottom:0">🇫🇮 Finland</span></div>
-        <div class="schol-amount">Varies</div>
-      </div>
-      <div class="schol-name">Finnish university scholarships &amp; tuition waivers</div>
-      <p class="schol-body">Scholarships are offered by individual universities, are competitive and typically support tuition rather than living costs. Finland’s official study guide says there are no general government scholarship programmes for bachelor’s and master’s degrees. <a href="https://www.studyinfinland.fi/funding-your-studies/bachelors-and-masters-scholarships" target="_blank" rel="noopener noreferrer">Official guidance →</a></p>
-      <div class="schol-meta">
-        <span class="schol-deadline">Check the university’s current call</span>
-        <a href="free-consultation.html?interest=scholarship" class="schol-cta">Get application support →</a>
-      </div>
-    </div>
-
+    <p class="gp-schol-provider">Inlaks Shivdasani Foundation</p>
+    <dl class="gp-schol-facts">
+      <div><dt>Value</dt><dd>Tuition, living expenses and travel, up to a set ceiling</dd></div>
+      <div><dt>Who can apply</dt><dd>Indian citizens under 30 with an offer from a top university in the USA, UK or Europe, for master’s or other postgraduate study.</dd></div>
+      <div><dt>When to apply</dt><dd>Usually opens in January and closes in spring.</dd></div>
+    </dl>
   </div>
-  <div style="text-align:center;margin-top:3rem;">
-    <button class="btn-sm btn-sm-outline" style="padding:.75em 2.5em;font-size:.95rem;">Load more scholarships</button>
+  <div class="gp-schol-actions">
+    <a class="gp-btn gp-btn-primary" href="free-consultation.html?interest=scholarship#book" data-open-consult data-scholarship="Inlaks Shivdasani Scholarships">Apply with Gradmire</a>
+    <a class="gp-schol-official" href="https://www.inlaksfoundation.org/scholarships/" target="_blank" rel="noopener noreferrer">Official details <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>
   </div>
-</div>
-
-<div class="cta-strip">
-  <h2 class="cta-strip-title reveal">Not sure which scholarship you qualify for?</h2>
-  <p class="cta-strip-sub reveal">Our counsellors identify the exact scholarships matching your profile — and help you write a winning application.</p>
-  <a href="free-consultation.html" class="btn-sm btn-sm-primary reveal" style="padding:.85em 2.2em;font-size:1rem;">Get free scholarship guidance</a>
-</div>
-
-<footer class="footer" aria-label="Site footer">
-  <div class="footer-inner">
-    <div><a class="footer-logo" href="index.html" aria-label="Gradmire home"><img src="../assets/gradmire-logo-white.png" alt="Gradmire" width="200" height="54" loading="lazy" decoding="async"></a><p class="footer-tagline">Study abroad, organized by subject — not by flag.</p><form class="footer-subscribe" novalidate><label class="sr-only" for="footer-email">Email address for study-abroad updates</label><input id="footer-email" type="email" name="email" autocomplete="email" placeholder="you@email.com" required><button type="submit" aria-label="Subscribe to updates"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><p class="footer-subscribe-msg" role="status" hidden></p></form></div>
-    <div><div class="footer-col-title">Destinations</div><ul class="footer-links"><li><a href="study-in-uk.html">United Kingdom</a></li><li><a href="study-in-usa.html">USA</a></li><li><a href="study-in-canada.html">Canada</a></li><li><a href="study-in-australia.html">Australia</a></li><li><a href="study-in-germany.html">Germany</a></li><li><a href="study-in-ireland.html">Ireland</a></li><li><a href="study-in-newzealand.html">New Zealand</a></li><li><a href="study-in-italy.html">Italy</a></li><li><a href="study-in-finland.html">Finland</a></li></ul></div>
-    <div><div class="footer-col-title">Services</div><ul class="footer-links"><li><a href="find-courses.html">Course finder</a></li><li><a href="find-universities.html">University finder</a></li><li><a href="scholarships.html">Scholarships</a></li><li><a href="free-consultation.html">Visa support</a></li></ul></div>
-    <div><div class="footer-col-title">Tools</div><ul class="footer-links"><li><a href="tools/roi-calculator.html">Study cost calculator</a></li><li><a href="tools/comparator.html">Course comparator</a></li><li><a href="tools/deadline-tracker.html">Deadline tracker</a></li><li><a href="tools/grade-converter.html">GPA / CGPA converter</a></li></ul></div>
-    <div><div class="footer-col-title">Company</div><ul class="footer-links"><li><a href="about.html">About us</a></li><li><a href="blog.html">Blog</a></li><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+</article>
+<article class="gp-schol" data-levels="pg">
+  <div class="gp-schol-main">
+    <div class="gp-schol-head">
+      <h3>J N Tata Endowment loan scholarships</h3>
+      <div class="gp-schol-levels"><span>Master’s</span></div>
+    </div>
+    <p class="gp-schol-provider">J N Tata Endowment</p>
+    <dl class="gp-schol-facts">
+      <div><dt>Value</dt><dd>A loan scholarship (to be repaid), with possible travel grants</dd></div>
+      <div><dt>Who can apply</dt><dd>Indian graduates going abroad for postgraduate study in any field.</dd></div>
+      <div><dt>When to apply</dt><dd>Usually one application round a year, early in the year.</dd></div>
+    </dl>
   </div>
-  <div class="footer-bottom"><span class="footer-legal">© 2026 Gradmire Education Pvt. Ltd. All rights reserved.</span><div style="display:flex;gap:1.5rem;"><a href="privacy.html" class="footer-legal">Privacy policy</a><a href="terms.html" class="footer-legal">Terms of use</a><a href="grievance.html" class="footer-legal">Grievance</a></div></div>
-    <div class="gm-legal-bar gm-legal-bar--light"><p class="gm-legal-entity">Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · <a href="mailto:privacy@gradmire.in">privacy@gradmire.in</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund-policy.html">Refunds &amp; fees</a><a href="cookie-policy.html">Cookies</a><a href="data-request.html">Your data rights</a><a href="grievance.html">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
+  <div class="gp-schol-actions">
+    <a class="gp-btn gp-btn-primary" href="free-consultation.html?interest=scholarship#book" data-open-consult data-scholarship="J N Tata Endowment loan scholarships">Apply with Gradmire</a>
+    <a class="gp-schol-official" href="https://www.jntataendowment.org/" target="_blank" rel="noopener noreferrer">Official details <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>
+  </div>
+</article>
+<article class="gp-schol" data-levels="pg">
+  <div class="gp-schol-main">
+    <div class="gp-schol-head">
+      <h3>K C Mahindra Scholarships for Post-Graduate Studies Abroad</h3>
+      <div class="gp-schol-levels"><span>Master’s</span></div>
+    </div>
+    <p class="gp-schol-provider">K C Mahindra Education Trust</p>
+    <dl class="gp-schol-facts">
+      <div><dt>Value</dt><dd>Interest-free loan scholarships</dd></div>
+      <div><dt>Who can apply</dt><dd>Indian graduates with an admission offer or application for postgraduate study abroad.</dd></div>
+      <div><dt>When to apply</dt><dd>Usually opens in February and closes in March.</dd></div>
+    </dl>
+  </div>
+  <div class="gp-schol-actions">
+    <a class="gp-btn gp-btn-primary" href="free-consultation.html?interest=scholarship#book" data-open-consult data-scholarship="K C Mahindra Scholarships for Post-Graduate Studies Abroad">Apply with Gradmire</a>
+    <a class="gp-schol-official" href="https://www.kcmet.org/" target="_blank" rel="noopener noreferrer">Official details <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>
+  </div>
+</article>
+  </div>
+</section>
+
+<section class="gp-section" id="how-we-help">
+  <span class="gp-tag">How we help</span>
+  <h2>Apply for scholarships with Gradmire</h2>
+  <ol class="gp-steps">
+    <li><h3>Shortlist</h3><p>We match your profile, course and destination to the scholarships you are realistically eligible for.</p></li>
+    <li><h3>Plan deadlines</h3><p>Many scholarship deadlines come before admission deadlines. We build one timeline for both.</p></li>
+    <li><h3>Strengthen your application</h3><p>Feedback on scholarship essays, personal statements and CVs; the writing stays yours.</p></li>
+    <li><h3>References and documents</h3><p>Guidance on referees, transcripts and any financial documents the scholarship asks for.</p></li>
+    <li><h3>Interviews</h3><p>Practice for scholarship interviews, such as Chevening’s.</p></li>
+    <li><h3>Plan the rest</h3><p>Most scholarships are partial, so we help you plan the remaining funding too.</p></li>
+  </ol>
+</section>
+
+<section class="gp-section gp-faq" id="faq">
+  <span class="gp-tag">FAQs</span>
+  <h2>Scholarships: common questions</h2>
+  <details><summary>Are scholarships available for bachelor’s students?</summary><p>Yes, but fewer than for master’s study. Most bachelor’s funding comes from universities as partial tuition discounts or need-based aid, so apply early and to several universities.</p></details>
+<details><summary>Do scholarships cover everything?</summary><p>A few fully funded scholarships cover tuition, living costs and travel, but most are partial. Plan for the full cost of study and treat a scholarship as a bonus until it is confirmed.</p></details>
+<details><summary>Can I apply before I have an admission offer?</summary><p>For some scholarships, yes; others need an offer first. Check each scholarship’s rules on its official page.</p></details>
+</section>
+
+<div class="gp-cta">
+  <h2>Not sure which scholarships you qualify for?</h2>
+  <p>Book a free session and we’ll shortlist scholarships that match your profile, course and budget.</p>
+  <a class="gp-btn gp-btn-primary" href="free-consultation.html?interest=scholarship#book" data-open-consult>Book free scholarship guidance</a>
+</div>
+</main>
+<footer class="gm-footer" aria-label="Site footer">
+  <div class="gm-footer-inner">
+    <div class="gm-footer-brand">
+      <a class="gm-footer-logo" href="index.html" aria-label="Gradmire home"><img src="../assets/gradmire-logo-white.png" alt="Gradmire" width="200" height="54" loading="lazy" decoding="async"></a>
+      <p class="gm-footer-tagline">Study abroad, organized by subject — not by flag.</p>
+      <form class="footer-subscribe" novalidate><label class="sr-only" for="footer-email">Email address for study-abroad updates</label><input id="footer-email" type="email" name="email" autocomplete="email" placeholder="you@email.com" required><button type="submit" aria-label="Subscribe to updates"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><p class="footer-subscribe-msg" role="status" hidden></p></form>
+    </div>
+    <nav class="gm-footer-col" aria-label="Destinations">
+      <h2 class="gm-footer-title">Destinations</h2>
+      <ul class="gm-footer-links">
+        <li><a href="study-in-uk.html">United Kingdom</a></li>
+        <li><a href="study-in-usa.html">USA</a></li>
+        <li><a href="study-in-canada.html">Canada</a></li>
+        <li><a href="study-in-australia.html">Australia</a></li>
+        <li><a href="study-in-germany.html">Germany</a></li>
+        <li><a href="study-in-ireland.html">Ireland</a></li>
+        <li><a href="study-in-newzealand.html">New Zealand</a></li>
+        <li><a href="study-in-italy.html">Italy</a></li>
+        <li><a href="study-in-finland.html">Finland</a></li>
+        <li><a href="mbbs-abroad.html">MBBS abroad</a></li>
+      </ul>
+    </nav>
+    <nav class="gm-footer-col" aria-label="Services">
+      <h2 class="gm-footer-title">Services</h2>
+      <ul class="gm-footer-links">
+        <li><a href="free-consultation.html?interest=counselling">Free counselling</a></li>
+        <li><a href="test-preparation.html">Test preparation</a></li>
+        <li><a href="visa-assistance.html">Visa assistance</a></li>
+        <li><a href="application-assistance.html">Application assistance</a></li>
+        <li><a href="course-selection-guidance.html">Course selection guidance</a></li>
+        <li><a href="scholarships.html">Scholarships</a></li>
+      </ul>
+    </nav>
+    <nav class="gm-footer-col" aria-label="Tools">
+      <h2 class="gm-footer-title">Tools</h2>
+      <ul class="gm-footer-links">
+        <li><a href="find-courses.html">Course finder</a></li>
+        <li><a href="tools/roi-calculator.html">Study cost calculator</a></li>
+        <li><a href="tools/comparator.html">Course comparator</a></li>
+        <li><a href="tools/deadline-tracker.html">Deadline tracker</a></li>
+        <li><a href="tools/grade-converter.html">GPA / CGPA / SGPA converter</a></li>
+      </ul>
+    </nav>
+    <nav class="gm-footer-col" aria-label="Company">
+      <h2 class="gm-footer-title">Company</h2>
+      <ul class="gm-footer-links">
+        <li><a href="about.html">About us</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="faq.html">FAQs</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="login.html">Student login</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">© 2026 Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · <a href="mailto:privacy@gradmire.in">privacy@gradmire.in</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund-policy.html">Refunds &amp; fees</a><a href="cookie-policy.html">Cookies</a><a href="data-request.html">Your data rights</a><a href="grievance.html">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
 </footer>
-
-<script>
-(() => {
-  const destinations = {uk:'United Kingdom',usa:'United States',canada:'Canada',australia:'Australia',germany:'Germany',ireland:'Ireland',italy:'Italy',newzealand:'New Zealand',finland:'Finland'};
-  const params = new URLSearchParams(location.search);
-  const intro = document.getElementById('scholarship-country-intro');
-  const filter = document.querySelector('[aria-label="Filter by destination"]');
-  const cards = [...document.querySelectorAll('.schol-card, .bento-side-card, .bento-hero')];
-  const countryFromCard = card => {
-    const tag = card.querySelector('.bento-tag');
-    const text = (tag?.innerText || card.innerText).toLowerCase();
-    const found = Object.entries(destinations).find(([slug, name]) => text.includes(name.toLowerCase()) || text.includes(slug));
-    if (found) return found[0];
-    if (/\bnz\b/.test(text)) return 'newzealand';
-    return '';
-  };
-  cards.forEach(card => card.dataset.country = countryFromCard(card));
-  function setCountry(slug, updateUrl = false) {
-    const country = destinations[slug];
-    if (!country) {
-      intro.hidden = true;
-      cards.forEach(card => card.hidden = false);
-      const heading = document.querySelector('#schol-grid')?.previousElementSibling;
-      if (heading) heading.textContent = 'All scholarships';
-      if (filter) filter.value = 'All destinations';
-      if (updateUrl) history.replaceState(null, '', location.pathname);
-      return;
-    }
-    intro.hidden = false;
-    intro.innerHTML = `<div class="country-scholarship-inner"><p class="page-hero-tag">Funding guide · ${country}</p><h2>Scholarships in ${country}</h2><p>${slug === 'finland' ? 'Scholarships and tuition waivers are offered by individual Finnish universities. They are competitive and typically do not cover living costs; Finland’s official study guide says there are no general government scholarship programmes for bachelor’s and master’s degrees. Check each university’s current terms and deadlines.' : `Explore funding opportunities for students considering study in ${country}. Awards may come from national programmes, universities, foundations or regional providers. Support can range from partial tuition reductions to larger awards, depending on the provider. Eligibility often depends on your course, study level and academic profile. Compare current deadlines and award terms before applying. A Gradmire counsellor can help review your shortlist and next steps.`}</p></div>`;
-    if (filter) filter.value = slug === 'usa' ? 'USA' : country;
-    cards.forEach(card => card.hidden = card.dataset.country !== slug && !(slug === 'uk' && /commonwealth|edinburgh|gates|chevening/i.test(card.innerText)));
-    const heading = document.querySelector('#schol-grid')?.previousElementSibling;
-    if (heading) heading.textContent = `Scholarships to explore in ${country}`;
-    if (updateUrl) history.replaceState(null, '', `${location.pathname}?country=${encodeURIComponent(slug)}`);
-  }
-  filter?.addEventListener('change', () => {
-    const map = Object.entries(destinations).find(([slug, name]) => name === filter.value || (slug === 'usa' && filter.value === 'USA'));
-    setCountry(map?.[0] || '', true);
-  });
-  document.querySelectorAll('.filter-chip').forEach(chip => chip.addEventListener('click', () => {
-    document.querySelectorAll('.filter-chip').forEach(item => item.classList.remove('active'));
-    chip.classList.add('active');
-  }));
-  setCountry(params.get('country') || '');
-  document.querySelectorAll('.reveal').forEach(el => { if (el.getBoundingClientRect().top < window.innerHeight * .95) el.classList.add('on'); });
-  const observer = new IntersectionObserver(entries => entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('on'); observer.unobserve(entry.target); } }), {threshold:.1});
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-})();
-</script>
-
-
-<script src="../assets/site.js?v=23" defer></script>
+<script src="../assets/site.js?v=28" defer></script>
+</body>
+</html>

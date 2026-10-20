@@ -1,5 +1,9 @@
 import pg from 'pg';
 
+// Keep DATE columns as 'YYYY-MM-DD' strings; the default parser turns them into
+// local-midnight Dates, which shift by a day outside UTC.
+pg.types.setTypeParser(1082, (value) => value);
+
 let pool;
 
 /* One pool per process (or per warm serverless instance). Returns null when no
