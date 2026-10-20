@@ -1067,3 +1067,30 @@ footer .footer-tagline { max-width: 27ch; margin: 1rem 0 1.35rem; color: rgba(25
     footer .footer-tagline { max-width: 32ch; }
     .footer-subscribe { max-width: 100%; }
 }
+
+/* ─── Site footer (.gm-footer): one markup on every page, written by scripts/sync-footer.mjs.
+   Own class names so older page-level .footer rules cannot restyle it. ─── */
+.gm-footer { --gmf-w: 1200px; margin-top: 0; padding: clamp(2.75rem, 5vw, 4rem) clamp(1rem, 5vw, 3rem) 0; background: #0B1A2C; color: #fff; font-family: var(--sans, 'Bricolage Grotesque', system-ui, sans-serif); }
+.gm-footer-inner { max-width: var(--gmf-w); margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1.5fr) repeat(4, minmax(0, 1fr)); gap: clamp(1.5rem, 3vw, 2.5rem); }
+.gm-footer-logo { display: inline-block; border-radius: 8px; }
+.gm-footer-logo img { display: block; width: clamp(160px, 16vw, 210px); max-width: 100%; height: auto; }
+.gm-footer-logo:focus-visible { outline: 3px solid #3C8FD9; outline-offset: 4px; }
+.gm-footer-tagline { max-width: 28ch; margin: 1rem 0 1.35rem; color: rgba(255, 255, 255, .74); font-size: 1rem; line-height: 1.55; }
+.gm-footer-title { margin: 0 0 .9rem; color: #fff; font-size: .78rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.gm-footer-links { list-style: none; margin: 0; padding: 0; display: grid; gap: .55rem; }
+.gm-footer-links a { color: rgba(255, 255, 255, .76); font-size: .9rem; line-height: 1.4; text-decoration: none; }
+.gm-footer-links a:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+.gm-footer-links a:focus-visible { outline: 2px solid #3C8FD9; outline-offset: 3px; border-radius: 3px; color: #fff; }
+.gm-footer .gm-legal-bar { --legal-fg: rgba(255, 255, 255, .72); --legal-link: rgba(255, 255, 255, .92); --legal-line: rgba(255, 255, 255, .12); max-width: var(--gmf-w); margin: clamp(2rem, 4vw, 3rem) auto 0; padding: 1.25rem 0 0; }
+@media (max-width: 1020px) {
+    .gm-footer-inner { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .gm-footer-brand { grid-column: 1 / -1; }
+}
+@media (max-width: 700px) {
+    .gm-footer-inner { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem 1.25rem; }
+    .gm-footer-tagline { max-width: 34ch; }
+    .gm-footer .footer-subscribe { max-width: 100%; }
+}
+/* Dashboard: the footer sits at the end of the scrolling main panel, edge to edge. */
+.app-body .main > .gm-footer { margin: 2.5rem -2rem -1.75rem; }
+@media (max-width: 720px) { .app-body .main > .gm-footer { margin: 2rem -1.25rem -1.25rem; } }

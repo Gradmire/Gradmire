@@ -49,19 +49,19 @@ const exams = [
         slug: 'toefl', name: 'TOEFL', full: 'Test of English as a Foreign Language (iBT)',
         forWhat: 'Computer-based English test from ETS, widely accepted by universities in the USA, Canada and around the world.',
         headline: 'Get the TOEFL score your universities need.',
-        intro: 'TOEFL iBT is a computer-based academic English test, popular for US and Canadian admissions. We coach the integrated skills it tests, with practice in the same on-screen format.',
-        facts: [['Duration', 'Under 2 hours'], ['Score', '1–6 bands (0–120 also reported)'], ['Sections', 'Reading, Listening, Speaking, Writing'], ['Valid for', '2 years'], ['Format', 'Computer, at a centre or at home']],
+        intro: 'TOEFL iBT is a computer-based academic English test, popular for US and Canadian admissions. We coach all four skills with practice in the same on-screen, adaptive format.',
+        facts: [['Duration', 'About 1.5 hours'], ['Score', '1–6 bands (0–120 also reported)'], ['Sections', 'Reading, Listening, Writing, Speaking'], ['Valid for', '2 years'], ['Format', 'Computer, at a centre or at home']],
         format: [
-            ['Reading', 'Timed', 'Academic passages with comprehension questions.'],
-            ['Listening', 'Timed', 'Lectures and campus conversations, with questions on main ideas and details.'],
-            ['Speaking', 'Timed', 'Short spoken responses, some combining reading or listening with speaking, recorded on the computer.'],
-            ['Writing', 'Timed', 'Typed responses, including an integrated task and an academic discussion task.']
+            ['Reading', 'Adaptive', 'Academic and everyday texts. The second part adapts to how you did in the first.'],
+            ['Listening', 'Adaptive', 'Lectures, conversations and announcements, also adapting to your performance.'],
+            ['Writing', 'Timed', 'Typed tasks, including writing for an academic discussion.'],
+            ['Speaking', 'Timed', 'Short spoken responses recorded on the computer.']
         ],
-        scoring: 'ETS updated the TOEFL iBT format and introduced a 1–6 score scale in January 2026, reported alongside the familiar 0–120 scale during the transition. Check which score your universities ask for, and confirm current timings on the ETS website.',
+        scoring: 'Since 21 January 2026, each section and the overall score are reported on a 1–6 scale in half-band steps, aligned with CEFR levels. Score reports also show the familiar 0–120 scale during a transition period of about two years, so check which score your universities ask for.',
         accepted: 'Universities across the USA and Canada, and many in the UK, Europe and Australia. Visa acceptance varies by country, so check before you rely on it for a visa.',
         tips: [
             ['On-screen practice', 'Every practice test runs on a computer, so typing, note-taking and timing feel natural on test day.'],
-            ['Integrated tasks', 'Techniques for tasks that combine reading, listening and speaking or writing.'],
+            ['Adaptive sections', 'How the adaptive Reading and Listening sections work, and how to pace them.'],
             ['Speaking templates', 'Clear structures for short timed answers, practised until they feel natural.'],
             ['Score targeting', 'We map each university’s requirement to a section-by-section target.']
         ],
@@ -186,7 +186,7 @@ function examPage(e) {
         intro: e.intro,
         actions: `<a class="gp-btn gp-btn-primary" href="#crack-${e.slug}">Start preparing</a>
         <a class="gp-btn gp-btn-ghost" href="#format">See the test format</a>`,
-        form: `<div id="crack-${e.slug}">${leadForm({ id: e.slug, interest: 'test-preparation', eyebrow: 'Free demo & study plan', title: `Crack ${e.name} with Gradmire`, button: 'Get my study plan' })}</div>`
+        form: `<div id="crack-${e.slug}">${leadForm({ id: e.slug, interest: 'test-preparation', exam: e.name, eyebrow: 'Free demo & study plan', title: `Crack ${e.name} with Gradmire`, button: 'Get my study plan' })}</div>`
     })}
 <div class="gp-facts" aria-label="${e.name} at a glance">
 ${e.facts.map(([k, v]) => `  <div><span>${esc(k)}</span><strong>${esc(v)}</strong></div>`).join('\n')}
@@ -210,7 +210,7 @@ ${section({ id: 'faq', tag: 'FAQs', title: `${e.name}: common questions`, cls: '
 
 ${section({ id: 'other-tests', tag: 'Other tests', title: 'Preparing for another test?', body: examPills(e.slug) })}
 
-${cta({ title: `Ready to crack ${e.name}?`, text: 'Book a free session: we’ll assess your level and build a plan around your target score and test date.', href: consultHref('test-preparation'), label: 'Book a free session' })}
+${cta({ title: `Ready to crack ${e.name}?`, text: 'Book a free session: we’ll assess your level and build a plan around your target score and test date.', href: `${consultHref('test-preparation')}`.replace('#book', `&amp;exam=${e.slug}#book`), label: 'Book a free session', exam: e.name })}
 </main>`;
     return shell({
         title: `${e.name} Preparation: Format, Scores & Coaching | Gradmire`,

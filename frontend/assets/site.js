@@ -57,7 +57,7 @@
         ['Bulgaria', 'bulgaria'], ['Moldova', 'moldova']
     ];
     const countryPage = (slug) => page(`study-in-${slug}.html`);
-    const scholarshipPage = (slug) => `${page('scholarships.html')}?country=${encodeURIComponent(slug)}`;
+    const scholarshipPage = (slug) => page(`scholarships-in-${slug}.html`);
     const consultationPage = (interest, country = '') => `${page('free-consultation.html')}?interest=${encodeURIComponent(interest)}${country ? `&country=${encodeURIComponent(country)}` : ''}`;
     const link = (href, label) => `<a href="${href}" role="menuitem">${label.replace(/&/g, '&amp;')}</a>`;
     const dropdown = (label, items, extraClass = '') => `
@@ -433,8 +433,10 @@
             lastFocus?.focus?.({ preventScroll: true });
         }
 
-        window.__gmOpenPopup = open;
-        fab.addEventListener('click', () => open(false));
+        /* What the button that opened the popup was about (service, test, scholarship), passed on to the booking page. */
+        let context = {};
+        window.__gmOpenPopup = (auto) => { if (popup.hidden) context = {}; open(auto); };
+        fab.addEventListener('click', () => { if (popup.hidden) context = {}; open(false); });
         /* "Apply" / "Talk to a counsellor" links open the popup with their country preselected;
            without JavaScript they still go to the booking page. */
         document.addEventListener('click', (event) => {
@@ -443,6 +445,9 @@
             event.preventDefault();
             const select = form.elements.destination;
             if (select && trigger.dataset.country) select.value = trigger.dataset.country;
+            let interest = '';
+            try { interest = new URL(trigger.href, window.location.href).searchParams.get('interest') || ''; } catch (_) {}
+            context = { interest, exam: trigger.dataset.exam || '', scholarship: trigger.dataset.scholarship || '' };
             open(false);
         });
         popup.querySelectorAll('[data-popup-close]').forEach((el) => el.addEventListener('click', close));
@@ -469,9 +474,10 @@
             }
             write(session, 'gradmire-consult-prefill', JSON.stringify({
                 name: String(data.name).trim(), phone: String(data.phone).trim(),
-                email: String(data.email || '').trim(), destination: data.destination || ''
+                email: String(data.email || '').trim(), destination: data.destination || '',
+                exam: context.exam || '', scholarship: context.scholarship || ''
             }));
-            const interest = mbbsCountries.some(([, slug]) => slug === data.destination) ? 'mbbs-abroad' : 'counselling';
+            const interest = context.interest || (mbbsCountries.some(([, slug]) => slug === data.destination) ? 'mbbs-abroad' : 'counselling');
             window.location.href = `${consultationPage(interest, data.destination || '')}#book`;
         });
 
@@ -935,7 +941,7 @@
         wake();
 
         /* ── Reaching the footer once: point at the newsletter box. ── */
-        const footer = document.querySelector('footer.footer, .footer');
+        const footer = document.querySelector('footer.gm-footer, footer.footer, .footer');
         if (footer && 'IntersectionObserver' in window) {
             const io = new IntersectionObserver((entries) => {
                 if (!entries.some((e) => e.isIntersecting)) return;
@@ -1003,9 +1009,31 @@
                 }
                 const country = form.dataset.country || '';
                 try {
-                    sessionStorage.setItem('gradmire-consult-prefill', JSON.stringify({ name, phone: String(data.phone).trim(), email, destination: country }));
+                    sessionStorage.setItem('gradmire-consult-prefill', JSON.stringify({ name, phone: String(data.phone).trim(), email, destination: country, exam: form.dataset.exam || '', scholarship: form.dataset.scholarship || '' }));
                 } catch (_) {}
                 window.location.href = `${consultationPage(form.dataset.interest || 'counselling', country)}#book`;
+            });
+        });
+    }
+
+    /* Bachelor's / Master's filter on the scholarship pages. */
+    function setupLevelFilters() {
+        document.querySelectorAll('[data-level-filter]').forEach((group) => {
+            const section = group.closest('section') || document;
+            const items = [...section.querySelectorAll('[data-levels]')];
+            const empty = section.querySelector('.gp-level-empty');
+            group.addEventListener('click', (event) => {
+                const button = event.target.closest('button[data-level]');
+                if (!button) return;
+                const level = button.dataset.level;
+                group.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b === button)));
+                let shown = 0;
+                items.forEach((item) => {
+                    const match = !level || item.dataset.levels.split(' ').includes(level);
+                    item.hidden = !match;
+                    if (match) shown += 1;
+                });
+                if (empty) empty.hidden = shown > 0;
             });
         });
     }
@@ -1155,4 +1183,5 @@
     setupBuddy();
     setupFooterSubscribe();
     setupInlineConsultForms();
+    setupLevelFilters();
 })();

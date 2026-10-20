@@ -1,16 +1,16 @@
 /* Shared pieces for the generated guide pages (MBBS Abroad, Student Services).
-   The nav and footer are copied from an existing destination page so every page
-   keeps the same header and footer. */
+   The nav is copied from an existing destination page and the footer comes from
+   footer.mjs, so every page keeps the same header and footer. */
 import fs from 'node:fs';
 import path from 'node:path';
+import { footerHtml } from './footer.mjs';
 
 export const pagesDir = path.resolve('frontend/pages');
 const template = fs.readFileSync(path.join(pagesDir, 'study-in-finland.html'), 'utf8');
 const navHtml = template.match(/<nav class="nav[\s\S]*?<\/nav>/)[0];
-const footerHtml = template.match(/<footer[\s\S]*?<\/footer>/)[0];
 const siteCss = template.match(/site\.css\?v=\d+/)[0];
 const siteJs = fs.readFileSync(path.join(pagesDir, 'index.html'), 'utf8').match(/site\.js\?v=\d+/)[0];
-const GUIDE_CSS = 'guide-pages.css?v=2';
+const GUIDE_CSS = 'guide-pages.css?v=3';
 
 export const esc = (value) => String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 /* Text that may carry a link we wrote ourselves is passed through; everything else is escaped. */
@@ -34,7 +34,7 @@ ${themeBoot}
 <body class="destination-page guide-page${bodyClass ? ` ${bodyClass}` : ''}">
 ${navHtml}
 ${body}
-${footerHtml}
+${footerHtml()}
 <script src="../assets/${siteJs}" defer></script>
 </body>
 </html>
@@ -42,8 +42,9 @@ ${footerHtml}
 }
 
 /* Inline lead form: site.js validates it, stores a prefill and opens the booking page. */
-export function leadForm({ id, interest, country = '', eyebrow, title, button = 'Book my free counselling', extra = '' }) {
-    return `<form class="gp-lead" data-consult-form data-interest="${interest}" data-country="${country}" novalidate aria-labelledby="lead-title-${id}">
+export function leadForm({ id, interest, country = '', exam = '', scholarship = '', eyebrow, title, button = 'Book my free counselling', extra = '' }) {
+    const context = `${exam ? ` data-exam="${esc(exam)}"` : ''}${scholarship ? ` data-scholarship="${esc(scholarship)}"` : ''}`;
+    return `<form class="gp-lead" data-consult-form data-interest="${interest}" data-country="${country}"${context} novalidate aria-labelledby="lead-title-${id}">
   <p class="gp-lead-eyebrow">${esc(eyebrow)}</p>
   <h2 class="gp-lead-title" id="lead-title-${id}">${esc(title)}</h2>
   <label class="gp-field"><span>Full name</span><input name="name" type="text" autocomplete="name" required></label>
@@ -93,10 +94,10 @@ ${items.map((i) => `  <li>${i}</li>`).join('\n')}
 
 export const faq = (items) => items.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${rich(a)}</p></details>`).join('\n');
 
-export const cta = ({ title, text, href, label, country = '' }) => `<div class="gp-cta">
+export const cta = ({ title, text, href, label, country = '', exam = '' }) => `<div class="gp-cta">
   <h2>${esc(title)}</h2>
   <p>${esc(text)}</p>
-  <a class="gp-btn gp-btn-primary" href="${href}" data-open-consult${country ? ` data-country="${country}"` : ''}>${esc(label)}</a>
+  <a class="gp-btn gp-btn-primary" href="${href}" data-open-consult${country ? ` data-country="${country}"` : ''}${exam ? ` data-exam="${esc(exam)}"` : ''}>${esc(label)}</a>
 </div>`;
 
 export function write(name, html) {
