@@ -76,15 +76,15 @@
         ['Tourism & Hospitality', 'Tourism and Hospitality']
     ];
     const studentServices = [
-        ['Gradmire free counselling', 'counselling'], ['Test preparation', 'test-preparation'],
-        ['Visa assistance', 'visa-assistance'], ['Application assistance', 'application-support'],
-        ['Course selection guidance', 'course-selection']
+        ['Gradmire free counselling', consultationPage('counselling')], ['Test preparation', page('test-preparation.html')],
+        ['Visa assistance', page('visa-assistance.html')], ['Application assistance', page('application-assistance.html')],
+        ['Course selection guidance', page('course-selection-guidance.html')]
     ];
     const navItems = [
         dropdown('Destinations', `<span class="nav-dropdown-label">Study destinations</span>${destinations.map(([name, slug]) => link(countryPage(slug), name)).join('')}${link(page('destinations.html'), 'All destinations →')}`),
         dropdown('Courses', `<span class="nav-dropdown-label">Explore study areas</span>${courseCategories.map(([label, query]) => link(`${page('find-courses.html')}?course=${encodeURIComponent(query)}`, label)).join('')}${link(page('find-courses.html'), 'Course Finder →')}`),
         dropdown('MBBS Abroad', `<span class="nav-dropdown-label">Countries to explore</span>${mbbsCountries.map(([name, slug]) => link(page(`mbbs-in-${slug}.html`), `MBBS in ${name}`)).join('')}${link(page('mbbs-abroad.html'), 'Compare MBBS countries →')}`),
-        dropdown('Student Services', `${studentServices.map(([label, interest]) => link(consultationPage(interest), label)).join('')}`),
+        dropdown('Student Services', `${studentServices.map(([label, href]) => link(href, label)).join('')}`),
         dropdown('Scholarships', `<span class="nav-dropdown-label">Explore by country</span>${destinations.map(([name, slug]) => link(scholarshipPage(slug), `Scholarships in ${name}`)).join('')}${link(page('scholarships.html'), 'All scholarships →')}`),
         dropdown('Student Tools', `${link(page('find-courses.html'), 'Course Finder')}${link(page('tools/roi-calculator.html'), 'Study cost calculator')}${link(page('tools/comparator.html'), 'Course comparator')}${link(page('tools/deadline-tracker.html'), 'Deadline tracker')}${link(page('tools/grade-converter.html'), 'GPA / CGPA / SGPA converter')}`)
     ];

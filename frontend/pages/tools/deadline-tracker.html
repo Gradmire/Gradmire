@@ -751,6 +751,31 @@
             align-items: flex-start;
         }
     }
+    /* Deadline alerts */
+    .alert-due { margin: 0 1.5rem 1rem; padding: .85rem 1rem; border-radius: 12px; background: rgba(217, 64, 64, .1); border: 1px solid rgba(217, 64, 64, .3); color: var(--text-p); font-size: .85rem; }
+    .alert-due[hidden] { display: none; }
+    .alert-due strong { display: block; margin-bottom: .2rem; }
+    .alert-due ul { margin: .3rem 0 0; padding-left: 1.1rem; }
+    .track-alert-row { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin-top: .75rem; }
+    .alert-toggle { display: inline-flex; align-items: center; gap: .35rem; min-height: 34px; padding: .3rem .8rem; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--text-p); font: 600 .78rem/1 inherit; font-family: inherit; cursor: pointer; }
+    .alert-toggle:hover, .alert-toggle[aria-expanded="true"] { border-color: var(--accent); color: var(--accent); }
+    .alert-toggle.is-set { background: var(--accent-dim); border-color: transparent; color: var(--accent); }
+    .alert-summary { font-size: .75rem; color: var(--text-s); }
+    .alert-panel { margin-top: .75rem; padding: .9rem 1rem; border-radius: 12px; background: var(--accent-dim); }
+    .alert-panel[hidden] { display: none; }
+    .alert-panel fieldset { border: 0; margin: 0; padding: 0; }
+    .alert-panel legend { padding: 0; margin-bottom: .5rem; font-size: .8rem; font-weight: 700; color: var(--text-p); }
+    .alert-options { display: flex; flex-wrap: wrap; gap: .4rem .9rem; }
+    .alert-options label { display: inline-flex; align-items: center; gap: .35rem; min-height: 32px; font-size: .82rem; color: var(--text-p); cursor: pointer; }
+    .alert-options input { width: 1rem; height: 1rem; accent-color: var(--accent); }
+    .alert-options input:disabled + span { opacity: .45; }
+    .alert-actions { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; }
+    .alert-actions button { min-height: 36px; padding: .4rem .9rem; border-radius: 999px; font-family: inherit; font-size: .78rem; font-weight: 700; cursor: pointer; }
+    .alert-save { border: 1px solid var(--accent); background: var(--accent); color: #fff; }
+    .alert-ics { border: 1px solid var(--border); background: var(--surface); color: var(--text-p); }
+    .alert-off { border: 0; background: none; color: var(--text-s); text-decoration: underline; }
+    .alert-note { margin: .6rem 0 0; font-size: .72rem; color: var(--text-s); }
+    :is(.alert-toggle, .alert-actions button, .alert-options input):focus-visible { outline: 3px solid #3C8FD9; outline-offset: 2px; }
 </style>
 <link rel="stylesheet" href="../../assets/site.css?v=22">
 
@@ -779,7 +804,7 @@
 <div class="page-hero">
     <span class="page-tag">Planning tool</span>
     <h1 class="page-title">Never miss an application deadline</h1>
-    <p class="page-sub">Track deadlines for courses you're interested in. Your list is saved to your browser — no account needed.</p>
+    <p class="page-sub">Track deadlines for courses you're interested in, then set an alert so you hear about them in time. Your list is saved to your browser — no account needed.</p>
 </div>
 
 <div class="main-grid">
@@ -808,6 +833,7 @@
             <div class="panel-title">My deadlines <span class="track-count" id="track-count">0 tracked</span></div>
             <button class="clear-btn" id="clear-btn" onclick="clearAll()">Clear all</button>
         </div>
+        <div class="alert-due" id="alert-due" role="status" hidden></div>
         <div class="tracked-list" id="tracked-list"></div>
 
         <div class="legend">
@@ -861,7 +887,7 @@
 </footer>
 
 <script>
-    const TODAY = new Date('2026-09-19');
+    const TODAY = new Date(); TODAY.setHours(0, 0, 0, 0);
 
     const PROGRAMS = [
         // UK — Sept 2027 intake
@@ -1259,34 +1285,172 @@
         </div>
       </div>
       <div class="progress-bar"><div class="progress-fill ${pfx}" style="width:${prog}%"></div></div>
+      ${days >= 0 ? alertControls(p) : ''}
       <button class="track-remove" onclick="removeTrack(event,'${p.id}')" aria-label="Remove ${p.name}">×</button>
     </div>`;
         }).join('');
     }
 
+    /* ── Deadline alerts: saved per course, shown on-site when due, and exportable to a calendar ── */
+    const ALERT_OPTIONS = [30, 14, 7, 1];
+    let alerts = {};
+    let openAlertId = null;
+
+    function loadAlerts() {
+        try { alerts = JSON.parse(localStorage.getItem('gm_deadline_alerts') || '{}') || {}; } catch (e) { alerts = {}; }
+    }
+
+    function saveAlerts() {
+        try { localStorage.setItem('gm_deadline_alerts', JSON.stringify(alerts)); } catch (e) {}
+    }
+
+    const dayLabel = (d) => d === 1 ? '1 day' : d + ' days';
+
+    function alertSummary(days) {
+        return days.slice().sort((a, b) => b - a).map(dayLabel).join(', ') + ' before';
+    }
+
+    function alertControls(p) {
+        const set = alerts[p.id] || [];
+        const open = openAlertId === p.id;
+        const left = daysUntil(p.deadline);
+        const fallback = ALERT_OPTIONS.filter(d => d <= left)[0];
+        const options = ALERT_OPTIONS.map(d => {
+            const checked = set.length ? set.includes(d) : d === Math.min(7, fallback || 7) && d <= left;
+            return `<label><input type="checkbox" value="${d}" ${checked ? 'checked' : ''} ${d > left ? 'disabled' : ''}><span>${dayLabel(d)} before</span></label>`;
+        }).join('');
+        return `<div class="track-alert-row">
+        <button type="button" class="alert-toggle${set.length ? ' is-set' : ''}" aria-expanded="${open}" aria-controls="alert-${p.id}" onclick="toggleAlertPanel('${p.id}')"><span aria-hidden="true">🔔</span> ${set.length ? 'Alert on' : 'Set alert'}</button>
+        ${set.length ? `<span class="alert-summary">${alertSummary(set)}</span>` : ''}
+      </div>
+      <div class="alert-panel" id="alert-${p.id}" ${open ? '' : 'hidden'}>
+        <fieldset><legend>Remind me about ${p.name}</legend><div class="alert-options">${options}</div></fieldset>
+        <div class="alert-actions">
+          <button type="button" class="alert-save" onclick="saveAlert('${p.id}')">Save alert</button>
+          <button type="button" class="alert-ics" onclick="downloadIcs('${p.id}')">Add to calendar</button>
+          ${set.length ? `<button type="button" class="alert-off" onclick="removeAlert('${p.id}')">Turn off</button>` : ''}
+        </div>
+        <p class="alert-note">We’ll show the reminder here when you visit on this device, and as a browser notification if you allow it. Add it to your calendar to be reminded even when you’re away.</p>
+      </div>`;
+    }
+
+    function chosenDays(id) {
+        return [...document.querySelectorAll(`#alert-${id} input:checked`)].map(i => +i.value);
+    }
+
+    function toggleAlertPanel(id) {
+        openAlertId = openAlertId === id ? null : id;
+        renderTracker();
+        document.querySelector(`[aria-controls="alert-${id}"]`)?.focus();
+    }
+
+    function saveAlert(id) {
+        const days = chosenDays(id);
+        if (!days.length) { removeAlert(id); return; }
+        alerts[id] = days;
+        saveAlerts();
+        openAlertId = null;
+        if ('Notification' in window && Notification.permission === 'default') {
+            try { Notification.requestPermission().then(checkDueAlerts).catch(() => {}); } catch (e) {}
+        }
+        renderTracker();
+        checkDueAlerts();
+        document.querySelector(`[aria-controls="alert-${id}"]`)?.focus();
+    }
+
+    function removeAlert(id) {
+        delete alerts[id];
+        saveAlerts();
+        openAlertId = null;
+        renderTracker();
+        checkDueAlerts();
+        document.querySelector(`[aria-controls="alert-${id}"]`)?.focus();
+    }
+
+    function downloadIcs(id) {
+        const p = PROGRAMS.find(x => x.id === id);
+        if (!p) return;
+        const picked = chosenDays(id);
+        const days = picked.length ? picked : (alerts[id] || [7]);
+        const ymd = p.deadline.replace(/-/g, '');
+        const next = new Date(p.deadline + 'T00:00:00Z');
+        next.setUTCDate(next.getUTCDate() + 1);
+        const ymdNext = next.toISOString().slice(0, 10).replace(/-/g, '');
+        const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+Z$/, 'Z');
+        const esc = (t) => String(t).replace(/[\\;,]/g, (m) => '\\' + m);
+        const alarms = days.map(d => ['BEGIN:VALARM', 'ACTION:DISPLAY', `DESCRIPTION:${esc(p.name)} deadline in ${dayLabel(d)}`, `TRIGGER:-P${d}D`, 'END:VALARM'].join('\r\n'));
+        const ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Gradmire//Deadline Tracker//EN', 'BEGIN:VEVENT',
+            `UID:${p.id}-${ymd}@gradmire.in`, `DTSTAMP:${stamp}`, `DTSTART;VALUE=DATE:${ymd}`, `DTEND;VALUE=DATE:${ymdNext}`,
+            `SUMMARY:Application deadline: ${esc(p.name)} (${esc(p.uni)})`,
+            `DESCRIPTION:Intake ${esc(p.intake)}. Confirm the deadline on the university website.`,
+            ...alarms, 'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+        const url = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' }));
+        const a = Object.assign(document.createElement('a'), { href: url, download: `${p.id}-deadline.ics` });
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    /* Show alerts whose reminder window has started, for courses still being tracked. */
+    function checkDueAlerts() {
+        const box = document.getElementById('alert-due');
+        const due = trackedIds.map(id => PROGRAMS.find(p => p.id === id))
+            .filter(p => p && alerts[p.id])
+            .map(p => ({ p, left: daysUntil(p.deadline) }))
+            .filter(({ p, left }) => left >= 0 && alerts[p.id].some(d => left <= d))
+            .sort((a, b) => a.left - b.left);
+        if (!due.length) { box.hidden = true; box.innerHTML = ''; return; }
+        box.hidden = false;
+        box.innerHTML = `<strong>🔔 Deadline alert</strong><ul>${due.map(({ p, left }) => `<li>${p.name}, ${p.uni}: ${left === 0 ? 'due today' : dayLabel(left) + ' left'}</li>`).join('')}</ul>`;
+        if (!('Notification' in window) || Notification.permission !== 'granted') return;
+        let notified = {};
+        try { notified = JSON.parse(sessionStorage.getItem('gm_alerts_notified') || '{}'); } catch (e) {}
+        due.filter(({ p }) => !notified[p.id]).forEach(({ p, left }) => {
+            try { new Notification('Gradmire deadline alert', { body: `${p.name} (${p.uni}): ${left === 0 ? 'due today' : dayLabel(left) + ' left'}` }); } catch (e) {}
+            notified[p.id] = 1;
+        });
+        try { sessionStorage.setItem('gm_alerts_notified', JSON.stringify(notified)); } catch (e) {}
+    }
+
     function toggleTrack(id) {
         const idx = trackedIds.indexOf(id);
-        if (idx === -1) trackedIds.push(id);
-        else trackedIds.splice(idx, 1);
+        if (idx === -1) {
+            trackedIds.push(id);
+            /* Offer the alert as soon as a course is picked. */
+            if (daysUntil(PROGRAMS.find(p => p.id === id).deadline) >= 0) openAlertId = id;
+        } else {
+            trackedIds.splice(idx, 1);
+            delete alerts[id];
+            saveAlerts();
+            if (openAlertId === id) openAlertId = null;
+        }
         saveTracked();
         renderBrowse();
         renderTracker();
+        checkDueAlerts();
     }
 
     function removeTrack(e, id) {
         e.stopPropagation();
         trackedIds = trackedIds.filter(i => i !== id);
+        delete alerts[id];
+        saveAlerts();
         saveTracked();
         renderBrowse();
         renderTracker();
+        checkDueAlerts();
     }
 
     function clearAll() {
         if (!trackedIds.length) return;
         trackedIds = [];
+        alerts = {};
+        saveAlerts();
         saveTracked();
         renderBrowse();
         renderTracker();
+        checkDueAlerts();
     }
 
     // Filters
@@ -1305,7 +1469,9 @@
     });
 
     loadTracked();
+    loadAlerts();
     renderBrowse();
     renderTracker();
+    checkDueAlerts();
 </script>
-<script src="../../assets/site.js?v=24" defer></script>
+<script src="../../assets/site.js?v=25" defer></script>

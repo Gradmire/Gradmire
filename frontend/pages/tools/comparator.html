@@ -673,6 +673,20 @@
             align-items: flex-start;
         }
     }
+    /* Country → University → Course filters in each comparison slot */
+    .slot-filters { display: grid; gap: .5rem; margin-bottom: .6rem; }
+    .slot.has-course .slot-filters { display: none; }
+    .slot-filter { display: grid; gap: .2rem; font-size: .7rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--text-s); }
+    .slot-filter select { width: 100%; min-height: 40px; padding: .5em .8em; border: 1.5px solid var(--border); border-radius: var(--r-sm); background: var(--surface-tint); color: var(--text-p); font-family: var(--sans); font-size: .86rem; text-transform: none; letter-spacing: 0; font-weight: 500; }
+    .slot-filter select:focus { outline: none; border-color: var(--accent); }
+    .slot-filter select:disabled { opacity: .55; cursor: not-allowed; }
+    .slot-or { margin: .1rem 0 .5rem; font-size: .72rem; color: var(--text-s); text-align: center; }
+    .compare-expert { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1.25rem; padding: 1.25rem 1.5rem; border: 1px solid var(--border); border-radius: var(--r-md, 16px); background: var(--surface); }
+    .compare-expert p { margin: 0; color: var(--text-s); font-size: .92rem; }
+    .compare-expert strong { display: block; color: var(--text-p); font-size: 1.02rem; margin-bottom: .15rem; }
+    .compare-expert-btn { display: inline-flex; align-items: center; gap: .4rem; min-height: 46px; padding: .65rem 1.3rem; border-radius: 999px; background: #007A5A; color: #fff; font-weight: 700; text-decoration: none; white-space: nowrap; }
+    .compare-expert-btn:hover { filter: brightness(1.08); }
+    .compare-expert-btn:focus-visible { outline: 3px solid #3C8FD9; outline-offset: 3px; }
 </style>
 <link rel="stylesheet" href="../../assets/site.css?v=22">
 
@@ -701,7 +715,7 @@
 <div class="page-hero">
     <span class="page-tag">Planning tool</span>
     <h1 class="page-title">Compare courses side by side</h1>
-    <p class="page-sub">Add up to 3 programs to see tuition, IELTS requirements, post-study visa, and QS ranking — all in one view.</p>
+    <p class="page-sub">Pick up to 3 programs by country, university and course (or search by name) to see tuition, IELTS requirements, post-study visa and QS ranking in one view.</p>
 </div>
 
 <div class="selector-row" id="selector-row">
@@ -737,6 +751,10 @@
             <svg width="40" height="40" viewBox="0 0 40 40" fill="none" style="margin:0 auto .75rem;opacity:.3"><rect x="4" y="8" width="14" height="24" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="22" y="8" width="14" height="24" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 16h6M8 20h6M8 24h4M26 16h6M26 20h6M26 24h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
             <p>Select at least 2 programs above to compare them.</p>
         </div>
+    </div>
+    <div class="compare-expert">
+        <p><strong>Still unsure which course to pick?</strong>A Gradmire counsellor can talk through fit, costs and admission chances for the options you’re comparing.</p>
+        <a class="compare-expert-btn" href="../free-consultation.html?interest=course-selection#book" data-open-consult>Discuss your doubts with an expert <span aria-hidden="true">→</span></a>
     </div>
 </div>
 
@@ -1190,6 +1208,7 @@
       <span class="sel-tag">${course.duration}</span>
     </div>
     <button class="sel-clear" onclick="clearSlot(${idx})">Remove</button>`;
+        document.querySelectorAll('.slot').forEach(s => s.refillFilters && s.refillFilters());
         renderTable();
     }
 
@@ -1200,6 +1219,8 @@
         slot.querySelector('.slot-input').value = '';
         slot.querySelector('.slot-selected').innerHTML = '';
         slot.querySelector('.slot-dropdown').classList.remove('open');
+        if (slot.resetFilters) slot.resetFilters();
+        document.querySelectorAll('.slot').forEach(s => s.refillFilters && s.refillFilters());
         renderTable();
     }
 
@@ -1328,6 +1349,50 @@ document.addEventListener('click', e=>{
   }
 });
 
+// Country → University → Course filters, added to each slot ahead of the free-text search.
+function optionList(values, placeholder) {
+  return `<option value="">${placeholder}</option>` + values.map(v => `<option value="${v.value}">${v.label}</option>`).join('');
+}
+function setupSlotFilters() {
+  const countries = [...new Set(COURSES.map(c => c.country))];
+  document.querySelectorAll('.slot').forEach(slot => {
+    const idx = parseInt(slot.dataset.idx);
+    const n = idx + 1;
+    const wrap = document.createElement('div');
+    wrap.className = 'slot-filters';
+    wrap.innerHTML = `
+      <label class="slot-filter">Country<select data-f="country" aria-label="Option ${n}: country">${optionList(countries.map(c => ({ value: c, label: `${countryFlag(c)} ${c}` })), 'Any country')}</select></label>
+      <label class="slot-filter">University<select data-f="uni" aria-label="Option ${n}: university"></select></label>
+      <label class="slot-filter">Course<select data-f="course" aria-label="Option ${n}: course"></select></label>`;
+    const or = document.createElement('p');
+    or.className = 'slot-or';
+    or.textContent = 'or search by name';
+    const search = slot.querySelector('.slot-search');
+    search.insertBefore(or, search.firstChild);
+    search.insertBefore(wrap, search.firstChild);
+    const [countrySel, uniSel, courseSel] = ['country', 'uni', 'course'].map(f => wrap.querySelector(`[data-f="${f}"]`));
+    const fill = () => {
+      const taken = selected.filter((c, i) => c && i !== idx).map(c => c.id);
+      const inCountry = COURSES.filter(c => !countrySel.value || c.country === countrySel.value);
+      const unis = [...new Set(inCountry.map(c => c.uni))].sort();
+      if (!unis.includes(uniSel.value)) uniSel.value = '';
+      const keepUni = uniSel.value;
+      uniSel.innerHTML = optionList(unis.map(u => ({ value: u, label: u })), 'Any university');
+      uniSel.value = keepUni;
+      const courses = inCountry.filter(c => (!uniSel.value || c.uni === uniSel.value) && !taken.includes(c.id));
+      courseSel.innerHTML = optionList(courses.map(c => ({ value: c.id, label: uniSel.value ? c.name : `${c.name} — ${c.uni}` })), courses.length ? 'Choose a course' : 'No more courses here');
+      courseSel.disabled = !courses.length;
+    };
+    countrySel.addEventListener('change', () => { uniSel.value = ''; fill(); });
+    uniSel.addEventListener('change', fill);
+    courseSel.addEventListener('change', () => { if (courseSel.value) selectCourse(idx, courseSel.value); });
+    slot.refillFilters = fill;
+    slot.resetFilters = () => { countrySel.value = ''; uniSel.value = ''; fill(); };
+    fill();
+  });
+}
+setupSlotFilters();
+
 renderTable();
 </script>
-<script src="../../assets/site.js?v=24" defer></script>
+<script src="../../assets/site.js?v=25" defer></script>

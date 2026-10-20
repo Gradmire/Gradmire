@@ -4,7 +4,7 @@
 <script>try{var c=JSON.parse(localStorage.getItem("gm-consent")||"null"),t=(c&&c.preferences&&localStorage.getItem("gradmire-theme"))||sessionStorage.getItem("gradmire-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 <link rel="canonical" href="https://gradmire.in/tools/roi-calculator.html">
 <title>ROI Calculator — Gradmire</title>
-<meta name="description" content="Calculate the real cost of studying abroad — tuition, living, IELTS, loan EMI — vs expected salary and break-even timeline.">
+<meta name="description" content="Calculate the real cost of studying abroad — tuition, living and test costs — vs expected salary and break-even timeline.">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="preload" href="../../assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../../assets/fonts/fonts.css">
@@ -532,10 +532,6 @@
         background: #8B63C7;
     }
     
-    .bf-interest {
-        background: #D94040;
-    }
-    
     .total-row {
         display: flex;
         justify-content: space-between;
@@ -731,7 +727,7 @@
 <div class="page-hero">
     <span class="page-tag">Planning tool</span>
     <h1 class="page-title">What studying abroad actually costs you</h1>
-    <p class="page-sub">Calculate your total investment — tuition, living, IELTS, loan interest — and see how long before your salary abroad makes it worth it.</p>
+    <p class="page-sub">Calculate your total investment — tuition, living and IELTS — and see how long before your salary abroad makes it worth it.</p>
 </div>
 
 <div class="tool-grid">
@@ -773,25 +769,6 @@
         </div>
 
         <hr class="divider">
-        <div class="panel-title">Loan details</div>
-
-        <div class="form-row">
-            <div class="form-group" style="margin-bottom:0">
-                <div class="form-label" id="loanpct-label">Financed by loan <span class="form-label-val" id="loanpct-val">70%</span></div>
-                <input type="range" id="loanpct" aria-labelledby="loanpct-label" min="0" max="100" step="5" value="70">
-            </div>
-            <div class="form-group" style="margin-bottom:0">
-                <div class="form-label" id="rate-label">Interest rate <span class="form-label-val" id="rate-val">10%</span></div>
-                <input type="range" id="rate" aria-labelledby="rate-label" min="6" max="16" step="0.5" value="10">
-            </div>
-        </div>
-
-        <div class="form-group" style="margin-top:1.25rem">
-            <div class="form-label" id="repay-label">Repayment period <span class="form-label-val" id="repay-val">10 years</span></div>
-            <input type="range" id="repay" aria-labelledby="repay-label" min="3" max="20" step="1" value="10">
-        </div>
-
-        <hr class="divider">
         <div class="panel-title">Salary comparison</div>
 
         <div class="form-group">
@@ -813,12 +790,12 @@
             <div class="metric-card accent-card">
                 <div class="metric-lbl">Total cost</div>
                 <div class="metric-val" id="r-total">₹0 L</div>
-                <div class="metric-sub">inc. loan interest</div>
+                <div class="metric-sub">tuition, living &amp; tests</div>
             </div>
             <div class="metric-card">
-                <div class="metric-lbl">Monthly EMI</div>
-                <div class="metric-val" id="r-emi">₹0</div>
-                <div class="metric-sub">post-graduation</div>
+                <div class="metric-lbl">Cost per year</div>
+                <div class="metric-val" id="r-peryear">₹0</div>
+                <div class="metric-sub">average over the programme</div>
             </div>
             <div class="metric-card">
                 <div class="metric-lbl">Break-even</div>
@@ -850,12 +827,6 @@
                 <div class="bar-meta"><span class="bar-name">IELTS &amp; coaching</span><span class="bar-amt" id="b-ielts">₹0.45 L</span></div>
                 <div class="bar-track">
                     <div class="bar-fill bf-ielts" id="bw-ielts" style="width:1%"></div>
-                </div>
-            </div>
-            <div class="bar-row">
-                <div class="bar-meta"><span class="bar-name">Loan interest</span><span class="bar-amt" id="b-interest">₹0 L</span></div>
-                <div class="bar-track">
-                    <div class="bar-fill bf-interest" id="bw-interest" style="width:0%"></div>
                 </div>
             </div>
             <div class="total-row">
@@ -969,10 +940,6 @@
         return '₹' + fL(n) + ' L';
     }
 
-    function fINR(n) {
-        return '₹' + n.toLocaleString('en-IN');
-    }
-
     function val(id) {
         return parseFloat(document.getElementById(id).value) || 0;
     }
@@ -982,9 +949,6 @@
         const livingL = val('living'); // lakhs/yr
         const duration = val('duration'); // years
         const ielts = val('ielts'); // INR
-        const loanPct = val('loanpct') / 100;
-        const rateAnnual = val('rate') / 100;
-        const repayYrs = val('repay');
         const monthlySalary = val('salary'); // INR/mo abroad
         const indiaMonthlySalary = val('indiasalary'); // INR/mo
 
@@ -994,63 +958,37 @@
         const ieltsL = ielts / 100000;
         const studyCost = tuitionTotal + livingTotal + ieltsL;
 
-        // Loan
-        const loanAmt = studyCost * loanPct; // lakhs
-        const loanAmtINR = loanAmt * 100000;
-        const rMo = rateAnnual / 12;
-        const n = repayYrs * 12;
-        let emiINR = 0,
-            totalRepayINR = 0,
-            interestL = 0;
-        if (loanAmt > 0 && rMo > 0) {
-            emiINR = loanAmtINR * rMo * Math.pow(1 + rMo, n) / (Math.pow(1 + rMo, n) - 1);
-            totalRepayINR = emiINR * n;
-            interestL = (totalRepayINR - loanAmtINR) / 100000;
-        } else if (loanAmt > 0) {
-            emiINR = loanAmtINR / n;
-            totalRepayINR = loanAmtINR;
-            interestL = 0;
-        }
+        const totalOutlayL = studyCost;
+        const studyCostINR = studyCost * 100000;
 
-        const totalOutlayL = studyCost + interestL;
-
-        // Break-even
-        const netMonthlySurplus = monthlySalary - indiaMonthlySalary - emiINR;
-        let beMonths = null;
-        if (netMonthlySurplus > 0) {
-            const selfFundedCost = (studyCost - loanAmt) * 100000; // INR
-            beMonths = Math.ceil(selfFundedCost / netMonthlySurplus);
-        }
+        // Break-even: months of extra salary (abroad vs India) needed to recover the study cost
+        const netMonthlySurplus = monthlySalary - indiaMonthlySalary;
+        const beMonths = netMonthlySurplus > 0 ? Math.ceil(studyCostINR / netMonthlySurplus) : null;
 
         // 5-yr gain
-        const abroadTotal5yr = monthlySalary * 60 - totalRepayINR - (studyCost - loanAmt) * 100000;
-        const indiaTotal5yr = indiaMonthlySalary * 60;
-        const gain5yr = (abroadTotal5yr - indiaTotal5yr) / 100000; // lakhs
+        const gain5yr = ((monthlySalary - indiaMonthlySalary) * 60 - studyCostINR) / 100000; // lakhs
 
         // Update results
         document.getElementById('r-total').textContent = fLfull(totalOutlayL * 100000);
-        document.getElementById('r-emi').textContent = emiINR > 0 ? fINR(Math.round(emiINR)) : '—';
+        document.getElementById('r-peryear').textContent = fLfull(studyCostINR / Math.max(duration, 1));
         document.getElementById('r-breakeven').textContent = beMonths ? beMonths + ' mo' : '—';
         const gainEl = document.getElementById('r-gain');
         gainEl.textContent = fLfull(gain5yr * 100000);
         gainEl.className = 'metric-val ' + (gain5yr >= 0 ? 'positive' : 'negative');
 
         // Breakdown bars
-        const maxCost = Math.max(tuitionTotal, livingTotal, ieltsL, interestL, 0.1);
-        document.getElementById('b-tuition').textContent = fLfull(tuitionTotal * 100000);
+                document.getElementById('b-tuition').textContent = fLfull(tuitionTotal * 100000);
         document.getElementById('b-living').textContent = fLfull(livingTotal * 100000);
         document.getElementById('b-ielts').textContent = fLfull(ieltsL * 100000);
-        document.getElementById('b-interest').textContent = fLfull(interestL * 100000);
         document.getElementById('b-total').textContent = fLfull(totalOutlayL * 100000);
         document.getElementById('bw-tuition').style.width = (tuitionTotal / totalOutlayL * 100) + '%';
         document.getElementById('bw-living').style.width = (livingTotal / totalOutlayL * 100) + '%';
         document.getElementById('bw-ielts').style.width = (ieltsL / totalOutlayL * 100) + '%';
-        document.getElementById('bw-interest').style.width = (interestL / totalOutlayL * 100) + '%';
 
         // Breakeven progress
         const bePct = beMonths ? Math.min(beMonths / 60 * 100, 100) : 0;
         document.getElementById('be-fill').style.width = bePct + '%';
-        document.getElementById('be-label').textContent = beMonths ? 'Break-even: ' + beMonths + ' mo' : 'Surplus from day 1';
+        document.getElementById('be-label').textContent = beMonths ? 'Break-even: ' + beMonths + ' mo' : 'No break-even at this salary gap';
     }
 
     // Slider label updates
@@ -1082,18 +1020,6 @@
         document.getElementById('ielts').addEventListener('input', function() {
             const n = +this.value;
             document.getElementById('ielts-val').textContent = n >= 100000 ? '₹' + (n / 100000).toFixed(1) + ' L' : '₹' + n.toLocaleString('en-IN');
-            calculate();
-        });
-        document.getElementById('loanpct').addEventListener('input', function() {
-            document.getElementById('loanpct-val').textContent = this.value + '%';
-            calculate();
-        });
-        document.getElementById('rate').addEventListener('input', function() {
-            document.getElementById('rate-val').textContent = this.value + '%';
-            calculate();
-        });
-        document.getElementById('repay').addEventListener('input', function() {
-            document.getElementById('repay-val').textContent = this.value + ' years';
             calculate();
         });
         document.getElementById('salary').addEventListener('input', function() {
@@ -1131,4 +1057,4 @@
     setupCountries();
     calculate();
 </script>
-<script src="../../assets/site.js?v=24" defer></script>
+<script src="../../assets/site.js?v=25" defer></script>

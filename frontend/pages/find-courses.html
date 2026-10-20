@@ -132,11 +132,8 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
         <div class="search-label" id="search-level-label">Study level</div>
         <select class="search-select" id="search-level" aria-labelledby="search-level-label">
           <option value="">Any level</option>
-          <option>Undergraduate</option>
-          <option>Postgraduate</option>
-          <option>PhD / Research</option>
-          <option>Foundation</option>
-          <option>Pre-Masters</option>
+          <option value="Undergraduate">Undergraduate (UG)</option>
+          <option value="Postgraduate">Postgraduate (PG)</option>
         </select>
       </div>
       <div class="search-divider" aria-hidden="true"></div>
@@ -178,10 +175,8 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
     </div>
     <div class="filter-group">
       <div class="filter-group-title">Study level</div>
-      <label class="filter-option"><input type="checkbox" data-filter="level" value="ug"> Undergraduate <span class="filter-option-count">2,100</span></label>
-      <label class="filter-option"><input type="checkbox" data-filter="level" value="pg"> Postgraduate <span class="filter-option-count">1,900</span></label>
-      <label class="filter-option"><input type="checkbox" data-filter="level" value="phd"> PhD / Research <span class="filter-option-count">430</span></label>
-      <label class="filter-option"><input type="checkbox" data-filter="level" value="found"> Foundation <span class="filter-option-count">280</span></label>
+      <label class="filter-option"><input type="checkbox" data-filter="level" value="ug"> Undergraduate (UG)</label>
+      <label class="filter-option"><input type="checkbox" data-filter="level" value="pg"> Postgraduate (PG)</label>
     </div>
     <div class="filter-group">
       <div class="filter-group-title">Subject area</div>
@@ -189,6 +184,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
       <label class="filter-option"><input type="checkbox" data-filter="subject" value="computing"> Computer science &amp; data</label>
       <label class="filter-option"><input type="checkbox" data-filter="subject" value="engineering"> Engineering</label>
       <label class="filter-option"><input type="checkbox" data-filter="subject" value="medicine"> Health &amp; medicine</label>
+      <label class="filter-option"><input type="checkbox" data-filter="subject" value="social"> Social sciences &amp; humanities</label>
     </div>
     <button id="clear-course-filters" type="button" style="width:100%;padding:.6em;border-radius:100px;border:1.5px solid var(--border);background:none;font-family:var(--sans);font-size:.83rem;cursor:pointer;color:var(--text-s);margin-top:.5rem;">Clear all filters</button>
   </aside>
@@ -225,7 +221,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
         </div>
         <div class="course-actions">
           <button class="btn-shortlist">♡ Shortlist</button>
-          <a href="free-consultation.html?interest=course" class="btn-details">Apply now</a>
+          <a href="free-consultation.html?interest=course-selection#book" class="btn-details" data-open-consult>Apply now</a>
         </div>
       </div>
 
@@ -250,7 +246,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
         </div>
         <div class="course-actions">
           <button class="btn-shortlist">♡ Shortlist</button>
-          <a href="free-consultation.html?interest=course" class="btn-details">Apply now</a>
+          <a href="free-consultation.html?interest=course-selection#book" class="btn-details" data-open-consult>Apply now</a>
         </div>
       </div>
 
@@ -274,7 +270,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
         </div>
         <div class="course-actions">
           <button class="btn-shortlist">♡ Shortlist</button>
-          <a href="free-consultation.html?interest=course" class="btn-details">Apply now</a>
+          <a href="free-consultation.html?interest=course-selection#book" class="btn-details" data-open-consult>Apply now</a>
         </div>
       </div>
 
@@ -299,7 +295,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
         </div>
         <div class="course-actions">
           <button class="btn-shortlist">♡ Shortlist</button>
-          <a href="free-consultation.html?interest=course" class="btn-details">Apply now</a>
+          <a href="free-consultation.html?interest=course-selection#book" class="btn-details" data-open-consult>Apply now</a>
         </div>
       </div>
 
@@ -324,7 +320,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
         </div>
         <div class="course-actions">
           <button class="btn-shortlist">♡ Shortlist</button>
-          <a href="free-consultation.html?interest=course" class="btn-details">Apply now</a>
+          <a href="free-consultation.html?interest=course-selection#book" class="btn-details" data-open-consult>Apply now</a>
         </div>
       </div>
 
@@ -349,7 +345,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
         </div>
         <div class="course-actions">
           <button class="btn-shortlist">♡ Shortlist</button>
-          <a href="free-consultation.html?interest=course" class="btn-details">Apply now</a>
+          <a href="free-consultation.html?interest=course-selection#book" class="btn-details" data-open-consult>Apply now</a>
         </div>
       </div>
 
@@ -417,11 +413,27 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
     business: /business|mba|management|finance/i,
     computing: /computer science|computing|software|data science|artificial intelligence|machine learning|analytics/i,
     engineering: /engineering|electrical|mechanical|robotics/i,
-    medicine: /medicine|medical|health|mbbs/i
+    medicine: /medicine|medical|health|mbbs/i,
+    social: /psychology|law|social|humanities|history|politics|sociology|education|communication|economics|international relations/i
   };
   const countryNames = {uk:/united kingdom|uk/i, usa:/usa|united states/i, canada:/canada/i, australia:/australia/i, germany:/germany/i, ireland:/ireland/i, italy:/italy/i, newzealand:/new zealand/i, finland:/finland/i};
   const initialCourse = (params.get('course') || params.get('subject') || params.get('query') || params.get('q') || '').trim();
   if (initialCourse) input.value = initialCourse;
+  /* ?country=uk (from a destination page) preselects that destination. */
+  const countryLabels = {uk:'United Kingdom', usa:'USA', canada:'Canada', australia:'Australia', germany:'Germany', ireland:'Ireland', italy:'Italy', newzealand:'New Zealand', finland:'Finland'};
+  const initialCountry = countryLabels[(params.get('country') || '').toLowerCase().replace(/[\s-]/g, '')];
+  if (initialCountry) countrySelect.value = initialCountry;
+  const initialLevel = (params.get('level') || '').toLowerCase();
+  if (initialLevel === 'ug' || initialLevel === 'pg') {
+    levelSelect.value = initialLevel === 'ug' ? 'Undergraduate' : 'Postgraduate';
+    document.querySelectorAll(`[data-filter="level"][value="${initialLevel}"]`).forEach(el => { el.checked = true; });
+  }
+  /* "Apply now" opens the counselling popup with the course's country preselected. */
+  cards.forEach(card => {
+    const key = Object.keys(countryNames).find(k => countryNames[k].test(card.querySelector('.course-dest')?.innerText || ''));
+    const apply = card.querySelector('[data-open-consult]');
+    if (key && apply) apply.dataset.country = key;
+  });
   function selected(type) { return [...document.querySelectorAll(`[data-filter="${type}"]:checked`)].map(el => el.value); }
   function applyFilters() {
     const query = input.value.trim();
@@ -437,7 +449,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
       const queryMatch = !normalized || (pattern ? pattern.test(text) : text.toLowerCase().includes(normalized));
       const destinationMatch = destinations.length === 0 || destinations.some(key => countryNames[key]?.test(text));
       const levelText = (card.querySelector('.course-level')?.innerText || '').toLowerCase();
-      const levelMatch = levels.length === 0 || levels.some(level => level === 'pg' ? levelText.includes('postgraduate') : level === 'ug' ? levelText.includes('undergraduate') : level === 'phd' ? /phd|research/.test(levelText) : /foundation|pre-masters/.test(levelText));
+      const levelMatch = levels.length === 0 || levels.some(level => level === 'pg' ? levelText.includes('postgraduate') : levelText.includes('undergraduate'));
       const subjectMatch = subjects.length === 0 || subjects.some(subject => subjectPatterns[subject]?.test(text));
       const selectCountry = countrySelect.value;
       const countryMatch = !selectCountry || countryNames[selectCountry.toLowerCase().replace(/\s/g, '')]?.test(text) || text.toLowerCase().includes(selectCountry.toLowerCase());
@@ -459,7 +471,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
     }
   });
   levelSelect.addEventListener('change', () => {
-    const levelMap = {'Undergraduate':'ug','Postgraduate':'pg','PhD / Research':'phd','Foundation':'found','Pre-Masters':'found'};
+    const levelMap = {'Undergraduate':'ug','Postgraduate':'pg'};
     document.querySelectorAll('[data-filter="level"]').forEach(el => { el.checked = Boolean(levelSelect.value) && levelMap[levelSelect.value] === el.value; });
     applyFilters();
   });
@@ -480,4 +492,4 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 </script>
 
 
-<script src="../assets/site.js?v=24" defer></script>
+<script src="../assets/site.js?v=25" defer></script>
