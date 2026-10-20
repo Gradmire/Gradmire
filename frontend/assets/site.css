@@ -1126,3 +1126,56 @@ footer .footer-tagline { max-width: 27ch; margin: 1rem 0 1.35rem; color: rgba(25
 .nav-login:focus-visible { outline: 3px solid #3C8FD9; outline-offset: 2px; }
 @media (max-width: 1180px) { .nav-login { display: none; } }
 .nav-mobile .nav-login-mobile { display: block; padding: .8rem 0; font-weight: 700; }
+
+/* ── Mobile fixes (2026-10-21 audit at 375px) ───────────────────────────── */
+/* Mobile menu: chevrons follow the open state only, not hover or leftover
+   focus, and the consultation button keeps its own padding. */
+.nav-mobile .nav-dropdown:hover .nav-dropdown-chevron,
+.nav-mobile .nav-dropdown:focus-within .nav-dropdown-chevron { transform: none; }
+.nav-mobile .nav-dropdown > button[aria-expanded="true"] .nav-dropdown-chevron { transform: rotate(180deg); }
+.nav-mobile-links > li > a.btn { padding: .75rem 1.4rem; min-height: 44px; align-items: center; justify-content: center; }
+
+/* Legal pages: let the text column shrink to the screen; wide tables scroll
+   inside their own .table-scroll box instead of widening the page. */
+@media (max-width: 960px) {
+    body .layout { grid-template-columns: minmax(0, 1fr); }
+    body .layout > * { min-width: 0; }
+}
+
+/* Touch targets: at least 44px for every control a thumb has to hit. */
+@media (max-width: 760px) {
+    body .site-theme-toggle { width: 44px; height: 44px; }
+    body .nav-ham { min-width: 44px; min-height: 44px; align-items: center; justify-content: center; }
+    body .gm-legal-links a,
+    body .gm-legal-links button { display: inline-flex; align-items: center; min-height: 44px; }
+    body .pwd-wrap .pwd-toggle { right: .2rem; min-width: 44px; min-height: 44px; justify-content: center; }
+    body .pwd-wrap input { padding-right: 3rem; }
+    body :is(a.btn, .gp-btn, .filter-chip, .faq-tab, .tab-btn, .chip, .country-pill, .btn-reg, .search-btn, .clear-btn, .newsletter-btn, .gp-level-filter button) {
+        min-height: 44px;
+    }
+    body :is(.filter-chip, .chip, .country-pill, .btn-reg, .clear-btn, .gp-level-filter button) { display: inline-flex; align-items: center; justify-content: center; }
+    body .chip { min-width: 44px; }
+    body :is(.btn-shortlist, .btn-explore) { min-height: 44px; }
+    body .gm-buddy-close { position: relative; }
+    body .gm-buddy-close::after { content: ''; position: absolute; inset: -8px; }
+    /* Slider dots stay small to look at but get a thumb-sized hit area. */
+    body .m-slider-dot { position: relative; }
+    body .m-slider-dot::after { content: ''; position: absolute; inset: -18px -5px; }
+    /* Long call-to-action labels wrap instead of running off the screen. */
+    body .compare-expert-btn { max-width: 100%; white-space: normal; justify-content: center; text-align: center; }
+}
+
+/* Mobile menu open: the logo bar stays pinned at the top, the menu starts right
+   below it, and only the menu scrolls (site.js sets --gm-nav-h and .nav-pinned). */
+@media (max-width: 1180px) {
+    html.nav-open,
+    html.nav-open body { overflow: hidden; overscroll-behavior: none; }
+    .nav-pinned { position: fixed !important; top: 0 !important; left: 0; right: 0; z-index: 100; }
+    .nav-mobile { top: var(--gm-nav-h, calc(68px + env(safe-area-inset-top, 0px))); overscroll-behavior: contain; }
+}
+@media (max-width: 1180px) { html.nav-open :is(.gm-buddy, .gm-consult-fab) { visibility: hidden; } }
+/* The menu's consultation button is styled here, not by each page, so it is
+   never white text on no background. */
+.nav-mobile a.btn.btn-primary { background: var(--accent, #007A5A); border: 1px solid var(--accent, #007A5A); border-radius: 999px; font-weight: 700; text-decoration: none; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .nav-mobile a.btn.btn-primary { background: #007A5A; border-color: #007A5A; } }
+:root[data-theme="dark"] .nav-mobile a.btn.btn-primary { background: #007A5A; border-color: #007A5A; }
