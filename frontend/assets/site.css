@@ -1094,3 +1094,16 @@ footer .footer-tagline { max-width: 27ch; margin: 1rem 0 1.35rem; color: rgba(25
 /* Dashboard: the footer sits at the end of the scrolling main panel, edge to edge. */
 .app-body .main > .gm-footer { margin: 2.5rem -2rem -1.75rem; }
 @media (max-width: 720px) { .app-body .main > .gm-footer { margin: 2rem -1.25rem -1.25rem; } }
+
+/* ─── Destination pages: QS rank on university pictures, university count on city pictures ─── */
+.uni-card-img { position: relative; }
+.gm-rank-badge { position: absolute; top: .6rem; left: .6rem; z-index: 2; display: inline-flex; align-items: center; padding: .28rem .6rem; border-radius: 999px; background: rgba(8, 18, 32, .82); color: #fff; font: 700 .7rem/1.2 var(--mono, 'JetBrains Mono', monospace); letter-spacing: .02em; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); box-shadow: 0 4px 14px rgba(0, 0, 0, .25); pointer-events: none; }
+.university .gm-rank-badge { position: static; margin-left: .5rem; padding: .18rem .5rem; background: var(--accent-dim, rgba(0, 122, 90, .1)); color: var(--accent-text, #005C44); box-shadow: none; backdrop-filter: none; vertical-align: middle; }
+.gm-city-count { position: absolute; top: .7rem; left: .7rem; z-index: 2; padding: .3rem .65rem; border-radius: 999px; background: #007A5A; color: #fff; font-size: .74rem; font-weight: 800; box-shadow: 0 4px 14px rgba(0, 0, 0, .25); pointer-events: none; }
+.card > .gm-city-count { position: static; display: inline-block; margin-bottom: .5rem; box-shadow: none; }
+
+/* Courses dropdown: two columns of popular courses. */
+.nav-dropdown--wide .nav-dropdown-menu { min-width: 30rem; }
+.nav-dropdown-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 .25rem; margin-bottom: .35rem; padding-bottom: .35rem; border-bottom: 1px solid var(--border); }
+.nav-mobile .nav-dropdown--wide .nav-dropdown-menu { min-width: 0; }
+.nav-mobile .nav-dropdown-grid { grid-template-columns: 1fr; }

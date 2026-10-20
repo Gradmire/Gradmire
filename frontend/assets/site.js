@@ -66,14 +66,12 @@
         <div class="nav-dropdown-menu" role="menu">${items}</div>
       </li>`;
 
-    const courseCategories = [
-        ['Business & Management', 'Business and Management'],
-        ['Creative Arts, Design & Media', 'Creative Arts, Design and Media'],
-        ['Engineering & Technology', 'Engineering and Technology'],
-        ['Medicine & Health', 'Medicine and Health'],
-        ['Science', 'Science'],
-        ['Social Sciences & Humanities', 'Social Sciences and Humanities'],
-        ['Tourism & Hospitality', 'Tourism and Hospitality']
+    /* Popular courses (AECC-style list); each opens the Course Finder filtered to that subject. */
+    const popularCourses = [
+        ['MBA & Management', 'business'], ['Computer Science & IT', 'computer science'], ['Data Science & AI', 'data science'],
+        ['Business Analytics', 'business analytics'], ['Engineering', 'engineering'], ['Medicine, Health & Nursing', 'medicine'],
+        ['Economics & Finance', 'economics'], ['Law', 'law'], ['Psychology', 'psychology'],
+        ['Architecture & Design', 'design'], ['Natural Sciences', 'science'], ['Social Sciences & Humanities', 'social sciences']
     ];
     const studentServices = [
         ['Gradmire free counselling', consultationPage('counselling')], ['Test preparation', page('test-preparation.html')],
@@ -82,7 +80,7 @@
     ];
     const navItems = [
         dropdown('Destinations', `<span class="nav-dropdown-label">Study destinations</span>${destinations.map(([name, slug]) => link(countryPage(slug), name)).join('')}${link(page('destinations.html'), 'All destinations →')}`),
-        dropdown('Courses', `<span class="nav-dropdown-label">Explore study areas</span>${courseCategories.map(([label, query]) => link(`${page('find-courses.html')}?course=${encodeURIComponent(query)}`, label)).join('')}${link(page('find-courses.html'), 'Course Finder →')}`),
+        dropdown('Courses', `<span class="nav-dropdown-label">Popular courses</span><div class="nav-dropdown-grid">${popularCourses.map(([label, query]) => link(`${page('find-courses.html')}?course=${encodeURIComponent(query)}`, label)).join('')}</div>${link(`${page('find-courses.html')}?level=ug`, 'Bachelor’s (UG) courses')}${link(`${page('find-courses.html')}?level=pg`, 'Master’s (PG) courses')}${link(page('find-courses.html'), 'Open the Course Finder →')}`, 'nav-dropdown--wide'),
         dropdown('MBBS Abroad', `<span class="nav-dropdown-label">Countries to explore</span>${mbbsCountries.map(([name, slug]) => link(page(`mbbs-in-${slug}.html`), `MBBS in ${name}`)).join('')}${link(page('mbbs-abroad.html'), 'Compare MBBS countries →')}`),
         dropdown('Student Services', `${studentServices.map(([label, href]) => link(href, label)).join('')}`),
         dropdown('Scholarships', `<span class="nav-dropdown-label">Explore by country</span>${destinations.map(([name, slug]) => link(scholarshipPage(slug), `Scholarships in ${name}`)).join('')}${link(page('scholarships.html'), 'All scholarships →')}`),
@@ -447,7 +445,7 @@
             if (select && trigger.dataset.country) select.value = trigger.dataset.country;
             let interest = '';
             try { interest = new URL(trigger.href, window.location.href).searchParams.get('interest') || ''; } catch (_) {}
-            context = { interest, exam: trigger.dataset.exam || '', scholarship: trigger.dataset.scholarship || '' };
+            context = { interest, exam: trigger.dataset.exam || '', scholarship: trigger.dataset.scholarship || '', course: trigger.dataset.course || '' };
             open(false);
         });
         popup.querySelectorAll('[data-popup-close]').forEach((el) => el.addEventListener('click', close));
@@ -475,7 +473,7 @@
             write(session, 'gradmire-consult-prefill', JSON.stringify({
                 name: String(data.name).trim(), phone: String(data.phone).trim(),
                 email: String(data.email || '').trim(), destination: data.destination || '',
-                exam: context.exam || '', scholarship: context.scholarship || ''
+                exam: context.exam || '', scholarship: context.scholarship || '', course: context.course || ''
             }));
             const interest = context.interest || (mbbsCountries.some(([, slug]) => slug === data.destination) ? 'mbbs-abroad' : 'counselling');
             window.location.href = `${consultationPage(interest, data.destination || '')}#book`;

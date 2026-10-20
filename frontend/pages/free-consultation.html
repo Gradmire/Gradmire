@@ -131,7 +131,7 @@ img{max-width:100%;display:block;}a{color:inherit;}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .field-error{color:#FF8A7A;}}
 :root[data-theme="dark"] .field-error{color:#FF8A7A;}
 </style>
-<link rel="stylesheet" href="../assets/site.css?v=24">
+<link rel="stylesheet" href="../assets/site.css?v=25">
 
 <nav class="nav" aria-label="Main navigation">
   <div class="nav-inner">
@@ -282,6 +282,10 @@ img{max-width:100%;display:block;}a{color:inherit;}
             <option value="PTE Academic">PTE Academic</option>
             <option value="Duolingo English Test">Duolingo English Test</option>
           </select>
+        </div>
+        <div class="form-field" id="s1-course-field" hidden>
+          <label class="form-label" for="s1-course">Which course are you interested in? <span style="font-weight:400">(optional)</span></label>
+          <input class="form-input" type="text" id="s1-course" maxlength="200" placeholder="e.g. MSc Data Science, or not sure yet">
         </div>
         <div class="form-field" id="s1-scholarship-field" hidden>
           <label class="form-label" for="s1-scholarship">Which scholarship are you interested in? <span style="font-weight:400">(optional)</span></label>
@@ -599,7 +603,9 @@ function enquiryDetails() {
   const interest = document.getElementById('s1-interest').value;
   const exam = document.getElementById('s1-exam').value.trim();
   const scholarship = document.getElementById('s1-scholarship').value.trim();
+  const course = document.getElementById('s1-course').value.trim();
   if (interest === 'test-preparation' && exam) return `Test: ${exam}`;
+  if (interest === 'course-selection' && course) return `Course: ${course}`;
   if (interest === 'scholarship' && scholarship) return `Scholarship: ${scholarship}`;
   return '';
 }
@@ -678,9 +684,12 @@ document.querySelectorAll('#step1 .form-input, #step1 .form-select, #consent-con
   if (exam && examOption) examSelect.value = examOption.value;
   const scholarship = (params.get('scholarship') || carried.scholarship || '').trim();
   if (scholarship && !scholarshipInput.value) scholarshipInput.value = scholarship.slice(0, 200);
+  const courseInput = document.getElementById('s1-course');
+  if (carried.course && !courseInput.value) courseInput.value = String(carried.course).slice(0, 200);
   const syncDetailFields = () => {
     document.getElementById('s1-exam-field').hidden = interestSelect.value !== 'test-preparation';
     document.getElementById('s1-scholarship-field').hidden = interestSelect.value !== 'scholarship';
+    document.getElementById('s1-course-field').hidden = interestSelect.value !== 'course-selection';
   };
   interestSelect.addEventListener('change', syncDetailFields);
   syncDetailFields();
@@ -746,4 +755,4 @@ document.querySelectorAll('#step1 .form-input, #step1 .form-select, #consent-con
 </footer>
 
 <script src="../assets/api.js?v=1"></script>
-<script src="../assets/site.js?v=27" defer></script>
+<script src="../assets/site.js?v=28" defer></script>
