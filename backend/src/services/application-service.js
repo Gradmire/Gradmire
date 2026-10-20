@@ -6,13 +6,15 @@ import { now } from '../lib/clock.js';
 import { query, withTransaction } from '../lib/db.js';
 import { notFound } from '../lib/http.js';
 import { audit } from './audit.js';
+import { assertStudentAccess, counsellorSeesStudentSql } from './access.js';
+import { isAdminRole } from './permissions.js';
 
 export const APPLICATION_STATUSES = [
     'shortlisted', 'preparing', 'submitted', 'offer_conditional', 'offer_unconditional',
     'accepted', 'visa_applied', 'visa_granted', 'enrolled', 'rejected', 'withdrawn',
 ];
 
-const isAdmin = (staff) => staff.role === 'admin';
+const isAdmin = (staff) => isAdminRole(staff.role);
 const escapeLike = (value) => value.replace(/[\\%_]/g, (char) => `\\${char}`);
 const dateOnly = (value) => (value ? new Date(value).toISOString().slice(0, 10) : null);
 
@@ -28,18 +30,6 @@ function view(row) {
         studentNote: row.student_note,
         updatedAt: new Date(row.updated_at).toISOString(),
     };
-}
-
-/* Throws 404 unless `staff` may manage `studentId` (same answer for "no such student"). */
-async function assertStudentAccess(client, staff, studentId) {
-    const { rows } = await client.query(
-        `SELECT u.id FROM users u
-          WHERE u.id = $1 AND u.role = 'student'
-            AND ($2::uuid IS NULL OR EXISTS (
-                  SELECT 1 FROM consultations c WHERE c.student_user_id = u.id AND c.counsellor_id = $2))`,
-        [studentId, isAdmin(staff) ? null : staff.id],
-    );
-    if (!rows.length) throw notFound('Student not found');
 }
 
 async function loadForStaff(client, staff, applicationId) {
@@ -70,7 +60,7 @@ export async function searchStudents(staff, q) {
                 (SELECT COUNT(*)::int FROM student_applications a WHERE a.student_user_id = u.id) AS application_count
            FROM users u
           WHERE u.role = 'student'
-            AND ($1::uuid IS NULL OR EXISTS (SELECT 1 FROM consultations c WHERE c.student_user_id = u.id AND c.counsellor_id = $1))
+            AND ($1::uuid IS NULL OR ${counsellorSeesStudentSql('u', '$1')})
             ${filter}
           ORDER BY u.created_at DESC
           LIMIT 50`,

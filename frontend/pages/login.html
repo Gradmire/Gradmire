@@ -621,7 +621,7 @@
         try {
             const user = await GradmireAPI.login(email, password);
             const next = new URLSearchParams(location.search).get('next');
-            const fallback = user.role === 'student' ? 'dashboard.html' : 'admin-consultations.html';
+            const fallback = user.home || (user.role === 'student' ? 'dashboard.html' : 'consultant-dashboard.html');
             window.location.href = GradmireAPI.safeNext(next, fallback);
         } catch (err) {
             error.textContent = err.message;

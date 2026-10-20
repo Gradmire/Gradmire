@@ -8,10 +8,13 @@ import { now } from '../lib/clock.js';
 import { query } from '../lib/db.js';
 import { getEmailProvider } from '../integrations/email/index.js';
 import { verificationToken } from './auth-service.js';
+import { invitationToken } from './invitation-token.js';
 import { manageTokenFromSeed } from './manage-token.js';
 import { renderTemplate } from './notification-templates.js';
 
 const REMINDER_TEMPLATE = { 1440: 'reminder_24h', 60: 'reminder_1h' };
+/* Templates rendered from their stored payload alone (no consultation behind them). */
+const PAYLOAD_TEMPLATES = new Set(['staff_calendar_failed', 'consultant_application_update', 'access_changed', 'lead_assigned']);
 
 export async function enqueueNotification(client, { consultationId = null, userId = null, template, recipient, dedupeKey, payload = {}, scheduledFor = null }) {
     await client.query(
@@ -87,6 +90,8 @@ function stillRelevant(template, c) {
         case 'reminder_24h':
         case 'reminder_1h':
             return c.status === 'confirmed' && new Date(c.scheduled_start) > now();
+        case 'booking_link':
+            return ['reserved', 'confirmed'].includes(c.status) && new Date(c.scheduled_start) > now() && Boolean(c.manage_token_seed);
         default:
             return true;
     }
@@ -96,7 +101,13 @@ async function buildMessage(row) {
     if (row.template === 'email_verification') {
         return renderTemplate(row.template, { ...row.payload, token: verificationToken(row.payload.verificationId) });
     }
-    if (row.template === 'staff_calendar_failed') return renderTemplate(row.template, row.payload);
+    if (row.template === 'employee_invitation') {
+        // Only an invitation that can still be accepted is sent.
+        const { rows } = await query("SELECT status, expires_at FROM employee_invitations WHERE id = $1", [row.payload.invitationId]);
+        if (!rows[0] || rows[0].status !== 'pending' || new Date(rows[0].expires_at) <= now()) return null;
+        return renderTemplate(row.template, { ...row.payload, expiresAt: rows[0].expires_at, token: invitationToken(row.payload.invitationId) });
+    }
+    if (PAYLOAD_TEMPLATES.has(row.template)) return renderTemplate(row.template, row.payload);
     const { rows } = await query(CONSULTATION_FOR_MESSAGE, [row.consultation_id]);
     const c = rows[0];
     if (!c) return null;
@@ -117,7 +128,7 @@ async function buildMessage(row) {
         meetingUrl: c.meeting_url || null,
         counsellorName: c.counsellor_name,
         cutoffHours: config.changeCutoffHours(),
-        manageToken: c.manage_token_seed && ['booking_confirmed', 'booking_rescheduled', 'reminder_24h', 'reminder_1h'].includes(row.template) ? manageTokenFromSeed(c.manage_token_seed) : null,
+        manageToken: c.manage_token_seed && ['booking_confirmed', 'booking_rescheduled', 'reminder_24h', 'reminder_1h', 'booking_link'].includes(row.template) ? manageTokenFromSeed(c.manage_token_seed) : null,
     });
 }
 

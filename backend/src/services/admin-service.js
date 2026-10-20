@@ -2,7 +2,7 @@
    applies role scoping in SQL: admins see everything; counsellors see and
    change only consultations assigned to them and only their own availability. */
 import { now } from '../lib/clock.js';
-import { query, withTransaction } from '../lib/db.js';
+import { query, withSavepoint, withTransaction } from '../lib/db.js';
 import { badRequest, conflict, forbidden, HttpError, notFound } from '../lib/http.js';
 import { addMinutes, dayBounds, zonedParts } from '../lib/time.js';
 import { audit, recordConsultationEvent } from './audit.js';
@@ -10,8 +10,9 @@ import { ACTIVE_STATUSES } from './availability-service.js';
 import { CONSULTATION_SELECT, cancelInTransaction, loadConsultation, settle, typeView } from './booking-service.js';
 import { enqueueCalendarJob, needsCalendar, retryCalendarSync } from './calendar-sync.js';
 import { enqueueNotification, queueConfirmationMessages } from './notification-service.js';
+import { isAdminRole } from './permissions.js';
 
-const isAdmin = (staff) => staff.role === 'admin';
+const isAdmin = (staff) => isAdminRole(staff.role);
 const scopeCounsellor = (staff) => (isAdmin(staff) ? null : staff.id);
 
 function staffView(c) {
@@ -174,39 +175,8 @@ export async function updateConsultation(staff, id, patch) {
 
         if (patch.counsellorId && patch.counsellorId !== c.counsellor_id) {
             if (!ACTIVE_STATUSES.includes(changes.status || c.status)) throw conflict('Only active consultations can be reassigned.', 'NOT_ACTIVE');
-            const target = (await client.query(
-                "SELECT co.* FROM counsellors co JOIN users u ON u.id = co.user_id WHERE co.user_id = $1 AND co.is_active AND u.status = 'active'",
-                [patch.counsellorId],
-            )).rows[0];
-            if (!target) throw badRequest('Choose an active counsellor.', { fields: { counsellorId: 'Choose an active counsellor' } });
-            const oldCounsellor = (await client.query('SELECT calendar_id FROM counsellors WHERE user_id = $1', [c.counsellor_id])).rows[0];
-            const generation = c.calendar_generation + 1;
-            const calendar = needsCalendar(target);
-            let row;
-            try {
-                row = (await client.query(
-                    `UPDATE consultations SET counsellor_id = $2, blocked_until = scheduled_end + make_interval(mins => $3),
-                       calendar_generation = $4, calendar_status = $5, calendar_event_id = NULL,
-                       meeting_url = CASE WHEN meeting_provider = 'google_meet' THEN NULL ELSE meeting_url END,
-                       meeting_provider = CASE WHEN meeting_provider = 'google_meet' THEN NULL ELSE meeting_provider END,
-                       updated_at = NOW()
-                     WHERE id = $1 RETURNING *`,
-                    [id, target.user_id, target.buffer_minutes, generation, calendar ? 'pending' : 'not_required'],
-                )).rows[0];
-            } catch (error) {
-                if (error.code === '23P01') throw conflict('That counsellor already has a booking at this time.', 'SLOT_UNAVAILABLE');
-                throw error;
-            }
-            if (c.calendar_status !== 'not_required' && oldCounsellor?.calendar_id) {
-                await enqueueCalendarJob(client, { consultationId: id, action: 'cancel', generation: c.calendar_generation, calendarId: oldCounsellor.calendar_id });
-            }
-            if (calendar) await enqueueCalendarJob(client, { consultationId: id, action: 'create', generation, calendarId: target.calendar_id });
-            if (row.status === 'confirmed') {
-                const email = (await client.query('SELECT email FROM users WHERE id = $1', [target.user_id])).rows[0].email;
-                await enqueueNotification(client, { consultationId: id, template: 'counsellor_new_booking', recipient: email, dedupeKey: `${id}:counsellor_new_booking:${target.user_id}:${generation}` });
-            }
-            await recordConsultationEvent(client, { consultationId: id, actorType: 'staff', actorUserId: staff.id, event: 'counsellor_assigned', details: { from: c.counsellor_id, to: target.user_id } });
-            changes.counsellorId = target.user_id;
+            await reassignInTransaction(client, staff.id, c, patch.counsellorId);
+            changes.counsellorId = patch.counsellorId;
         }
 
         if (patch.outcome !== undefined) {
@@ -227,6 +197,46 @@ export async function updateConsultation(staff, id, patch) {
     });
     await settle(updatedId);
     return getConsultationDetail(staff, updatedId);
+}
+
+/* Moves an active consultation to another counsellor inside the caller's
+   transaction: frees the old calendar event, books the new one, tells the new
+   counsellor and records who did it. Shared by the CRM and access revocation. */
+export async function reassignInTransaction(client, actorUserId, c, targetId) {
+    const target = (await client.query(
+        "SELECT co.* FROM counsellors co JOIN users u ON u.id = co.user_id WHERE co.user_id = $1 AND co.is_active AND u.status = 'active'",
+        [targetId],
+    )).rows[0];
+    if (!target) throw badRequest('Choose an active counsellor.', { fields: { counsellorId: 'Choose an active counsellor' } });
+    const id = c.id;
+    const oldCounsellor = (await client.query('SELECT calendar_id FROM counsellors WHERE user_id = $1', [c.counsellor_id])).rows[0];
+    const generation = c.calendar_generation + 1;
+    const calendar = needsCalendar(target);
+    let row;
+    try {
+        row = (await withSavepoint(client, 'reassign', () => client.query(
+            `UPDATE consultations SET counsellor_id = $2, blocked_until = scheduled_end + make_interval(mins => $3),
+               calendar_generation = $4, calendar_status = $5, calendar_event_id = NULL,
+               meeting_url = CASE WHEN meeting_provider = 'google_meet' THEN NULL ELSE meeting_url END,
+               meeting_provider = CASE WHEN meeting_provider = 'google_meet' THEN NULL ELSE meeting_provider END,
+               updated_at = NOW()
+             WHERE id = $1 RETURNING *`,
+            [id, target.user_id, target.buffer_minutes, generation, calendar ? 'pending' : 'not_required'],
+        ))).rows[0];
+    } catch (error) {
+        if (error.code === '23P01') throw conflict(`${target.display_name} already has a booking at the time of ${c.reference}.`, 'SLOT_UNAVAILABLE');
+        throw error;
+    }
+    if (c.calendar_status !== 'not_required' && oldCounsellor?.calendar_id) {
+        await enqueueCalendarJob(client, { consultationId: id, action: 'cancel', generation: c.calendar_generation, calendarId: oldCounsellor.calendar_id });
+    }
+    if (calendar) await enqueueCalendarJob(client, { consultationId: id, action: 'create', generation, calendarId: target.calendar_id });
+    if (row.status === 'confirmed') {
+        const email = (await client.query('SELECT email FROM users WHERE id = $1', [target.user_id])).rows[0].email;
+        await enqueueNotification(client, { consultationId: id, template: 'counsellor_new_booking', recipient: email, dedupeKey: `${id}:counsellor_new_booking:${target.user_id}:${generation}` });
+    }
+    await recordConsultationEvent(client, { consultationId: id, actorType: 'staff', actorUserId, event: 'counsellor_assigned', details: { from: c.counsellor_id, to: target.user_id } });
+    return row;
 }
 
 /* ── Notes, outcomes and follow-up tasks ──────────────────────────────────── */

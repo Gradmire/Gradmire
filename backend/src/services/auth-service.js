@@ -9,11 +9,13 @@ import { query, withTransaction } from '../lib/db.js';
 import { conflict, forbidden, HttpError, parseCookies, unauthorized } from '../lib/http.js';
 import { audit } from './audit.js';
 import { enqueueNotification } from './notification-service.js';
+import { notifyUser } from './inbox.js';
+import { HOME_PAGE } from './permissions.js';
 
 const MAX_FAILED_LOGINS = 10;
 const LOCK_MINUTES = 15;
 const VERIFY_TTL_HOURS = 48;
-export const STAFF_ROLES = ['counsellor', 'admin'];
+export { STAFF_ROLES } from './permissions.js';
 
 export const cookieName = () => (config.cookieSecure() ? '__Host-gm_session' : 'gm_session');
 
@@ -26,6 +28,8 @@ export function publicUser(row) {
         firstName: row.first_name,
         lastName: row.last_name,
         phone: row.phone,
+        // Where the site sends this person after login; authorisation never relies on it.
+        home: HOME_PAGE[row.role] || 'dashboard.html',
     };
 }
 
@@ -178,6 +182,13 @@ export async function confirmVerification(token) {
         await client.query('UPDATE email_verification_tokens SET consumed_at = $2 WHERE id = $1', [record.id, now()]);
         await client.query('UPDATE users SET email_verified_at = COALESCE(email_verified_at, $2), updated_at = $2 WHERE id = $1', [record.user_id, now()]);
         const linked = await linkGuestRecords(client, record.user_id, record.email);
+        if (linked.linkedConsultations || linked.linkedLeads) {
+            await notifyUser(client, record.user_id, {
+                kind: 'records_linked', title: 'Your earlier bookings are now in your account',
+                body: `We linked ${linked.linkedConsultations} consultation(s) and ${linked.linkedLeads} enquiry(ies) made with your verified email address.`,
+                link: 'dashboard-consultations.html',
+            });
+        }
         await audit(client, { actorUserId: record.user_id, action: 'auth.email_verified', entityType: 'user', entityId: record.user_id, details: linked });
         return { verified: true, ...linked };
     });
@@ -189,7 +200,7 @@ export async function linkGuestRecords(client, userId, email) {
         [userId, email],
     );
     const leads = await client.query(
-        'UPDATE leads SET user_id = $1, updated_at = NOW() WHERE user_id IS NULL AND LOWER(email) = LOWER($2) RETURNING id',
+        "UPDATE leads SET user_id = $1, status = CASE WHEN status IN ('not_interested', 'closed') THEN status ELSE 'converted' END, updated_at = NOW() WHERE user_id IS NULL AND LOWER(email) = LOWER($2) RETURNING id",
         [userId, email],
     );
     return { linkedConsultations: consultations.rowCount, linkedLeads: leads.rowCount };

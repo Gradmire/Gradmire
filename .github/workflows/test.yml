@@ -55,12 +55,12 @@ jobs:
           # A second run must be a no-op.
           npm run migrate --prefix backend
 
-      - name: Run backend tests (booking, auth, security, integration)
+      - name: Run backend tests (booking, auth, security, integration, roles)
         run: npm test --prefix backend
 
       - name: Validate shared frontend JavaScript
         run: |
-          for file in site api booking-common booking manage-consultation my-consultations admin-consultations; do
+          for file in site api booking-common booking manage-consultation my-consultations admin-consultations admin-students student-dashboard workspace student-area staff-area; do
             node --check "frontend/assets/$file.js"
           done
 

@@ -18,7 +18,7 @@ import { audit, recordConsultationEvent } from './audit.js';
 import { ACTIVE_STATUSES, findSlots } from './availability-service.js';
 import { enqueueCalendarJob, needsCalendar, processCalendarJobs } from './calendar-sync.js';
 import { manageTokenHash, newManageToken } from './manage-token.js';
-import { processNotifications, queueCancellationMessages, queueConfirmationMessages } from './notification-service.js';
+import { enqueueNotification, processNotifications, queueCancellationMessages, queueConfirmationMessages } from './notification-service.js';
 
 /* ── Consultation types ───────────────────────────────────────────────────── */
 
@@ -145,7 +145,8 @@ async function upsertLead(client, { userId, name, email, phone, input, typeSlug 
         await client.query(
             `UPDATE leads SET primary_destination = COALESCE($2, primary_destination), intended_intake = COALESCE($3, intended_intake),
                study_level = COALESCE($4, study_level), preferred_course = COALESCE($5, preferred_course),
-               service_interest = $6, contact_consent = TRUE, updated_at = NOW()
+               service_interest = $6, contact_consent = TRUE, updated_at = NOW(),
+               status = CASE WHEN status IN ('new', 'contacted', 'qualified') THEN 'consultation_booked' ELSE status END
              WHERE id = $1`,
             [existing.id, ...prefs],
         );
@@ -155,9 +156,9 @@ async function upsertLead(client, { userId, name, email, phone, input, typeSlug 
     const { first, last } = splitName(name);
     await client.query(
         `INSERT INTO leads (id, source, user_id, first_name, last_name, email, phone, primary_destination, intended_intake,
-           study_level, preferred_course, service_interest, contact_consent, marketing_opt_in)
-         VALUES ($1, 'booking', $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, TRUE, $12)`,
-        [id, userId, first, last, email, phone, ...prefs, input.marketingOptIn === true],
+           study_level, preferred_course, service_interest, contact_consent, marketing_opt_in, status)
+         VALUES ($1, 'booking', $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, TRUE, $12, $13)`,
+        [id, userId, first, last, email, phone, ...prefs, input.marketingOptIn === true, userId ? 'converted' : 'consultation_booked'],
     );
     return id;
 }
@@ -503,11 +504,35 @@ export async function claimConsultation(user, token) {
              UPDATE consultations SET student_user_id = $2, updated_at = NOW() WHERE id IN (SELECT id FROM chain) AND student_user_id IS NULL`,
             [c.id, user.id],
         );
-        if (c.lead_id) await client.query('UPDATE leads SET user_id = $2, updated_at = NOW() WHERE id = $1 AND user_id IS NULL', [c.lead_id, user.id]);
+        if (c.lead_id) await client.query("UPDATE leads SET user_id = $2, status = 'converted', updated_at = NOW() WHERE id = $1 AND user_id IS NULL", [c.lead_id, user.id]);
         await recordConsultationEvent(client, { consultationId: c.id, actorType: 'student', actorUserId: user.id, event: 'claimed' });
         await audit(client, { actorUserId: user.id, action: 'consultation.claimed', entityType: 'consultation', entityId: c.id });
         return studentView(await loadConsultation(client, c.id));
     });
+}
+
+/* A guest who lost their confirmation email asks for the links again. The links
+   go only to the address the booking was made with, so knowing an email gets
+   nobody else's booking; the caller always gets the same answer. One resend per
+   booking per hour (dedupe key) stops this being used to flood an inbox. */
+export async function resendManageLinks(email) {
+    await withTransaction(async (client) => {
+        const { rows } = await client.query(
+            `SELECT id, student_email, student_user_id FROM consultations
+             WHERE LOWER(student_email) = $1 AND status IN ('reserved', 'confirmed') AND scheduled_start > $2 AND manage_token_seed IS NOT NULL
+             ORDER BY scheduled_start LIMIT 5`,
+            [email.toLowerCase(), now()],
+        );
+        const hour = Math.floor(now().getTime() / 3600_000);
+        for (const c of rows) {
+            await enqueueNotification(client, {
+                consultationId: c.id, userId: c.student_user_id, template: 'booking_link', recipient: c.student_email,
+                dedupeKey: `${c.id}:booking_link:${hour}`,
+            });
+        }
+        return rows.length;
+    });
+    return { sent: true };
 }
 
 export { loadConsultation, CONSULTATION_SELECT, lockForChange, startLifecycle, initialState, settle };
