@@ -1,12 +1,12 @@
 // Writes frontend/sitemap.xml from the pages themselves: every page under
 // frontend/pages except noindex pages and a few utility pages, at its canonical
-// URL (or https://gradmire.com/<page>, which Vercel serves from /pages), with
+// URL (or https://www.gradmire.com/<page>, which Vercel serves from /pages), with
 // the date of its last commit as <lastmod>. Run: node scripts/build-sitemap.mjs
 import { execFileSync } from 'node:child_process';
 import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
-const SITE = 'https://gradmire.com';
+const SITE = 'https://www.gradmire.com';
 const root = new URL('../frontend/', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1');
 const pagesDir = join(root, 'pages');
 // Public but not useful in search results.
