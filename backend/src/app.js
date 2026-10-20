@@ -6,7 +6,7 @@ import { platformApiRoute } from './routes/platform-api.js';
 
 /* Plain (request, response) handler shared by the local server and the Vercel function. */
 export async function handleRequest(request, response) {
-    // Comma-separated FRONTEND_ORIGIN, e.g. "http://localhost:8080,https://gradmire.com".
+    // Comma-separated FRONTEND_ORIGIN, e.g. "http://localhost:8080,https://www.gradmire.com".
     // Credentials (the session cookie) are only ever allowed for these origins.
     const origin = request.headers.origin;
     if (origin && config.allowedOrigins().includes(origin)) {

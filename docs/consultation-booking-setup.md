@@ -138,7 +138,7 @@ reads the process environment; it does not load `.env` files itself.
 | `DATABASE_URL_UNPOOLED` | Neon | Direct URL for migrations |
 | `APP_SECRET` | **Production** | 32+ random chars. Signs manage/verification links and rate-limit keys. In production, requests that need it fail with an error until it is set. |
 | `FRONTEND_ORIGIN` | Yes | Comma-separated site origins allowed by CORS (with credentials) and the Origin check |
-| `SITE_URL`, `SITE_PAGES_PATH` | Yes | Used to build links in emails (`https://gradmire.com` + `/pages`) |
+| `SITE_URL`, `SITE_PAGES_PATH` | Yes | Used to build links in emails (`https://www.gradmire.com` + `/pages`) |
 | `CRON_SECRET` | Yes | Bearer token for the job endpoint |
 | `SESSION_COOKIE_SAMESITE` | Optional | `Lax` (default). `None` only for a cross-site API (see §8). |
 | `SESSION_COOKIE_SECURE` | Optional | Defaults on in production |
@@ -255,8 +255,8 @@ will not work reliably on the two default `*.vercel.app` hosts.** Guest booking 
 need cookies and works everywhere. Pick one:
 
 - **Recommended:** custom domains on one registrable domain, e.g. site `gradmire.com` and
-  API `api.gradmire.com`. Set `FRONTEND_ORIGIN=https://gradmire.com`,
-  `SITE_URL=https://gradmire.com`, and add
+  API `api.gradmire.com`. Set `FRONTEND_ORIGIN=https://www.gradmire.com`,
+  `SITE_URL=https://www.gradmire.com`, and add
   `<meta name="gm-api-base" content="https://api.gradmire.com">` (or change
   `PRODUCTION_API` in `frontend/assets/api.js`). Keep `SameSite=Lax`.
 - Or serve the API under the site's own origin (a working `/api` rewrite or proxy).

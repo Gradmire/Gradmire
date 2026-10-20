@@ -1,4 +1,4 @@
-# Gradmire: https://gradmire.com
+# Gradmire: https://www.gradmire.com
 User-agent: *
 Allow: /
 
@@ -11,4 +11,4 @@ Disallow: /pages/admin
 Disallow: /pages/consultant-
 Disallow: /pages/dashboard
 
-Sitemap: https://gradmire.com/sitemap.xml
+Sitemap: https://www.gradmire.com/sitemap.xml

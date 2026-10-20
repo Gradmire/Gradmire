@@ -40,8 +40,8 @@ node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"
 |---|---|
 | `APP_SECRET` | a new random value (never reuse; changing it invalidates emailed links) |
 | `CRON_SECRET` | another new random value |
-| `FRONTEND_ORIGIN` | `https://gradmire.com` (add `,https://gradmire.com` if used) |
-| `SITE_URL` | `https://gradmire.com` |
+| `FRONTEND_ORIGIN` | `https://www.gradmire.com` (add `,https://www.gradmire.com` if used) |
+| `SITE_URL` | `https://www.gradmire.com` |
 | `GOOGLE_CLIENT_ID` | from step 3 |
 | `EMAIL_PROVIDER`, `RESEND_API_KEY`, `EMAIL_FROM` | from step 4 |
 | `ADMIN_ALERT_EMAIL` | the inbox that should hear about calendar failures |
@@ -56,7 +56,7 @@ node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"
        authorised domain `gradmire.com`, scopes: only the defaults (`openid`, `email`,
        `profile`). Publish the app (until it is published, only listed test users can sign in).
 2. [ ] *Credentials → Create credentials → OAuth client ID → Web application*.
-       **Authorised JavaScript origins:** `https://gradmire.com` (plus
+       **Authorised JavaScript origins:** `https://www.gradmire.com` (plus
        `http://localhost:8080` and `http://localhost:5600` for local testing).
        No redirect URI is needed (the button uses a popup).
 3. [ ] Copy the **Client ID** (`…apps.googleusercontent.com`) into `GOOGLE_CLIENT_ID`. The
@@ -117,8 +117,8 @@ Pick one (details in §9 of the setup guide):
 
 ```bash
 cd backend
-API_URL=https://api.gradmire.com SITE_ORIGIN=https://gradmire.com CRON_SECRET='…' npm run smoke
-API_URL=https://api.gradmire.com SITE_ORIGIN=https://gradmire.com npm run smoke -- --book you@yourdomain.com
+API_URL=https://api.gradmire.com SITE_ORIGIN=https://www.gradmire.com CRON_SECRET='…' npm run smoke
+API_URL=https://api.gradmire.com SITE_ORIGIN=https://www.gradmire.com npm run smoke -- --book you@yourdomain.com
 ```
 
 The first checks health, CORS, the database and migrations, availability, Google
