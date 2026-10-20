@@ -7,14 +7,14 @@ import { config } from '../config.js';
 import { now } from '../lib/clock.js';
 import { query } from '../lib/db.js';
 import { getEmailProvider } from '../integrations/email/index.js';
-import { verificationToken } from './auth-service.js';
+import { passwordResetToken, verificationToken } from './auth-service.js';
 import { invitationToken } from './invitation-token.js';
 import { manageTokenFromSeed } from './manage-token.js';
 import { renderTemplate } from './notification-templates.js';
 
 const REMINDER_TEMPLATE = { 1440: 'reminder_24h', 60: 'reminder_1h' };
 /* Templates rendered from their stored payload alone (no consultation behind them). */
-const PAYLOAD_TEMPLATES = new Set(['staff_calendar_failed', 'consultant_application_update', 'access_changed', 'lead_assigned']);
+const PAYLOAD_TEMPLATES = new Set(['password_changed', 'staff_calendar_failed', 'consultant_application_update', 'access_changed', 'lead_assigned']);
 
 export async function enqueueNotification(client, { consultationId = null, userId = null, template, recipient, dedupeKey, payload = {}, scheduledFor = null }) {
     await client.query(
@@ -98,6 +98,12 @@ function stillRelevant(template, c) {
 }
 
 async function buildMessage(row) {
+    if (row.template === 'password_reset') {
+        // Never send a reset link that has since been used or replaced.
+        const { rows } = await query('SELECT consumed_at, expires_at FROM password_reset_tokens WHERE id = $1', [row.payload.resetId]);
+        if (!rows[0] || rows[0].consumed_at || new Date(rows[0].expires_at) <= now()) return null;
+        return renderTemplate(row.template, { ...row.payload, token: passwordResetToken(row.payload.resetId) });
+    }
     if (row.template === 'email_verification') {
         return renderTemplate(row.template, { ...row.payload, token: verificationToken(row.payload.verificationId) });
     }

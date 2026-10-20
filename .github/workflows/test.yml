@@ -60,7 +60,7 @@ jobs:
 
       - name: Validate shared frontend JavaScript
         run: |
-          for file in site api booking-common booking manage-consultation my-consultations admin-consultations admin-students student-dashboard workspace student-area staff-area; do
+          for file in site api booking-common booking manage-consultation my-consultations admin-consultations admin-students student-dashboard workspace student-area staff-area google-signin reset-password; do
             node --check "frontend/assets/$file.js"
           done
 
