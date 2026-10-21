@@ -28,7 +28,9 @@ ${themeBoot}
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
-<link rel="icon" type="image/png" href="/assets/favicon.png">
+<link rel="icon" href="/assets/favicon-light.ico" sizes="any">
+<link rel="icon" href="/assets/favicon-light.ico" media="(prefers-color-scheme: light)">
+<link rel="icon" href="/assets/favicon-dark.ico" media="(prefers-color-scheme: dark)">
 <link rel="stylesheet" href="../assets/${siteCss}">
 <link rel="stylesheet" href="../assets/${GUIDE_CSS}">
 </head>
