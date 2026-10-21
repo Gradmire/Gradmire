@@ -153,9 +153,10 @@
         }
         const desktop = nav.querySelector('.nav-links');
         if (desktop) desktop.innerHTML = navItems.join('');
-        /* Student login, next to the consultation button. */
+        /* Student login, next to the consultation button, unless the page's nav already links to it (sign-up page). */
         const cta = navInner.querySelector('.nav-btn');
-        if (cta && !navInner.querySelector('.nav-login')) cta.insertAdjacentHTML('beforebegin', `<a class="nav-login" href="${page('login')}">Log in</a>`);
+        const hasLogin = [...navInner.querySelectorAll('a[href]')].some((a) => /\/login(\.html)?$/.test(new URL(a.href, location.href).pathname));
+        if (cta && !hasLogin) cta.insertAdjacentHTML('beforebegin', `<a class="nav-login" href="${page('login')}">Log in</a>`);
 
         let mobile = document.querySelector('.nav-mobile');
         if (!mobile) {

@@ -190,5 +190,7 @@
     .auth-vis-cta, .auth-vis-cta span { transition: none; }
 }
 
-/* Sign-up photo: the graduate sits mid-frame; anchoring to the bottom lifts her face clear of the copy. */
-.auth-signup .auth-visual-img { object-position: 50% 100%; }
+/* Sign-up photo: the graduate's face is in the upper third of a portrait shot. Anchoring
+   at 72% keeps it above the copy on both wide (1900px) and laptop (1440px) panels; 100%
+   cropped her face off wide panels. */
+.auth-signup .auth-visual-img { object-position: 50% 72%; }
