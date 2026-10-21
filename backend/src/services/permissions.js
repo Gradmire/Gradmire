@@ -47,10 +47,10 @@ export const permissionsFor = (role) => [...(GRANTS[role] || [])].sort();
 
 /* Where each role lands after logging in. */
 export const HOME_PAGE = {
-    student: 'dashboard.html',
-    counsellor: 'consultant-dashboard.html',
-    admin: 'admin.html',
-    super_admin: 'admin.html',
+    student: 'dashboard',
+    counsellor: 'consultant-dashboard',
+    admin: 'admin',
+    super_admin: 'admin',
 };
 
 /* May `actor` act on an account that currently holds `targetRole`

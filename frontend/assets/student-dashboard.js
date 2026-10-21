@@ -65,7 +65,7 @@
     function renderApplications(applications) {
         const box = $('sd-apps');
         if (!applications.length) {
-            box.innerHTML = `<div class="bk-empty-state"><h3>No applications yet</h3><p>After your consultation, your counsellor adds the universities you apply to here, so you can follow each one’s status.</p><a class="gp-btn gp-btn-primary" href="find-courses.html">Explore courses</a></div>`;
+            box.innerHTML = `<div class="bk-empty-state"><h3>No applications yet</h3><p>After your consultation, your counsellor adds the universities you apply to here, so you can follow each one’s status.</p><a class="gp-btn gp-btn-primary" href="find-courses">Explore courses</a></div>`;
             return;
         }
         box.innerHTML = applications.map((a) => {
@@ -92,28 +92,28 @@
             ? `<p class="sd-next-type">${esc(upcoming.type.name)} ${consultationBadge(upcoming.status)}</p>
                <p>${esc(formatWhen(upcoming.start, upcoming.end, upcoming.timezone))}</p>
                <p>With ${esc(upcoming.counsellor.name)}${upcoming.meetingUrl ? ` · <a href="${esc(upcoming.meetingUrl)}" target="_blank" rel="noopener noreferrer">Join meeting</a>` : ''}</p>
-               <a class="gp-btn gp-btn-outline gp-btn-sm" href="dashboard-consultations.html">Manage consultations</a>`
-            : `<p class="bk-fine">No consultation booked.</p><a class="gp-btn gp-btn-primary gp-btn-sm" href="book-consultation.html">Book a free consultation</a>`;
+               <a class="gp-btn gp-btn-outline gp-btn-sm" href="dashboard-consultations">Manage consultations</a>`
+            : `<p class="bk-fine">No consultation booked.</p><a class="gp-btn gp-btn-primary gp-btn-sm" href="book-consultation">Book a free consultation</a>`;
     }
 
     function renderOverview(d) {
         const stat = (label, value, href) => `<a class="crm-stat" href="${href}"><span>${esc(label)}</span><strong>${esc(value)}</strong></a>`;
         $('sd-stats').innerHTML = [
-            stat('Upcoming consultations', d.consultations.upcoming, 'dashboard-consultations.html'),
+            stat('Upcoming consultations', d.consultations.upcoming, 'dashboard-consultations'),
             stat('Applications', d.applications.total, '#applications'),
             stat('Offers', d.applications.offers, '#applications'),
             stat('Deadlines in 30 days', d.applications.upcomingDeadlines.length, '#applications'),
-            stat('Unread notifications', d.notifications.unread, 'dashboard-notifications.html'),
+            stat('Unread notifications', d.notifications.unread, 'dashboard-notifications'),
         ].join('');
         const meter = $('sd-meter');
         meter.setAttribute('aria-valuenow', d.profile.completion);
         meter.querySelector('span').style.width = `${d.profile.completion}%`;
-        $('sd-meter-text').innerHTML = `Profile ${esc(d.profile.completion)}% complete · <a href="dashboard-profile.html">Update profile</a>`;
+        $('sd-meter-text').innerHTML = `Profile ${esc(d.profile.completion)}% complete · <a href="dashboard-profile">Update profile</a>`;
         $('sd-steps').innerHTML = d.nextSteps.length
-            ? d.nextSteps.map((s) => `<li><a href="${esc(GradmireAPI.safeNext(s.href, 'dashboard.html'))}">${esc(s.label)}</a></li>`).join('')
+            ? d.nextSteps.map((s) => `<li><a href="${esc(GradmireAPI.safeNext(s.href, 'dashboard'))}">${esc(s.label)}</a></li>`).join('')
             : '<li class="bk-empty">You are all set. Your counsellor will update your applications here.</li>';
         if (d.consultantApplication) {
-            $('sd-steps').insertAdjacentHTML('beforeend', `<li><a href="dashboard-become-consultant.html">Consultant application: ${esc(d.consultantApplication.statusLabel)}</a></li>`);
+            $('sd-steps').insertAdjacentHTML('beforeend', `<li><a href="dashboard-become-consultant">Consultant application: ${esc(d.consultantApplication.statusLabel)}</a></li>`);
         }
         $('sd-notes').innerHTML = d.notifications.recent.length
             ? d.notifications.recent.map((n) => `<li><span>${n.read ? '' : '<strong>New</strong> '}${esc(n.title)}</span><small>${esc(new Date(n.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }))}</small></li>`).join('')

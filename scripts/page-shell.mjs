@@ -55,7 +55,7 @@ export function leadForm({ id, interest, country = '', exam = '', scholarship = 
   <label class="gp-field"><span>Email <em>(optional)</em></span><input name="email" type="email" autocomplete="email"></label>${extra}
   <p class="gp-lead-error" role="alert" hidden></p>
   <button type="submit" class="gp-btn gp-btn-primary">${esc(button)} <span aria-hidden="true">→</span></button>
-  <p class="gp-lead-fine">You’ll confirm your details and consent on the next step. Under 18? Please ask a parent or guardian first. <a href="privacy.html">Privacy policy</a></p>
+  <p class="gp-lead-fine">You’ll confirm your details and consent on the next step. Under 18? Please ask a parent or guardian first. <a href="privacy">Privacy policy</a></p>
 </form>`;
 }
 

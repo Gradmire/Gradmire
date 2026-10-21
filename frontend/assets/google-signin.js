@@ -25,7 +25,7 @@
 
     function goHome(user) {
         const next = new URLSearchParams(location.search).get('next');
-        window.location.href = GradmireAPI.safeNext(next, user.home || 'dashboard.html');
+        window.location.href = GradmireAPI.safeNext(next, user.home || 'dashboard');
     }
 
     /* Login page only: a first-time Google user confirms their age before we create the account. */

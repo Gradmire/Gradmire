@@ -1,0 +1,8 @@
+{
+    "cleanUrls": true,
+    "rewrites": [
+        { "source": "/", "destination": "/pages/index.html" },
+        { "source": "/tools/:slug([a-z0-9-]+)", "destination": "/pages/tools/:slug.html" },
+        { "source": "/:slug([a-z0-9-]+)", "destination": "/pages/:slug.html" }
+    ]
+}

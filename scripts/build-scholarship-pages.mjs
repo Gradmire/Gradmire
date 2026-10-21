@@ -54,7 +54,7 @@ const commonFaq = [
 function countryPage(d) {
     const others = destinations.filter((o) => o.slug !== d.slug);
     const body = `${hero({
-        crumbs: [['Home', 'index.html'], ['Scholarships', 'scholarships.html'], [`Scholarships in ${d.name}`]],
+        crumbs: [['Home', './'], ['Scholarships', 'scholarships'], [`Scholarships in ${d.name}`]],
         eyebrow: `Scholarships in ${d.name}`,
         title: `Scholarships to study in ${d.fullName}`,
         intro: d.intro,
@@ -73,7 +73,7 @@ ${section({ id: 'how-we-help', tag: 'How we help', title: 'Apply for scholarship
 
 ${section({ id: 'faq', tag: 'FAQs', title: `Scholarships in ${d.name}: common questions`, cls: 'gp-faq', body: faq(commonFaq) })}
 
-${section({ id: 'other-countries', tag: 'Other destinations', title: 'Scholarships in other countries', body: `<div class="gp-pill-links">${others.map((o) => `<a href="scholarships-in-${o.slug}.html">Scholarships in ${esc(o.name)}</a>`).join('')}<a href="scholarships.html">All scholarships</a></div>` })}
+${section({ id: 'other-countries', tag: 'Other destinations', title: 'Scholarships in other countries', body: `<div class="gp-pill-links">${others.map((o) => `<a href="scholarships-in-${o.slug}">Scholarships in ${esc(o.name)}</a>`).join('')}<a href="scholarships">All scholarships</a></div>` })}
 
 ${cta({ title: 'Want help finding funding?', text: `Tell us your course and budget and we’ll shortlist scholarships in ${d.fullName} you can apply for.`, href: scholarshipConsult(d.slug), label: 'Book free scholarship guidance', country: d.slug })}
 </main>`;
@@ -86,10 +86,10 @@ ${cta({ title: 'Want help finding funding?', text: `Tell us your course and budg
 
 function hubPage() {
     /* Old links used scholarships.html?country=uk; send them to the country page. */
-    const redirect = `<script>(function(){var c=(new URLSearchParams(location.search).get('country')||'').toLowerCase().replace(/[^a-z]/g,'');var ok=${JSON.stringify(destinations.map((d) => d.slug))};if(ok.indexOf(c)>-1)location.replace('scholarships-in-'+c+'.html');})();</script>`;
+    const redirect = `<script>(function(){var c=(new URLSearchParams(location.search).get('country')||'').toLowerCase().replace(/[^a-z]/g,'');var ok=${JSON.stringify(destinations.map((d) => d.slug))};if(ok.indexOf(c)>-1)location.replace('scholarships-in-'+c);})();</script>`;
     const body = `${redirect}
 ${hero({
-        crumbs: [['Home', 'index.html'], ['Scholarships']],
+        crumbs: [['Home', './'], ['Scholarships']],
         eyebrow: 'Scholarships',
         title: 'Scholarships for bachelor’s and master’s study abroad.',
         intro: 'Explore government, university and foundation scholarships in nine study destinations. See what each covers and who can apply, then get help putting together a strong application.',
@@ -99,7 +99,7 @@ ${hero({
     })}
 <main id="main">
 ${section({ id: 'countries', tag: 'By country', title: 'Scholarships by destination', body: `<div class="gp-tile-grid">
-${destinations.map((d) => `    <a class="gp-tile" href="scholarships-in-${d.slug}.html">
+${destinations.map((d) => `    <a class="gp-tile" href="scholarships-in-${d.slug}">
       <span class="gp-tile-name">Scholarships in ${esc(d.name)}</span>
       <span class="gp-tile-meta">${d.scholarships.length} scholarship${d.scholarships.length === 1 ? '' : 's'} and award types</span>
       <span class="gp-tile-meta">${[...new Set(d.scholarships.flatMap((s) => s.level))].sort((a, b) => (a === 'ug' ? -1 : 1)).map((l) => levelName[l]).join(' · ')}</span>

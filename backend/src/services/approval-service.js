@@ -63,7 +63,7 @@ export async function openRequestInTransaction(client, { type, targetUserId, req
     for (const approver of approvers.rows) {
         await notifyUser(client, approver.id, {
             kind: 'approval_requested', title: 'Access request waiting for approval',
-            body: `${ROLE_LABELS[requestedRole]} access for ${name(target.first_name, target.last_name)} (${type.replace(/_/g, ' ')}).`, link: 'admin-approvals.html',
+            body: `${ROLE_LABELS[requestedRole]} access for ${name(target.first_name, target.last_name)} (${type.replace(/_/g, ' ')}).`, link: 'admin-approvals',
         });
     }
     return { id };
@@ -269,7 +269,7 @@ async function applyRevocation(client, actor, r, target) {
         const tasks = await client.query("UPDATE follow_up_tasks SET assignee_user_id = $2, updated_at = NOW() WHERE assignee_user_id = $1 AND status = 'open' RETURNING id", [target.id, to]);
         moved = { consultations: upcoming.rows.length, leads: leads.rowCount, tasks: tasks.rowCount };
         if (hasWork(moved)) {
-            await notifyUser(client, to, { kind: 'work_reassigned', title: 'Work reassigned to you', body: `${moved.consultations} consultation(s), ${moved.leads} enquiry(ies) and ${moved.tasks} task(s) were moved to you.`, link: 'consultant-dashboard.html' });
+            await notifyUser(client, to, { kind: 'work_reassigned', title: 'Work reassigned to you', body: `${moved.consultations} consultation(s), ${moved.leads} enquiry(ies) and ${moved.tasks} task(s) were moved to you.`, link: 'consultant-dashboard' });
         }
     }
     // Past consultations keep pointing at the (now inactive) counsellor row: history stays intact.
@@ -310,12 +310,12 @@ export async function approve(actor, id, { comment = null } = {}) {
             details: { requestId: id, type: r.type, before: { role: target.role }, after: { role: r.requested_role }, requestedBy: r.requested_by, ...outcome },
         });
         const { subject, message } = CHANGE_MESSAGE[r.type](r);
-        await notifyUser(client, target.id, { kind: 'access_changed', title: subject, body: message, link: 'login.html' });
+        await notifyUser(client, target.id, { kind: 'access_changed', title: subject, body: message, link: 'login' });
         await enqueueNotification(client, {
             userId: target.id, template: 'access_changed', recipient: target.email, dedupeKey: `approval:${id}:approved`,
             payload: { firstName: target.first_name, subject, message },
         });
-        await notifyUser(client, r.requested_by, { kind: 'approval_decided', title: 'Your access request was approved', body: `${name(target.first_name, target.last_name)}: ${ROLE_LABELS[r.requested_role]}.`, link: 'admin-approvals.html' });
+        await notifyUser(client, r.requested_by, { kind: 'approval_decided', title: 'Your access request was approved', body: `${name(target.first_name, target.last_name)}: ${ROLE_LABELS[r.requested_role]}.`, link: 'admin-approvals' });
         return getRequestIn(client, actor, id, outcome);
     });
 }
@@ -332,11 +332,11 @@ export async function reject(actor, id, { comment }) {
         if (r.type === 'employee_activation') {
             // Onboarding closed without access; the profile stays as a record.
             await client.query("UPDATE employee_profiles SET employment_status = 'terminated', terminated_by = $2, terminated_at = $3, updated_at = NOW() WHERE user_id = $1 AND employment_status = 'pending'", [r.target_user_id, actor.id, now()]);
-            await notifyUser(client, r.target_user_id, { kind: 'access_changed', title: 'Your onboarding was not approved', body: 'Your staff access was not activated. Contact the person who invited you if you have questions.', link: 'dashboard.html' });
+            await notifyUser(client, r.target_user_id, { kind: 'access_changed', title: 'Your onboarding was not approved', body: 'Your staff access was not activated. Contact the person who invited you if you have questions.', link: 'dashboard' });
         }
         await recordEvent(client, id, actor.id, 'rejected', comment);
         await audit(client, { actorUserId: actor.id, action: 'approval.rejected', entityType: 'user', entityId: r.target_user_id, details: { requestId: id, type: r.type, requestedRole: r.requested_role } });
-        await notifyUser(client, r.requested_by, { kind: 'approval_decided', title: 'Your access request was rejected', body: comment, link: 'admin-approvals.html' });
+        await notifyUser(client, r.requested_by, { kind: 'approval_decided', title: 'Your access request was rejected', body: comment, link: 'admin-approvals' });
         return getRequestIn(client, actor, id);
     });
 }
@@ -348,7 +348,7 @@ export async function requestInformation(actor, id, { comment }) {
         assertMayDecide(actor, r);
         await client.query("UPDATE approval_requests SET status = 'info_requested', reviewer_comment = $2, updated_at = NOW() WHERE id = $1", [id, comment]);
         await recordEvent(client, id, actor.id, 'info_requested', comment);
-        await notifyUser(client, r.requested_by, { kind: 'approval_info_requested', title: 'More information needed on an access request', body: comment, link: 'admin-approvals.html' });
+        await notifyUser(client, r.requested_by, { kind: 'approval_info_requested', title: 'More information needed on an access request', body: comment, link: 'admin-approvals' });
         return getRequestIn(client, actor, id);
     });
 }

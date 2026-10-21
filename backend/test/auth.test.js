@@ -133,7 +133,7 @@ describe('Password reset', () => {
         await request('POST', '/api/v1/auth/password-reset/request', { body: { email: address } });
         await runJobs();
         const message = email.sent.filter((m) => m.to === address && m.subject.startsWith('Reset')).at(-1);
-        return message && decodeURIComponent(/reset-password\.html#token=([^\s"]+)/.exec(message.text)[1]);
+        return message && decodeURIComponent(/reset-password#token=([^\s"]+)/.exec(message.text)[1]);
     }
 
     test('request → email → new password; sessions are signed out and the link works once', async () => {

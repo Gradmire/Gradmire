@@ -53,7 +53,7 @@ describe('persistence and calendar sync', () => {
         assert.ok(sent.some((s) => s.startsWith('Confirmed:')), 'student confirmation sent');
         assert.ok(sent.some((s) => s.startsWith('New consultation:')), 'counsellor notified');
         const confirmation = email.sent.find((m) => m.subject.startsWith('Confirmed:'));
-        assert.match(confirmation.text, /manage-consultation\.html#token=/);
+        assert.match(confirmation.text, /manage-consultation#token=/);
         assert.match(confirmation.text, /Meeting link: https:\/\/meet\.google\.com/);
         const reminders = (await notificationsFor(row.id)).filter((n) => n.template.startsWith('reminder'));
         assert.deepEqual(reminders.map((r) => r.status), ['pending', 'pending'], '24 h and 1 h reminders scheduled');

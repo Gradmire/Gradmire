@@ -132,7 +132,7 @@
 
     /* Only same-site relative paths are accepted as a post-login destination. */
     function safeNext(value, fallback) {
-        if (typeof value === 'string' && /^[a-z0-9][a-z0-9-]*\.html(?:[?#][^\s]*)?$/i.test(value)) return value;
+        if (typeof value === 'string' && /^[a-z0-9][a-z0-9-]*(?:\.html)?(?:[?#][^\s]*)?$/i.test(value)) return value;
         return fallback;
     }
 

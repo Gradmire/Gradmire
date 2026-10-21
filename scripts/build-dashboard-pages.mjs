@@ -6,10 +6,10 @@
 import { shell, write } from './page-shell.mjs';
 
 const BOOKING_CSS = 'booking.css?v=2';
-const API_JS = 'api.js?v=4';
+const API_JS = 'api.js?v=5';
 const COMMON_JS = 'booking-common.js?v=1';
 const WORKSPACE_CSS = 'workspace.css?v=2';
-const WORKSPACE_JS = 'workspace.js?v=3';
+const WORKSPACE_JS = 'workspace.js?v=4';
 
 function page({ name, title, description, body, script, workspace = false }) {
     let html = shell({ title, description, body: workspace ? `<div class="ws-layout"><nav class="ws-nav" id="ws-nav" aria-label="Workspace"></nav>${body}</div>` : body, bodyClass: 'bk-page' });
@@ -31,7 +31,7 @@ const STAGES = [
 const dashboardBody = `<main class="bk-main sd-main ws-main" id="main">
   <div class="crm-head">
     <div><h1 id="sd-title">My dashboard</h1><p id="sd-greeting">Loading your account…</p></div>
-    <div class="bk-actions"><a class="gp-btn gp-btn-outline gp-btn-sm" href="find-courses.html">Explore universities</a><a class="gp-btn gp-btn-primary gp-btn-sm" href="book-consultation.html">Book a consultation</a></div>
+    <div class="bk-actions"><a class="gp-btn gp-btn-outline gp-btn-sm" href="find-courses">Explore universities</a><a class="gp-btn gp-btn-primary gp-btn-sm" href="book-consultation">Book a consultation</a></div>
   </div>
   <p class="bk-alert" id="sd-alert" role="status" hidden></p>
   <p class="bk-alert" id="ws-alert" role="status" hidden></p>
@@ -48,7 +48,7 @@ const dashboardBody = `<main class="bk-main sd-main ws-main" id="main">
     <section class="bk-panel" aria-labelledby="sd-notes-title">
       <h2 id="sd-notes-title" class="bk-step-title">Recent notifications</h2>
       <ul class="ws-list" id="sd-notes"><li class="bk-empty">Loading…</li></ul>
-      <p class="bk-fine"><a href="dashboard-notifications.html">All notifications</a></p>
+      <p class="bk-fine"><a href="dashboard-notifications">All notifications</a></p>
     </section>
   </div>
 
@@ -73,18 +73,18 @@ ${STAGES.map(([key, label]) => `      <li class="sd-stage" data-stage="${key}"><
       <section class="bk-panel" aria-labelledby="sd-tools-title">
         <h2 id="sd-tools-title" class="bk-step-title">Plan your next steps</h2>
         <ul class="sd-links">
-          <li><a href="find-courses.html">Course Finder</a></li>
-          <li><a href="scholarships.html">Scholarships</a></li>
-          <li><a href="tools/deadline-tracker.html">Deadline tracker</a></li>
-          <li><a href="tools/roi-calculator.html">Study cost calculator</a></li>
-          <li><a href="tools/comparator.html">Course comparator</a></li>
+          <li><a href="find-courses">Course Finder</a></li>
+          <li><a href="scholarships">Scholarships</a></li>
+          <li><a href="tools/deadline-tracker">Deadline tracker</a></li>
+          <li><a href="tools/roi-calculator">Study cost calculator</a></li>
+          <li><a href="tools/comparator">Course comparator</a></li>
         </ul>
       </section>
     </aside>
   </div>
 </main>`;
 
-page({ name: 'dashboard.html', title: 'My dashboard | Gradmire', description: 'Your study-abroad journey, application status and consultations with Gradmire.', body: dashboardBody, script: 'student-dashboard.js?v=2', workspace: true });
+page({ name: 'dashboard.html', title: 'My dashboard | Gradmire', description: 'Your study-abroad journey, application status and consultations with Gradmire.', body: dashboardBody, script: 'student-dashboard.js?v=3', workspace: true });
 
 const STATUS_OPTIONS = [
     ['shortlisted', 'Shortlisted'], ['preparing', 'Preparing application'], ['submitted', 'Submitted'],
@@ -96,7 +96,7 @@ const STATUS_OPTIONS = [
 const adminBody = `<main class="bk-main crm-main" id="main">
   <div class="crm-head">
     <div><h1>Student applications</h1><p id="as-greeting">Record each student’s applications. Students see the status and the note on their dashboard.</p></div>
-    <div class="bk-actions"><a class="gp-btn gp-btn-outline gp-btn-sm" href="admin-consultations.html">Consultations CRM</a></div>
+    <div class="bk-actions"><a class="gp-btn gp-btn-outline gp-btn-sm" href="admin-consultations">Consultations CRM</a></div>
   </div>
   <p class="bk-alert" id="as-alert" role="status" hidden></p>
   <div class="as-layout">
@@ -132,6 +132,6 @@ const adminBody = `<main class="bk-main crm-main" id="main">
   </div>
 </main>`;
 
-page({ name: 'admin-students.html', title: 'Student applications | Gradmire staff', description: 'Record and update student applications.', body: adminBody, script: 'admin-students.js?v=1' });
+page({ name: 'admin-students.html', title: 'Student applications | Gradmire staff', description: 'Record and update student applications.', body: adminBody, script: 'admin-students.js?v=2' });
 
 console.log('Built dashboard.html and admin-students.html');

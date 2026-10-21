@@ -95,7 +95,7 @@ export async function uploadMine(user, { kind, filename, mimeType, data, request
             const r = (await client.query("SELECT * FROM document_requests WHERE id = $1 AND student_user_id = $2 AND status = 'open' FOR UPDATE", [requestId, user.id])).rows[0];
             if (!r) throw notFound('That document request is not open.');
             await client.query("UPDATE document_requests SET status = 'fulfilled', document_id = $2, updated_at = NOW() WHERE id = $1", [requestId, doc.id]);
-            if (r.requested_by) await notifyUser(client, r.requested_by, { kind: 'document_uploaded', title: 'Requested document uploaded', body: `${user.first_name} uploaded "${r.title}".`, link: 'consultant-students.html' });
+            if (r.requested_by) await notifyUser(client, r.requested_by, { kind: 'document_uploaded', title: 'Requested document uploaded', body: `${user.first_name} uploaded "${r.title}".`, link: 'consultant-students' });
         }
         return view(doc);
     });
@@ -173,7 +173,7 @@ export async function requestDocument(staff, studentId, { kind, title, details, 
             `INSERT INTO document_requests (id, student_user_id, requested_by, kind, title, details, due_date) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
             [id, studentId, staff.id, kind || 'other', title, details || null, dueDate || null],
         );
-        await notifyUser(client, studentId, { kind: 'document_requested', title: `Document requested: ${title}`, body: details || 'Upload it in My documents.', link: 'dashboard-documents.html' });
+        await notifyUser(client, studentId, { kind: 'document_requested', title: `Document requested: ${title}`, body: details || 'Upload it in My documents.', link: 'dashboard-documents' });
         await enqueueNotification(client, {
             userId: studentId, template: 'document_requested', recipient: student.email, dedupeKey: `document_request:${id}`,
             payload: { firstName: student.first_name, title, details: details || '', dueDate: dueDate || null },

@@ -12,13 +12,15 @@
     },
     {
       "name": "frontend",
-      "runtimeExecutable": "python",
+      "runtimeExecutable": "npx",
       "runtimeArgs": [
-        "-m",
-        "http.server",
-        "5500",
-        "--directory",
-        "frontend"
+        "-y",
+        "serve@14.2.4",
+        "-c",
+        "../scripts/serve.json",
+        "frontend",
+        "-l",
+        "5500"
       ],
       "port": 5500,
       "autoPort": false
@@ -54,13 +56,15 @@
     },
     {
       "name": "booking-frontend",
-      "runtimeExecutable": "python",
+      "runtimeExecutable": "npx",
       "runtimeArgs": [
-        "-m",
-        "http.server",
-        "5600",
-        "--directory",
-        "frontend"
+        "-y",
+        "serve@14.2.4",
+        "-c",
+        "../scripts/serve.json",
+        "frontend",
+        "-l",
+        "5600"
       ],
       "port": 5600,
       "autoPort": false

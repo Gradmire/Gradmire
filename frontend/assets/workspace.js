@@ -10,20 +10,20 @@
 
     const ROLE_LABELS = { student: 'Student', counsellor: 'Consultant', admin: 'Administrator', super_admin: 'Super administrator' };
     const STUDENT_NAV = [
-        ['dashboard.html', 'Overview'], ['dashboard-consultations.html', 'My consultations'], ['dashboard.html#applications', 'My applications'],
-        ['find-courses.html', 'Universities and courses'], ['dashboard-documents.html', 'My documents'], ['dashboard-profile.html', 'My profile'], ['dashboard-notifications.html', 'Notifications', 'unread'],
-        ['dashboard-become-consultant.html', 'Become a consultant'], ['contact.html', 'Support'],
+        ['dashboard', 'Overview'], ['dashboard-consultations', 'My consultations'], ['dashboard#applications', 'My applications'],
+        ['find-courses', 'Universities and courses'], ['dashboard-documents', 'My documents'], ['dashboard-profile', 'My profile'], ['dashboard-notifications', 'Notifications', 'unread'],
+        ['dashboard-become-consultant', 'Become a consultant'], ['contact', 'Support'],
     ];
     const CONSULTANT_NAV = [
-        ['consultant-dashboard.html', 'My workspace'], ['admin-consultations.html', 'Consultations and availability'], ['consultant-students.html', 'Students'],
-        ['consultant-leads.html', 'My enquiries'], ['consultant-follow-ups.html', 'Follow-ups'], ['admin-students.html', 'Student applications'],
-        ['dashboard-notifications.html', 'Notifications', 'unread'],
+        ['consultant-dashboard', 'My workspace'], ['admin-consultations', 'Consultations and availability'], ['consultant-students', 'Students'],
+        ['consultant-leads', 'My enquiries'], ['consultant-follow-ups', 'Follow-ups'], ['admin-students', 'Student applications'],
+        ['dashboard-notifications', 'Notifications', 'unread'],
     ];
     const ADMIN_NAV = [
-        ['admin.html', 'Overview'], ['admin-users.html', 'Users'], ['admin-leads.html', 'Enquiries'], ['admin-consultations.html', 'Consultations'],
-        ['admin-team.html', 'Team and hiring'], ['admin-approvals.html', 'Approvals'], ['admin-audit.html', 'Audit log'],
+        ['admin', 'Overview'], ['admin-users', 'Users'], ['admin-leads', 'Enquiries'], ['admin-consultations', 'Consultations'],
+        ['admin-team', 'Team and hiring'], ['admin-approvals', 'Approvals'], ['admin-audit', 'Audit log'],
     ];
-    const ADMIN_OWN_NAV = [['consultant-dashboard.html', 'My work'], ['consultant-follow-ups.html', 'My follow-ups'], ['dashboard-notifications.html', 'Notifications', 'unread']];
+    const ADMIN_OWN_NAV = [['consultant-dashboard', 'My work'], ['consultant-follow-ups', 'My follow-ups'], ['dashboard-notifications', 'Notifications', 'unread']];
 
     function navFor(role) {
         if (role === 'student') return [['', STUDENT_NAV]];
@@ -31,7 +31,7 @@
         return [['Administration', ADMIN_NAV], ['My work', ADMIN_OWN_NAV]];
     }
 
-    const currentPage = () => `${(location.pathname.split('/').pop() || 'index').replace(/\.html$/, '')}.html`;
+    const currentPage = () => (location.pathname.split('/').pop() || 'index').replace(/\.html$/, '');
 
     function renderNav(user, unread) {
         const nav = $('ws-nav');
@@ -46,7 +46,7 @@
             <button type="button" class="gp-btn gp-btn-outline gp-btn-sm ws-nav-logout" id="ws-logout">Log out</button>`;
         $('ws-logout').addEventListener('click', async () => {
             await GradmireAPI.logout().catch(() => {});
-            location.href = 'login.html';
+            location.href = 'login';
         });
     }
 
@@ -70,12 +70,12 @@
         }
         const user = session.user;
         if (!user) {
-            location.replace(`login.html?next=${encodeURIComponent(currentPage())}`);
+            location.replace(`login?next=${encodeURIComponent(currentPage())}`);
             return null;
         }
         if (allow && !allow.includes(user.role)) {
             // Not your page: go to your own workspace without revealing anything here.
-            location.replace(user.home || 'dashboard.html');
+            location.replace(user.home || 'dashboard');
             return null;
         }
         if (nav) {

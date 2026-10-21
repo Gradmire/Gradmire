@@ -10,9 +10,9 @@ import { esc, shell, write } from './page-shell.mjs';
 
 const BOOKING_CSS = 'booking.css?v=2';
 const WORKSPACE_CSS = 'workspace.css?v=2';
-const API_JS = 'api.js?v=4';
+const API_JS = 'api.js?v=5';
 const COMMON_JS = 'booking-common.js?v=1';
-const WORKSPACE_JS = 'workspace.js?v=3';
+const WORKSPACE_JS = 'workspace.js?v=4';
 
 function page({ name, title, description, body, script, area, workspace = true }) {
     let html = shell({ title, description, body: workspace ? `<div class="ws-layout"><nav class="ws-nav" id="ws-nav" aria-label="Workspace"></nav>${body}</div>` : body, bodyClass: 'bk-page crm-page ws-page' });
@@ -44,7 +44,7 @@ const LEAD_STATUSES = [['new', 'New'], ['contacted', 'Contacted'], ['qualified',
 /* ── Student ──────────────────────────────────────────────────────────────── */
 
 page({
-    name: 'dashboard-profile.html', area: 'student-profile', script: 'student-area.js?v=3',
+    name: 'dashboard-profile.html', area: 'student-profile', script: 'student-area.js?v=4',
     title: 'My profile | Gradmire', description: 'Your study-abroad preferences and contact details.',
     body: main(`${head('My profile', 'Your counsellor uses these details to plan your options. We only ask for what counselling needs.')}
   <section class="bk-panel" aria-labelledby="pf-progress-title"><h2 id="pf-progress-title" class="bk-step-title">Profile completion</h2>
@@ -88,7 +88,7 @@ page({
 });
 
 page({
-    name: 'dashboard-notifications.html', area: 'notifications', script: 'student-area.js?v=3',
+    name: 'dashboard-notifications.html', area: 'notifications', script: 'student-area.js?v=4',
     title: 'Notifications | Gradmire', description: 'Updates about your account, bookings and applications.',
     body: main(`${head('Notifications', 'Updates about your account, consultations and applications.', '<button type="button" class="gp-btn gp-btn-outline gp-btn-sm" id="nt-read-all">Mark all as read</button>')}
   <div class="bk-tabs" role="tablist" aria-label="Filter notifications"><button type="button" class="bk-tab" role="tab" aria-selected="true" data-filter="all">All</button><button type="button" class="bk-tab" role="tab" aria-selected="false" data-filter="unread">Unread</button></div>
@@ -96,7 +96,7 @@ page({
 });
 
 page({
-    name: 'dashboard-documents.html', area: 'documents', script: 'student-area.js?v=3',
+    name: 'dashboard-documents.html', area: 'documents', script: 'student-area.js?v=4',
     title: 'My documents | Gradmire', description: 'Upload and manage the documents your counsellor needs.',
     body: main(`${head('My documents', 'Documents are stored privately. Only you and your Gradmire counsellors can open them.')}
   <section class="bk-panel" aria-labelledby="dc-req-title"><h2 class="bk-step-title" id="dc-req-title">Requested by your counsellor</h2><ul class="ws-list" id="dc-requests"><li class="bk-empty">Loading…</li></ul></section>
@@ -114,7 +114,7 @@ page({
 });
 
 page({
-    name: 'dashboard-become-consultant.html', area: 'become-consultant', script: 'student-area.js?v=3',
+    name: 'dashboard-become-consultant.html', area: 'become-consultant', script: 'student-area.js?v=4',
     title: 'Become a Gradmire consultant | Gradmire', description: 'Apply to join Gradmire as a study-abroad consultant.',
     body: main(`${head('Become a consultant', 'Apply to join Gradmire as a study-abroad consultant. Applying does not change your account; access is given only after hiring and onboarding are approved.')}
   <div id="bc-status"></div>
@@ -143,14 +143,14 @@ page({
 });
 
 page({
-    name: 'join-team.html', area: 'join-team', script: 'student-area.js?v=3', workspace: false,
+    name: 'join-team.html', area: 'join-team', script: 'student-area.js?v=4', workspace: false,
     title: 'Join the Gradmire team | Gradmire', description: 'Accept your invitation to join Gradmire.',
     body: main(`${head('Join the Gradmire team', 'Accept the invitation you received by email.')}
   <section class="bk-panel ws-narrow" aria-live="polite" id="jt-box"><p class="bk-empty">Checking your invitation…</p></section>`),
 });
 
 page({
-    name: 'find-booking.html', area: 'find-booking', script: 'student-area.js?v=3', workspace: false,
+    name: 'find-booking.html', area: 'find-booking', script: 'student-area.js?v=4', workspace: false,
     title: 'Find my booking | Gradmire', description: 'Get the link to view, reschedule or cancel your consultation.',
     body: main(`${head('Find my booking', 'Booked without an account and lost the confirmation email? We will send the booking link again.')}
   <form id="fb-form" class="bk-panel ws-narrow" novalidate>
@@ -158,14 +158,14 @@ page({
     <input class="bk-hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
     <p class="bk-alert" id="fb-result" role="status" hidden></p>
     <div class="bk-actions"><button type="submit" class="gp-btn gp-btn-primary">Send my booking link</button></div>
-    <p class="bk-fine">For your security, the link goes only to the email address used for the booking. Have an account? <a href="login.html?next=dashboard-consultations.html">Log in</a> to see every booking.</p>
+    <p class="bk-fine">For your security, the link goes only to the email address used for the booking. Have an account? <a href="login?next=dashboard-consultations">Log in</a> to see every booking.</p>
   </form>`),
 });
 
 /* ── Consultant ───────────────────────────────────────────────────────────── */
 
 page({
-    name: 'consultant-dashboard.html', area: 'consultant-dashboard', script: 'staff-area.js?v=4',
+    name: 'consultant-dashboard.html', area: 'consultant-dashboard', script: 'staff-area.js?v=5',
     title: 'My workspace | Gradmire staff', description: 'Your consultations, students, enquiries and follow-ups.',
     body: main(`${head('My workspace', 'Your consultations, students, enquiries and follow-ups.')}
   <div class="crm-stats" id="cd-stats" aria-label="Your workload"></div>
@@ -178,7 +178,7 @@ page({
 });
 
 page({
-    name: 'consultant-students.html', area: 'consultant-students', script: 'staff-area.js?v=4',
+    name: 'consultant-students.html', area: 'consultant-students', script: 'staff-area.js?v=5',
     title: 'My students | Gradmire staff', description: 'Students assigned to you.',
     body: main(`${head('Students', 'Students who booked with you or whose enquiry is assigned to you.')}
   <form class="crm-filters" id="st-filters" role="search" aria-label="Filter students">
@@ -206,11 +206,11 @@ const leadsBody = (admin) => main(`${head('Enquiries', admin ? 'Every enquiry fr
   ${pager('ld')}
   ${drawer('ld-drawer')}`);
 
-page({ name: 'consultant-leads.html', area: 'leads', script: 'staff-area.js?v=4', title: 'My enquiries | Gradmire staff', description: 'Enquiries assigned to you.', body: leadsBody(false) });
-page({ name: 'admin-leads.html', area: 'leads', script: 'staff-area.js?v=4', title: 'Enquiries | Gradmire admin', description: 'Manage enquiries and assign them to consultants.', body: leadsBody(true) });
+page({ name: 'consultant-leads.html', area: 'leads', script: 'staff-area.js?v=5', title: 'My enquiries | Gradmire staff', description: 'Enquiries assigned to you.', body: leadsBody(false) });
+page({ name: 'admin-leads.html', area: 'leads', script: 'staff-area.js?v=5', title: 'Enquiries | Gradmire admin', description: 'Manage enquiries and assign them to consultants.', body: leadsBody(true) });
 
 page({
-    name: 'consultant-follow-ups.html', area: 'follow-ups', script: 'staff-area.js?v=4',
+    name: 'consultant-follow-ups.html', area: 'follow-ups', script: 'staff-area.js?v=5',
     title: 'Follow-ups | Gradmire staff', description: 'Your follow-up tasks.',
     body: main(`${head('Follow-ups', 'Tasks for you, including follow-ups added on consultations.', '<button type="button" class="gp-btn gp-btn-primary gp-btn-sm" id="fu-new">New task</button>')}
   <div class="bk-tabs" role="tablist" aria-label="Filter tasks"><button type="button" class="bk-tab" role="tab" aria-selected="true" data-status="open">Open</button><button type="button" class="bk-tab" role="tab" aria-selected="false" data-status="done">Done</button><button type="button" class="bk-tab" role="tab" aria-selected="false" data-status="all">All</button></div>
@@ -220,7 +220,7 @@ page({
 /* ── Admin ────────────────────────────────────────────────────────────────── */
 
 page({
-    name: 'admin.html', area: 'admin-dashboard', script: 'staff-area.js?v=4',
+    name: 'admin.html', area: 'admin-dashboard', script: 'staff-area.js?v=5',
     title: 'Admin overview | Gradmire', description: 'Platform overview for Gradmire administrators.',
     body: main(`${head('Admin overview', 'Live figures from the database. Select a figure to open the matching list.')}
   <div class="crm-stats ws-stats-lg" id="ad-stats" aria-label="Platform figures"></div>
@@ -229,7 +229,7 @@ page({
 });
 
 page({
-    name: 'admin-users.html', area: 'admin-users', script: 'staff-area.js?v=4',
+    name: 'admin-users.html', area: 'admin-users', script: 'staff-area.js?v=5',
     title: 'Users | Gradmire admin', description: 'Search accounts, suspend or reactivate them and request access changes.',
     body: main(`${head('Users', 'Accounts, their roles and history. Roles change only through approved requests.')}
   <form class="crm-filters" id="us-filters" role="search" aria-label="Filter users">
@@ -244,7 +244,7 @@ page({
 });
 
 page({
-    name: 'admin-team.html', area: 'admin-team', script: 'staff-area.js?v=4',
+    name: 'admin-team.html', area: 'admin-team', script: 'staff-area.js?v=5',
     title: 'Team and hiring | Gradmire admin', description: 'Consultant applications, employee invitations and the team.',
     body: main(`${head('Team and hiring', 'Review consultant applications, invite employees and see the team.')}
   <div class="bk-tabs" role="tablist" aria-label="Team sections">
@@ -286,7 +286,7 @@ page({
 });
 
 page({
-    name: 'admin-approvals.html', area: 'admin-approvals', script: 'staff-area.js?v=4',
+    name: 'admin-approvals.html', area: 'admin-approvals', script: 'staff-area.js?v=5',
     title: 'Approvals | Gradmire admin', description: 'Access requests waiting for a decision.',
     body: main(`${head('Approvals', 'Every grant, change or removal of staff access. A request is decided by someone other than the requester and the person it affects.')}
   <form class="crm-filters" id="aq-filters" aria-label="Filter requests">
@@ -300,7 +300,7 @@ page({
 });
 
 page({
-    name: 'admin-audit.html', area: 'admin-audit', script: 'staff-area.js?v=4',
+    name: 'admin-audit.html', area: 'admin-audit', script: 'staff-area.js?v=5',
     title: 'Audit log | Gradmire admin', description: 'Who did what, and when.',
     body: main(`${head('Audit log', 'Sensitive account and staff actions. Passwords, tokens and one-time codes are never recorded.')}
   <form class="crm-filters" id="au-filters" role="search" aria-label="Filter the audit log">

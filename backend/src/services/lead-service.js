@@ -128,7 +128,7 @@ export async function updateLead(staff, id, patch) {
                     [to],
                 )).rows[0];
                 if (!target) throw badRequest('Choose an active counsellor.', { fields: { assignedCounsellorId: 'Choose an active counsellor' } });
-                await notifyUser(client, to, { kind: 'lead_assigned', title: 'New enquiry assigned to you', body: `${fullName(l.first_name, l.last_name) || l.email} is waiting for contact.`, link: 'consultant-dashboard.html' });
+                await notifyUser(client, to, { kind: 'lead_assigned', title: 'New enquiry assigned to you', body: `${fullName(l.first_name, l.last_name) || l.email} is waiting for contact.`, link: 'consultant-dashboard' });
                 await enqueueNotification(client, {
                     userId: to, template: 'lead_assigned', recipient: target.email, dedupeKey: `lead:${id}:assigned:${to}:${now().getTime()}`,
                     payload: { leadName: fullName(l.first_name, l.last_name) || 'A new enquiry' },

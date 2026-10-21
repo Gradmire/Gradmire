@@ -116,7 +116,7 @@
         const flow = document.getElementById('bk-flow');
         const done = document.getElementById('bk-done');
         const confirmed = c.status === 'confirmed';
-        const manageLink = result.manageToken ? `manage-consultation.html#token=${encodeURIComponent(result.manageToken)}` : null;
+        const manageLink = result.manageToken ? `manage-consultation#token=${encodeURIComponent(result.manageToken)}` : null;
         done.innerHTML = `<div class="bk-done-icon" aria-hidden="true">${confirmed ? '✓' : '⏳'}</div>
             <h2>${confirmed ? 'Your consultation is booked' : 'Your slot is reserved'}</h2>
             <p>${confirmed
@@ -134,9 +134,9 @@
             <div class="bk-actions">
               ${c.status !== 'cancelled' ? '<button type="button" class="gp-btn gp-btn-outline" id="bk-ics">Add to calendar (.ics)</button>' : ''}
               <a class="gp-btn gp-btn-outline" href="${esc(googleCalendarUrl(c))}" target="_blank" rel="noopener noreferrer">Add to Google Calendar</a>
-              ${user ? '<a class="gp-btn gp-btn-primary" href="dashboard-consultations.html">View in my dashboard</a>' : manageLink ? `<a class="gp-btn gp-btn-primary" href="${esc(manageLink)}">Manage this booking</a>` : ''}
+              ${user ? '<a class="gp-btn gp-btn-primary" href="dashboard-consultations">View in my dashboard</a>' : manageLink ? `<a class="gp-btn gp-btn-primary" href="${esc(manageLink)}">Manage this booking</a>` : ''}
             </div>
-            ${user ? '' : '<p class="bk-fine">Bookmark the manage link — it is also in your email. To see bookings in a dashboard, <a href="signup.html">create an account</a> with this same email and verify it.</p>'}
+            ${user ? '' : '<p class="bk-fine">Bookmark the manage link — it is also in your email. To see bookings in a dashboard, <a href="signup">create an account</a> with this same email and verify it.</p>'}
             ${result.replayed ? '<p class="bk-fine">This booking was already saved from an earlier attempt; we did not create a second one.</p>' : ''}`;
         flow.hidden = true;
         done.hidden = false;
@@ -238,13 +238,13 @@
         try {
             types = await GradmireAPI.request('GET', '/api/v1/consultation-types');
             if (!types.length) {
-                typesEl.innerHTML = '<p class="bk-empty">Online booking is not open right now. Please <a href="free-consultation.html">send a request</a> and we will call you.</p>';
+                typesEl.innerHTML = '<p class="bk-empty">Online booking is not open right now. Please <a href="free-consultation">send a request</a> and we will call you.</p>';
                 return;
             }
             renderTypes();
             picker.selectFirstDate();
         } catch (error) {
-            typesEl.innerHTML = `<p class="bk-empty">${esc(error.message)} You can also <a href="free-consultation.html">send a request</a> instead.</p>`;
+            typesEl.innerHTML = `<p class="bk-empty">${esc(error.message)} You can also <a href="free-consultation">send a request</a> instead.</p>`;
         }
     }
 

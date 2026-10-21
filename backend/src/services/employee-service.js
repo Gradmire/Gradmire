@@ -73,7 +73,7 @@ export async function createInvitationInTransaction(client, actor, input) {
         payload: { invitationId: id, fullName: input.fullName, jobTitle: input.jobTitle, department: input.department },
     });
     if (existing) {
-        await notifyUser(client, existing.id, { kind: 'employee_invitation', title: 'You are invited to join the Gradmire team', body: `Open the invitation we emailed you to accept the ${input.jobTitle} role.`, link: 'dashboard.html' });
+        await notifyUser(client, existing.id, { kind: 'employee_invitation', title: 'You are invited to join the Gradmire team', body: `Open the invitation we emailed you to accept the ${input.jobTitle} role.`, link: 'dashboard' });
     }
     await audit(client, {
         actorUserId: actor.id, action: 'employee.invited', entityType: 'employee_invitation', entityId: id,
@@ -159,7 +159,7 @@ export async function acceptInvitation(user, token) {
             relatedEntityType: 'employee_invitation', relatedEntityId: i.id,
         });
         await audit(client, { actorUserId: user.id, action: 'employee.invitation_accepted', entityType: 'employee_invitation', entityId: i.id, details: { approvalRequestId: request.id } });
-        await notifyUser(client, user.id, { kind: 'employee_onboarding', title: 'Invitation accepted', body: 'Your access will be switched on once an administrator approves your onboarding.', link: 'dashboard.html' });
+        await notifyUser(client, user.id, { kind: 'employee_onboarding', title: 'Invitation accepted', body: 'Your access will be switched on once an administrator approves your onboarding.', link: 'dashboard' });
         return { accepted: true, approvalRequestId: request.id, status: 'pending_approval' };
     });
 }

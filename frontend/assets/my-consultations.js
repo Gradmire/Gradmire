@@ -50,7 +50,7 @@
         if (tab === 'upcoming') shown.sort((a, b) => new Date(a.start) - new Date(b.start));
         if (!shown.length) {
             list.innerHTML = tab === 'upcoming'
-                ? '<div class="bk-empty-state"><h2>No upcoming consultations</h2><p>Book a free session to talk through countries, courses and your next steps.</p><a class="gp-btn gp-btn-primary" href="book-consultation.html">Book a consultation</a></div>'
+                ? '<div class="bk-empty-state"><h2>No upcoming consultations</h2><p>Book a free session to talk through countries, courses and your next steps.</p><a class="gp-btn gp-btn-primary" href="book-consultation">Book a consultation</a></div>'
                 : '<div class="bk-empty-state"><h2>Nothing here yet</h2><p>Completed, cancelled and missed consultations will appear here.</p></div>';
             return;
         }
@@ -172,11 +172,11 @@
         }
         const user = session.user;
         if (!user) {
-            location.replace('login.html?next=dashboard-consultations.html');
+            location.replace('login?next=dashboard-consultations');
             return;
         }
         if (user.role !== 'student') {
-            list.innerHTML = `<div class="bk-empty-state"><h2>This page is for students</h2><p>Staff can manage bookings in the consultations CRM.</p><a class="gp-btn gp-btn-primary" href="${esc(GradmireAPI.safeNext(user.home, 'admin-consultations.html'))}">Open my workspace</a></div>`;
+            list.innerHTML = `<div class="bk-empty-state"><h2>This page is for students</h2><p>Staff can manage bookings in the consultations CRM.</p><a class="gp-btn gp-btn-primary" href="${esc(GradmireAPI.safeNext(user.home, 'admin-consultations'))}">Open my workspace</a></div>`;
             return;
         }
         document.getElementById('mc-greeting').textContent = `Signed in as ${user.firstName} (${user.email}).`;
@@ -184,7 +184,7 @@
         logout.hidden = false;
         logout.addEventListener('click', async () => {
             await GradmireAPI.logout().catch(() => {});
-            location.href = 'login.html';
+            location.href = 'login';
         });
         if (!user.emailVerified) {
             verifyEl.innerHTML = 'Verify your email to see consultations you booked before signing up. <button type="button" class="crm-open" id="mc-resend">Send the verification email again</button>';

@@ -95,7 +95,7 @@ export async function createFollowUp(staff, input) {
             [id, assigneeId, staff.id, input.studentUserId || null, input.leadId || null, input.consultationId || null, input.title, input.details || null, input.dueAt || null, input.priority || 'normal'],
         );
         if (assigneeId !== staff.id) {
-            await notifyUser(client, assigneeId, { kind: 'follow_up_assigned', title: 'New follow-up task', body: input.title, link: 'consultant-follow-ups.html' });
+            await notifyUser(client, assigneeId, { kind: 'follow_up_assigned', title: 'New follow-up task', body: input.title, link: 'consultant-follow-ups' });
         }
         await audit(client, { actorUserId: staff.id, action: 'follow_up.created', entityType: 'follow_up_task', entityId: id, details: { assigneeId } });
         return taskView((await client.query(`${TASK_SELECT} WHERE t.id = $1`, [id])).rows[0]);

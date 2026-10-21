@@ -123,11 +123,11 @@ const exams = [
     }
 ];
 
-const examPills = (current) => `<div class="gp-pill-links">${exams.filter((e) => e.slug !== current).map((e) => `<a href="test-prep-${e.slug}.html">${e.name} preparation</a>`).join('')}<a href="test-preparation.html">All tests</a></div>`;
+const examPills = (current) => `<div class="gp-pill-links">${exams.filter((e) => e.slug !== current).map((e) => `<a href="test-prep-${e.slug}">${e.name} preparation</a>`).join('')}<a href="test-preparation">All tests</a></div>`;
 
 function testPrepOverview() {
     const body = `${hero({
-        crumbs: [['Home', 'index.html'], ['Test preparation']],
+        crumbs: [['Home', './'], ['Test preparation']],
         eyebrow: 'Test preparation',
         title: 'Coaching for the tests that open university doors.',
         intro: 'English proficiency and graduate admissions tests are often the first hurdle in an application. We coach IELTS, TOEFL, GRE and GMAT with diagnostic tests, personalised study plans and full-length practice.',
@@ -137,7 +137,7 @@ function testPrepOverview() {
     })}
 <main id="main">
 ${section({ id: 'exams', tag: 'Tests we coach', title: 'Choose your test', body: `<div class="gp-exam-grid">
-${exams.map((e) => `    <a class="gp-exam" href="test-prep-${e.slug}.html">
+${exams.map((e) => `    <a class="gp-exam" href="test-prep-${e.slug}">
       <span class="gp-exam-icon">${icons[e.slug]}</span>
       <span class="gp-exam-name">${e.name}</span>
       <span class="gp-exam-full">${esc(e.full)}</span>
@@ -180,7 +180,7 @@ ${cta({ title: 'Not sure where to start?', text: 'Tell us your universities and 
 
 function examPage(e) {
     const body = `${hero({
-        crumbs: [['Home', 'index.html'], ['Test preparation', 'test-preparation.html'], [e.name]],
+        crumbs: [['Home', './'], ['Test preparation', 'test-preparation'], [e.name]],
         eyebrow: `${e.name} preparation`,
         title: e.headline,
         intro: e.intro,
@@ -234,7 +234,7 @@ const visaCountries = [
 
 function visaPage() {
     const body = `${hero({
-        crumbs: [['Home', 'index.html'], ['Visa assistance']],
+        crumbs: [['Home', './'], ['Visa assistance']],
         eyebrow: 'Visa assistance',
         title: 'A complete, well-prepared student visa application.',
         intro: 'A student visa decision rests on your documents: funds, admission, ties and intent. We help you understand what your destination asks for, organise the evidence, and walk into your interview prepared.',
@@ -296,7 +296,7 @@ ${cta({ title: 'Get your visa application right first time', text: 'Talk to a Gr
 /* ── Application assistance ── */
 function applicationPage() {
     const body = `${hero({
-        crumbs: [['Home', 'index.html'], ['Application assistance']],
+        crumbs: [['Home', './'], ['Application assistance']],
         eyebrow: 'Application assistance',
         title: 'Strong, on-time applications to the right universities.',
         intro: 'From shortlisting to accepting your offer, we help you build applications that show who you are: clear statements of purpose, well-chosen references and complete documents, sent before every deadline.',
@@ -327,7 +327,7 @@ ${section({ id: 'documents', tag: 'Documents', title: 'What you’ll usually nee
     <article class="gp-card"><h3>Undergraduate applications</h3><ul><li>Class 10 and 12 (or equivalent) mark sheets</li><li>English test score, unless exempt</li><li>Personal statement</li><li>One or two references</li><li>Passport copy</li></ul></article>
     <article class="gp-card"><h3>Postgraduate applications</h3><ul><li>Degree transcripts and certificates</li><li>English test score; GRE or GMAT where required</li><li>Statement of purpose</li><li>Two or three references</li><li>CV, plus portfolio or work experience letters where relevant</li></ul></article>
   </div>
-  <p class="gp-note">Track every deadline in one place with the <a href="tools/deadline-tracker.html">deadline tracker</a>.</p>` })}
+  <p class="gp-note">Track every deadline in one place with the <a href="tools/deadline-tracker">deadline tracker</a>.</p>` })}
 
 ${section({ id: 'faq', tag: 'FAQs', title: 'Application assistance: common questions', cls: 'gp-faq', body: faq([
         ['Will you write my SOP for me?', 'No. Admissions teams want your own voice, and many check for authenticity. We help you plan, structure and improve your own writing.'],
@@ -347,12 +347,12 @@ ${cta({ title: 'Ready to start your applications?', text: 'Book a free session t
 /* ── Course selection guidance ── */
 function courseSelectionPage() {
     const body = `${hero({
-        crumbs: [['Home', 'index.html'], ['Course selection guidance']],
+        crumbs: [['Home', './'], ['Course selection guidance']],
         eyebrow: 'Course selection guidance',
         title: 'Choose a course that fits your goals, not just a ranking.',
         intro: 'The right course balances what you enjoy, where you want your career to go, what you can afford and where you can get in. We help you weigh all four before you apply.',
         actions: `<a class="gp-btn gp-btn-primary" href="${consultHref('course-selection')}" data-open-consult>Talk to a course counsellor</a>
-        <a class="gp-btn gp-btn-ghost" href="find-courses.html">Browse the Course Finder</a>`,
+        <a class="gp-btn gp-btn-ghost" href="find-courses">Browse the Course Finder</a>`,
         form: leadForm({ id: 'course-selection', interest: 'course-selection', eyebrow: 'Free course guidance', title: 'Find the right course for you' })
     })}
 <main id="main">
@@ -374,9 +374,9 @@ ${section({ id: 'process', tag: 'Process', title: 'How we guide your choice', bo
     ]) })}
 
 ${section({ id: 'tools', tag: 'Tools', title: 'Explore on your own too', body: cards([
-        ['Course Finder', 'Search sample courses by subject, level and country. <a href="find-courses.html">Open the Course Finder</a>'],
-        ['Course Comparator', 'Compare up to three courses side by side. <a href="tools/comparator.html">Compare courses</a>'],
-        ['Study cost calculator', 'Estimate the total cost of a course and when it pays back. <a href="tools/roi-calculator.html">Calculate costs</a>']
+        ['Course Finder', 'Search sample courses by subject, level and country. <a href="find-courses">Open the Course Finder</a>'],
+        ['Course Comparator', 'Compare up to three courses side by side. <a href="tools/comparator">Compare courses</a>'],
+        ['Study cost calculator', 'Estimate the total cost of a course and when it pays back. <a href="tools/roi-calculator">Calculate costs</a>']
     ]) })}
 
 ${section({ id: 'faq', tag: 'FAQs', title: 'Course selection: common questions', cls: 'gp-faq', body: faq([

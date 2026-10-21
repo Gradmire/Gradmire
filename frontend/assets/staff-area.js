@@ -118,19 +118,19 @@
         try {
             const d = await api('GET', `/api/v1/consultant/dashboard?timezone=${encodeURIComponent(zone)}`);
             $('cd-stats').innerHTML = [
-                stat('Today', d.today.length, 'admin-consultations.html'),
-                stat('Next 7 days', d.upcoming.length, 'admin-consultations.html'),
-                stat('My students', d.counts.assignedStudents, 'consultant-students.html'),
-                stat('New enquiries', d.counts.newLeads, 'consultant-leads.html', true),
-                stat('Enquiry follow-ups due', d.counts.leadsFollowUpDue, 'consultant-leads.html', true),
-                stat('Open tasks', d.counts.openFollowUps, 'consultant-follow-ups.html'),
-                stat('Overdue tasks', d.counts.overdueFollowUps, 'consultant-follow-ups.html', true),
-                stat('Outcomes to record', d.counts.outcomesDue, 'admin-consultations.html', true),
+                stat('Today', d.today.length, 'admin-consultations'),
+                stat('Next 7 days', d.upcoming.length, 'admin-consultations'),
+                stat('My students', d.counts.assignedStudents, 'consultant-students'),
+                stat('New enquiries', d.counts.newLeads, 'consultant-leads', true),
+                stat('Enquiry follow-ups due', d.counts.leadsFollowUpDue, 'consultant-leads', true),
+                stat('Open tasks', d.counts.openFollowUps, 'consultant-follow-ups'),
+                stat('Overdue tasks', d.counts.overdueFollowUps, 'consultant-follow-ups', true),
+                stat('Outcomes to record', d.counts.outcomesDue, 'admin-consultations', true),
             ].join('');
-            const session = (c) => `<li><span><a href="admin-consultations.html#id=${esc(c.id)}">${esc(c.student)}</a> <small>${esc(c.type)} · ${esc(W.label(c.meetingMethod))}</small></span><small>${esc(W.fmtDateTime(c.start))} · ${esc(W.label(c.status))}${c.meetingUrl ? ` · <a href="${esc(c.meetingUrl)}" target="_blank" rel="noopener noreferrer">Join Meet</a>` : ''}</small></li>`;
+            const session = (c) => `<li><span><a href="admin-consultations#id=${esc(c.id)}">${esc(c.student)}</a> <small>${esc(c.type)} · ${esc(W.label(c.meetingMethod))}</small></span><small>${esc(W.fmtDateTime(c.start))} · ${esc(W.label(c.status))}${c.meetingUrl ? ` · <a href="${esc(c.meetingUrl)}" target="_blank" rel="noopener noreferrer">Join Meet</a>` : ''}</small></li>`;
             $('cd-today').innerHTML = listOrEmpty(d.today, session, 'Nothing booked today.');
             $('cd-upcoming').innerHTML = listOrEmpty(d.upcoming, session, 'Nothing booked in the next week.');
-            $('cd-leads').innerHTML = listOrEmpty(d.newLeads, (l) => `<li><a href="consultant-leads.html#lead=${esc(l.id)}">${esc(l.name)}</a><small>Received ${esc(W.fmtDate(l.createdAt))}</small></li>`, 'No new enquiries.');
+            $('cd-leads').innerHTML = listOrEmpty(d.newLeads, (l) => `<li><a href="consultant-leads#lead=${esc(l.id)}">${esc(l.name)}</a><small>Received ${esc(W.fmtDate(l.createdAt))}</small></li>`, 'No new enquiries.');
             $('cd-deadlines').innerHTML = listOrEmpty(d.deadlines, (a) => `<li><span><strong>${esc(a.university)}</strong> <small>${esc(a.course)} · ${esc(a.student.name)}</small></span><small>${esc(W.fmtDate(a.deadline))}</small></li>`, 'No deadlines in the next 30 days.');
         } catch (e) {
             W.say(e.message);
@@ -151,7 +151,7 @@
                 rows.innerHTML = data.items.length ? data.items.map((s) => `<tr>
                     <td><button type="button" class="crm-open" data-student="${esc(s.id)}" data-name="${esc(s.name)}" data-email="${esc(s.email)}">${esc(s.name)}</button><small>${esc(s.email)}${s.phone ? ` · ${esc(s.phone)}` : ''}</small></td>
                     <td>${esc(s.destinations.join(', ') || '—')}</td><td>${esc(s.intake || '—')}</td>
-                    <td>${s.applicationCount ? `${s.applicationCount} <small>${esc(W.label(s.latestApplicationStatus))}</small>` : '—'} <small><a href="admin-students.html">Manage</a></small></td>
+                    <td>${s.applicationCount ? `${s.applicationCount} <small>${esc(W.label(s.latestApplicationStatus))}</small>` : '—'} <small><a href="admin-students">Manage</a></small></td>
                     <td>${esc(W.fmtDate(s.lastInteraction))}${s.nextConsultation ? `<small>Next: ${esc(W.fmtDate(s.nextConsultation))}</small>` : ''}</td>
                     <td>${esc(W.fmtDate(s.nextFollowUp))}</td><td>${esc(s.consultant || '—')}</td></tr>`).join('') : W.emptyRow(7, 'No students match.');
             } catch (e) {
@@ -177,7 +177,7 @@
         const user = await W.boot({ allow: STAFF });
         if (!user) return;
         if (!isAdmin(user) && /\/admin-leads(\.html)?$/.test(location.pathname)) {
-            location.replace('consultant-leads.html');
+            location.replace('consultant-leads');
             return;
         }
         const admin = isAdmin(user) && /\/admin-leads(\.html)?$/.test(location.pathname);
@@ -227,7 +227,7 @@
                 <button type="button" class="gp-btn gp-btn-outline gp-btn-sm" id="ld-task" style="margin-top:.6rem">Create follow-up task</button></section>
               <section><h3>Email</h3><div id="ld-email"></div></section>
               <section><h3>History</h3><ul class="crm-timeline">${l.activities.map((a) => `<li><time datetime="${esc(a.at)}">${esc(W.fmtDateTime(a.at))}</time><span><strong>${esc(W.label(a.kind))}</strong>${a.channel ? ` (${esc(a.channel)})` : ''} · ${esc(a.actor)}${a.body ? `<br>${esc(a.body)}` : ''}${a.details && a.details.to && a.kind === 'status_changed' ? `<br>${esc(W.label(a.details.from))} → ${esc(W.label(a.details.to))}` : ''}</span></li>`).join('') || '<li>No activity yet.</li>'}</ul></section>
-              ${l.consultations.length ? `<section><h3>Consultations</h3><ul class="ws-list">${l.consultations.map((c) => `<li><a href="admin-consultations.html#id=${esc(c.id)}">${esc(c.reference)}</a><small>${esc(W.fmtDateTime(c.start))} · ${esc(W.label(c.status))}</small></li>`).join('')}</ul></section>` : ''}
+              ${l.consultations.length ? `<section><h3>Consultations</h3><ul class="ws-list">${l.consultations.map((c) => `<li><a href="admin-consultations#id=${esc(c.id)}">${esc(c.reference)}</a><small>${esc(W.fmtDateTime(c.start))} · ${esc(W.label(c.status))}</small></li>`).join('')}</ul></section>` : ''}
               ${l.possibleDuplicates.length ? `<section><h3>Other enquiries from the same email or phone</h3><p class="bk-fine">Shown for review; nothing is merged automatically.</p><ul class="ws-list">${l.possibleDuplicates.map((d) => `<li><button type="button" class="crm-open" data-lead="${esc(d.id)}">${esc(W.label(d.source))} · ${esc(W.fmtDate(d.createdAt))}</button><small>${esc(W.label(d.status))}${d.linked ? ' · linked to an account' : ''}</small></li>`).join('')}</ul></section>` : ''}`;
             emailPanel($('ld-email'), `/api/v1/admin/leads/${l.id}`);
             $('ld-update').addEventListener('submit', async (event) => {
@@ -288,8 +288,8 @@
             try {
                 const data = await api('GET', `/api/v1/consultant/follow-ups?status=${status}`);
                 rows.innerHTML = data.items.length ? data.items.map((t) => {
-                    const linked = t.consultation ? `<a href="admin-consultations.html#id=${esc(t.consultation.id)}">${esc(t.consultation.reference || 'Consultation')}</a>`
-                        : t.lead ? `<a href="consultant-leads.html#lead=${esc(t.lead.id)}">${esc(t.lead.name)}</a>` : t.student ? esc(t.student.name) : '—';
+                    const linked = t.consultation ? `<a href="admin-consultations#id=${esc(t.consultation.id)}">${esc(t.consultation.reference || 'Consultation')}</a>`
+                        : t.lead ? `<a href="consultant-leads#lead=${esc(t.lead.id)}">${esc(t.lead.name)}</a>` : t.student ? esc(t.student.name) : '—';
                     const action = t.status === 'open'
                         ? `<button type="button" class="gp-btn gp-btn-outline gp-btn-sm" data-done="${esc(t.id)}" data-source="${esc(t.source)}" data-consultation="${esc(t.consultation ? t.consultation.id : '')}">Mark done</button>`
                         : '';
@@ -342,19 +342,19 @@
         try {
             const [d, approvals] = await Promise.all([api('GET', '/api/v1/admin/overview'), api('GET', '/api/v1/admin/approvals?status=pending&page_size=10')]);
             $('ad-stats').innerHTML = [
-                stat('Registered students', d.students, 'admin-users.html?role=student'),
-                stat('New students (7 days)', d.newStudents7d, 'admin-users.html?role=student'),
-                stat('New enquiries (7 days)', d.newEnquiries7d, 'admin-leads.html'),
-                stat('Open guest enquiries', d.openGuestEnquiries, 'admin-leads.html?guest=true&status=open'),
-                stat('Unassigned enquiries', d.unassignedEnquiries, 'admin-leads.html?assigned=none&status=open', true),
-                stat('Upcoming consultations', d.upcomingConsultations, 'admin-consultations.html'),
-                stat('Consultant applications', d.openConsultantApplications, 'admin-team.html', true),
-                stat('Approvals waiting', d.openApprovals, 'admin-approvals.html?status=pending', true),
-                stat('Pending invitations', d.pendingInvitations, 'admin-team.html#invitations'),
-                stat('Active consultants', d.activeConsultants, 'admin-team.html#employees'),
-                stat('Overdue follow-ups', d.overdueFollowUps, 'consultant-follow-ups.html', true),
-                stat('Undelivered emails', d.undeliveredEmails, 'admin-consultations.html', true),
-                d.completionRate90d ? stat('Attended (90 days)', `${d.completionRate90d.rate}%`, 'admin-consultations.html') : '',
+                stat('Registered students', d.students, 'admin-users?role=student'),
+                stat('New students (7 days)', d.newStudents7d, 'admin-users?role=student'),
+                stat('New enquiries (7 days)', d.newEnquiries7d, 'admin-leads'),
+                stat('Open guest enquiries', d.openGuestEnquiries, 'admin-leads?guest=true&status=open'),
+                stat('Unassigned enquiries', d.unassignedEnquiries, 'admin-leads?assigned=none&status=open', true),
+                stat('Upcoming consultations', d.upcomingConsultations, 'admin-consultations'),
+                stat('Consultant applications', d.openConsultantApplications, 'admin-team', true),
+                stat('Approvals waiting', d.openApprovals, 'admin-approvals?status=pending', true),
+                stat('Pending invitations', d.pendingInvitations, 'admin-team#invitations'),
+                stat('Active consultants', d.activeConsultants, 'admin-team#employees'),
+                stat('Overdue follow-ups', d.overdueFollowUps, 'consultant-follow-ups', true),
+                stat('Undelivered emails', d.undeliveredEmails, 'admin-consultations', true),
+                d.completionRate90d ? stat('Attended (90 days)', `${d.completionRate90d.rate}%`, 'admin-consultations') : '',
             ].join('');
             api('GET', '/api/v1/admin/integrations').then((g) => {
                 const row = (label, okay, detail) => `<li><span><strong>${esc(label)}</strong> <small>${esc(detail)}</small></span>${W.status(okay ? 'Connected' : 'Not connected', okay ? 'good' : 'warn')}</li>`;
@@ -369,7 +369,7 @@
                     row('Google Meet links', g.calendar.meetLinks, g.calendar.meetLinks ? 'video bookings and interviews get a Meet link' : 'GOOGLE_CALENDAR_CREATE_MEET is off'),
                 ].join('');
             }).catch((e) => { $('ad-integrations').innerHTML = `<li class="bk-empty">${esc(e.message)}</li>`; });
-            $('ad-approvals').innerHTML = listOrEmpty(approvals.items, (r) => `<li><a href="admin-approvals.html#request=${esc(r.id)}">${esc(r.target.name)}: ${esc(roleLabel(r.fromRole))} → ${esc(roleLabel(r.requestedRole))}</a><small>${esc(W.label(r.type))} · ${esc(W.fmtDate(r.createdAt))}</small></li>`, 'No requests are waiting.');
+            $('ad-approvals').innerHTML = listOrEmpty(approvals.items, (r) => `<li><a href="admin-approvals#request=${esc(r.id)}">${esc(r.target.name)}: ${esc(roleLabel(r.fromRole))} → ${esc(roleLabel(r.requestedRole))}</a><small>${esc(W.label(r.type))} · ${esc(W.fmtDate(r.createdAt))}</small></li>`, 'No requests are waiting.');
         } catch (e) {
             W.say(e.message);
         }
@@ -436,7 +436,7 @@
               ${(dup.leads.length || dup.consultations.length) ? `<section><h3>Possible records of this person</h3><p class="bk-fine">These guest records share the account's phone number but not its verified email, so they were not linked automatically. Link one only after confirming it belongs to this person.</p>
                 <ul class="ws-list">${dup.leads.map((l) => `<li><span>Enquiry from ${esc(l.email)} <small>${esc(W.label(l.source))} · ${esc(W.fmtDate(l.createdAt))}</small></span><button type="button" class="gp-btn gp-btn-outline gp-btn-sm" data-link-lead="${esc(l.id)}">Link</button></li>`).join('')}
                 ${dup.consultations.map((c) => `<li><span>Booking ${esc(c.reference)} by ${esc(c.email)} <small>${esc(W.fmtDateTime(c.start))}</small></span><button type="button" class="gp-btn gp-btn-outline gp-btn-sm" data-link-consultation="${esc(c.id)}">Link</button></li>`).join('')}</ul></section>` : ''}
-              ${u.accessRequests.length ? `<section><h3>Access requests</h3><ul class="ws-list">${u.accessRequests.map((r) => `<li><a href="admin-approvals.html#request=${esc(r.id)}">${esc(W.label(r.type))}: ${esc(roleLabel(r.fromRole))} → ${esc(roleLabel(r.requestedRole))}</a>${W.status(r.status, REQ_TONE[r.status])}</li>`).join('')}</ul></section>` : ''}
+              ${u.accessRequests.length ? `<section><h3>Access requests</h3><ul class="ws-list">${u.accessRequests.map((r) => `<li><a href="admin-approvals#request=${esc(r.id)}">${esc(W.label(r.type))}: ${esc(roleLabel(r.fromRole))} → ${esc(roleLabel(r.requestedRole))}</a>${W.status(r.status, REQ_TONE[r.status])}</li>`).join('')}</ul></section>` : ''}
               <section><h3>History</h3><ul class="crm-timeline">${u.history.map((h) => `<li><time datetime="${esc(h.at)}">${esc(W.fmtDateTime(h.at))}</time><span>${esc(h.action)} · ${esc(h.actor)}</span></li>`).join('') || '<li>No recorded changes.</li>'}</ul></section>`;
 
             const after = async (work, message) => {
@@ -578,7 +578,7 @@
             const rows = $('em-rows');
             try {
                 const items = await api('GET', '/api/v1/admin/employees');
-                rows.innerHTML = items.length ? items.map((e) => `<tr><td><a href="admin-users.html?q=${encodeURIComponent(e.email)}">${esc(e.name)}</a><small>${esc(e.workEmail || e.email)}${e.employeeCode ? ` · ${esc(e.employeeCode)}` : ''}</small></td>
+                rows.innerHTML = items.length ? items.map((e) => `<tr><td><a href="admin-users?q=${encodeURIComponent(e.email)}">${esc(e.name)}</a><small>${esc(e.workEmail || e.email)}${e.employeeCode ? ` · ${esc(e.employeeCode)}` : ''}</small></td>
                     <td>${esc(e.jobTitle)}<small>${esc(e.department)}${e.manager ? ` · reports to ${esc(e.manager.name)}` : ''}</small></td><td>${esc(roleLabel(e.currentRole))}</td>
                     <td>${W.status(e.employmentStatus, e.employmentStatus === 'active' ? 'good' : e.employmentStatus === 'pending' ? 'warn' : '')}</td>
                     <td>${esc(e.upcomingConsultations)}</td><td>${esc(e.openLeads)}</td><td>${esc(W.fmtDate(e.approvedAt || e.startDate))}</td></tr>`).join('') : W.emptyRow(7, 'No employee profiles yet. Staff created with the command-line tool get one at their first approved role change.');
@@ -641,7 +641,7 @@
             const w = r.workload;
             const blocked = r.status === 'pending' && !r.canDecide;
             view.body.innerHTML = `
-              <section><h3>Request</h3><dl class="ws-dl"><dt>Person</dt><dd><a href="admin-users.html?q=${encodeURIComponent(r.target.email)}">${esc(r.target.name)}</a> (${esc(r.target.email)}) · now ${esc(roleLabel(r.target.currentRole))}${r.target.accountStatus === 'disabled' ? ' · suspended' : ''}</dd>
+              <section><h3>Request</h3><dl class="ws-dl"><dt>Person</dt><dd><a href="admin-users?q=${encodeURIComponent(r.target.email)}">${esc(r.target.name)}</a> (${esc(r.target.email)}) · now ${esc(roleLabel(r.target.currentRole))}${r.target.accountStatus === 'disabled' ? ' · suspended' : ''}</dd>
                 <dt>Change</dt><dd>${esc(roleLabel(r.fromRole))} → ${esc(roleLabel(r.requestedRole))}</dd><dt>Reason</dt><dd>${esc(r.reason)}</dd>
                 <dt>Requested by</dt><dd>${esc(r.requestedBy.name)} on ${esc(W.fmtDateTime(r.createdAt))}</dd>
                 ${r.type === 'access_revocation' ? `<dt>Their open work</dt><dd>${esc(w.consultations)} upcoming consultation(s), ${esc(w.leads)} enquiry(ies), ${esc(w.tasks)} task(s)</dd><dt>Moves to</dt><dd>${esc(r.reassignTo ? r.reassignTo.name : 'Nobody')}</dd>` : ''}

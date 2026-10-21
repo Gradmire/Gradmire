@@ -441,7 +441,7 @@
         background: rgba(10, 13, 22, .88);
     }
 </style>
-<link rel="stylesheet" href="../assets/site.css?v=27">
+<link rel="stylesheet" href="../assets/site.css?v=28">
 <link rel="stylesheet" href="../assets/auth.css?v=1">
 <style>
 @media(max-width:900px){.auth-wrap{grid-template-columns:1fr!important}}
@@ -449,19 +449,19 @@
 
 <nav class="nav" aria-label="Main navigation">
     <div class="nav-inner">
-        <a href="index.html" class="nav-logo"><img src="../assets/gradmire-logo.png" alt="Gradmire" height="34" style="display:block;max-width:155px;"></a>
+        <a href="./" class="nav-logo"><img src="../assets/gradmire-logo.png" alt="Gradmire" height="34" style="display:block;max-width:155px;"></a>
         <ul class="nav-links" role="list">
-            <li><a href="destinations.html">Destinations</a></li>
-            <li><a href="find-courses.html">Courses</a></li>
-            <li><a href="find-universities.html">Universities</a></li>
-            <li><a href="scholarships.html">Scholarships</a></li>
-            <li><a href="tools/roi-calculator.html">Tools</a></li>
-            <li><a href="faq.html">FAQ</a></li>
-            <li><a href="about.html">About</a></li>
+            <li><a href="destinations">Destinations</a></li>
+            <li><a href="find-courses">Courses</a></li>
+            <li><a href="find-universities">Universities</a></li>
+            <li><a href="scholarships">Scholarships</a></li>
+            <li><a href="tools/roi-calculator">Tools</a></li>
+            <li><a href="faq">FAQ</a></li>
+            <li><a href="about">About</a></li>
         </ul>
         <div style="display:flex;gap:.75rem;align-items:center">
-            <a href="login.html" class="nav-btn" style="background:transparent;color:var(--text-p);border:1.5px solid var(--border)">Log in</a>
-            <a href="signup.html" class="nav-btn">Create account</a>
+            <a href="login" class="nav-btn" style="background:transparent;color:var(--text-p);border:1.5px solid var(--border)">Log in</a>
+            <a href="signup" class="nav-btn">Create account</a>
         </div>
         <button class="nav-ham" aria-label="Open menu"><svg width="22" height="16" viewBox="0 0 22 16" fill="none"><rect y="0" width="22" height="2" rx="1" fill="currentColor"/><rect y="7" width="22" height="2" rx="1" fill="currentColor"/><rect y="14" width="22" height="2" rx="1" fill="currentColor"/></svg></button>
     </div>
@@ -481,7 +481,7 @@
                 <li><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="rgba(45,184,140,.22)"/><path d="m6 10.2 2.6 2.6L14.2 7" fill="none" stroke="#5EE0B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Get matched with a dedicated counsellor</li>
                 <li><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="rgba(45,184,140,.22)"/><path d="m6 10.2 2.6 2.6L14.2 7" fill="none" stroke="#5EE0B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Shortlist universities and track applications</li>
             </ul>
-            <a class="auth-vis-cta" href="free-consultation.html?interest=counselling">Book a free consultation <span aria-hidden="true">→</span></a>
+            <a class="auth-vis-cta" href="free-consultation?interest=counselling">Book a free consultation <span aria-hidden="true">→</span></a>
             <dl class="auth-vis-stats">
                 <div><dt>Students placed</dt><dd>47K+</dd></div>
                 <div><dt>Partner universities</dt><dd>850+</dd></div>
@@ -491,7 +491,7 @@
     </aside>
     <div class="auth-form-side">
         <!-- Phones: the photo panel is hidden, so lead with a compact consultation promo -->
-        <a class="auth-mobile-promo" href="free-consultation.html?interest=counselling">
+        <a class="auth-mobile-promo" href="free-consultation?interest=counselling">
             <img src="https://images.unsplash.com/photo-1640909386666-c69790bf0061?auto=format&fit=crop&w=160&q=80" alt="" width="64" height="64" loading="eager">
             <span><strong>Not sure where to start?</strong><span>Talk to a counsellor first. It's free.</span></span>
             <span class="auth-mobile-promo-go" aria-hidden="true">→</span>
@@ -500,7 +500,7 @@
         <div class="auth-form-wrap">
             <div class="auth-form-tag">Get started free</div>
             <h1 class="auth-form-title">Create your account</h1>
-            <p class="auth-form-sub">Already have an account? <a href="login.html">Log in</a></p>
+            <p class="auth-form-sub">Already have an account? <a href="login">Log in</a></p>
 
             <form id="signup-form" method="post" novalidate>
                 <div class="form-row">
@@ -582,7 +582,7 @@
         <svg width="18" height="18" viewBox="0 0 18 18"><path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 01-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/><path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z" fill="#34A853"/><path d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/><path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/></svg>
         Continue with Google
       </button>
-            <div style="font-size:.75rem;color:var(--text-s);text-align:center;margin-top:1rem;">By signing up you agree to our <a href="terms.html" style="color:var(--accent);text-decoration:underline;">Terms of Use</a> and <a href="privacy.html" style="color:var(--accent);text-decoration:underline;">Privacy Policy</a>.</div>
+            <div style="font-size:.75rem;color:var(--text-s);text-align:center;margin-top:1rem;">By signing up you agree to our <a href="terms" style="color:var(--accent);text-decoration:underline;">Terms of Use</a> and <a href="privacy" style="color:var(--accent);text-decoration:underline;">Privacy Policy</a>.</div>
         </div>
         <div class="auth-footer-note">© 2026 Gradmire · India's study-abroad counselling platform</div>
         </div><!-- /auth-form-inner -->
@@ -671,7 +671,7 @@
             ageConfirmation: age.checked,
         }).then(() => {
             const next = new URLSearchParams(location.search).get('next');
-            window.location.href = GradmireAPI.safeNext(next, 'dashboard.html');
+            window.location.href = GradmireAPI.safeNext(next, 'dashboard');
         }).catch((err) => {
             error.textContent = err.message;
             error.hidden = false;
@@ -684,61 +684,61 @@
 <footer class="gm-footer" aria-label="Site footer">
   <div class="gm-footer-inner">
     <div class="gm-footer-brand">
-      <a class="gm-footer-logo" href="index.html" aria-label="Gradmire home"><img src="../assets/gradmire-logo-white.png" alt="Gradmire" width="200" height="54" loading="lazy" decoding="async"></a>
+      <a class="gm-footer-logo" href="./" aria-label="Gradmire home"><img src="../assets/gradmire-logo-white.png" alt="Gradmire" width="200" height="54" loading="lazy" decoding="async"></a>
       <p class="gm-footer-tagline">Study abroad, organized by subject — not by flag.</p>
       <form class="footer-subscribe" novalidate><label class="sr-only" for="footer-email">Email address for study-abroad updates</label><input id="footer-email" type="email" name="email" autocomplete="email" placeholder="you@email.com" required><button type="submit" aria-label="Subscribe to updates"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><p class="footer-subscribe-msg" role="status" hidden></p></form>
     </div>
     <nav class="gm-footer-col" aria-label="Destinations">
       <h2 class="gm-footer-title">Destinations</h2>
       <ul class="gm-footer-links">
-        <li><a href="study-in-uk.html">United Kingdom</a></li>
-        <li><a href="study-in-usa.html">USA</a></li>
-        <li><a href="study-in-canada.html">Canada</a></li>
-        <li><a href="study-in-australia.html">Australia</a></li>
-        <li><a href="study-in-germany.html">Germany</a></li>
-        <li><a href="study-in-ireland.html">Ireland</a></li>
-        <li><a href="study-in-newzealand.html">New Zealand</a></li>
-        <li><a href="study-in-italy.html">Italy</a></li>
-        <li><a href="study-in-finland.html">Finland</a></li>
-        <li><a href="mbbs-abroad.html">MBBS abroad</a></li>
+        <li><a href="study-in-uk">United Kingdom</a></li>
+        <li><a href="study-in-usa">USA</a></li>
+        <li><a href="study-in-canada">Canada</a></li>
+        <li><a href="study-in-australia">Australia</a></li>
+        <li><a href="study-in-germany">Germany</a></li>
+        <li><a href="study-in-ireland">Ireland</a></li>
+        <li><a href="study-in-newzealand">New Zealand</a></li>
+        <li><a href="study-in-italy">Italy</a></li>
+        <li><a href="study-in-finland">Finland</a></li>
+        <li><a href="mbbs-abroad">MBBS abroad</a></li>
       </ul>
     </nav>
     <nav class="gm-footer-col" aria-label="Services">
       <h2 class="gm-footer-title">Services</h2>
       <ul class="gm-footer-links">
-        <li><a href="free-consultation.html?interest=counselling">Free counselling</a></li>
-        <li><a href="test-preparation.html">Test preparation</a></li>
-        <li><a href="visa-assistance.html">Visa assistance</a></li>
-        <li><a href="application-assistance.html">Application assistance</a></li>
-        <li><a href="course-selection-guidance.html">Course selection guidance</a></li>
-        <li><a href="scholarships.html">Scholarships</a></li>
+        <li><a href="free-consultation?interest=counselling">Free counselling</a></li>
+        <li><a href="test-preparation">Test preparation</a></li>
+        <li><a href="visa-assistance">Visa assistance</a></li>
+        <li><a href="application-assistance">Application assistance</a></li>
+        <li><a href="course-selection-guidance">Course selection guidance</a></li>
+        <li><a href="scholarships">Scholarships</a></li>
       </ul>
     </nav>
     <nav class="gm-footer-col" aria-label="Tools">
       <h2 class="gm-footer-title">Tools</h2>
       <ul class="gm-footer-links">
-        <li><a href="find-courses.html">Course finder</a></li>
-        <li><a href="tools/roi-calculator.html">Study cost calculator</a></li>
-        <li><a href="tools/comparator.html">Course comparator</a></li>
-        <li><a href="tools/deadline-tracker.html">Deadline tracker</a></li>
-        <li><a href="tools/grade-converter.html">GPA / CGPA / SGPA converter</a></li>
+        <li><a href="find-courses">Course finder</a></li>
+        <li><a href="tools/roi-calculator">Study cost calculator</a></li>
+        <li><a href="tools/comparator">Course comparator</a></li>
+        <li><a href="tools/deadline-tracker">Deadline tracker</a></li>
+        <li><a href="tools/grade-converter">GPA / CGPA / SGPA converter</a></li>
       </ul>
     </nav>
     <nav class="gm-footer-col" aria-label="Company">
       <h2 class="gm-footer-title">Company</h2>
       <ul class="gm-footer-links">
-        <li><a href="about.html">About us</a></li>
-        <li><a href="blog.html">Blog</a></li>
-        <li><a href="events.html">Events</a></li>
-        <li><a href="faq.html">FAQs</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="login.html">Student login</a></li>
+        <li><a href="about">About us</a></li>
+        <li><a href="blog">Blog</a></li>
+        <li><a href="events">Events</a></li>
+        <li><a href="faq">FAQs</a></li>
+        <li><a href="contact">Contact</a></li>
+        <li><a href="login">Student login</a></li>
       </ul>
     </nav>
   </div>
-  <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">© 2026 Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · Email: <a href="mailto:info@gradmire.com">info@gradmire.com</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund-policy.html">Refunds &amp; fees</a><a href="cookie-policy.html">Cookies</a><a href="data-request.html">Your data rights</a><a href="grievance.html">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
+  <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">© 2026 Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · Email: <a href="mailto:info@gradmire.com">info@gradmire.com</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy">Privacy</a><a href="terms">Terms</a><a href="refund-policy">Refunds &amp; fees</a><a href="cookie-policy">Cookies</a><a href="data-request">Your data rights</a><a href="grievance">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
 </footer>
 
-<script src="../assets/api.js?v=3"></script>
-<script src="../assets/google-signin.js?v=1" defer></script>
-<script src="../assets/site.js?v=31" defer></script>
+<script src="../assets/api.js?v=4"></script>
+<script src="../assets/google-signin.js?v=2" defer></script>
+<script src="../assets/site.js?v=32" defer></script>

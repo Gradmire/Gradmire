@@ -102,11 +102,11 @@ export async function studentOverview(user) {
         .sort((a, b) => a.deadline.localeCompare(b.deadline));
 
     const steps = [];
-    if (!profile.emailVerified) steps.push({ key: 'verify_email', label: 'Verify your email address', href: 'dashboard.html#verify' });
-    if (profile.completion < 100) steps.push({ key: 'complete_profile', label: `Complete your profile (${profile.completion}%)`, href: 'dashboard-profile.html' });
-    if (!upcoming.length && !consultations.rows.some((c) => c.status === 'completed')) steps.push({ key: 'book', label: 'Book a free consultation', href: 'book-consultation.html' });
-    if (!apps.length) steps.push({ key: 'explore', label: 'Explore universities and courses', href: 'find-courses.html' });
-    if (deadlines.length) steps.push({ key: 'deadline', label: `Prepare for the ${deadlines[0].university} deadline`, href: 'dashboard.html#applications' });
+    if (!profile.emailVerified) steps.push({ key: 'verify_email', label: 'Verify your email address', href: 'dashboard#verify' });
+    if (profile.completion < 100) steps.push({ key: 'complete_profile', label: `Complete your profile (${profile.completion}%)`, href: 'dashboard-profile' });
+    if (!upcoming.length && !consultations.rows.some((c) => c.status === 'completed')) steps.push({ key: 'book', label: 'Book a free consultation', href: 'book-consultation' });
+    if (!apps.length) steps.push({ key: 'explore', label: 'Explore universities and courses', href: 'find-courses' });
+    if (deadlines.length) steps.push({ key: 'deadline', label: `Prepare for the ${deadlines[0].university} deadline`, href: 'dashboard#applications' });
 
     const ca = consultantApplication.rows[0];
     return {

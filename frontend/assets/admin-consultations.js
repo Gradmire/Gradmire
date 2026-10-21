@@ -391,7 +391,7 @@
         $('crm-login').hidden = true;
         $('crm-app').hidden = false;
         $('crm-who').textContent = `${user.firstName} · ${isAdmin() ? 'Administrator (all consultations)' : 'Counsellor (your assigned consultations)'}`;
-        if (user.home && !$('crm-home')) $('crm-who').insertAdjacentHTML('afterend', `<p id="crm-home"><a href="${esc(GradmireAPI.safeNext(user.home, 'dashboard.html'))}">← Back to my workspace</a></p>`);
+        if (user.home && !$('crm-home')) $('crm-who').insertAdjacentHTML('afterend', `<p id="crm-home"><a href="${esc(GradmireAPI.safeNext(user.home, 'dashboard'))}">← Back to my workspace</a></p>`);
         try {
             const [counsellors, types] = await Promise.all([
                 GradmireAPI.request('GET', '/api/v1/admin/counsellors'),

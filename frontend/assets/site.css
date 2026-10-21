@@ -1029,7 +1029,7 @@ footer.gm-legal-bar { margin: 0; padding: 1.25rem var(--gutter, 1.25rem) calc(1.
 :root[data-theme="dark"] :is(.btn-cta, .btn-details, .btn-explore, .btn-next, .btn-primary, .btn-reg, .btn-sm-primary, .btn-submit, .btn-submit-full, .consult-hero-badge span, .counsellor-btn-primary, .cta-strip .btn, .destination-page .nav-btn, .dr-submit, .nav-btn, .nav-cta, .newsletter-btn, .p-step.done, .search-btn, .sidebar-badge, .submit-btn, .ty-next-step-num, .gm-consult-fab, .gm-popup-submit, .error-actions .btn:not(.btn-ghost):not(.btn-outline)) { background-color: #007A5A !important; color: #fff !important; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) :is(.btn-cta, .btn-details, .btn-explore, .btn-next, .btn-primary, .btn-reg, .btn-sm-primary, .btn-submit, .btn-submit-full, .consult-hero-badge span, .counsellor-btn-primary, .cta-strip .btn, .destination-page .nav-btn, .dr-submit, .nav-btn, .nav-cta, .newsletter-btn, .p-step.done, .search-btn, .sidebar-badge, .submit-btn, .ty-next-step-num, .gm-consult-fab, .gm-popup-submit, .error-actions .btn:not(.btn-ghost):not(.btn-outline)) { background-color: #007A5A !important; color: #fff !important; } }
 :root[data-theme="dark"] .highlight-box a { color: var(--text-p); }
-:root[data-theme="dark"] a.btn[href$="free-consultation.html"]:not(.btn-outline):not(.btn-ghost) { background-color: #007A5A !important; color: #fff !important; }
+:root[data-theme="dark"] a.btn[href$="free-consultation"]:not(.btn-outline):not(.btn-ghost) { background-color: #007A5A !important; color: #fff !important; }
 :root[data-theme="dark"] .status-applying { color: #8FB4FF; }
 :root[data-theme="dark"] .accent-card :is(.metric-lbl, .metric-sub) { color: rgba(255, 255, 255, .82); }
 

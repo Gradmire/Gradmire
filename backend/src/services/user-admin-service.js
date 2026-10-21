@@ -133,7 +133,7 @@ export async function setStatus(actor, id, { status, reason }) {
             actorUserId: actor.id, action: status === 'disabled' ? 'user.suspended' : 'user.reactivated', entityType: 'user', entityId: id,
             details: { before: { status: u.status }, after: { status }, role: u.role, reason },
         });
-        if (status === 'active') await notifyUser(client, id, { kind: 'account_reactivated', title: 'Your account was reactivated', body: 'You can use your Gradmire account again.', link: 'dashboard.html' });
+        if (status === 'active') await notifyUser(client, id, { kind: 'account_reactivated', title: 'Your account was reactivated', body: 'You can use your Gradmire account again.', link: 'dashboard' });
         return userRow((await client.query('SELECT * FROM users WHERE id = $1', [id])).rows[0]);
     });
 }
@@ -158,7 +158,7 @@ export async function linkRecord(actor, userId, { leadId = null, consultationId 
         }
         if (!updated.rowCount) throw conflict('That record does not exist or already belongs to an account.', 'ALREADY_LINKED');
         await audit(client, { actorUserId: actor.id, action: 'identity.manual_link', entityType: 'user', entityId: userId, details: { leadId, consultationId, reason } });
-        await notifyUser(client, userId, { kind: 'records_linked', title: 'A record was added to your account', body: 'Our team linked an earlier enquiry or booking to your account.', link: 'dashboard.html' });
+        await notifyUser(client, userId, { kind: 'records_linked', title: 'A record was added to your account', body: 'Our team linked an earlier enquiry or booking to your account.', link: 'dashboard' });
         return { linked: true };
     });
 }
