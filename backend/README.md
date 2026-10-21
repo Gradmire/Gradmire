@@ -11,6 +11,13 @@ The API for the static frontend. It provides:
 
 Data is stored in PostgreSQL when `DATABASE_URL` is set (migrations in `schema/`, applied with `npm run migrate`). Without it, leads fall back to an in-memory store for quick previews; accounts and booking always require the database.
 
+## Payments
+
+Paid consultation checkout, payment webhooks, and refunds are not implemented. The API
+must not be used to collect or represent payments as completed. CI verifies these
+endpoints remain unavailable while gateway integration is deferred; passing CI is not
+evidence that paid bookings are ready for launch.
+
 ## Run locally
 
 ```bash

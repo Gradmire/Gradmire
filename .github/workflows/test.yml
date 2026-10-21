@@ -55,7 +55,7 @@ jobs:
           # A second run must be a no-op.
           npm run migrate --prefix backend
 
-      - name: Run backend tests (booking, auth, security, integration, roles)
+      - name: Run backend tests (including deferred-payment guards)
         run: npm test --prefix backend
 
       - name: Validate shared frontend JavaScript

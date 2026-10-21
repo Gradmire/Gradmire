@@ -5,8 +5,8 @@ import { request, startHarness, stopHarness } from './helpers/harness.js';
 before(startHarness);
 after(stopHarness);
 
-describe('payment and refund audit', () => {
-    test('payment charge creation with server-side idempotency must exist before live money is enabled', async () => {
+describe('payments remain unavailable while gateway integration is deferred', () => {
+    test('charge creation is unavailable, so clients cannot initiate payments', async () => {
         const response = await request('POST', '/api/v1/payments/create', {
             body: {
                 amount: 49900,
@@ -16,11 +16,10 @@ describe('payment and refund audit', () => {
             },
         });
 
-        assert.notEqual(response.status, 404, 'A payment creation endpoint must exist before real-money charging is allowed.');
-        assert.notEqual(response.status, 501, 'The payment gateway interface must be implemented before launch.');
+        assert.equal(response.status, 404, 'Paid checkout must remain unavailable until a gateway and idempotent charge flow are implemented.');
     });
 
-    test('webhook verification must exist and reject forged events before fees are accepted', async () => {
+    test('payment webhooks are unavailable, so client requests cannot mark bookings paid', async () => {
         const response = await request('POST', '/api/v1/webhooks/payment', {
             body: {
                 event: 'payment.captured',
@@ -31,11 +30,10 @@ describe('payment and refund audit', () => {
             },
         });
 
-        assert.notEqual(response.status, 404, 'A payment webhook endpoint must exist to verify gateway events.');
-        assert.notEqual(response.status, 501, 'Webhook verification must be implemented before production.');
+        assert.equal(response.status, 404, 'Payments must remain disabled until signed webhook processing is implemented.');
     });
 
-    test('refund creation must be server-authorized and idempotent before any financial reversal is accepted', async () => {
+    test('refunds are unavailable until authorized, idempotent refund processing is implemented', async () => {
         const response = await request('POST', '/api/v1/refunds/create', {
             body: {
                 paymentId: 'pay_audit_123',
@@ -44,7 +42,6 @@ describe('payment and refund audit', () => {
             },
         });
 
-        assert.notEqual(response.status, 404, 'A refund endpoint must exist before launch.');
-        assert.notEqual(response.status, 501, 'Refund handling must be implemented before money changes hands.');
+        assert.equal(response.status, 404, 'Refunds must remain unavailable until verified-payment and refund controls exist.');
     });
 });
