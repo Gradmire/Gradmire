@@ -39,7 +39,7 @@
             const result = await api('POST', '/api/v1/auth/email-change/confirm', { token });
             await GradmireAPI.getSession(true).catch(() => null);
             W.say(`Your login email is now ${result.email}. You have been signed out everywhere; please log in again.`, 'ok');
-            setTimeout(() => { location.href = `login.html?next=${encodeURIComponent('dashboard-profile.html')}`; }, 3500);
+            setTimeout(() => { location.href = `login?next=${encodeURIComponent('dashboard-profile')}`; }, 3500);
         } catch (e) {
             W.say(e.message);
         }
@@ -182,7 +182,7 @@
             const current = applications[0];
             form.hidden = true;
             if (!user.emailVerified) {
-                box.innerHTML = '<div class="bk-alert bk-alert--info">Verify your email address before applying. Use the link we emailed you, or resend it from <a href="dashboard.html">your dashboard</a>.</div>';
+                box.innerHTML = '<div class="bk-alert bk-alert--info">Verify your email address before applying. Use the link we emailed you, or resend it from <a href="dashboard">your dashboard</a>.</div>';
                 return;
             }
             if (!current || !current.canWithdraw) {
@@ -376,7 +376,7 @@
         const user = session.user;
         if (!user) {
             box.innerHTML = `${intro}<p>Log in, or create an account, with the email address the invitation was sent to.</p>
-                <div class="bk-actions"><a class="gp-btn gp-btn-primary" href="login.html?next=join-team.html">Log in</a><a class="gp-btn gp-btn-outline" href="signup.html?next=join-team.html">Create an account</a></div>`;
+                <div class="bk-actions"><a class="gp-btn gp-btn-primary" href="login?next=join-team">Log in</a><a class="gp-btn gp-btn-outline" href="signup?next=join-team">Create an account</a></div>`;
             return;
         }
         if (user.role !== 'student') {
@@ -398,7 +398,7 @@
             try {
                 await api('POST', '/api/v1/me/employee-invitations/accept', { token });
                 try { sessionStorage.removeItem('gm-invite'); } catch (e) { /* ignore */ }
-                box.innerHTML = '<h2 class="bk-step-title">Invitation accepted</h2><p>Your onboarding is now waiting for approval. We will email you and you will see your workspace the next time you log in after it is approved.</p><a class="gp-btn gp-btn-outline" href="dashboard.html">Back to my dashboard</a>';
+                box.innerHTML = '<h2 class="bk-step-title">Invitation accepted</h2><p>Your onboarding is now waiting for approval. We will email you and you will see your workspace the next time you log in after it is approved.</p><a class="gp-btn gp-btn-outline" href="dashboard">Back to my dashboard</a>';
             } catch (e) {
                 $('jt-error').textContent = e.message;
                 $('jt-error').hidden = false;

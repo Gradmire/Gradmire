@@ -57,7 +57,7 @@ function countryPage(c) {
     const others = countries.filter((o) => o.slug !== c.slug);
     const f = c.facts;
     const body = `${hero({
-        crumbs: [['Home', 'index.html'], ['MBBS Abroad', 'mbbs-abroad.html'], [c.name]],
+        crumbs: [['Home', './'], ['MBBS Abroad', 'mbbs-abroad'], [c.name]],
         eyebrow: `MBBS in ${c.name}`,
         title: c.headline,
         intro: c.intro,
@@ -104,13 +104,13 @@ ${section({ id: 'fees', tag: 'Fees & living costs', title: `What MBBS in ${c.nam
     <div class="gp-cost-item"><span>Living costs</span><strong>${esc(f.living)}</strong><p>Hostel, food, local transport and day-to-day expenses. Capital cities cost more.</p></div>
     <div class="gp-cost-item"><span>Also budget for</span><strong>One-time costs</strong><p>Flights, visa and medical tests, insurance, document attestation and winter clothing where relevant.</p></div>
   </div>
-  <p class="gp-note">These are indicative planning ranges (last reviewed ${REVIEWED}), not a quote. Fees and exchange rates change, so we confirm the current fee schedule with the university before you pay. Try the <a href="tools/roi-calculator.html">study cost calculator</a> to plan a full budget.</p>` })}
+  <p class="gp-note">These are indicative planning ranges (last reviewed ${REVIEWED}), not a quote. Fees and exchange rates change, so we confirm the current fee schedule with the university before you pay. Try the <a href="tools/roi-calculator">study cost calculator</a> to plan a full budget.</p>` })}
 
 ${section({ id: 'visa', tag: 'Student visa', title: `Getting your ${c.name} student visa`, lead: c.visa.summary, body: `<div class="gp-grid-2">
     <article class="gp-card"><h3>Typical visa file</h3><ul>${c.visa.items.map((i) => `<li>${esc(i)}</li>`).join('')}</ul></article>
     <article class="gp-card"><h3>After you arrive</h3><p>${esc(c.visa.after)}</p></article>
   </div>
-  <p class="gp-note">Visa rules depend on your nationality and change often. This is a planning summary, not legal advice. Always follow the current checklist from the embassy and your university. <a href="visa-assistance.html">See how we help with visas</a>.</p>` })}
+  <p class="gp-note">Visa rules depend on your nationality and change often. This is a planning summary, not legal advice. Always follow the current checklist from the embassy and your university. <a href="visa-assistance">See how we help with visas</a>.</p>` })}
 
 ${section({ id: 'student-life', tag: 'Student life', title: `Living in ${c.name} as an international student`, body: cards(c.life) })}
 
@@ -127,12 +127,12 @@ ${section({ id: 'why-gradmire', tag: 'Why Gradmire', title: 'We help you pick a 
         '<strong>Documents and visa.</strong> We check every document and guide you through the invitation, visa and embassy steps.',
         '<strong>After arrival.</strong> Pre-departure briefing and help settling in, from hostel to registration.'
     ])}
-    <div class="gp-compare"><h3>Comparing countries?</h3><p>See every MBBS destination side by side on one page.</p><a class="gp-btn gp-btn-primary" href="mbbs-abroad.html#compare">Compare MBBS countries</a></div>
+    <div class="gp-compare"><h3>Comparing countries?</h3><p>See every MBBS destination side by side on one page.</p><a class="gp-btn gp-btn-primary" href="mbbs-abroad#compare">Compare MBBS countries</a></div>
   </div>` })}
 
 ${section({ id: 'faq', tag: 'FAQs', title: `MBBS in ${c.name}: common questions`, cls: 'gp-faq', body: faq([...c.faq, ...commonFaq]) })}
 
-${section({ id: 'other-countries', tag: 'Other MBBS destinations', title: 'Explore more countries', body: `<div class="gp-pill-links">${others.map((o) => `<a href="mbbs-in-${o.slug}.html">MBBS in ${esc(o.name)}</a>`).join('')}</div>` })}
+${section({ id: 'other-countries', tag: 'Other MBBS destinations', title: 'Explore more countries', body: `<div class="gp-pill-links">${others.map((o) => `<a href="mbbs-in-${o.slug}">MBBS in ${esc(o.name)}</a>`).join('')}</div>` })}
 
 ${cta({ title: `Not sure ${c.name} is the right fit?`, text: 'Talk through your marks, budget and goals with a Gradmire counsellor. Counselling is free and there’s no obligation.', href: mbbsConsult(c.slug), label: 'Book a free consultation', country: c.slug })}
 </main>`;
@@ -145,7 +145,7 @@ ${cta({ title: `Not sure ${c.name} is the right fit?`, text: 'Talk through your 
 
 function hubPage() {
     const body = `${hero({
-        crumbs: [['Home', 'index.html'], ['MBBS Abroad']],
+        crumbs: [['Home', './'], ['MBBS Abroad']],
         eyebrow: 'MBBS Abroad',
         title: 'Study medicine abroad with your career plans in view.',
         intro: 'Compare nine popular MBBS destinations on course length, indicative fees and living costs. We check every option against the licensing rules of the country where you want to practise.',
@@ -155,7 +155,7 @@ function hubPage() {
     })}
 <main id="main">
 ${section({ id: 'countries', tag: 'Destinations', title: 'Choose a country to explore', body: `<div class="gp-tile-grid">
-${countries.map((c) => `    <a class="gp-tile" href="mbbs-in-${c.slug}.html">
+${countries.map((c) => `    <a class="gp-tile" href="mbbs-in-${c.slug}">
       <span class="gp-tile-name">${esc(c.name)}</span>
       <span class="gp-tile-meta">${esc(c.facts.tuition)}</span>
       <span class="gp-tile-meta">${esc(c.facts.duration)}</span>
@@ -167,7 +167,7 @@ ${section({ id: 'compare', tag: 'Side by side', title: 'Compare MBBS countries',
     <table class="gp-table">
       <thead><tr><th scope="col">Country</th><th scope="col">Course length</th><th scope="col">Tuition (indicative)</th><th scope="col">Living (indicative)</th><th scope="col">Patient language</th><th scope="col">Intake</th></tr></thead>
       <tbody>
-${countries.map((c) => `        <tr><th scope="row"><a href="mbbs-in-${c.slug}.html">${esc(c.name)}</a></th><td>${esc(c.facts.duration)}</td><td>${esc(c.facts.tuition)}</td><td>${esc(c.facts.living)}</td><td>${esc(c.facts.medium.replace(/^English \((.*) for patient contact\)$/, '$1'))}</td><td>${esc(c.facts.intake)}</td></tr>`).join('\n')}
+${countries.map((c) => `        <tr><th scope="row"><a href="mbbs-in-${c.slug}">${esc(c.name)}</a></th><td>${esc(c.facts.duration)}</td><td>${esc(c.facts.tuition)}</td><td>${esc(c.facts.living)}</td><td>${esc(c.facts.medium.replace(/^English \((.*) for patient contact\)$/, '$1'))}</td><td>${esc(c.facts.intake)}</td></tr>`).join('\n')}
       </tbody>
     </table>
   </div>

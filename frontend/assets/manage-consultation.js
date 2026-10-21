@@ -37,8 +37,8 @@
               <dt>Meeting</dt><dd>${c.status === 'cancelled' ? 'Cancelled' : meetingLine(c)}</dd>
               <dt>Booked for</dt><dd>${esc(c.studentName)} · ${esc(c.studentEmail)}</dd>
             </dl>
-            ${c.status === 'cancelled' ? '<p class="bk-fine">This consultation was cancelled. <a href="book-consultation.html">Book a new time</a>.</p>' : ''}
-            ${['reserved', 'confirmed'].includes(c.status) && !c.canCancel ? `<p class="bk-fine">Online changes closed 24 hours before the start. Please <a href="contact.html">contact us</a> if you need to change this booking.</p>` : ''}
+            ${c.status === 'cancelled' ? '<p class="bk-fine">This consultation was cancelled. <a href="book-consultation">Book a new time</a>.</p>' : ''}
+            ${['reserved', 'confirmed'].includes(c.status) && !c.canCancel ? `<p class="bk-fine">Online changes closed 24 hours before the start. Please <a href="contact">contact us</a> if you need to change this booking.</p>` : ''}
             <div class="bk-actions" style="justify-content:flex-start">
               ${c.canReschedule ? '<button type="button" class="gp-btn gp-btn-primary gp-btn-sm" id="mg-move">Reschedule</button>' : ''}
               ${c.canCancel ? '<button type="button" class="gp-btn gp-btn-danger gp-btn-sm" id="mg-cancel">Cancel booking</button>' : ''}
@@ -108,7 +108,7 @@
     async function claim() {
         const session = await GradmireAPI.getSession().catch(() => ({ user: null }));
         if (!session.user) {
-            location.href = 'login.html?next=manage-consultation.html';
+            location.href = 'login?next=manage-consultation';
             return;
         }
         try {

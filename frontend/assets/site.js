@@ -56,9 +56,9 @@
         ['Uzbekistan', 'uzbekistan'], ['Kazakhstan', 'kazakhstan'], ['Kyrgyzstan', 'kyrgyzstan'],
         ['Bulgaria', 'bulgaria'], ['Moldova', 'moldova']
     ];
-    const countryPage = (slug) => page(`study-in-${slug}.html`);
-    const scholarshipPage = (slug) => page(`scholarships-in-${slug}.html`);
-    const consultationPage = (interest, country = '') => `${page('free-consultation.html')}?interest=${encodeURIComponent(interest)}${country ? `&country=${encodeURIComponent(country)}` : ''}`;
+    const countryPage = (slug) => page(`study-in-${slug}`);
+    const scholarshipPage = (slug) => page(`scholarships-in-${slug}`);
+    const consultationPage = (interest, country = '') => `${page('free-consultation')}?interest=${encodeURIComponent(interest)}${country ? `&country=${encodeURIComponent(country)}` : ''}`;
     const link = (href, label) => `<a href="${href}" role="menuitem">${label.replace(/&/g, '&amp;')}</a>`;
     const dropdown = (label, items, extraClass = '') => `
       <li class="nav-dropdown ${extraClass}">
@@ -74,17 +74,17 @@
         ['Architecture & Design', 'design'], ['Natural Sciences', 'science'], ['Social Sciences & Humanities', 'social sciences']
     ];
     const studentServices = [
-        ['Gradmire free counselling', consultationPage('counselling')], ['Test preparation', page('test-preparation.html')],
-        ['Visa assistance', page('visa-assistance.html')], ['Application assistance', page('application-assistance.html')],
-        ['Course selection guidance', page('course-selection-guidance.html')]
+        ['Gradmire free counselling', consultationPage('counselling')], ['Test preparation', page('test-preparation')],
+        ['Visa assistance', page('visa-assistance')], ['Application assistance', page('application-assistance')],
+        ['Course selection guidance', page('course-selection-guidance')]
     ];
     const navItems = [
-        dropdown('Destinations', `<span class="nav-dropdown-label">Study destinations</span>${destinations.map(([name, slug]) => link(countryPage(slug), name)).join('')}${link(page('destinations.html'), 'All destinations →')}`),
-        dropdown('Courses', `<span class="nav-dropdown-label">Popular courses</span><div class="nav-dropdown-grid">${popularCourses.map(([label, query]) => link(`${page('find-courses.html')}?course=${encodeURIComponent(query)}`, label)).join('')}</div>${link(`${page('find-courses.html')}?level=ug`, 'Bachelor’s (UG) courses')}${link(`${page('find-courses.html')}?level=pg`, 'Master’s (PG) courses')}${link(page('find-courses.html'), 'Open the Course Finder →')}`, 'nav-dropdown--wide'),
-        dropdown('MBBS Abroad', `<span class="nav-dropdown-label">Countries to explore</span>${mbbsCountries.map(([name, slug]) => link(page(`mbbs-in-${slug}.html`), `MBBS in ${name}`)).join('')}${link(page('mbbs-abroad.html'), 'Compare MBBS countries →')}`),
+        dropdown('Destinations', `<span class="nav-dropdown-label">Study destinations</span>${destinations.map(([name, slug]) => link(countryPage(slug), name)).join('')}${link(page('destinations'), 'All destinations →')}`),
+        dropdown('Courses', `<span class="nav-dropdown-label">Popular courses</span><div class="nav-dropdown-grid">${popularCourses.map(([label, query]) => link(`${page('find-courses')}?course=${encodeURIComponent(query)}`, label)).join('')}</div>${link(`${page('find-courses')}?level=ug`, 'Bachelor’s (UG) courses')}${link(`${page('find-courses')}?level=pg`, 'Master’s (PG) courses')}${link(page('find-courses'), 'Open the Course Finder →')}`, 'nav-dropdown--wide'),
+        dropdown('MBBS Abroad', `<span class="nav-dropdown-label">Countries to explore</span>${mbbsCountries.map(([name, slug]) => link(page(`mbbs-in-${slug}`), `MBBS in ${name}`)).join('')}${link(page('mbbs-abroad'), 'Compare MBBS countries →')}`),
         dropdown('Student Services', `${studentServices.map(([label, href]) => link(href, label)).join('')}`),
-        dropdown('Scholarships', `<span class="nav-dropdown-label">Explore by country</span>${destinations.map(([name, slug]) => link(scholarshipPage(slug), `Scholarships in ${name}`)).join('')}${link(page('scholarships.html'), 'All scholarships →')}`),
-        dropdown('Student Tools', `${link(page('find-courses.html'), 'Course Finder')}${link(page('tools/roi-calculator.html'), 'Study cost calculator')}${link(page('tools/comparator.html'), 'Course comparator')}${link(page('tools/deadline-tracker.html'), 'Deadline tracker')}${link(page('tools/grade-converter.html'), 'GPA / CGPA / SGPA converter')}`)
+        dropdown('Scholarships', `<span class="nav-dropdown-label">Explore by country</span>${destinations.map(([name, slug]) => link(scholarshipPage(slug), `Scholarships in ${name}`)).join('')}${link(page('scholarships'), 'All scholarships →')}`),
+        dropdown('Student Tools', `${link(page('find-courses'), 'Course Finder')}${link(page('tools/roi-calculator'), 'Study cost calculator')}${link(page('tools/comparator'), 'Course comparator')}${link(page('tools/deadline-tracker'), 'Deadline tracker')}${link(page('tools/grade-converter'), 'GPA / CGPA / SGPA converter')}`)
     ];
 
     function icon(kind) {
@@ -155,7 +155,7 @@
         if (desktop) desktop.innerHTML = navItems.join('');
         /* Student login, next to the consultation button. */
         const cta = navInner.querySelector('.nav-btn');
-        if (cta && !navInner.querySelector('.nav-login')) cta.insertAdjacentHTML('beforebegin', `<a class="nav-login" href="${page('login.html')}">Log in</a>`);
+        if (cta && !navInner.querySelector('.nav-login')) cta.insertAdjacentHTML('beforebegin', `<a class="nav-login" href="${page('login')}">Log in</a>`);
 
         let mobile = document.querySelector('.nav-mobile');
         if (!mobile) {
@@ -165,8 +165,8 @@
             nav.insertAdjacentElement('afterend', mobile);
         }
         mobile.innerHTML = `<ul class="nav-mobile-links" role="list">${navItems.join('')}
-          <li><a href="${page('login.html')}" class="nav-login-mobile">Student login</a></li>
-          <li><a href="${page('free-consultation.html')}" class="btn btn-primary">Book free consultation</a></li>
+          <li><a href="${page('login')}" class="nav-login-mobile">Student login</a></li>
+          <li><a href="${page('free-consultation')}" class="btn btn-primary">Book free consultation</a></li>
         </ul>`;
         mobile.id = mobile.id || 'mobile-nav';
         mobile.setAttribute('role', 'navigation');
@@ -369,8 +369,8 @@
        session after 12s, 45% scroll or exit intent, plus a floating button to reopen it.
        Details are handed to the booking page through sessionStorage, never the URL. */
     function setupConsultPopup() {
-        const pageName = `${(window.location.pathname.split('/').pop() || 'index').replace(/\.html$/i, '')}.html`.toLowerCase();
-        const skip = ['login.html', 'signup.html', 'free-consultation.html', 'dashboard.html', 'contact.html', '404.html', 'grievance.html', 'privacy.html', 'terms.html'];
+        const pageName = (window.location.pathname.split('/').pop() || 'index').replace(/\.html$/i, '').toLowerCase();
+        const skip = ['login', 'signup', 'free-consultation', 'dashboard', 'contact', '404', 'grievance', 'privacy', 'terms'];
         if (skip.includes(pageName)) return;
 
         const store = (kind) => { try { return window[kind]; } catch (_) { return null; } };
@@ -407,7 +407,7 @@
                 <label class="gm-popup-field"><span>Where do you want to study?</span><select name="destination"><option value="">Not sure yet</option>${options}</select></label>
                 <p class="gm-popup-error" role="alert" hidden></p>
                 <button type="submit" class="gm-popup-submit">Book my free consultation <span aria-hidden="true">→</span></button>
-                <p class="gm-popup-fine">You'll confirm your details and consent on the next step. Under 18? Please ask a parent or guardian first. <a href="${page('privacy.html')}">Privacy policy</a></p>
+                <p class="gm-popup-fine">You'll confirm your details and consent on the next step. Under 18? Please ask a parent or guardian first. <a href="${page('privacy')}">Privacy policy</a></p>
               </form>
             </div>
           </div>`;
@@ -523,8 +523,8 @@
     }
 
     function setupBuddy() {
-        const pageName = `${(window.location.pathname.split('/').pop() || 'index').replace(/\.html$/i, '')}.html`.toLowerCase();
-        if (pageName === 'dashboard.html') return;
+        const pageName = (window.location.pathname.split('/').pop() || 'index').replace(/\.html$/i, '').toLowerCase();
+        if (pageName === 'dashboard') return;
         const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
         let session = null;
         try { session = window.sessionStorage; } catch (_) {}
@@ -551,7 +551,7 @@
 
         /* ── Animation state: a resting "base" plus short reactions that fall back to it. ── */
         let live = null;
-        let base = pageName === '404.html' ? 'sad' : 'idle';
+        let base = pageName === '404' ? 'sad' : 'idle';
         let current = base;
         let reactionTimer = 0;
         const show = (animation) => {
@@ -593,7 +593,7 @@
             if (!event.target.closest('.gm-buddy-cta')) return;
             hush();
             if (window.__gmOpenPopup) window.__gmOpenPopup(false);
-            else window.location.href = page('free-consultation.html');
+            else window.location.href = page('free-consultation');
         });
 
         /* ── Load the real avatar; keep the SVG if the CDN or JSON is unavailable. ── */
@@ -615,8 +615,8 @@
         let knowledge = null;
         const loadKnowledge = () => knowledge || (knowledge = fetch(new URL('avatar/strobi-knowledge.json', ASSETS_URL).href)
             .then((res) => (res.ok ? res.json() : {})).catch(() => ({})));
-        const pageStem = pageName.replace(/\.html$/, '');
-        const countrySlug = pageName.match(/^study-in-([a-z-]+)\.html$/)?.[1];
+        const pageStem = pageName;
+        const countrySlug = pageName.match(/^study-in-([a-z-]+)$/)?.[1];
         const countryName = (countrySlug && destinations.find(([, slug]) => slug === countrySlug)?.[0]) || '';
         const clean = (value) => String(value || '').replace(/\s+/g, ' ').trim();
         const firstSentence = (value) => {
@@ -862,7 +862,7 @@
         });
         document.addEventListener('focusout', (event) => {
             if (!isField(event.target) || ownField(event.target)) return;
-            setTimeout(() => { if (!isField(document.activeElement)) setBase(pageName === '404.html' ? 'sad' : 'idle'); }, 0);
+            setTimeout(() => { if (!isField(document.activeElement)) setBase(pageName === '404' ? 'sad' : 'idle'); }, 0);
             judge(event.target);
         });
         document.addEventListener('input', (event) => {
@@ -951,7 +951,7 @@
         function wake() {
             clearTimeout(idleTimer);
             clearTimeout(drowsyTimer);
-            if (resting) { resting = false; setBase(pageName === '404.html' ? 'sad' : 'idle'); react('surprised', 1200); }
+            if (resting) { resting = false; setBase(pageName === '404' ? 'sad' : 'idle'); react('surprised', 1200); }
             idleTimer = setTimeout(() => { resting = true; setBase('bored'); }, 40000);
             drowsyTimer = setTimeout(() => { resting = true; setBase('drowsy'); }, 90000);
         }
@@ -978,9 +978,9 @@
             setTimeout(() => {
                 if (root.classList.contains('gm-popup-open') || root.classList.contains('gm-consent-open')) return;
                 sessionSet('gm-buddy-greeted', '1');
-                const country = pageName.match(/^study-in-([a-z-]+)\.html$/)?.[1];
+                const country = pageName.match(/^study-in-([a-z-]+)$/)?.[1];
                 const match = country && destinations.find(([, slug]) => slug === country);
-                const message = pageName === '404.html'
+                const message = pageName === '404'
                     ? 'Oops, this page went missing. Let’s get you back on track.'
                     : match
                         ? `Hi, I’m Strobi! Thinking about studying in ${match[0]}? Drag me onto any section and I’ll explain it.`
@@ -1061,7 +1061,7 @@
             const input = form.querySelector('input[type="email"]');
             const button = form.querySelector('button[type="submit"]');
             const msg = form.querySelector('.footer-subscribe-msg');
-            const note = `Occasional study-abroad updates by email. Unsubscribe anytime. <a href="${page('privacy.html')}">Privacy</a>`;
+            const note = `Occasional study-abroad updates by email. Unsubscribe anytime. <a href="${page('privacy')}">Privacy</a>`;
             const status = (html, kind = '') => {
                 msg.innerHTML = html;
                 msg.className = `footer-subscribe-msg${kind ? ` is-${kind}` : ''}`;
@@ -1115,7 +1115,7 @@
     /* Cookie / storage consent banner. Accept and Reject carry equal weight; nothing optional
        is stored until a choice is made. Any [data-cookie-settings] link reopens the settings. */
     function setupConsentBanner() {
-        const policy = page('cookie-policy.html');
+        const policy = page('cookie-policy');
         const banner = document.createElement('section');
         banner.className = 'gm-consent';
         banner.setAttribute('aria-label', 'Cookie preferences');

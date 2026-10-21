@@ -113,7 +113,7 @@ async function tellApplicant(client, a, message = null) {
     const label = STATUS_LABELS[a.status];
     await notifyUser(client, a.user_id, {
         kind: 'consultant_application', title: `Consultant application: ${label}`,
-        body: message || `Your application status is now ${label.toLowerCase()}.`, link: 'dashboard-become-consultant.html',
+        body: message || `Your application status is now ${label.toLowerCase()}.`, link: 'dashboard-become-consultant',
     });
     await enqueueNotification(client, {
         userId: a.user_id, template: 'consultant_application_update', recipient: a.email,
@@ -163,7 +163,7 @@ export async function submit(user, input) {
         // Every reviewer hears about a new application in their notification centre.
         const reviewers = await client.query("SELECT id FROM users WHERE role IN ('admin', 'super_admin') AND status = 'active'");
         for (const reviewer of reviewers.rows) {
-            await notifyUser(client, reviewer.id, { kind: 'consultant_application_new', title: 'New consultant application', body: `${row.full_name} applied to join as a consultant.`, link: 'admin-team.html' });
+            await notifyUser(client, reviewer.id, { kind: 'consultant_application_new', title: 'New consultant application', body: `${row.full_name} applied to join as a consultant.`, link: 'admin-team' });
         }
         return applicantView(row);
     });

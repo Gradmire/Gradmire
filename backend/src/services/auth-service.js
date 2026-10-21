@@ -29,7 +29,7 @@ export function publicUser(row) {
         lastName: row.last_name,
         phone: row.phone,
         // Where the site sends this person after login; authorisation never relies on it.
-        home: HOME_PAGE[row.role] || 'dashboard.html',
+        home: HOME_PAGE[row.role] || 'dashboard',
     };
 }
 
@@ -186,7 +186,7 @@ export async function confirmVerification(token) {
             await notifyUser(client, record.user_id, {
                 kind: 'records_linked', title: 'Your earlier bookings are now in your account',
                 body: `We linked ${linked.linkedConsultations} consultation(s) and ${linked.linkedLeads} enquiry(ies) made with your verified email address.`,
-                link: 'dashboard-consultations.html',
+                link: 'dashboard-consultations',
             });
         }
         await audit(client, { actorUserId: record.user_id, action: 'auth.email_verified', entityType: 'user', entityId: record.user_id, details: linked });

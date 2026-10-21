@@ -8,7 +8,7 @@
 import { esc, hero, shell, write } from './page-shell.mjs';
 
 const BOOKING_CSS = 'booking.css?v=2';
-const API_JS = 'api.js?v=3';
+const API_JS = 'api.js?v=4';
 const COMMON_JS = 'booking-common.js?v=1';
 
 /* Adds the booking stylesheet, robots policy and page scripts to a shell page. */
@@ -34,7 +34,7 @@ const field = (label, control, { wide = false, optional = false, error = '' } = 
 /* ── /book-consultation ───────────────────────────────────────────────────── */
 
 const bookBody = `${hero({
-    crumbs: [['Home', 'index.html'], ['Book a consultation', '']],
+    crumbs: [['Home', './'], ['Book a consultation', '']],
     eyebrow: 'Book a consultation',
     title: 'Pick a time to talk with a Gradmire counsellor',
     intro: 'Choose what you want to cover, pick a slot that suits you and tell us a little about your plans. You do not need an account to book.',
@@ -42,7 +42,7 @@ const bookBody = `${hero({
     form: '',
 }).replace('class="gp-hero"', 'class="gp-hero bk-hero"')}
 <main class="bk-main" id="main">
-  <noscript><p class="bk-alert">Booking needs JavaScript. You can also <a href="free-consultation.html">send a consultation request</a> and we will call you back.</p></noscript>
+  <noscript><p class="bk-alert">Booking needs JavaScript. You can also <a href="free-consultation">send a consultation request</a> and we will call you back.</p></noscript>
   <div id="bk-flow">
   <form id="bk-form" class="bk-layout" method="post" novalidate>
     <div>
@@ -88,7 +88,7 @@ const bookBody = `${hero({
         <span class="bk-field-error" data-error-for="contactConsent" hidden></span>
         <label class="bk-check"><input type="checkbox" name="remindersOptIn" checked><span>Email me reminders 24 hours and 1 hour before the session.</span></label>
         <label class="bk-check"><input type="checkbox" name="marketingOptIn"><span>Send me occasional scholarship tips and event invites.</span></label>
-        <p class="bk-fine">We only ask for what we need to prepare for your consultation. Please do not share passport or bank details here. Under 18? Ask a parent or guardian to join you. <a href="privacy.html">Privacy policy</a></p>
+        <p class="bk-fine">We only ask for what we need to prepare for your consultation. Please do not share passport or bank details here. Under 18? Ask a parent or guardian to join you. <a href="privacy">Privacy policy</a></p>
       </section>
     </div>
 
@@ -100,14 +100,14 @@ const bookBody = `${hero({
         <div><dt>How</dt><dd id="bk-sum-method">—</dd></div>
       </dl>
       <button type="submit" class="gp-btn gp-btn-primary" id="bk-submit">Confirm booking</button>
-      <p class="bk-fine">Free of charge. You can reschedule or cancel online up to 24 hours before. <span id="bk-account-note">Have an account? <a href="login.html?next=book-consultation.html">Log in</a> to see bookings in your dashboard.</span></p>
+      <p class="bk-fine">Free of charge. You can reschedule or cancel online up to 24 hours before. <span id="bk-account-note">Have an account? <a href="login?next=book-consultation">Log in</a> to see bookings in your dashboard.</span></p>
     </aside>
   </form>
   </div>
   <section id="bk-done" class="bk-panel bk-done" hidden tabindex="-1" aria-live="polite"></section>
 </main>`;
 
-page({ name: 'book-consultation.html', title: 'Book a consultation | Gradmire', description: 'Book a free study-abroad consultation with a Gradmire counsellor: pick a topic, a date and a time that suits you.', body: bookBody, script: 'booking.js?v=1', bodyClass: 'bk-page' });
+page({ name: 'book-consultation.html', title: 'Book a consultation | Gradmire', description: 'Book a free study-abroad consultation with a Gradmire counsellor: pick a topic, a date and a time that suits you.', body: bookBody, script: 'booking.js?v=2', bodyClass: 'bk-page' });
 
 /* ── Guest manage link ────────────────────────────────────────────────────── */
 
@@ -127,14 +127,14 @@ const manageBody = `<main class="bk-main" id="main">
   <div class="bk-modal-foot"><button type="button" class="gp-btn gp-btn-outline" data-close>Keep current time</button><button type="button" class="gp-btn gp-btn-primary" id="mg-reschedule-confirm" disabled>Move booking</button></div>
 </dialog>`;
 
-page({ name: 'manage-consultation.html', title: 'Manage your consultation | Gradmire', description: 'View, reschedule or cancel your Gradmire consultation.', body: manageBody, script: 'manage-consultation.js?v=1', bodyClass: 'bk-page', noindex: true });
+page({ name: 'manage-consultation.html', title: 'Manage your consultation | Gradmire', description: 'View, reschedule or cancel your Gradmire consultation.', body: manageBody, script: 'manage-consultation.js?v=2', bodyClass: 'bk-page', noindex: true });
 
 /* ── /dashboard/consultations ─────────────────────────────────────────────── */
 
 const dashboardBody = `<main class="bk-main" id="main">
   <div class="crm-head">
     <div><h1>My consultations</h1><p id="mc-greeting">Your booked sessions with Gradmire counsellors.</p></div>
-    <div class="bk-actions"><a class="gp-btn gp-btn-outline gp-btn-sm" href="dashboard.html">Dashboard</a><a class="gp-btn gp-btn-primary gp-btn-sm" href="book-consultation.html">Book a consultation</a><button type="button" class="gp-btn gp-btn-outline gp-btn-sm" id="mc-logout" hidden>Log out</button></div>
+    <div class="bk-actions"><a class="gp-btn gp-btn-outline gp-btn-sm" href="dashboard">Dashboard</a><a class="gp-btn gp-btn-primary gp-btn-sm" href="book-consultation">Book a consultation</a><button type="button" class="gp-btn gp-btn-outline gp-btn-sm" id="mc-logout" hidden>Log out</button></div>
   </div>
   <p class="bk-alert" id="mc-alert" role="status" hidden></p>
   <div id="mc-verify" class="bk-alert bk-alert--info" hidden></div>
@@ -159,7 +159,7 @@ const dashboardBody = `<main class="bk-main" id="main">
   <div class="bk-modal-foot"><button type="button" class="gp-btn gp-btn-outline" data-close>Keep current time</button><button type="button" class="gp-btn gp-btn-primary" id="mc-reschedule-confirm" disabled>Move booking</button></div>
 </dialog>`;
 
-page({ name: 'dashboard-consultations.html', title: 'My consultations | Gradmire', description: 'Your upcoming and previous Gradmire consultations.', body: dashboardBody, script: 'my-consultations.js?v=1', bodyClass: 'bk-page', noindex: true });
+page({ name: 'dashboard-consultations.html', title: 'My consultations | Gradmire', description: 'Your upcoming and previous Gradmire consultations.', body: dashboardBody, script: 'my-consultations.js?v=2', bodyClass: 'bk-page', noindex: true });
 
 /* ── /admin/consultations ─────────────────────────────────────────────────── */
 
@@ -209,7 +209,7 @@ const adminBody = `<main class="bk-main crm-main" id="main">
   <div class="crm-drawer-body" id="crm-drawer-body"></div>
 </aside>`;
 
-page({ name: 'admin-consultations.html', title: 'Consultations CRM | Gradmire staff', description: 'Gradmire staff consultations dashboard.', body: adminBody, script: 'admin-consultations.js?v=1', bodyClass: 'bk-page crm-page', noindex: true });
+page({ name: 'admin-consultations.html', title: 'Consultations CRM | Gradmire staff', description: 'Gradmire staff consultations dashboard.', body: adminBody, script: 'admin-consultations.js?v=2', bodyClass: 'bk-page crm-page', noindex: true });
 
 /* ── Password reset ───────────────────────────────────────────────────────── */
 
@@ -228,7 +228,7 @@ const resetBody = `<main class="bk-main" id="main">
       ${field('Repeat new password', '<input name="repeat" type="password" autocomplete="new-password" minlength="8" maxlength="200" required>')}
       <button class="gp-btn gp-btn-primary" type="submit" style="width:100%;margin-top:.8rem">Save new password</button>
     </form>
-    <p class="bk-fine"><a href="login.html">Back to log in</a></p>
+    <p class="bk-fine"><a href="login">Back to log in</a></p>
   </section>
 </main>`;
 

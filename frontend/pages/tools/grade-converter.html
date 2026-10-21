@@ -9,14 +9,14 @@
 <link rel="icon" href="/assets/favicon-light.ico" media="(prefers-color-scheme: light)">
 <link rel="icon" href="/assets/favicon-dark.ico" media="(prefers-color-scheme: dark)">
 <meta name="description" content="Convert GPA, CGPA, SGPA and percentage estimates for study planning. Always confirm the official conversion method with your institution.">
-<link rel="stylesheet" href="../../assets/site.css?v=27">
+<link rel="stylesheet" href="../../assets/site.css?v=28">
 <style>
 :root{--bg:#F0F2F7;--surface:#fff;--surface-tint:#E8EBF4;--text-p:#0E1420;--text-s:#556270;--brand:#1A4870;--accent:#007A5A;--accent-hover:#006649;--border:rgba(14,20,32,.1);--sans:'Bricolage Grotesque',system-ui,sans-serif;--mono:'JetBrains Mono',monospace;--w:960px;--gutter:clamp(1rem,5vw,3rem);--ease:cubic-bezier(.16,1,.3,1)}
 *,*::before,*::after{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text-p);font:16px/1.6 var(--sans)}.nav{position:sticky;top:0;z-index:100;height:68px;background:rgba(240,242,247,.92);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}.nav-inner{max-width:1200px;margin:auto;padding:0 var(--gutter);height:100%;display:flex;align-items:center;gap:2rem}.nav-logo img{display:block;max-width:150px;height:34px}.nav-links{display:flex;gap:1.3rem;list-style:none;padding:0;margin:0;flex:1}.nav-links a{font-size:.85rem;text-decoration:none;color:var(--text-s)}.nav-ham{display:none}.converter{max-width:var(--w);margin:clamp(3rem,8vw,6rem) auto;padding:0 var(--gutter)}.eyebrow{font:700 .72rem var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--accent)}h1{font-size:clamp(2.2rem,6vw,4rem);letter-spacing:-.04em;line-height:1.02;margin:.7rem 0 1rem}.lede{max-width:58ch;color:var(--text-s)}.card{margin-top:2rem;padding:clamp(1.2rem,4vw,2.5rem);background:var(--surface);border:1px solid var(--border);border-radius:24px;box-shadow:0 18px 50px rgba(14,20,32,.06)}.fields{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.field{display:grid;gap:.4rem}.field label{font-size:.82rem;font-weight:700}.field input,.field select{width:100%;min-height:48px;border:1px solid var(--border);border-radius:10px;padding:.7rem .8rem;background:var(--surface);color:var(--text-p);font:inherit}.result{margin-top:1.25rem;padding:1.25rem;border-radius:14px;background:var(--surface-tint)}.result strong{display:block;font-size:1.5rem}.note{margin-top:1rem;color:var(--text-s);font-size:.88rem}.actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.3rem}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:.65rem 1.1rem;border-radius:100px;border:1px solid var(--border);background:var(--surface);color:var(--text-p);font:600 .9rem var(--sans);text-decoration:none;cursor:pointer}.btn-primary{border-color:var(--accent);background:var(--accent);color:#fff}.btn-primary:hover{background:var(--accent-hover)}@media(max-width:640px){.nav-links{display:none}.nav-ham{display:flex;margin-left:auto}.fields{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<nav class="nav" aria-label="Main navigation"><div class="nav-inner"><a href="../index.html" class="nav-logo"><img src="../../assets/gradmire-logo.png" alt="Gradmire"></a><ul class="nav-links" role="list"></ul><a href="../free-consultation.html" class="nav-btn">Book free consultation</a><button class="nav-ham" type="button" aria-label="Open menu" aria-expanded="false"></button></div></nav>
+<nav class="nav" aria-label="Main navigation"><div class="nav-inner"><a href="../" class="nav-logo"><img src="../../assets/gradmire-logo.png" alt="Gradmire"></a><ul class="nav-links" role="list"></ul><a href="../free-consultation" class="nav-btn">Book free consultation</a><button class="nav-ham" type="button" aria-label="Open menu" aria-expanded="false"></button></div></nav>
 <main class="converter">
   <p class="eyebrow">Student tools</p>
   <h1>Make your grades easier to compare.</h1>
@@ -29,7 +29,7 @@
     </div>
     <div class="result" aria-live="polite"><span>Indicative equivalent</span><strong id="result-value">Enter a grade to see an estimate</strong><span id="result-note"></span></div>
     <p class="note">The displayed equivalents use a simple proportional estimate only. Conversion policies vary by university, country, grading system and course; confirm requirements with each admissions office.</p>
-    <div class="actions"><a class="btn btn-primary" href="../free-consultation.html">Get help with course eligibility</a><a class="btn" href="../find-courses.html">Explore courses</a></div>
+    <div class="actions"><a class="btn btn-primary" href="../free-consultation">Get help with course eligibility</a><a class="btn" href="../find-courses">Explore courses</a></div>
   </section>
 </main>
 <script>
@@ -40,61 +40,61 @@ scale.addEventListener('change',convert);value.addEventListener('input',convert)
 <footer class="gm-footer" aria-label="Site footer">
   <div class="gm-footer-inner">
     <div class="gm-footer-brand">
-      <a class="gm-footer-logo" href="../index.html" aria-label="Gradmire home"><img src="../../assets/gradmire-logo-white.png" alt="Gradmire" width="200" height="54" loading="lazy" decoding="async"></a>
+      <a class="gm-footer-logo" href="../" aria-label="Gradmire home"><img src="../../assets/gradmire-logo-white.png" alt="Gradmire" width="200" height="54" loading="lazy" decoding="async"></a>
       <p class="gm-footer-tagline">Study abroad, organized by subject — not by flag.</p>
       <form class="footer-subscribe" novalidate><label class="sr-only" for="footer-email">Email address for study-abroad updates</label><input id="footer-email" type="email" name="email" autocomplete="email" placeholder="you@email.com" required><button type="submit" aria-label="Subscribe to updates"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><p class="footer-subscribe-msg" role="status" hidden></p></form>
     </div>
     <nav class="gm-footer-col" aria-label="Destinations">
       <h2 class="gm-footer-title">Destinations</h2>
       <ul class="gm-footer-links">
-        <li><a href="../study-in-uk.html">United Kingdom</a></li>
-        <li><a href="../study-in-usa.html">USA</a></li>
-        <li><a href="../study-in-canada.html">Canada</a></li>
-        <li><a href="../study-in-australia.html">Australia</a></li>
-        <li><a href="../study-in-germany.html">Germany</a></li>
-        <li><a href="../study-in-ireland.html">Ireland</a></li>
-        <li><a href="../study-in-newzealand.html">New Zealand</a></li>
-        <li><a href="../study-in-italy.html">Italy</a></li>
-        <li><a href="../study-in-finland.html">Finland</a></li>
-        <li><a href="../mbbs-abroad.html">MBBS abroad</a></li>
+        <li><a href="../study-in-uk">United Kingdom</a></li>
+        <li><a href="../study-in-usa">USA</a></li>
+        <li><a href="../study-in-canada">Canada</a></li>
+        <li><a href="../study-in-australia">Australia</a></li>
+        <li><a href="../study-in-germany">Germany</a></li>
+        <li><a href="../study-in-ireland">Ireland</a></li>
+        <li><a href="../study-in-newzealand">New Zealand</a></li>
+        <li><a href="../study-in-italy">Italy</a></li>
+        <li><a href="../study-in-finland">Finland</a></li>
+        <li><a href="../mbbs-abroad">MBBS abroad</a></li>
       </ul>
     </nav>
     <nav class="gm-footer-col" aria-label="Services">
       <h2 class="gm-footer-title">Services</h2>
       <ul class="gm-footer-links">
-        <li><a href="../free-consultation.html?interest=counselling">Free counselling</a></li>
-        <li><a href="../test-preparation.html">Test preparation</a></li>
-        <li><a href="../visa-assistance.html">Visa assistance</a></li>
-        <li><a href="../application-assistance.html">Application assistance</a></li>
-        <li><a href="../course-selection-guidance.html">Course selection guidance</a></li>
-        <li><a href="../scholarships.html">Scholarships</a></li>
+        <li><a href="../free-consultation?interest=counselling">Free counselling</a></li>
+        <li><a href="../test-preparation">Test preparation</a></li>
+        <li><a href="../visa-assistance">Visa assistance</a></li>
+        <li><a href="../application-assistance">Application assistance</a></li>
+        <li><a href="../course-selection-guidance">Course selection guidance</a></li>
+        <li><a href="../scholarships">Scholarships</a></li>
       </ul>
     </nav>
     <nav class="gm-footer-col" aria-label="Tools">
       <h2 class="gm-footer-title">Tools</h2>
       <ul class="gm-footer-links">
-        <li><a href="../find-courses.html">Course finder</a></li>
-        <li><a href="../tools/roi-calculator.html">Study cost calculator</a></li>
-        <li><a href="../tools/comparator.html">Course comparator</a></li>
-        <li><a href="../tools/deadline-tracker.html">Deadline tracker</a></li>
-        <li><a href="../tools/grade-converter.html">GPA / CGPA / SGPA converter</a></li>
+        <li><a href="../find-courses">Course finder</a></li>
+        <li><a href="../tools/roi-calculator">Study cost calculator</a></li>
+        <li><a href="../tools/comparator">Course comparator</a></li>
+        <li><a href="../tools/deadline-tracker">Deadline tracker</a></li>
+        <li><a href="../tools/grade-converter">GPA / CGPA / SGPA converter</a></li>
       </ul>
     </nav>
     <nav class="gm-footer-col" aria-label="Company">
       <h2 class="gm-footer-title">Company</h2>
       <ul class="gm-footer-links">
-        <li><a href="../about.html">About us</a></li>
-        <li><a href="../blog.html">Blog</a></li>
-        <li><a href="../events.html">Events</a></li>
-        <li><a href="../faq.html">FAQs</a></li>
-        <li><a href="../contact.html">Contact</a></li>
-        <li><a href="../login.html">Student login</a></li>
+        <li><a href="../about">About us</a></li>
+        <li><a href="../blog">Blog</a></li>
+        <li><a href="../events">Events</a></li>
+        <li><a href="../faq">FAQs</a></li>
+        <li><a href="../contact">Contact</a></li>
+        <li><a href="../login">Student login</a></li>
       </ul>
     </nav>
   </div>
-  <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">© 2026 Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · Email: <a href="mailto:info@gradmire.com">info@gradmire.com</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="../privacy.html">Privacy</a><a href="../terms.html">Terms</a><a href="../refund-policy.html">Refunds &amp; fees</a><a href="../cookie-policy.html">Cookies</a><a href="../data-request.html">Your data rights</a><a href="../grievance.html">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
+  <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">© 2026 Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · Email: <a href="mailto:info@gradmire.com">info@gradmire.com</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="../privacy">Privacy</a><a href="../terms">Terms</a><a href="../refund-policy">Refunds &amp; fees</a><a href="../cookie-policy">Cookies</a><a href="../data-request">Your data rights</a><a href="../grievance">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
 </footer>
 
-<script src="../../assets/site.js?v=31" defer></script>
+<script src="../../assets/site.js?v=32" defer></script>
 </body>
 </html>

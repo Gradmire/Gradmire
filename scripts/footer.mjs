@@ -4,30 +4,30 @@
 
 const columns = [
     ['Destinations', [
-        ['United Kingdom', 'study-in-uk.html'], ['USA', 'study-in-usa.html'], ['Canada', 'study-in-canada.html'],
-        ['Australia', 'study-in-australia.html'], ['Germany', 'study-in-germany.html'], ['Ireland', 'study-in-ireland.html'],
-        ['New Zealand', 'study-in-newzealand.html'], ['Italy', 'study-in-italy.html'], ['Finland', 'study-in-finland.html'],
-        ['MBBS abroad', 'mbbs-abroad.html']
+        ['United Kingdom', 'study-in-uk'], ['USA', 'study-in-usa'], ['Canada', 'study-in-canada'],
+        ['Australia', 'study-in-australia'], ['Germany', 'study-in-germany'], ['Ireland', 'study-in-ireland'],
+        ['New Zealand', 'study-in-newzealand'], ['Italy', 'study-in-italy'], ['Finland', 'study-in-finland'],
+        ['MBBS abroad', 'mbbs-abroad']
     ]],
     ['Services', [
-        ['Free counselling', 'free-consultation.html?interest=counselling'], ['Test preparation', 'test-preparation.html'],
-        ['Visa assistance', 'visa-assistance.html'], ['Application assistance', 'application-assistance.html'],
-        ['Course selection guidance', 'course-selection-guidance.html'], ['Scholarships', 'scholarships.html']
+        ['Free counselling', 'free-consultation.html?interest=counselling'], ['Test preparation', 'test-preparation'],
+        ['Visa assistance', 'visa-assistance'], ['Application assistance', 'application-assistance'],
+        ['Course selection guidance', 'course-selection-guidance'], ['Scholarships', 'scholarships']
     ]],
     ['Tools', [
-        ['Course finder', 'find-courses.html'], ['Study cost calculator', 'tools/roi-calculator.html'],
-        ['Course comparator', 'tools/comparator.html'], ['Deadline tracker', 'tools/deadline-tracker.html'],
-        ['GPA / CGPA / SGPA converter', 'tools/grade-converter.html']
+        ['Course finder', 'find-courses'], ['Study cost calculator', 'tools/roi-calculator'],
+        ['Course comparator', 'tools/comparator'], ['Deadline tracker', 'tools/deadline-tracker'],
+        ['GPA / CGPA / SGPA converter', 'tools/grade-converter']
     ]],
     ['Company', [
-        ['About us', 'about.html'], ['Blog', 'blog.html'], ['Events', 'events.html'],
-        ['FAQs', 'faq.html'], ['Contact', 'contact.html'], ['Student login', 'login.html']
+        ['About us', 'about'], ['Blog', 'blog'], ['Events', 'events'],
+        ['FAQs', 'faq'], ['Contact', 'contact'], ['Student login', 'login']
     ]]
 ];
 
 const legal = [
-    ['Privacy', 'privacy.html'], ['Terms', 'terms.html'], ['Refunds &amp; fees', 'refund-policy.html'],
-    ['Cookies', 'cookie-policy.html'], ['Your data rights', 'data-request.html'], ['Grievance', 'grievance.html']
+    ['Privacy', 'privacy'], ['Terms', 'terms'], ['Refunds &amp; fees', 'refund-policy'],
+    ['Cookies', 'cookie-policy'], ['Your data rights', 'data-request'], ['Grievance', 'grievance']
 ];
 
 export function footerHtml(prefix = '') {

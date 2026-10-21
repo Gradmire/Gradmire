@@ -74,7 +74,7 @@ for (const [slug, data] of Object.entries(pages)) {
     });
 
     /* Subject links → Course Finder pre-filtered to this country. */
-    html = html.replace(/href="find-courses\.html\?course=([^"&]*)(?:&amp;country=[a-z]+)?"/g, `href="find-courses.html?course=$1&amp;country=${slug}"`);
+    html = html.replace(/href="find-courses\.html\?course=([^"&]*)(?:&amp;country=[a-z]+)?"/g, `href="find-courses?course=$1&amp;country=${slug}"`);
 
     fs.writeFileSync(file, html);
     console.log(`${data.file}: updated${missing.length ? ` (not found: ${missing.join(', ')})` : ''}`);

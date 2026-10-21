@@ -24,9 +24,9 @@ export async function queueFollowUpReminders({ limit = 100 } = {}) {
         for (const t of tasks.rows) {
             await enqueueNotification(client, {
                 userId: t.user_id, template: 'follow_up_reminder', recipient: t.email, dedupeKey: `follow_up:${t.id}:${new Date(t.due_at).getTime()}`,
-                payload: { title: t.title, details: t.details || '', dueAt: new Date(t.due_at).toISOString(), timeZone: t.timezone || 'Asia/Kolkata', page: 'consultant-follow-ups.html' },
+                payload: { title: t.title, details: t.details || '', dueAt: new Date(t.due_at).toISOString(), timeZone: t.timezone || 'Asia/Kolkata', page: 'consultant-follow-ups' },
             });
-            await notifyUser(client, t.user_id, { kind: 'follow_up_due', title: `Follow-up due: ${t.title}`, link: 'consultant-follow-ups.html' });
+            await notifyUser(client, t.user_id, { kind: 'follow_up_due', title: `Follow-up due: ${t.title}`, link: 'consultant-follow-ups' });
             await client.query('UPDATE follow_up_tasks SET reminded_for = due_at WHERE id = $1', [t.id]);
         }
         const leads = await client.query(
@@ -41,9 +41,9 @@ export async function queueFollowUpReminders({ limit = 100 } = {}) {
             const title = `Follow up with ${fullName(l.first_name, l.last_name) || l.lead_email}`;
             await enqueueNotification(client, {
                 userId: l.user_id, template: 'follow_up_reminder', recipient: l.email, dedupeKey: `lead_follow_up:${l.id}:${new Date(l.next_follow_up_at).getTime()}`,
-                payload: { title, details: '', dueAt: new Date(l.next_follow_up_at).toISOString(), timeZone: l.timezone || 'Asia/Kolkata', page: `consultant-leads.html#lead=${l.id}` },
+                payload: { title, details: '', dueAt: new Date(l.next_follow_up_at).toISOString(), timeZone: l.timezone || 'Asia/Kolkata', page: `consultant-leads#lead=${l.id}` },
             });
-            await notifyUser(client, l.user_id, { kind: 'follow_up_due', title, link: 'consultant-leads.html' });
+            await notifyUser(client, l.user_id, { kind: 'follow_up_due', title, link: 'consultant-leads' });
             await client.query('UPDATE leads SET follow_up_reminded_for = next_follow_up_at WHERE id = $1', [l.id]);
         }
         return { tasks: tasks.rows.length, leads: leads.rows.length };

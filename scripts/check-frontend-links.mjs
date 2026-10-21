@@ -23,8 +23,10 @@ for (const pagePath of walk(pagesRoot).filter((filePath) => filePath.endsWith('.
         const reference = match[1].split('#')[0].split('?')[0];
         if (!isLocalReference(reference)) continue;
 
+        // Pages are linked without .html (Vercel cleanUrls), and "./" or "../" means that folder's index.html.
         const target = path.resolve(path.dirname(pagePath), decodeURIComponent(reference));
-        if (!fs.existsSync(target)) {
+        const candidates = [target, `${target}.html`, path.join(target, 'index.html')];
+        if (!candidates.some((candidate) => fs.existsSync(candidate) && fs.statSync(candidate).isFile())) {
             missing.push(`${path.relative(process.cwd(), pagePath)} -> ${reference}`);
         }
     }

@@ -44,7 +44,7 @@ function uniCard(u) {
         <div><dt>Founded</dt><dd>${esc(u.founded)}</dd></div>
         <div><dt>Institution type</dt><dd>${esc(u.type)}</dd></div>
         <div><dt>QS world rank</dt><dd>${u.qs ? `#${u.qs}` : 'Not confirmed'}</dd></div>
-        <div><dt>Destination guide</dt><dd><a href="study-in-${u.country}.html">Study in ${esc(c.name)}</a></dd></div>
+        <div><dt>Destination guide</dt><dd><a href="study-in-${u.country}">Study in ${esc(c.name)}</a></dd></div>
       </dl>
       <ul class="gp-course-list">
         ${u.courses.map((course, i) => courseRow(u, course, i)).join('\n        ')}
@@ -180,7 +180,7 @@ const script = `<script>
 const body = `<header class="gp-hero gp-hero--compact">
   <div class="gp-hero-inner gp-hero-inner--single">
     <div class="gp-hero-copy">
-      <nav class="gp-crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> <span aria-hidden="true">/</span> <span aria-current="page">Course Finder</span></nav>
+      <nav class="gp-crumbs" aria-label="Breadcrumb"><a href="./">Home</a> <span aria-hidden="true">/</span> <span aria-current="page">Course Finder</span></nav>
       <span class="gp-eyebrow">Course Finder</span>
       <h1>Find bachelor’s and master’s courses abroad.</h1>
       <p>Browse ${universities.length} leading universities in ${Object.keys(countries).length} countries. Filter by level, subject and destination, then apply with a counsellor’s help.</p>
