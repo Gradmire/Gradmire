@@ -180,8 +180,14 @@ async function orderByLoad(client, counsellorIds, start, preferred = null) {
 /* Inserts against each candidate counsellor in turn. The exclusion constraints
    are the real guard: a concurrent booking that won the slot makes this insert
    fail and we try the next counsellor. */
-async function insertForCandidates(client, candidates, buildRow) {
+async function insertForCandidates(client, candidates, start, buildRow) {
     for (const counsellorId of candidates) {
+        const slotLock = await client.query(
+            "SELECT pg_try_advisory_xact_lock(hashtextextended('gradmire:booking:counsellor-slot:' || $1 || ':' || $2, 0)) AS locked",
+            [counsellorId, new Date(start).toISOString()],
+        );
+        if (!slotLock.rows[0].locked) continue;
+
         const counsellor = (await client.query('SELECT * FROM counsellors WHERE user_id = $1', [counsellorId])).rows[0];
         for (let attempt = 0; attempt < 3; attempt += 1) {
             const row = buildRow(counsellor);
@@ -259,9 +265,26 @@ export async function createBooking(input, { user = null, idempotencyKey = null 
     const replayedId = await replay();
     if (replayedId) return { consultation: studentView(await loadConsultation(null, replayedId)), replayed: true };
 
-    let createdId;
+    let bookingResult;
     try {
-        createdId = await withTransaction(async (client) => {
+        bookingResult = await withTransaction(async (client) => {
+            if (idempotencyKey) {
+                await client.query(
+                    "SELECT pg_advisory_xact_lock(hashtextextended('gradmire:booking:idempotency:' || $1, 0))",
+                    [idempotencyKey],
+                );
+                const existing = (await client.query(
+                    'SELECT id, idempotency_fingerprint FROM consultations WHERE idempotency_key = $1',
+                    [idempotencyKey],
+                )).rows[0];
+                if (existing) {
+                    if (existing.idempotency_fingerprint !== fingerprint) {
+                        throw new HttpError(422, 'This Idempotency-Key was already used for a different booking request.', 'IDEMPOTENCY_MISMATCH');
+                    }
+                    return { id: existing.id, replayed: true };
+                }
+            }
+
             const type = await loadType(client, input.consultationTypeId, { lock: true });
             if (!type || !type.is_active) throw new HttpError(422, 'This consultation type is not available for booking.', 'TYPE_UNAVAILABLE');
             if (!type.meeting_methods.includes(input.meetingMethod)) {
@@ -276,7 +299,7 @@ export async function createBooking(input, { user = null, idempotencyKey = null 
             if (student && !student.phone) await client.query('UPDATE users SET phone = $2, updated_at = NOW() WHERE id = $1 AND phone IS NULL', [student.id, phone]);
 
             const end = addMinutes(input.start, type.duration_minutes);
-            const { consultation, counsellor } = await insertForCandidates(client, candidates, (c) => ({
+            const { consultation, counsellor } = await insertForCandidates(client, candidates, input.start, (c) => ({
                 id: crypto.randomUUID(),
                 reference: bookingReference(),
                 student_user_id: student?.id || null,
@@ -308,7 +331,7 @@ export async function createBooking(input, { user = null, idempotencyKey = null 
                 actorType: student ? 'student' : 'guest', actorUserId: student?.id || null, event: 'created',
                 details: { source: 'website', counsellorAssigned: true },
             });
-            return consultation.id;
+            return { id: consultation.id, replayed: false };
         });
     } catch (error) {
         // A concurrent request with the same key may have won the race.
@@ -319,8 +342,12 @@ export async function createBooking(input, { user = null, idempotencyKey = null 
         throw error;
     }
 
-    await settle(createdId);
-    return { consultation: studentView(await loadConsultation(null, createdId)), manageToken: manage.token, replayed: false };
+    if (bookingResult.replayed) {
+        return { consultation: studentView(await loadConsultation(null, bookingResult.id)), replayed: true };
+    }
+
+    await settle(bookingResult.id);
+    return { consultation: studentView(await loadConsultation(null, bookingResult.id)), manageToken: manage.token, replayed: false };
 }
 
 /* ── Access scopes ────────────────────────────────────────────────────────── */
@@ -416,7 +443,7 @@ export async function rescheduleConsultation({ id = null, scope, userId = null, 
             [old.id],
         );
         const end = addMinutes(start, type.duration_minutes);
-        const { consultation, counsellor } = await insertForCandidates(client, candidates, (c) => ({
+        const { consultation, counsellor } = await insertForCandidates(client, candidates, start, (c) => ({
             id: crypto.randomUUID(),
             reference: bookingReference(),
             student_user_id: old.student_user_id,
