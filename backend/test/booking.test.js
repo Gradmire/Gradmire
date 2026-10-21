@@ -179,6 +179,21 @@ describe('creating bookings', () => {
         assert.deepEqual(rows.map((r) => r.counsellor_id).sort(), [counsellor.id, second.id].sort());
     });
 
+    test('6c. 10, 50 and 100 concurrent requests never create overlapping confirmed bookings', async () => {
+        for (const concurrency of [10, 50, 100]) {
+            await db.query('DELETE FROM consultations');
+            const attempts = await Promise.all(Array.from({ length: concurrency }, () => book(guestBooking())));
+            const statuses = attempts.map((attempt) => attempt.status);
+
+            assert.equal(statuses.filter((status) => status === 201).length, 1, `${concurrency} requests: exactly one booking wins`);
+            assert.equal(statuses.filter((status) => status === 409).length, concurrency - 1, `${concurrency} requests: all competing bookings conflict`);
+            assert.equal(statuses.filter((status) => status !== 201 && status !== 409).length, 0, `${concurrency} requests: no unexpected responses`);
+
+            const { rows } = await db.query("SELECT COUNT(*)::int AS n FROM consultations WHERE status IN ('reserved', 'confirmed')");
+            assert.equal(rows[0].n, 1, `${concurrency} requests: only one active booking persists`);
+        }
+    });
+
     test('7. duplicate submissions do not create duplicate appointments', async () => {
         const body = guestBooking();
         const key = 'idem-key-123456';

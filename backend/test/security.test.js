@@ -109,8 +109,13 @@ describe('roles and protected fields', () => {
         const created = await client.post('/api/v1/consultations', {
             ...guestBooking(), fullName: undefined, email: undefined,
             status: 'completed', counsellorId: counsellorB.id, price: 0, meetingUrl: 'https://evil.example/meet', calendarStatus: 'synced',
+            paymentStatus: 'paid', paymentId: 'forged-payment-id', paid: true,
         });
         assert.equal(created.status, 201);
+        const consultation = created.body.data.consultation;
+        assert.ok(!('paymentStatus' in consultation));
+        assert.ok(!('paymentId' in consultation));
+        assert.ok(!('paid' in consultation));
         const row = (await db.query('SELECT status, meeting_url, calendar_status FROM consultations WHERE id = $1', [created.body.data.consultation.id])).rows[0];
         assert.equal(row.status, 'confirmed');
         assert.equal(row.meeting_url, null);
