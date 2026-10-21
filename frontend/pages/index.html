@@ -2279,8 +2279,6 @@
 
 <script src="https://unpkg.com/d3@7.9.0/dist/d3.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous" defer></script>
 <script src="https://unpkg.com/topojson-client@3.1.0/dist/topojson-client.min.js" integrity="sha384-Ukv1p/xTma6P4/2bY5KzWBw+ydSpXmhCMtyciIQVDJ1RmOxtCYNMF1uXT9T63H67" crossorigin="anonymous" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <script>
     (function() {
         const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -2472,28 +2470,6 @@
             }).observe(_heroSection);
         }
 
-        /* ── GSAP Sticky Stack ─────────────────────────────── */
-        window.addEventListener('load', () => {
-            if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined' || reduced) return;
-            gsap.registerPlugin(ScrollTrigger);
-            const cards = document.querySelectorAll('.journey-card');
-            /* Sticky stack only above 640px; on phones the steps are a swipe slider. */
-            gsap.matchMedia().add('(min-width: 641px)', () => {
-                cards.forEach((card, i) => {
-                    if (i === cards.length - 1) return;
-                    gsap.to(card, {
-                        scale: .92,
-                        ease: 'none',
-                        scrollTrigger: {
-                            trigger: cards[i + 1],
-                            start: 'top bottom',
-                            end: 'top top',
-                            scrub: true
-                        }
-                    });
-                });
-            });
-        });
     })();
 
     /* ── Hero globe (d3 orthographic on canvas) ────────────────
