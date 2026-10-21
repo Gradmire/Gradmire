@@ -1,6 +1,6 @@
 // Writes frontend/sitemap.xml from the pages themselves: every page under
 // frontend/pages except noindex pages and a few utility pages, at its canonical
-// URL (or https://www.gradmire.com/<page>, which Vercel serves from /pages), with
+// URL (or https://www.gradmire.com/<page> without .html, which Vercel serves from /pages), with
 // the date of its last commit as <lastmod>. Run: node scripts/build-sitemap.mjs
 import { execFileSync } from 'node:child_process';
 import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
@@ -32,7 +32,7 @@ for (const file of walk(pagesDir)) {
     const html = readFileSync(file, 'utf8');
     if (/<meta\s+name="robots"\s+content="[^"]*noindex/i.test(html)) continue;
     const canonical = html.match(/<link\s+rel="canonical"\s+href="([^"]+)"/i)?.[1];
-    const loc = canonical || (page === 'index.html' ? `${SITE}/` : `${SITE}/${page}`);
+    const loc = canonical || (page === 'index.html' ? `${SITE}/` : `${SITE}/${page.replace(/\.html$/, '')}`);
     entries.push({ loc, lastmod: lastCommitDate(file) });
 }
 entries.sort((a, b) => (a.loc === `${SITE}/` ? -1 : b.loc === `${SITE}/` ? 1 : a.loc.localeCompare(b.loc)));

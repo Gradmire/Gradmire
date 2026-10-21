@@ -31,7 +31,7 @@
         return [['Administration', ADMIN_NAV], ['My work', ADMIN_OWN_NAV]];
     }
 
-    const currentPage = () => location.pathname.split('/').pop() || 'index.html';
+    const currentPage = () => `${(location.pathname.split('/').pop() || 'index').replace(/\.html$/, '')}.html`;
 
     function renderNav(user, unread) {
         const nav = $('ws-nav');

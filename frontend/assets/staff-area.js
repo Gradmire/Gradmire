@@ -176,11 +176,11 @@
     async function leadsPage() {
         const user = await W.boot({ allow: STAFF });
         if (!user) return;
-        if (!isAdmin(user) && location.pathname.endsWith('admin-leads.html')) {
+        if (!isAdmin(user) && /\/admin-leads(\.html)?$/.test(location.pathname)) {
             location.replace('consultant-leads.html');
             return;
         }
-        const admin = isAdmin(user) && location.pathname.endsWith('admin-leads.html');
+        const admin = isAdmin(user) && /\/admin-leads(\.html)?$/.test(location.pathname);
         const form = $('ld-filters');
         const rows = $('ld-rows');
         const view = W.drawer('ld-drawer');

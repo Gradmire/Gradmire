@@ -369,7 +369,7 @@
        session after 12s, 45% scroll or exit intent, plus a floating button to reopen it.
        Details are handed to the booking page through sessionStorage, never the URL. */
     function setupConsultPopup() {
-        const pageName = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
+        const pageName = `${(window.location.pathname.split('/').pop() || 'index').replace(/\.html$/i, '')}.html`.toLowerCase();
         const skip = ['login.html', 'signup.html', 'free-consultation.html', 'dashboard.html', 'contact.html', '404.html', 'grievance.html', 'privacy.html', 'terms.html'];
         if (skip.includes(pageName)) return;
 
@@ -523,7 +523,7 @@
     }
 
     function setupBuddy() {
-        const pageName = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
+        const pageName = `${(window.location.pathname.split('/').pop() || 'index').replace(/\.html$/i, '')}.html`.toLowerCase();
         if (pageName === 'dashboard.html') return;
         const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
         let session = null;

@@ -1,143 +1,124 @@
 {
+    "cleanUrls": true,
     "redirects": [
         {
-            "source": "/book-consultation",
-            "destination": "/pages/book-consultation.html",
-            "permanent": false
+            "source": "/pages",
+            "destination": "/",
+            "permanent": true
+        },
+        {
+            "source": "/pages/:path*",
+            "destination": "/:path*",
+            "permanent": true
         },
         {
             "source": "/dashboard/consultations",
-            "destination": "/pages/dashboard-consultations.html",
+            "destination": "/dashboard-consultations",
             "permanent": false
         },
         {
             "source": "/admin/consultations",
-            "destination": "/pages/admin-consultations.html",
-            "permanent": false
-        },
-        {
-            "source": "/dashboard",
-            "destination": "/pages/dashboard.html",
+            "destination": "/admin-consultations",
             "permanent": false
         },
         {
             "source": "/dashboard/profile",
-            "destination": "/pages/dashboard-profile.html",
+            "destination": "/dashboard-profile",
             "permanent": false
         },
         {
             "source": "/dashboard/applications",
-            "destination": "/pages/dashboard.html#applications",
+            "destination": "/dashboard#applications",
             "permanent": false
         },
         {
             "source": "/dashboard/notifications",
-            "destination": "/pages/dashboard-notifications.html",
+            "destination": "/dashboard-notifications",
             "permanent": false
         },
         {
             "source": "/dashboard/become-consultant",
-            "destination": "/pages/dashboard-become-consultant.html",
+            "destination": "/dashboard-become-consultant",
             "permanent": false
         },
         {
             "source": "/dashboard/consultant-application",
-            "destination": "/pages/dashboard-become-consultant.html",
+            "destination": "/dashboard-become-consultant",
             "permanent": false
         },
         {
             "source": "/dashboard/universities",
-            "destination": "/pages/find-courses.html",
+            "destination": "/find-courses",
             "permanent": false
         },
         {
             "source": "/consultant/dashboard",
-            "destination": "/pages/consultant-dashboard.html",
+            "destination": "/consultant-dashboard",
             "permanent": false
         },
         {
             "source": "/consultant/students",
-            "destination": "/pages/consultant-students.html",
+            "destination": "/consultant-students",
             "permanent": false
         },
         {
             "source": "/consultant/consultations",
-            "destination": "/pages/admin-consultations.html",
+            "destination": "/admin-consultations",
             "permanent": false
         },
         {
             "source": "/consultant/availability",
-            "destination": "/pages/admin-consultations.html",
+            "destination": "/admin-consultations",
             "permanent": false
         },
         {
             "source": "/consultant/follow-ups",
-            "destination": "/pages/consultant-follow-ups.html",
+            "destination": "/consultant-follow-ups",
             "permanent": false
         },
         {
             "source": "/consultant/leads",
-            "destination": "/pages/consultant-leads.html",
-            "permanent": false
-        },
-        {
-            "source": "/admin",
-            "destination": "/pages/admin.html",
+            "destination": "/consultant-leads",
             "permanent": false
         },
         {
             "source": "/admin/users",
-            "destination": "/pages/admin-users.html",
+            "destination": "/admin-users",
             "permanent": false
         },
         {
             "source": "/admin/leads",
-            "destination": "/pages/admin-leads.html",
+            "destination": "/admin-leads",
             "permanent": false
         },
         {
             "source": "/admin/consultant-applications",
-            "destination": "/pages/admin-team.html",
+            "destination": "/admin-team",
             "permanent": false
         },
         {
             "source": "/admin/employees",
-            "destination": "/pages/admin-team.html#employees",
+            "destination": "/admin-team#employees",
             "permanent": false
         },
         {
             "source": "/admin/onboarding",
-            "destination": "/pages/admin-team.html#invitations",
+            "destination": "/admin-team#invitations",
             "permanent": false
         },
         {
             "source": "/admin/approvals",
-            "destination": "/pages/admin-approvals.html",
+            "destination": "/admin-approvals",
             "permanent": false
         },
         {
             "source": "/admin/audit-logs",
-            "destination": "/pages/admin-audit.html",
-            "permanent": false
-        },
-        {
-            "source": "/login",
-            "destination": "/pages/login.html",
+            "destination": "/admin-audit",
             "permanent": false
         },
         {
             "source": "/register",
-            "destination": "/pages/signup.html",
-            "permanent": false
-        },
-        {
-            "source": "/join-team",
-            "destination": "/pages/join-team.html",
-            "permanent": false
-        },
-        {
-            "source": "/find-booking",
-            "destination": "/pages/find-booking.html",
+            "destination": "/signup",
             "permanent": false
         }
     ],
@@ -148,7 +129,11 @@
         },
         {
             "source": "/",
-            "destination": "/pages/index.html"
+            "destination": "/pages/index"
+        },
+        {
+            "source": "/:path*",
+            "destination": "/pages/:path*"
         }
     ],
     "headers": [
