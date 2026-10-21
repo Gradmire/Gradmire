@@ -778,8 +778,6 @@ a { color: inherit; }
   <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">© 2026 Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · Email: <a href="mailto:info@gradmire.com">info@gradmire.com</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy">Privacy</a><a href="terms">Terms</a><a href="refund-policy">Refunds &amp; fees</a><a href="cookie-policy">Cookies</a><a href="data-request">Your data rights</a><a href="grievance">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <script>
 (function() {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -855,18 +853,6 @@ a { color: inherit; }
     });
   }
 
-  /* ── GSAP Sticky Stack ─────────────────────────────── */
-  window.addEventListener('load',()=>{
-    if(typeof gsap==='undefined'||typeof ScrollTrigger==='undefined'||reduced) return;
-    gsap.registerPlugin(ScrollTrigger);
-    const cards = document.querySelectorAll('.journey-card');
-    cards.forEach((card,i)=>{
-      if(i===cards.length-1) return;
-      gsap.to(card,{scale:.92,opacity:.58,ease:'none',
-        scrollTrigger:{trigger:cards[i+1],start:'top bottom',end:'top top',scrub:true}
-      });
-    });
-  });
 })();
 </script>
 
