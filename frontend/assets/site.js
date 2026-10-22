@@ -166,7 +166,7 @@
             nav.insertAdjacentElement('afterend', mobile);
         }
         mobile.innerHTML = `<ul class="nav-mobile-links" role="list">${navItems.join('')}
-          <li><a href="${page('login')}" class="nav-login-mobile">Student login</a></li>
+          <li><a href="${page('login')}" class="nav-login-mobile">Login</a></li>
           <li><a href="${page('free-consultation')}" class="btn btn-primary">Book free consultation</a></li>
         </ul>`;
         mobile.id = mobile.id || 'mobile-nav';
