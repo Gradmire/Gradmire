@@ -4,8 +4,6 @@
 <meta charset="UTF-8">
 <script>try{var c=JSON.parse(localStorage.getItem("gm-consent")||"null"),t=(c&&c.preferences&&localStorage.getItem("gradmire-theme"))||sessionStorage.getItem("gradmire-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 <link rel="preconnect" href="https://images.unsplash.com">
-<link rel="preconnect" href="https://unpkg.com" crossorigin>
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Gradmire - Study Abroad Counselling for Indian Students</title>
 <link rel="icon" href="/assets/favicon-light.ico" sizes="any">
@@ -2305,8 +2303,6 @@
   <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">© 2026 Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · Email: <a href="mailto:info@gradmire.com">info@gradmire.com</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy">Privacy</a><a href="terms">Terms</a><a href="refund-policy">Refunds &amp; fees</a><a href="cookie-policy">Cookies</a><a href="data-request">Your data rights</a><a href="grievance">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
 </footer>
 
-<script src="https://unpkg.com/d3@7.9.0/dist/d3.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous" defer></script>
-<script src="https://unpkg.com/topojson-client@3.1.0/dist/topojson-client.min.js" integrity="sha384-Ukv1p/xTma6P4/2bY5KzWBw+ydSpXmhCMtyciIQVDJ1RmOxtCYNMF1uXT9T63H67" crossorigin="anonymous" defer></script>
 <script>
     (function() {
         const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -2505,12 +2501,45 @@
        country lights up, its arc animates and the floating cards update.
        Touch: horizontal drags spin the globe, vertical swipes still scroll the page
        (touch-action: pan-y), and tapping a dot selects that destination. */
-    /* d3 and topojson load with defer, so wait for them before building the globe. */
-    document.addEventListener('DOMContentLoaded', function() {
+    /* Load the globe's third-party libraries only when the globe approaches the viewport. */
+    function loadGlobeScript(src, integrity) {
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.integrity = integrity;
+            script.crossOrigin = 'anonymous';
+            script.onload = resolve;
+            script.onerror = () => reject(new Error(`Could not load ${src}`));
+            document.head.appendChild(script);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', async function() {
         const box = document.getElementById('globe-box');
         const canvas = document.getElementById('globe-canvas');
         if (!box || !canvas) return;
-        if (typeof d3 === 'undefined' || typeof topojson === 'undefined') return; /* static fallback sphere stays */
+
+        if ('IntersectionObserver' in window) {
+            await new Promise((resolve) => {
+                const observer = new IntersectionObserver((entries) => {
+                    if (!entries.some((entry) => entry.isIntersecting)) return;
+                    observer.disconnect();
+                    resolve();
+                }, { rootMargin: '200px' });
+                observer.observe(box);
+            });
+        }
+
+        try {
+            await Promise.all([
+                loadGlobeScript('https://unpkg.com/d3@7.9.0/dist/d3.min.js', 'sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i'),
+                loadGlobeScript('https://unpkg.com/topojson-client@3.1.0/dist/topojson-client.min.js', 'sha384-Ukv1p/xTma6P4/2bY5KzWBw+ydSpXmhCMtyciIQVDJ1RmOxtCYNMF1uXT9T63H67')
+            ]);
+        } catch (error) {
+            console.warn('[Gradmire] Globe libraries could not load; keeping the static fallback sphere.', error);
+            return;
+        }
+        if (typeof d3 === 'undefined' || typeof topojson === 'undefined') return;
 
         const HOME = { name: 'India', ll: [77.2, 28.6] };
         const DESTS = [
@@ -2737,7 +2766,7 @@
                 box.classList.add('is-ready');
                 focusDest(4);
             })
-            .catch(() => { /* keep the static fallback sphere */ });
+            .catch((error) => { console.warn('[Gradmire] Globe map data could not load; keeping the static fallback sphere.', error); });
         requestAnimationFrame(draw);
     });
 </script>
