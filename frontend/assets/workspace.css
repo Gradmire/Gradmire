@@ -59,6 +59,7 @@ a.crm-stat { display: block; text-decoration: none; }
     .ws-nav-logout { display: none; }
 }
 @media (max-width: 600px) {
+    .ws-grid { grid-template-columns: minmax(0, 1fr); }
     .ws-dl { grid-template-columns: 1fr; gap: 0; }
     .ws-dl dd { margin-bottom: .5rem; }
 }
