@@ -39,3 +39,12 @@ Gmail (system email, CRM inbox, compose/reply), Google Drive (documents and CVs)
 (consultations and interviews) are set up as described in [`docs/google-workspace-setup.md`](docs/google-workspace-setup.md).
 
 See `frontend/README.md` and `backend/README.md` for local development notes.
+
+## SEO skills
+
+This workspace includes SEO and GEO skills in `.agents/skills/` for site audits,
+keyword research, rank tracking, competitor gaps, backlinks, AI visibility,
+content briefs, and SEO-versus-ads analysis. They use the Ryze MCP connector,
+configured for this workspace in `.vscode/mcp.json`. Sign in and authorize the
+accounts you want to use when VS Code prompts; the connector cannot return
+account data until that setup is complete.
