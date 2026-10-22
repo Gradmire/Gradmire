@@ -73,7 +73,7 @@ export async function createInvitationInTransaction(client, actor, input) {
         payload: { invitationId: id, fullName: input.fullName, jobTitle: input.jobTitle, department: input.department },
     });
     if (existing) {
-        await notifyUser(client, existing.id, { kind: 'employee_invitation', title: 'You are invited to join the Gradmire team', body: `Open the invitation we emailed you to accept the ${input.jobTitle} role.`, link: 'dashboard' });
+        await notifyUser(client, existing.id, { kind: 'employee_invitation', title: 'You are invited to join the Gradmire team', body: `Review the invitation and click Accept to send the ${input.jobTitle} role for approval.`, link: 'join-team' });
     }
     await audit(client, {
         actorUserId: actor.id, action: 'employee.invited', entityType: 'employee_invitation', entityId: id,
@@ -122,10 +122,28 @@ export async function lookupInvitation(token) {
     return { jobTitle: i.job_title, department: i.department, intendedRole: i.intended_role, invitedEmail: maskEmail(i.email), expiresAt: iso(i.expires_at) };
 }
 
+/* The signed-in person's own pending invitation, so it can be accepted from the
+   dashboard without the email link. Owning the verified address is the proof. */
+export async function myPendingInvitation(user) {
+    if (user.role !== 'student') return null;
+    const { rows } = await query(
+        "SELECT * FROM employee_invitations WHERE LOWER(email) = LOWER($1) AND status = 'pending' AND expires_at > $2 ORDER BY created_at DESC LIMIT 1",
+        [user.email, now()],
+    );
+    const i = rows[0];
+    return i ? { jobTitle: i.job_title, department: i.department, intendedRole: i.intended_role, invitedEmail: i.email, expiresAt: iso(i.expires_at) } : null;
+}
+
+/* With a token, accepts that invitation; without one, the account's own pending invitation. */
 export async function acceptInvitation(user, token) {
     if (!user.email_verified_at) throw forbidden('Verify your email address first, then open the invitation again.');
     return withTransaction(async (client) => {
-        const i = (await client.query('SELECT * FROM employee_invitations WHERE token_hash = $1 FOR UPDATE', [invitationTokenHash(token)])).rows[0];
+        const i = (token
+            ? await client.query('SELECT * FROM employee_invitations WHERE token_hash = $1 FOR UPDATE', [invitationTokenHash(token)])
+            : await client.query(
+                "SELECT * FROM employee_invitations WHERE LOWER(email) = LOWER($1) AND status = 'pending' ORDER BY created_at DESC LIMIT 1 FOR UPDATE",
+                [user.email],
+            )).rows[0];
         if (!i || i.status !== 'pending' || new Date(i.expires_at) <= now()) throw invalid();
         // The link alone is not enough: the account must own the invited address.
         if (i.email.toLowerCase() !== user.email.toLowerCase()) {

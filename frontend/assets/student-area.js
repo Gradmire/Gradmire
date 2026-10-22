@@ -358,22 +358,29 @@
             token = token || sessionStorage.getItem('gm-invite');
         } catch (e) { /* ignore */ }
         if (fromHash) history.replaceState(null, '', location.pathname);
-        if (!token) {
-            box.innerHTML = '<p>Open the invitation link from your email to continue.</p>';
-            return;
-        }
+        const session = await GradmireAPI.getSession().catch(() => ({ user: null }));
+        const user = session.user;
         let invite;
         try {
-            invite = await api('POST', '/api/v1/employee-invitations/lookup', { token });
+            if (token) {
+                invite = await api('POST', '/api/v1/employee-invitations/lookup', { token });
+            } else if (user) {
+                // Opened from the dashboard notification: the account's own pending invitation.
+                invite = (await api('GET', '/api/v1/me/employee-invitations/pending')).invitation;
+            }
         } catch (e) {
             box.innerHTML = `<p class="bk-alert">${esc(e.message)}</p>`;
+            return;
+        }
+        if (!invite) {
+            box.innerHTML = user
+                ? '<p>There is no pending invitation for this account. It may have expired or been revoked; ask an administrator to send a new one.</p>'
+                : '<p>Open the invitation link from your email, or <a href="login?next=join-team">log in</a> with the invited email address, to continue.</p>';
             return;
         }
         const role = invite.intendedRole === 'admin' ? 'administrator' : 'consultant';
         const intro = `<p>You are invited to join Gradmire as <strong>${esc(invite.jobTitle)}</strong> (${esc(invite.department)}), with ${role} access.</p>
             <p class="bk-fine">The invitation was sent to ${esc(invite.invitedEmail)} and expires ${esc(W.fmtDate(invite.expiresAt))}.</p>`;
-        const session = await GradmireAPI.getSession().catch(() => ({ user: null }));
-        const user = session.user;
         if (!user) {
             box.innerHTML = `${intro}<p>Log in, or create an account, with the email address the invitation was sent to.</p>
                 <div class="bk-actions"><a class="gp-btn gp-btn-primary" href="login?next=join-team">Log in</a><a class="gp-btn gp-btn-outline" href="signup?next=join-team">Create an account</a></div>`;
@@ -396,7 +403,7 @@
         $('jt-accept').addEventListener('click', async () => {
             $('jt-accept').disabled = true;
             try {
-                await api('POST', '/api/v1/me/employee-invitations/accept', { token });
+                await api('POST', '/api/v1/me/employee-invitations/accept', token ? { token } : {});
                 try { sessionStorage.removeItem('gm-invite'); } catch (e) { /* ignore */ }
                 box.innerHTML = '<h2 class="bk-step-title">Invitation accepted</h2><p>Your onboarding is now waiting for approval. We will email you and you will see your workspace the next time you log in after it is approved.</p><a class="gp-btn gp-btn-outline" href="dashboard">Back to my dashboard</a>';
             } catch (e) {

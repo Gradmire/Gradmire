@@ -181,8 +181,13 @@ router.post('/api/v1/me/consultant-applications/:id/withdraw', async (ctx) => {
 router.post('/api/v1/me/employee-invitations/accept', async (ctx) => {
     const user = await requireUser(ctx);
     await enforceRateLimit('invitation', user.id);
-    const { token } = createValidator(await ctx.body()).text('token', { required: true, max: 100 }).done();
-    return ok(ctx, await employees.acceptInvitation(user, token));
+    const { token } = createValidator(await ctx.body()).text('token', { max: 100 }).done();
+    return ok(ctx, await employees.acceptInvitation(user, token || null));
+});
+
+router.get('/api/v1/me/employee-invitations/pending', async (ctx) => {
+    const user = await requireUser(ctx);
+    return ok(ctx, { invitation: await employees.myPendingInvitation(user) });
 });
 
 /* ── Consultant workspace ─────────────────────────────────────────────────── */

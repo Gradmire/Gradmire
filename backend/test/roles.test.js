@@ -315,6 +315,32 @@ describe('employee onboarding', () => {
         assert.equal((await invited.client.post('/api/v1/me/employee-invitations/accept', { token })).status, 400, 'expired');
     });
 
+    test('an invited student can accept from the dashboard notification without the email link', async () => {
+        const admin = await staffAgent(await createStaff({ role: 'admin' }));
+        const superAdmin = await staffAgent(await createStaff({ role: 'super_admin' }));
+        const invited = await student();
+        const intruder = await student();
+        const unverified = await student({ verified: false });
+        assert.equal((await invited.client.get('/api/v1/me/employee-invitations/pending')).body.data.invitation, null);
+        const invite = await admin.client.post('/api/v1/admin/employees/invitations', { email: invited.email, fullName: 'Ravi', department: 'Counselling', jobTitle: 'Consultant', intendedRole: 'counsellor' });
+        assert.equal(invite.status, 201);
+
+        const note = (await invited.client.get('/api/v1/me/notifications')).body.data.items.find((n) => n.kind === 'employee_invitation');
+        assert.equal(note.link, 'join-team', 'the notification opens the accept page');
+        const pending = await invited.client.get('/api/v1/me/employee-invitations/pending');
+        assert.equal(pending.body.data.invitation.jobTitle, 'Consultant');
+        assert.equal((await intruder.client.get('/api/v1/me/employee-invitations/pending')).body.data.invitation, null);
+        assert.equal((await intruder.client.post('/api/v1/me/employee-invitations/accept', {})).status, 400, 'nothing to accept for another address');
+        assert.equal((await unverified.client.post('/api/v1/me/employee-invitations/accept', {})).status, 403);
+
+        const accepted = await invited.client.post('/api/v1/me/employee-invitations/accept', {});
+        assert.equal(accepted.status, 200, JSON.stringify(accepted.body));
+        assert.equal(accepted.body.data.status, 'pending_approval');
+        const approvals = (await superAdmin.client.get('/api/v1/me/notifications')).body.data.items.filter((n) => n.kind === 'approval_requested');
+        assert.equal(approvals.length, 1, 'the super admin hears about the approval request');
+        assert.equal((await invited.client.post('/api/v1/me/employee-invitations/accept', {})).status, 400, 'single use');
+    });
+
     test('admin access needs a super admin to approve', async () => {
         const inviter = await staffAgent(await createStaff({ role: 'admin' }));
         const otherAdmin = await staffAgent(await createStaff({ role: 'admin' }));
