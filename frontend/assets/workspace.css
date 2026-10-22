@@ -51,14 +51,16 @@ a.crm-stat { display: block; text-decoration: none; }
 
 @media (max-width: 900px) {
     .ws-layout { grid-template-columns: minmax(0, 1fr); }
-    .ws-nav { position: static; margin-top: 1rem; padding: .5rem; }
+    .ws-nav { display: flex; align-items: center; gap: .25rem; overflow-x: auto; overscroll-behavior-inline: contain; scrollbar-width: thin; position: static; margin-top: 1rem; padding: .5rem; }
     .ws-nav-who { display: none; }
-    .ws-nav ul { display: flex; overflow-x: auto; gap: .25rem; scrollbar-width: thin; }
+    .ws-nav ul { display: contents; }
+    .ws-nav li { flex: 0 0 auto; }
     .ws-nav a { white-space: nowrap; }
     .ws-nav-group { display: none; }
     .ws-nav-logout { display: none; }
 }
 @media (max-width: 600px) {
+    .ws-grid { grid-template-columns: minmax(0, 1fr); }
     .ws-dl { grid-template-columns: 1fr; gap: 0; }
     .ws-dl dd { margin-bottom: .5rem; }
 }

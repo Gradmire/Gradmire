@@ -33,14 +33,14 @@ Audit of the static frontend (`frontend/pages`, 35 pages) against the legal/comp
 
 | Item | Status | Notes |
 | --- | --- | --- |
-| Core Web Vitals | Improved | Fewer render-blocking requests (self-hosted fonts with `preload` for the main face, no Bootstrap), deferred scripts, lazy images below the fold. Measure LCP/CLS/INP on the deployed site with PageSpeed Insights; this audit could not measure field data. |
+| Core Web Vitals | Improved | Fewer render-blocking requests (self-hosted fonts with `preload` for the main face, no Bootstrap), deferred scripts, lazy images below the fold, and homepage globe libraries loaded only as the globe approaches the viewport. Measure LCP/CLS/INP on the deployed site with PageSpeed Insights; this audit could not measure field data. |
 | Component-based CSS / separate responsive CSS | Not changed | Each page carries its own inline CSS plus shared `site.css`/`auth.css`. Splitting it is a larger refactor with little gain for a 35-page static site. |
 | ETag-based API, React Query, virtualised lists | Not applicable | Static site with no API or long lists. Vercel already sends ETags for static files. |
 | Intersection Observer | Done (existing) | Used for reveals, counters, logo sliders and pausing the globe off-screen. |
-| Priority hints | Done | `preconnect` to images.unsplash.com (20 pages) and to unpkg/jsDelivr on the homepage; `preload` for the main font; `fetchpriority="high"` on hero photos. |
+| Priority hints | Done | `preconnect` to images.unsplash.com on image-heavy pages; `preload` for the main font; `fetchpriority="high"` on hero photos. The homepage no longer preconnects to globe-library CDNs before the globe is near the viewport. |
 | Cache busting | Done | `site.css`/`site.js` are now `?v=13`. **Bump the number on every page whenever you edit them**, or browsers may keep the old version for up to a week. |
 | Gzip/Brotli, connection reuse, CDN | Handled by Vercel | Vercel serves over HTTP/2 with Brotli on its edge network. Fewer third-party origins now means fewer connections. |
-| Defer render-blocking JS | Done | `site.js` (all pages) and d3, topojson and GSAP (homepage) load with `defer`. A one-line script in each `<head>` applies the saved night/day theme before first paint, so deferring causes no flash of the wrong theme. |
+| Defer render-blocking JS | Done | `site.js` (all pages) and GSAP (homepage) load with `defer`; homepage d3 and topojson load only when the globe approaches the viewport. Google Identity Services automatic account prompts are disabled in favor of the explicit sign-in button. A one-line script in each `<head>` applies the saved night/day theme before first paint, so deferring causes no flash of the wrong theme. |
 | Dead-code elimination | Done | Removed the Bootstrap bundle, the unused Three.js earth textures (about 1.4 MB) and about 6 KB of unused homepage CSS. |
 | Caching headers | Done | `frontend/vercel.json`: fonts cached for a year (`immutable`), CSS/JS for a day with a week of `stale-while-revalidate`, images for a week. |
 | Service worker | Deliberately skipped | Offline caching adds stale-content risk to a marketing site that changes often. Revisit if offline tools become a goal. |

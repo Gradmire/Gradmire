@@ -4,8 +4,6 @@
 <meta charset="UTF-8">
 <script>try{var c=JSON.parse(localStorage.getItem("gm-consent")||"null"),t=(c&&c.preferences&&localStorage.getItem("gradmire-theme"))||sessionStorage.getItem("gradmire-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 <link rel="preconnect" href="https://images.unsplash.com">
-<link rel="preconnect" href="https://unpkg.com" crossorigin>
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Gradmire - Study Abroad Counselling for Indian Students</title>
 <link rel="icon" href="/assets/favicon-light.ico" sizes="any">
@@ -1931,7 +1929,7 @@
 <!-- WHY US / GRADMIRE STATS -->
 <section class="evidence why-evidence" aria-labelledby="why-title">
   <div class="evidence-head"><p class="evidence-eyebrow">Why Gradmire</p><h2 class="sec-title" id="why-title">Why us?</h2><p class="evidence-intro">We're a new team, and that's our advantage: every student gets real attention, honest advice and a counsellor who knows their name. No queues, no pressure, no hidden fees.</p></div>
-  <div class="evidence-inner" role="list" aria-label="Reasons to choose Gradmire">
+  <div class="evidence-inner m-slider" role="list" aria-label="Reasons to choose Gradmire">
     <article class="evidence-card" role="listitem">
       <div class="stat-top"><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 2.5 4.5 5.3v6.1c0 4.7 3.2 8.6 7.5 10.1 4.3-1.5 7.5-5.4 7.5-10.1V5.3L12 2.5Z" fill="currentColor"/></svg></span><div class="stat-num">Free</div></div>
       <h3 class="stat-title">First consultation</h3>
@@ -2305,8 +2303,6 @@
   <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">© 2026 Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · Email: <a href="mailto:info@gradmire.com">info@gradmire.com</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy">Privacy</a><a href="terms">Terms</a><a href="refund-policy">Refunds &amp; fees</a><a href="cookie-policy">Cookies</a><a href="data-request">Your data rights</a><a href="grievance">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
 </footer>
 
-<script src="https://unpkg.com/d3@7.9.0/dist/d3.min.js" integrity="sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i" crossorigin="anonymous" defer></script>
-<script src="https://unpkg.com/topojson-client@3.1.0/dist/topojson-client.min.js" integrity="sha384-Ukv1p/xTma6P4/2bY5KzWBw+ydSpXmhCMtyciIQVDJ1RmOxtCYNMF1uXT9T63H67" crossorigin="anonymous" defer></script>
 <script>
     (function() {
         const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -2505,12 +2501,45 @@
        country lights up, its arc animates and the floating cards update.
        Touch: horizontal drags spin the globe, vertical swipes still scroll the page
        (touch-action: pan-y), and tapping a dot selects that destination. */
-    /* d3 and topojson load with defer, so wait for them before building the globe. */
-    document.addEventListener('DOMContentLoaded', function() {
+    /* Load the globe's third-party libraries only when the globe approaches the viewport. */
+    function loadGlobeScript(src, integrity) {
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.integrity = integrity;
+            script.crossOrigin = 'anonymous';
+            script.onload = resolve;
+            script.onerror = () => reject(new Error(`Could not load ${src}`));
+            document.head.appendChild(script);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', async function() {
         const box = document.getElementById('globe-box');
         const canvas = document.getElementById('globe-canvas');
         if (!box || !canvas) return;
-        if (typeof d3 === 'undefined' || typeof topojson === 'undefined') return; /* static fallback sphere stays */
+
+        if ('IntersectionObserver' in window) {
+            await new Promise((resolve) => {
+                const observer = new IntersectionObserver((entries) => {
+                    if (!entries.some((entry) => entry.isIntersecting)) return;
+                    observer.disconnect();
+                    resolve();
+                }, { rootMargin: '200px' });
+                observer.observe(box);
+            });
+        }
+
+        try {
+            await Promise.all([
+                loadGlobeScript('https://unpkg.com/d3@7.9.0/dist/d3.min.js', 'sha384-CjloA8y00+1SDAUkjs099PVfnY2KmDC2BZnws9kh8D/lX1s46w6EPhpXdqMfjK6i'),
+                loadGlobeScript('https://unpkg.com/topojson-client@3.1.0/dist/topojson-client.min.js', 'sha384-Ukv1p/xTma6P4/2bY5KzWBw+ydSpXmhCMtyciIQVDJ1RmOxtCYNMF1uXT9T63H67')
+            ]);
+        } catch (error) {
+            console.warn('[Gradmire] Globe libraries could not load; keeping the static fallback sphere.', error);
+            return;
+        }
+        if (typeof d3 === 'undefined' || typeof topojson === 'undefined') return;
 
         const HOME = { name: 'India', ll: [77.2, 28.6] };
         const DESTS = [
@@ -2737,12 +2766,12 @@
                 box.classList.add('is-ready');
                 focusDest(4);
             })
-            .catch(() => { /* keep the static fallback sphere */ });
+            .catch((error) => { console.warn('[Gradmire] Globe map data could not load; keeping the static fallback sphere.', error); });
         requestAnimationFrame(draw);
     });
 </script>
 
-<script src="../assets/site.js?v=33" defer></script>
+<script src="../assets/site.js?v=34" defer></script>
 
 </body>
 </html>

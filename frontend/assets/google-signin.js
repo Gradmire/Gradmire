@@ -104,7 +104,7 @@
             unavailable(error.message);
             return;
         }
-        google.accounts.id.initialize({ client_id: config.clientId, callback: onCredential, ux_mode: 'popup', context: isSignup ? 'signup' : 'signin', cancel_on_tap_outside: true });
+        google.accounts.id.initialize({ client_id: config.clientId, callback: onCredential, ux_mode: 'popup', context: isSignup ? 'signup' : 'signin', cancel_on_tap_outside: true, auto_prompt: false });
         const holder = document.createElement('div');
         holder.style.cssText = 'display:flex;justify-content:center;min-height:44px';
         button.insertAdjacentElement('beforebegin', holder);
