@@ -245,7 +245,11 @@ describe('employee onboarding', () => {
         const s = await student();
         const booked = await s.client.post('/api/v1/consultations', { ...guestBooking(), fullName: undefined, email: undefined });
         const { requestId, token } = await inviteAndAccept(inviter, s);
+        const activationRequests = await approver.client.get('/api/v1/admin/approvals?status=pending&type=employee_activation');
+        assert.equal(activationRequests.status, 200);
+        assert.ok(activationRequests.body.data.items.some((item) => item.id === requestId), 'another admin sees the accepted invitation for approval');
         assert.equal(await role(s.id), 'student', 'accepting does not grant access');
+        assert.equal((await s.client.get('/api/v1/auth/session')).body.data.user.home, 'dashboard', 'pending approval keeps the student workspace');
         assert.equal((await s.client.post('/api/v1/me/employee-invitations/accept', { token })).status, 400, 'single use');
 
         const own = await inviter.client.post(`/api/v1/admin/approvals/${requestId}/approve`, {});
@@ -257,6 +261,9 @@ describe('employee onboarding', () => {
         assert.equal((await s.client.get('/api/v1/me/dashboard')).status, 401, 'old sessions end on a role change');
         const fresh = agent();
         await fresh.login(s.email, s.password);
+        const session = await fresh.get('/api/v1/auth/session');
+        assert.equal(session.body.data.user.role, 'counsellor');
+        assert.equal(session.body.data.user.home, 'consultant-dashboard');
         assert.equal((await fresh.get('/api/v1/consultant/dashboard')).status, 200);
         assert.equal((await fresh.get('/api/v1/admin/users')).status, 403, 'a consultant is not an admin');
         const ids = (await db.query('SELECT id FROM consultations WHERE student_user_id = $1', [s.id])).rows.map((r) => r.id);
@@ -268,6 +275,25 @@ describe('employee onboarding', () => {
         const granted = (await db.query("SELECT details FROM audit_log WHERE action = 'role.granted' AND entity_id = $1", [s.id])).rows[0].details;
         assert.deepEqual([granted.before.role, granted.after.role], ['student', 'counsellor']);
         assert.ok(!JSON.stringify(granted).match(/password|token/i), 'no secrets in the audit log');
+
+        const requester = await staffAgent(await createStaff({ role: 'super_admin', name: 'Promotion requester' }));
+        const finalApprover = await staffAgent(await createStaff({ role: 'super_admin', name: 'Promotion approver' }));
+        const promotion = await requester.client.post(`/api/v1/admin/users/${s.id}/role-change-requests`, { requestedRole: 'admin', reason: 'Promote to team administrator' });
+        assert.equal(promotion.status, 201, JSON.stringify(promotion.body));
+        const promotionId = promotion.body.data.id;
+        const visiblePromotions = await finalApprover.client.get('/api/v1/admin/approvals?status=pending&type=role_change');
+        assert.ok(visiblePromotions.body.data.items.some((item) => item.id === promotionId), 'super admin sees the promotion request');
+        assert.equal((await finalApprover.client.post(`/api/v1/admin/approvals/${promotionId}/approve`, {})).status, 200);
+        assert.equal(await role(s.id), 'admin');
+        assert.equal((await fresh.get('/api/v1/auth/session')).body.data.user, null, 'promotion revokes the consultant session');
+
+        const promoted = agent();
+        await promoted.login(s.email, s.password);
+        const adminSession = await promoted.get('/api/v1/auth/session');
+        assert.equal(adminSession.body.data.user.role, 'admin');
+        assert.equal(adminSession.body.data.user.home, 'admin');
+        assert.equal((await promoted.get('/api/v1/admin/overview')).status, 200);
+        assert.equal((await promoted.get('/api/v1/consultant/dashboard')).status, 200, 'admins retain access to their own work dashboard');
     });
 
     test('the invitation must be accepted by a verified account that owns the invited address', async () => {
