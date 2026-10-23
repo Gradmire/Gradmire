@@ -71,7 +71,7 @@ cd backend
 SITE_URL=https://www.gradmire.com node --env-file=.env.prod-tmp scripts/e2e-roles-live.js
 ```
 
-It stops before creating anything if the deployed API is out of date. Each run uses two of the six sign-ups allowed per IP per hour, so run it at most three times an hour. `gradmire-api` is deployed with `vercel deploy --prod` from `backend/`; a dashboard *Redeploy* rebuilds the previous upload, not `master`.
+It stops before creating anything if the deployed API is out of date. Each run uses two of the six sign-ups allowed per IP per hour, so run it at most three times an hour. `gradmire-api` is linked to GitHub (`Gradmire/Gradmire`, Root Directory `backend/`): every push to `master` deploys it. A dashboard *Redeploy* rebuilds that deployment's own commit, not the latest `master`; for a manual deploy run `vercel deploy --prod` from the repository root, not from `backend/`.
 
 `test/roles.test.js` (21 tests) covers guests, guest → student linking and manual review, the student overview and profile, student/consultant/admin API isolation, the consultant application workflow, onboarding with an existing account, wrong-account and expired invitations, the super-admin rule for admin access, rejection, the two-person rule (service and database), revocation with reassignment, assignment-scoped consultant access, suspension, admin metrics against stored data and the audit log.
 
