@@ -63,6 +63,16 @@ npm run check
 npm test        # 70 tests, real PostgreSQL (embedded locally, Postgres 16 service in CI)
 ```
 
+**Live check of staff access** (student → consultant, invitation → admin, consultant → admin, and the two-person rule) against a deployed site. It creates two temporary super admins and `e2e-…@example.com` accounts and deletes them all at the end, along with their applications, invitations, approvals and emails (audit rows stay). Scheduling the interview creates and then removes a real calendar event.
+
+```bash
+cd backend
+# DATABASE_URL and APP_SECRET must be the target's; the file is git-ignored and excluded by .vercelignore
+SITE_URL=https://www.gradmire.com node --env-file=.env.prod-tmp scripts/e2e-roles-live.js
+```
+
+It stops before creating anything if the deployed API is out of date. Each run uses two of the six sign-ups allowed per IP per hour, so run it at most three times an hour. `gradmire-api` is deployed with `vercel deploy --prod` from `backend/`; a dashboard *Redeploy* rebuilds the previous upload, not `master`.
+
 `test/roles.test.js` (21 tests) covers guests, guest → student linking and manual review, the student overview and profile, student/consultant/admin API isolation, the consultant application workflow, onboarding with an existing account, wrong-account and expired invitations, the super-admin rule for admin access, rejection, the two-person rule (service and database), revocation with reassignment, assignment-scoped consultant access, suspension, admin metrics against stored data and the audit log.
 
 ## 6. Pages and friendly URLs
