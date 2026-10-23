@@ -113,6 +113,8 @@
             size: 'large', shape: 'pill', text: isSignup ? 'signup_with' : 'continue_with',
             width: Math.min(400, Math.max(240, button.offsetWidth || 320)),
         });
+        // .btn-google sets display:flex, which beats the hidden attribute
         button.hidden = true;
+        button.style.display = 'none';
     }).catch(() => unavailable('Google sign-in is not available right now. Please use your email and password.'));
 })();
