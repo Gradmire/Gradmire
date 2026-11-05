@@ -131,6 +131,27 @@ describe('persistence and calendar sync', () => {
 });
 
 describe('notifications', () => {
+    test('unscheduled notifications use the application clock', async () => {
+        const scheduledAt = new Date(Date.now() + 24 * 60 * 60_000);
+        const { enqueueNotification } = await import('../src/services/notification-service.js');
+        await setNow(scheduledAt);
+
+        try {
+            await enqueueNotification(db, {
+                template: 'password_changed',
+                recipient: 'clock@example.com',
+                dedupeKey: 'application-clock-notification',
+            });
+            const { rows } = await db.query(
+                'SELECT scheduled_for FROM notifications WHERE dedupe_key = $1',
+                ['application-clock-notification'],
+            );
+            assert.equal(new Date(rows[0].scheduled_for).toISOString(), scheduledAt.toISOString());
+        } finally {
+            await setNow(BASE_NOW);
+        }
+    });
+
     test('20. notification failures are recorded and retryable without duplicates', async () => {
         email.failures = 100;
         const created = (await book()).body.data.consultation;
