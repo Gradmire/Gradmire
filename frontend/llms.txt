@@ -1,0 +1,40 @@
+# Gradmire
+
+> Gradmire is a study-abroad counselling company for students in India. It helps students compare courses, universities, scholarships and destinations, prepare for tests, apply and plan their visas, and offers a free consultation. Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001. Email: info@gradmire.com.
+
+## Destinations
+- [Study abroad destinations](https://www.gradmire.com/destinations): compare countries
+- [Study in the UK](https://www.gradmire.com/study-in-uk)
+- [Study in the USA](https://www.gradmire.com/study-in-usa)
+- [Study in Canada](https://www.gradmire.com/study-in-canada)
+- [Study in Australia](https://www.gradmire.com/study-in-australia)
+- [Study in Germany](https://www.gradmire.com/study-in-germany)
+- [Study in Ireland](https://www.gradmire.com/study-in-ireland)
+- [Study in New Zealand](https://www.gradmire.com/study-in-newzealand)
+- [Study in Italy](https://www.gradmire.com/study-in-italy)
+- [Study in Finland](https://www.gradmire.com/study-in-finland)
+- [MBBS abroad](https://www.gradmire.com/mbbs-abroad): fees, countries and recognition
+
+## Services
+- [Free consultation](https://www.gradmire.com/free-consultation)
+- [Test preparation](https://www.gradmire.com/test-preparation): IELTS, TOEFL, GRE and GMAT
+- [Visa assistance](https://www.gradmire.com/visa-assistance)
+- [Application assistance](https://www.gradmire.com/application-assistance)
+- [Course selection guidance](https://www.gradmire.com/course-selection-guidance)
+- [Scholarships](https://www.gradmire.com/scholarships)
+
+## Tools
+- [Course finder](https://www.gradmire.com/find-courses)
+- [University finder](https://www.gradmire.com/find-universities)
+- [Study cost calculator](https://www.gradmire.com/tools/roi-calculator)
+- [Course comparator](https://www.gradmire.com/tools/comparator)
+- [Deadline tracker](https://www.gradmire.com/tools/deadline-tracker)
+- [GPA / CGPA / SGPA converter](https://www.gradmire.com/tools/grade-converter)
+
+## Company
+- [About Gradmire](https://www.gradmire.com/about)
+- [Careers](https://www.gradmire.com/career)
+- [FAQs](https://www.gradmire.com/faq)
+- [Contact](https://www.gradmire.com/contact)
+- [Privacy policy](https://www.gradmire.com/privacy)
+- [Terms of use](https://www.gradmire.com/terms)

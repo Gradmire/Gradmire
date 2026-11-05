@@ -10,7 +10,7 @@ const columns = [
         ['MBBS abroad', 'mbbs-abroad']
     ]],
     ['Services', [
-        ['Free counselling', 'free-consultation.html?interest=counselling'], ['Test preparation', 'test-preparation'],
+        ['Free counselling', 'free-consultation?interest=counselling'], ['Test preparation', 'test-preparation'],
         ['Visa assistance', 'visa-assistance'], ['Application assistance', 'application-assistance'],
         ['Course selection guidance', 'course-selection-guidance'], ['Scholarships', 'scholarships']
     ]],
@@ -20,14 +20,14 @@ const columns = [
         ['GPA / CGPA / SGPA converter', 'tools/grade-converter']
     ]],
     ['Company', [
-        ['About us', 'about'], ['Blog', 'blog'], ['Events', 'events'],
+        ['About us', 'about'], ['Blog', 'blog'], ['Careers', 'career'],
         ['FAQs', 'faq'], ['Contact', 'contact'], ['Student login', 'login']
     ]]
 ];
 
 const legal = [
     ['Privacy', 'privacy'], ['Terms', 'terms'], ['Refunds &amp; fees', 'refund-policy'],
-    ['Cookies', 'cookie-policy'], ['Your data rights', 'data-request'], ['Grievance', 'grievance']
+    ['Cookies', 'cookie-policy'], ['Your data rights', 'data-request'], ['Grievance', 'grievance'], ['Photo credits', 'photo-credits']
 ];
 
 export function footerHtml(prefix = '') {
@@ -41,7 +41,7 @@ ${links.map(([label, path]) => `        <li><a href="${href(path)}">${label}</a>
     return `<footer class="gm-footer" aria-label="Site footer">
   <div class="gm-footer-inner">
     <div class="gm-footer-brand">
-      <a class="gm-footer-logo" href="${href('index.html')}" aria-label="Gradmire home"><img src="${prefix}../assets/gradmire-logo-white.png" alt="Gradmire" width="200" height="54" loading="lazy" decoding="async"></a>
+      <a class="gm-footer-logo" href="${prefix || './'}" aria-label="Gradmire home"><img src="${prefix}../assets/gradmire-logo-white.png" alt="Gradmire" width="200" height="54" loading="lazy" decoding="async"></a>
       <p class="gm-footer-tagline">Study abroad, organized by subject — not by flag.</p>
       <form class="footer-subscribe" novalidate><label class="sr-only" for="footer-email">Email address for study-abroad updates</label><input id="footer-email" type="email" name="email" autocomplete="email" placeholder="you@email.com" required><button type="submit" aria-label="Subscribe to updates"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><p class="footer-subscribe-msg" role="status" hidden></p></form>
     </div>

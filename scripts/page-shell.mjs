@@ -15,7 +15,7 @@ const GUIDE_CSS = 'guide-pages.css?v=5';
 export const esc = (value) => String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 /* Text that may carry a link we wrote ourselves is passed through; everything else is escaped. */
 export const rich = (value) => (/<a\s/.test(value) ? value : esc(value));
-export const consultHref = (interest, country = '') => `free-consultation.html?interest=${interest}${country ? `&amp;country=${country}` : ''}#book`;
+export const consultHref = (interest, country = '') => `free-consultation?interest=${interest}${country ? `&amp;country=${country}` : ''}#book`;
 
 const themeBoot = '<script>try{var c=JSON.parse(localStorage.getItem("gm-consent")||"null"),t=(c&&c.preferences&&localStorage.getItem("gradmire-theme"))||sessionStorage.getItem("gradmire-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>';
 
