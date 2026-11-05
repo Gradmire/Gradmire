@@ -1,6 +1,22 @@
 {
     "cleanUrls": true,
+    "trailingSlash": false,
     "redirects": [
+        {
+            "source": "/events",
+            "destination": "/",
+            "permanent": true
+        },
+        {
+            "source": "/events/:path*",
+            "destination": "/",
+            "permanent": true
+        },
+        {
+            "source": "/index.html",
+            "destination": "/",
+            "permanent": true
+        },
         {
             "source": "/pages",
             "destination": "/",
@@ -137,6 +153,23 @@
         }
     ],
     "headers": [
+        {
+            "source": "/(.*)",
+            "headers": [
+                {
+                    "key": "X-Content-Type-Options",
+                    "value": "nosniff"
+                },
+                {
+                    "key": "X-Frame-Options",
+                    "value": "SAMEORIGIN"
+                },
+                {
+                    "key": "Referrer-Policy",
+                    "value": "strict-origin-when-cross-origin"
+                }
+            ]
+        },
         {
             "source": "/assets/fonts/(.*)",
             "headers": [

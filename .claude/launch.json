@@ -55,6 +55,16 @@
       "autoPort": false
     },
     {
+      "name": "roles-e2e-api",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": [
+        "/c",
+        "set DATABASE_URL=postgres://gradmire:gradmire-local@127.0.0.1:54320/gradmire&& set FRONTEND_ORIGIN=http://localhost:5600&& set SITE_URL=http://localhost:5600&& set APP_SECRET=local-e2e-secret-not-for-production-use-0123&& set PORT=4200&& node backend/scripts/migrate.js && node backend/src/server.js"
+      ],
+      "port": 4200,
+      "autoPort": false
+    },
+    {
       "name": "booking-frontend",
       "runtimeExecutable": "npx",
       "runtimeArgs": [

@@ -1,13 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <meta charset="UTF-8">
-<script>try{var c=JSON.parse(localStorage.getItem("gm-consent")||"null"),t=(c&&c.preferences&&localStorage.getItem("gradmire-theme"))||sessionStorage.getItem("gradmire-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+<!-- seo -->
 <link rel="canonical" href="https://www.gradmire.com/tools/deadline-tracker">
-<title>Deadline Tracker — Gradmire</title>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Gradmire">
+<meta property="og:locale" content="en_IN">
+<meta property="og:url" content="https://www.gradmire.com/tools/deadline-tracker">
+<meta property="og:title" content="Application Deadline Tracker for Universities | Gradmire">
+<meta property="og:description" content="Track application deadlines for universities in the UK, USA, Canada and Australia, and see which are urgent. Your list is saved in your browser.">
+<meta property="og:image" content="https://www.gradmire.com/assets/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Gradmire: study abroad, without the guesswork.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Application Deadline Tracker for Universities | Gradmire">
+<meta name="twitter:description" content="Track application deadlines for universities in the UK, USA, Canada and Australia, and see which are urgent. Your list is saved in your browser.">
+<meta name="twitter:image" content="https://www.gradmire.com/assets/og-cover.jpg">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.gradmire.com/"},{"@type":"ListItem","position":2,"name":"Application Deadline Tracker for Universities","item":"https://www.gradmire.com/tools/deadline-tracker"}]}</script>
+<!-- /seo -->
+<script>try{var c=JSON.parse(localStorage.getItem("gm-consent")||"null"),t=(c&&c.preferences&&localStorage.getItem("gradmire-theme"))||sessionStorage.getItem("gradmire-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+<title>Application Deadline Tracker for Universities | Gradmire</title>
 <link rel="icon" href="/assets/favicon-light.ico" sizes="any">
 <link rel="icon" href="/assets/favicon-light.ico" media="(prefers-color-scheme: light)">
 <link rel="icon" href="/assets/favicon-dark.ico" media="(prefers-color-scheme: dark)">
-<meta name="description" content="Track application deadlines for universities in UK, USA, Canada and Australia. Never miss an intake date.">
+<meta name="description" content="Track application deadlines for universities in the UK, USA, Canada and Australia, and see which are urgent. Your list is saved in your browser.">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="preload" href="../../assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../../assets/fonts/fonts.css">
@@ -779,6 +796,15 @@
     .alert-off { border: 0; background: none; color: var(--text-s); text-decoration: underline; }
     .alert-note { margin: .6rem 0 0; font-size: .72rem; color: var(--text-s); }
     :is(.alert-toggle, .alert-actions button, .alert-options input):focus-visible { outline: 3px solid #3C8FD9; outline-offset: 2px; }
+
+.gm-notes{max-width:var(--w,1280px);margin:0 auto;padding:clamp(2.5rem,6vw,4.5rem) var(--gutter,1.5rem);}
+.gm-notes h2{font-size:clamp(1.5rem,3vw,2.2rem);font-weight:800;letter-spacing:-.025em;line-height:1.1;margin:0 0 .6rem;text-wrap:balance;}
+.gm-notes>p{color:var(--text-s);max-width:68ch;margin:0 0 1rem;line-height:1.7;}
+.gm-notes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-top:1.5rem;}
+.gm-notes-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md,16px);padding:1.25rem;}
+.gm-notes-card h3{font-size:1.02rem;font-weight:800;letter-spacing:-.01em;margin:0 0 .4rem;}
+.gm-notes-card p{color:var(--text-s);font-size:.92rem;line-height:1.6;margin:0;}
+.gm-notes a{color:var(--brand);font-weight:700;text-underline-offset:2px;}
 </style>
 <link rel="stylesheet" href="../../assets/site.css?v=28">
 
@@ -848,6 +874,12 @@
     </div>
 </div>
 
+<section class="gm-notes" aria-labelledby="notes-title">
+  <h2 id="notes-title">How the deadline tracker works</h2>
+  <p>Pick the programmes you are interested in and add them to your list. Each one is sorted by how soon its deadline falls, so the urgent ones come first. You can show deadlines for the UK, USA, Canada and Australia.</p>
+  <p>Your list is saved in your browser on this device, so it does not need an account and is not shared between devices. Universities can change their deadlines, so always check the official admissions page before you apply.</p>
+  <p>Next steps: <a href="../application-assistance">get help with applications</a> or <a href="../scholarships">check scholarship deadlines</a>.</p>
+</section>
 <footer class="gm-footer" aria-label="Site footer">
   <div class="gm-footer-inner">
     <div class="gm-footer-brand">
@@ -896,14 +928,14 @@
       <ul class="gm-footer-links">
         <li><a href="../about">About us</a></li>
         <li><a href="../blog">Blog</a></li>
-        <li><a href="../events">Events</a></li>
+        <li><a href="../career">Careers</a></li>
         <li><a href="../faq">FAQs</a></li>
         <li><a href="../contact">Contact</a></li>
         <li><a href="../login">Student login</a></li>
       </ul>
     </nav>
   </div>
-  <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">© 2026 Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · Email: <a href="mailto:info@gradmire.com">info@gradmire.com</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="../privacy">Privacy</a><a href="../terms">Terms</a><a href="../refund-policy">Refunds &amp; fees</a><a href="../cookie-policy">Cookies</a><a href="../data-request">Your data rights</a><a href="../grievance">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
+  <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">© 2026 Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · Email: <a href="mailto:info@gradmire.com">info@gradmire.com</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="../privacy">Privacy</a><a href="../terms">Terms</a><a href="../refund-policy">Refunds &amp; fees</a><a href="../cookie-policy">Cookies</a><a href="../data-request">Your data rights</a><a href="../grievance">Grievance</a><a href="../photo-credits">Photo credits</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
 </footer>
 
 <script>
@@ -1494,4 +1526,4 @@
     renderTracker();
     checkDueAlerts();
 </script>
-<script src="../../assets/site.js?v=34" defer></script>
+<script src="../../assets/site.js?v=35" defer></script>

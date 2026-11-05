@@ -395,7 +395,7 @@
             </button>
             <div class="gm-popup-media">
               <img src="${photo}" alt="Smiling student looking forward to studying abroad" loading="lazy">
-              <p class="gm-popup-media-badge"><strong>47,000+</strong> students placed at universities worldwide</p>
+              <p class="gm-popup-media-badge"><strong>Free</strong> first consultation, no obligation</p>
             </div>
             <div class="gm-popup-body">
               <p class="gm-popup-eyebrow"><span aria-hidden="true"></span>Free 1:1 counselling</p>

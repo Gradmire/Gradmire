@@ -1,0 +1,23 @@
+/* Careers page (/career): role chips, the hero role picker and the "how to apply" panels.
+   Loaded after guide-pages.css, which provides the tokens and the .gp-* layout. */
+.cr-meta { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0 0; padding: 0; list-style: none; }
+.cr-meta li { padding: .3rem .8rem; border-radius: 999px; background: var(--accent-dim); color: var(--text-p); font-size: .78rem; font-weight: 700; }
+
+.cr-roles .gp-card { padding: 1.5rem; }
+.cr-roles .gp-card h3 { font-size: 1.25rem; letter-spacing: -.02em; }
+
+.cr-aside-link { display: grid; gap: .15rem; padding: .85rem 1rem; border: 1px solid var(--border); border-radius: 12px; color: var(--text-p); text-decoration: none; transition: border-color .2s, background .2s; }
+.cr-aside-link strong { font-size: 1rem; letter-spacing: -.01em; }
+.cr-aside-link span { color: var(--text-s); font-size: .85rem; line-height: 1.45; }
+.cr-aside-link:hover, .cr-aside-link:focus-visible { border-color: var(--accent); background: var(--surface-tint); }
+
+.cr-apply { display: grid; gap: .75rem; margin-top: 1.4rem; padding: 1.3rem 1.4rem; background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 0 16px 16px 0; }
+.cr-apply h3 { margin: 0; font-size: 1.05rem; letter-spacing: -.01em; }
+.cr-apply p { margin: 0; max-width: 72ch; color: var(--text-s); font-size: .92rem; }
+.cr-apply p a { color: var(--brand); font-weight: 700; text-underline-offset: 2px; }
+.cr-apply-actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+
+@media (max-width: 640px) {
+    .cr-apply { padding: 1.1rem 1.1rem; }
+    .cr-apply-actions .gp-btn { width: 100%; justify-content: center; }
+}

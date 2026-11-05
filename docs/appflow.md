@@ -17,8 +17,7 @@ Home
 │   └── /universities/{country}/{university-slug}  (detail + courses tab)
 ├── Scholarships  (/scholarships)
 │   └── /scholarships/{destination}/{scholarship-slug}
-├── Events  (/events)
-│   └── /events/{event-slug}
+├── Careers  (/career: study-abroad counsellor and student ambassador roles)
 ├── Services
 │   ├── /services/visa
 │   ├── /services/counselling
@@ -92,6 +91,8 @@ Used on blog posts, course cards, or footer widgets: First name, last name, emai
 4. Destination pages surface top 3 scholarships inline with "View all scholarships" link.
 
 ## 6. Events Flow
+
+> Removed: the public Events page (`/events`) was taken down and now redirects to the home page. This section is kept only as a record of the original plan.
 
 1. `/events` — filter bar: Month, Mode (All/In-Person/Online), Destination, Location/City.
 2. Event card: date, title, mode badge, destination flag, "Register."

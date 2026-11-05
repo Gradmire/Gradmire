@@ -2,6 +2,23 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<!-- seo -->
+<link rel="canonical" href="https://www.gradmire.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Gradmire">
+<meta property="og:locale" content="en_IN">
+<meta property="og:url" content="https://www.gradmire.com/">
+<meta property="og:title" content="Gradmire - Study Abroad Counselling for Indian Students">
+<meta property="og:description" content="Study abroad from India with counselling on destinations, courses and budgets for the UK, USA, Canada, Australia and Europe. Book a free consultation.">
+<meta property="og:image" content="https://www.gradmire.com/assets/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Gradmire: study abroad, without the guesswork.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Gradmire - Study Abroad Counselling for Indian Students">
+<meta name="twitter:description" content="Study abroad from India with counselling on destinations, courses and budgets for the UK, USA, Canada, Australia and Europe. Book a free consultation.">
+<meta name="twitter:image" content="https://www.gradmire.com/assets/og-cover.jpg">
+<!-- /seo -->
 <script>try{var c=JSON.parse(localStorage.getItem("gm-consent")||"null"),t=(c&&c.preferences&&localStorage.getItem("gradmire-theme"))||sessionStorage.getItem("gradmire-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 <link rel="preconnect" href="https://images.unsplash.com">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,16 +27,6 @@
 <link rel="icon" href="/assets/favicon-light.ico" media="(prefers-color-scheme: light)">
 <link rel="icon" href="/assets/favicon-dark.ico" media="(prefers-color-scheme: dark)">
 <meta name="description" content="Study abroad from India with counselling on destinations, courses and budgets for the UK, USA, Canada, Australia and Europe. Book a free consultation.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://www.gradmire.com/">
-<meta property="og:title" content="Gradmire — Study Abroad Counselling for Indian Students">
-<meta property="og:description" content="Study-abroad counselling for Indian students. Expert counsellors for UK, USA, Canada, Australia and Europe. Free consultation.">
-<meta property="og:image" content="https://www.gradmire.com/og-cover.jpg">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Gradmire — Study Abroad Counselling">
-<meta name="twitter:description" content="47,000+ students placed. Expert counsellors for UK, USA, Canada, Australia and Europe.">
-<meta name="twitter:image" content="https://www.gradmire.com/og-cover.jpg">
-<link rel="canonical" href="https://www.gradmire.com/">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -30,8 +37,7 @@
       "name": "Gradmire Education Pvt. Ltd.",
       "url": "https://www.gradmire.com",
       "logo": "https://www.gradmire.com/assets/gradmire-logo.png",
-      "description": "India's trusted study-abroad counselling platform. 47,000+ students placed at universities worldwide since 2006.",
-      "foundingDate": "2006",
+      "description": "Study-abroad counselling for students in India: courses, universities, scholarships and applications.",
       "areaServed": "IN",
       "address": {
         "@type": "PostalAddress",
@@ -46,28 +52,14 @@
         "contactType": "customer service",
         "email": "info@gradmire.com",
         "availableLanguage": ["English", "Hindi"]
-      },
-      "sameAs": ["https://gradmire.vercel.app"]
+      }
     },
     {
       "@type": "WebSite",
       "@id": "https://www.gradmire.com/#website",
       "url": "https://www.gradmire.com",
       "name": "Gradmire",
-      "publisher": {"@id": "https://www.gradmire.com/#organization"},
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://www.gradmire.com/find-courses?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
-    },
-    {
-      "@type": "AggregateRating",
-      "itemReviewed": {"@id": "https://www.gradmire.com/#organization"},
-      "ratingValue": "4.9",
-      "bestRating": "5",
-      "ratingCount": "47000",
-      "reviewCount": "3200"
+      "publisher": {"@id": "https://www.gradmire.com/#organization"}
     }
   ]
 }
@@ -1605,6 +1597,8 @@
     .logo-card { flex: 0 0 auto; display: grid; place-items: center; width: 184px; height: 100px; padding: 1rem 1.35rem; border: 1px solid rgba(14,20,32,.07); border-radius: 16px; background: #fff; box-shadow: 0 6px 18px rgba(14,20,32,.07); transition: transform .28s cubic-bezier(.16,1,.3,1), box-shadow .28s; }
     .logo-card:hover { transform: translateY(-3px); box-shadow: 0 14px 28px rgba(14,20,32,.12); }
     .logo-card img { display: block; width: auto; height: auto; max-width: 100%; max-height: 54px; object-fit: contain; -webkit-user-drag: none; user-select: none; }
+    .logo-card a { text-decoration: none; }
+    .logo-card-name { display: block; color: #1A4870; font-size: 1.05rem; font-weight: 800; line-height: 1.2; letter-spacing: -.01em; text-align: center; text-wrap: balance; }
     .logo-slider-btn { flex: 0 0 auto; display: grid; place-items: center; width: 46px; height: 46px; padding: 0; border: 1px solid var(--border); border-radius: 50%; background: var(--surface); color: var(--text-p); box-shadow: 0 6px 16px rgba(14,20,32,.08); cursor: pointer; transition: transform .2s, border-color .2s, color .2s; }
     .logo-slider-btn:hover { border-color: var(--accent); color: var(--accent); transform: scale(1.05); }
     .logo-slider-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
@@ -1617,6 +1611,7 @@
         .logo-slider-track { gap: .75rem; }
         .logo-card { width: 136px; height: 78px; padding: .75rem 1rem; border-radius: 12px; }
         .logo-card img { max-height: 42px; }
+        .logo-card-name { font-size: .88rem; }
     }
 
     /* ─── Mobile sliders: swipeable rows instead of long stacks ─ */
@@ -1964,7 +1959,7 @@
         <li>Guidance on visa steps and pre-departure</li>
       </ul>
       <p class="stat-lbl">Personal attention · End to end</p>
-      <p class="stat-lbl"><a href="about#team-title">Meet the team →</a></p>
+      <p class="stat-lbl"><a href="about#team-title">How we help →</a></p>
     </article>
     <article class="evidence-card" role="listitem">
       <div class="stat-top"><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M9 3.5 3 5.8v14.7l6-2.3 6 2.3 6-2.3V3.5l-6 2.3-6-2.3Zm6 4.1v10.6l-6-2.3V5.3l6 2.3Z" fill="currentColor"/></svg></span><div class="stat-num">24h</div></div>
@@ -1986,22 +1981,22 @@
 <section class="logo-band" aria-labelledby="partners-title">
     <div class="logo-band-inner">
         <div class="logo-band-head">
-            <p class="logo-band-eyebrow">University network</p>
-            <h2 class="logo-band-title" id="partners-title">Universities our students have attended</h2>
-            <p class="logo-band-note">Selected institutions from Gradmire’s existing student-placement network. Select a logo to see its courses.</p>
+            <p class="logo-band-eyebrow">Explore universities</p>
+            <h2 class="logo-band-title" id="partners-title">Universities you can explore</h2>
+            <p class="logo-band-note">Selected universities from our destination guides. Select a logo to see its example courses in the Course Finder.</p>
         </div>
         <div class="logo-slider" data-logo-slider>
             <button class="logo-slider-btn logo-slider-btn--prev" type="button" aria-label="Previous logos" hidden><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="m15 5-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-            <div class="logo-slider-viewport" tabindex="0" role="region" aria-label="Partner university logos">
+            <div class="logo-slider-viewport" tabindex="0" role="region" aria-label="University logos">
                 <ul class="logo-slider-track">
                 <li class="logo-card" title="University of Oxford · United Kingdom"><a href="find-courses?university=university-of-oxford" aria-label="See courses at University of Oxford"><img src="../assets/logos/universities/oxford.svg" alt="University of Oxford" loading="lazy" decoding="async"></a></li>
                 <li class="logo-card" title="Imperial College London · United Kingdom"><a href="find-courses?university=imperial-college-london" aria-label="See courses at Imperial College London"><img src="../assets/logos/universities/imperial.svg" alt="Imperial College London" loading="lazy" decoding="async"></a></li>
-                <li class="logo-card" title="University of Toronto · Canada"><a href="find-courses?university=university-of-toronto" aria-label="See courses at University of Toronto"><img src="../assets/logos/universities/toronto.svg" alt="University of Toronto" loading="lazy" decoding="async"></a></li>
-                <li class="logo-card" title="University of Melbourne · Australia"><a href="find-courses?university=university-of-melbourne" aria-label="See courses at University of Melbourne"><img src="../assets/logos/universities/melbourne.svg" alt="University of Melbourne" loading="lazy" decoding="async"></a></li>
+                <li class="logo-card" title="University of Toronto · Canada"><a href="find-courses?university=university-of-toronto" aria-label="See courses at University of Toronto"><span class="logo-card-name">University of Toronto</span></a></li>
+                <li class="logo-card" title="University of Melbourne · Australia"><a href="find-courses?university=university-of-melbourne" aria-label="See courses at University of Melbourne"><span class="logo-card-name">University of Melbourne</span></a></li>
                 <li class="logo-card" title="Technical University of Munich · Germany"><a href="find-courses?university=technical-university-of-munich" aria-label="See courses at Technical University of Munich"><img src="../assets/logos/universities/tum.svg" alt="Technical University of Munich" loading="lazy" decoding="async"></a></li>
-                <li class="logo-card" title="National University of Singapore · Singapore"><img src="../assets/logos/universities/nus.svg" alt="National University of Singapore" loading="lazy" decoding="async"></li>
+                <li class="logo-card" title="National University of Singapore · Singapore"><span class="logo-card-name">National University of Singapore</span></li>
                 <li class="logo-card" title="McGill University · Canada"><a href="find-courses?university=mcgill-university" aria-label="See courses at McGill University"><img src="../assets/logos/universities/mcgill.png" alt="McGill University" loading="lazy" decoding="async"></a></li>
-                <li class="logo-card" title="University of Edinburgh · United Kingdom"><a href="find-courses?university=university-of-edinburgh" aria-label="See courses at University of Edinburgh"><img src="../assets/logos/universities/edinburgh.svg" alt="University of Edinburgh" loading="lazy" decoding="async"></a></li>
+                <li class="logo-card" title="University of Edinburgh · United Kingdom"><a href="find-courses?university=university-of-edinburgh" aria-label="See courses at University of Edinburgh"><span class="logo-card-name">University of Edinburgh</span></a></li>
                 </ul>
             </div>
             <button class="logo-slider-btn logo-slider-btn--next" type="button" aria-label="Next logos" hidden><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
@@ -2024,7 +2019,7 @@
                 <li class="logo-card" title="Amazon"><img src="../assets/logos/recruiters/amazon.svg" alt="Amazon" loading="lazy" decoding="async"></li>
                 <li class="logo-card" title="Facebook (Meta)"><img src="../assets/logos/recruiters/facebook.svg" alt="Facebook (Meta)" loading="lazy" decoding="async"></li>
                 <li class="logo-card" title="Deloitte"><img src="../assets/logos/recruiters/deloitte.svg" alt="Deloitte" loading="lazy" decoding="async"></li>
-                <li class="logo-card" title="Capgemini"><img src="../assets/logos/recruiters/capgemini.svg" alt="Capgemini" loading="lazy" decoding="async"></li>
+                <li class="logo-card" title="Capgemini"><span class="logo-card-name">Capgemini</span></li>
                 <li class="logo-card" title="Google"><img src="../assets/logos/recruiters/google.svg" alt="Google" loading="lazy" decoding="async"></li>
                 <li class="logo-card" title="Microsoft"><img src="../assets/logos/recruiters/microsoft.svg" alt="Microsoft" loading="lazy" decoding="async"></li>
                 <li class="logo-card" title="Accenture"><img src="../assets/logos/recruiters/accenture.svg" alt="Accenture" loading="lazy" decoding="async"></li>
@@ -2142,46 +2137,6 @@
     </div>
 </section>
 
-<!-- VOICES -->
-<section class="voices" aria-labelledby="voices-title">
-    <div class="sec-head reveal-slow">
-        <h2 class="sec-title" id="voices-title">Student testimonials: individual journeys, personal outcomes.</h2>
-        <p class="sec-body">Each student’s experience is different; admissions and scholarship outcomes depend on individual circumstances.</p>
-    </div>
-    <div class="voices-grid m-slider" aria-label="Student testimonials">
-        <div class="voice reveal spotlight-card" data-spotlight>
-            <blockquote class="voice-q">I had three offers from UK universities within six weeks of my first session. My counsellor knew which professors matched my research interests before I did.</blockquote>
-            <div class="voice-attr">
-                <span class="voice-avatar" aria-hidden="true">AK</span>
-                <div>
-                    <div class="voice-name">Aryan Kapoor</div>
-                    <div class="voice-detail">MSc Finance, London School of Economics</div>
-                </div>
-            </div>
-        </div>
-        <div class="voice reveal spotlight-card" data-spotlight style="transition-delay:.12s">
-            <blockquote class="voice-q">They found me a scholarship that cut my tuition by 40 percent. My parents stopped worrying the day we got the offer letter from Toronto.</blockquote>
-            <div class="voice-attr">
-                <span class="voice-avatar" aria-hidden="true">DM</span>
-                <div>
-                    <div class="voice-name">Diya Menon</div>
-                    <div class="voice-detail">BSc Computer Science, University of Toronto</div>
-                </div>
-            </div>
-        </div>
-        <div class="voice reveal spotlight-card" data-spotlight style="transition-delay:.22s">
-            <blockquote class="voice-q">Siddharth guided me through the APS verification and DAAD application. I got into TU Munich's engineering programme with a full scholarship. Zero tuition fees.</blockquote>
-            <div class="voice-attr">
-                <span class="voice-avatar" aria-hidden="true">VR</span>
-                <div>
-                    <div class="voice-name">Vikram Reddy</div>
-                    <div class="voice-detail">MEng Mechanical Engineering, TU Munich</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
 <!-- SCHOLARSHIPS -->
 <section class="scholarships" id="scholarships" aria-labelledby="schol-title">
     <div class="schol-inner">
@@ -2293,14 +2248,14 @@
       <ul class="gm-footer-links">
         <li><a href="about">About us</a></li>
         <li><a href="blog">Blog</a></li>
-        <li><a href="events">Events</a></li>
+        <li><a href="career">Careers</a></li>
         <li><a href="faq">FAQs</a></li>
         <li><a href="contact">Contact</a></li>
         <li><a href="login">Student login</a></li>
       </ul>
     </nav>
   </div>
-  <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">© 2026 Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · Email: <a href="mailto:info@gradmire.com">info@gradmire.com</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy">Privacy</a><a href="terms">Terms</a><a href="refund-policy">Refunds &amp; fees</a><a href="cookie-policy">Cookies</a><a href="data-request">Your data rights</a><a href="grievance">Grievance</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
+  <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">© 2026 Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · Email: <a href="mailto:info@gradmire.com">info@gradmire.com</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy">Privacy</a><a href="terms">Terms</a><a href="refund-policy">Refunds &amp; fees</a><a href="cookie-policy">Cookies</a><a href="data-request">Your data rights</a><a href="grievance">Grievance</a><a href="photo-credits">Photo credits</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
 </footer>
 
 <script>
@@ -2771,7 +2726,7 @@
     });
 </script>
 
-<script src="../assets/site.js?v=34" defer></script>
+<script src="../assets/site.js?v=35" defer></script>
 
 </body>
 </html>

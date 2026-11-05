@@ -20,9 +20,9 @@ const PAYLOAD_TEMPLATES = new Set(['password_changed', 'staff_calendar_failed', 
 export async function enqueueNotification(client, { consultationId = null, userId = null, template, recipient, dedupeKey, payload = {}, scheduledFor = null }) {
     await client.query(
         `INSERT INTO notifications (id, consultation_id, user_id, channel, template, recipient, dedupe_key, payload, scheduled_for)
-         VALUES ($1, $2, $3, 'email', $4, $5, $6, $7, COALESCE($8, NOW()))
+         VALUES ($1, $2, $3, 'email', $4, $5, $6, $7, $8)
          ON CONFLICT (dedupe_key) DO NOTHING`,
-        [crypto.randomUUID(), consultationId, userId, template, recipient, dedupeKey, JSON.stringify(payload), scheduledFor],
+        [crypto.randomUUID(), consultationId, userId, template, recipient, dedupeKey, JSON.stringify(payload), scheduledFor ?? now()],
     );
 }
 
