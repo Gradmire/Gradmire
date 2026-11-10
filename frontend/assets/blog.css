@@ -7,7 +7,8 @@
 
 /* Article body: comfortable reading width for text, full width for tables and cards */
 .bl-article .gp-lead-text, .bl-article .gp-note { max-width: 70ch; }
-.bl-article .gp-check, .bl-article .gp-steps { max-width: 78ch; }
+/* Checklists keep a reading width. The steps are a grid of cards and use the full width (a 78ch limit squeezed them into a narrow strip). */
+.bl-article .gp-check { max-width: 78ch; }
 .bl-article .gp-card ul { padding-left: 1.1rem; }
 .bl-sources { margin: 1rem 0 0; padding-left: 1.2rem; color: var(--text-s); display: grid; gap: .45rem; }
 .bl-sources a { color: var(--brand); text-underline-offset: 2px; overflow-wrap: anywhere; }

@@ -11,8 +11,8 @@ import path from 'node:path';
 
 const pagesRoot = path.resolve('frontend/pages');
 const SKIP = new Set(['404', 'login', 'signup', 'reset-password']);
-const CSS = 'mobile-app.css?v=12';
-const JS = 'mobile-app.js?v=5';
+const CSS = 'mobile-app.css?v=13';
+const JS = 'mobile-app.js?v=6';
 
 const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true })
     .flatMap((e) => (e.isDirectory() ? walk(path.join(dir, e.name)) : [path.join(dir, e.name)]));
@@ -30,7 +30,9 @@ const TABS = [
     { id: 'plan', href: '/study-abroad-2027', label: '2027', match: (s) => /-2027$/.test(s) || s === 'blog',
       svg: icon('<path d="M5 4.8A1.8 1.8 0 0 1 6.8 3H19v14H6.8A1.8 1.8 0 0 0 5 18.8z"/><path d="M5 18.8A1.8 1.8 0 0 0 6.8 20.5H19v-3.5M9 7.5h6M9 11h4"/>') },
     { id: 'more', href: '/about', label: 'Menu', match: (s) => /^(about|faq|contact|career|gradmire)$/.test(s),
-      svg: icon('<path d="M4 7h16M4 12h16M4 17h16"/>') }
+      /* The phone header has no menu button, so this tab is the only way in. A grid icon (not three lines) that turns into a cross while the menu is open. */
+      svg: icon('<rect x="4" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.6"/>').replace('<svg ', '<svg class="gm-ico-open" ')
+         + icon('<path d="M6 6l12 12M18 6 6 18"/>').replace('<svg ', '<svg class="gm-ico-close" ') }
 ];
 
 function tabbar(slug) {

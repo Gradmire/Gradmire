@@ -65,9 +65,20 @@ body:has(.gm-tabbar) { padding-bottom: calc(var(--gm-tab-h) + env(safe-area-inse
 }
 @keyframes gm-shine { 0%, 55% { background-position: 160% 0; } 100% { background-position: -60% 0; } }
 
-/* Hide the bar while the keyboard is open, a menu is open or a sheet covers the page. */
-html.gm-kb .gm-tabbar, html.nav-open .gm-tabbar { transform: translateY(calc(100% + 36px)); opacity: 0; pointer-events: none; }
+/* Hide the bar while the keyboard is open or a sheet covers the page. It stays while the menu is open, because it is the only way to close it. */
+html.gm-kb .gm-tabbar { transform: translateY(calc(100% + 36px)); opacity: 0; pointer-events: none; }
 html.gm-popup-open .gm-tabbar { opacity: .0; pointer-events: none; }
+
+/* No three-line button in the header on phones: the Menu tab opens and closes the menu. */
+.nav-ham { display: none !important; }
+.nav-mobile { padding-bottom: calc(var(--gm-tab-h) + 1.5rem + env(safe-area-inset-bottom, 0px)); }
+.gm-tab[data-gm-menu] .gm-ico-close, .gm-tab[data-gm-menu].is-open .gm-ico-open { display: none; }
+.gm-tab[data-gm-menu].is-open .gm-ico-close { display: block; }
+.gm-tab[data-gm-menu].is-open { color: var(--accent-text, var(--accent, #007A5A)); }
+:root:not([data-theme="dark"]) .gm-tab[data-gm-menu].is-open { color: #005C44; }
+.gm-tab[data-gm-menu].is-open::before { content: ""; position: absolute; top: 11px; left: 50%; width: 46px; height: 28px; margin-left: -23px; border-radius: 999px; background: var(--accent-dim, rgba(0, 122, 90, .12)); z-index: -1; }
+/* While the menu is open the current page's tab stops looking selected. */
+html.nav-open .gm-tab[aria-current="page"]:not([data-gm-menu])::before { display: none; }
 
 /* The floating consultation button duplicates the Book tab, so it steps aside. */
 .gm-consult-fab { display: none !important; }

@@ -8,7 +8,7 @@ import { esc, section, faq, cta, shell, write } from './page-shell.mjs';
 import { posts, PUBLISHED, MODIFIED, REVIEWED_LABEL } from './blog-data.mjs';
 
 const SITE = 'https://www.gradmire.com';
-const BLOG_CSS = 'blog.css?v=3';
+const BLOG_CSS = 'blog.css?v=4';
 const crumbs = (items) => items.map(([label, href], i) => (i === items.length - 1
     ? `<span aria-current="page">${esc(label)}</span>`
     : `<a href="${href}">${esc(label)}</a>`)).join(' <span aria-hidden="true">/</span> ');
