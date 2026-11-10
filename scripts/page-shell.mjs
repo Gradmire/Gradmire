@@ -4,13 +4,14 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { footerHtml } from './footer.mjs';
+import { PHOTOS, COUNTRY_PHOTOS } from './photo-data.mjs';
 
 export const pagesDir = path.resolve('frontend/pages');
 const template = fs.readFileSync(path.join(pagesDir, 'study-in-finland.html'), 'utf8');
 const navHtml = template.match(/<nav class="nav[\s\S]*?<\/nav>/)[0];
 const siteCss = template.match(/site\.css\?v=\d+/)[0];
 const siteJs = fs.readFileSync(path.join(pagesDir, 'index.html'), 'utf8').match(/site\.js\?v=\d+/)[0];
-const GUIDE_CSS = 'guide-pages.css?v=5';
+const GUIDE_CSS = 'guide-pages.css?v=7';
 
 export const esc = (value) => String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 /* Text that may carry a link we wrote ourselves is passed through; everything else is escaped. */
@@ -60,6 +61,28 @@ export function leadForm({ id, interest, country = '', exam = '', scholarship = 
 </form>`;
 }
 
+/* A photo from the WebP sets in assets/photos, with a small and a large size so phones download the small one.
+   `variant`: "band" is a wide strip under the hero; "side" is a smaller picture inside a section. */
+export function photo(key, variant = 'band') {
+    const p = PHOTOS[key];
+    if (!p) throw new Error(`No photo called ${key} in scripts/photo-data.mjs`);
+    const base = `../assets/photos/${key}`;
+    return `<figure class="gp-photo gp-photo--${variant}">
+  <img src="${base}-960.webp" srcset="${base}-640.webp 640w, ${base}-960.webp 960w" sizes="${variant === 'band' ? '(max-width: 1200px) 100vw, 1160px' : '(max-width: 800px) 100vw, 760px'}" width="${p.w}" height="${p.h}" alt="${esc(p.alt)}" style="object-position:${p.pos}" loading="lazy" decoding="async">
+  <figcaption>${esc(p.caption)} <a href="photo-credits">Photo credit</a></figcaption>
+</figure>`;
+}
+
+/* A university photo that is already on a country guide (credited on the Photo credits page). */
+export function countryPhoto(slug, variant = 'band') {
+    const p = COUNTRY_PHOTOS[slug];
+    if (!p) return '';
+    return `<figure class="gp-photo gp-photo--${variant}">
+  <img src="../assets/${p.file}" width="${p.w}" height="${p.h}" alt="${esc(`A building at the ${p.name}`)}" loading="lazy" decoding="async">
+  <figcaption>${esc(p.name)} <a href="photo-credits">Photo credit</a></figcaption>
+</figure>`;
+}
+
 export function hero({ crumbs, eyebrow, title, intro, actions, form }) {
     const trail = crumbs.map(([label, href], i) => (i === crumbs.length - 1
         ? `<span aria-current="page">${esc(label)}</span>`
@@ -97,6 +120,17 @@ ${items.map((i) => `  <li>${i}</li>`).join('\n')}
 </${numbered ? 'ol' : 'ul'}>`;
 
 export const faq = (items) => items.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${rich(a)}</p></details>`).join('\n');
+
+/* A strip of Gradmire's own free tools before the closing call to action: a quiet in-page promo that also links the pages together. */
+const FREE_TOOLS = [
+    ['Study cost calculator', 'Add tuition, living and test costs, then set the total against your expected salary.', 'tools/roi-calculator', 'Use the calculator'],
+    ['Course comparator', 'Compare courses side by side before you choose.', 'tools/comparator', 'Compare courses'],
+    ['Deadline tracker', 'Track application deadlines and see which are urgent.', 'tools/deadline-tracker', 'Track deadlines'],
+    ['GPA / CGPA converter', 'Estimate an equivalent percentage or GPA scale as a starting point.', 'tools/grade-converter', 'Convert a grade']
+];
+export const toolsStrip = () => section({ id: 'free-tools', tag: 'Free tools', title: 'Plan with our free tools', body: `<div class="gp-tools">
+${FREE_TOOLS.map(([t, p, href, label]) => `    <article class="gp-card"><h3>${esc(t)}</h3><p>${esc(p)}</p><a class="gp-uni-cta" href="${href}">${esc(label)} <span aria-hidden="true">→</span></a></article>`).join('\n')}
+  </div>` });
 
 export const cta = ({ title, text, href, label, country = '', exam = '' }) => `<div class="gp-cta">
   <h2>${esc(title)}</h2>

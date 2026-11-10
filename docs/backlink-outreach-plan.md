@@ -1,6 +1,6 @@
 # Backlink outreach plan
 
-Prepared 2 November 2026. A **backlink** is a link from another website to Gradmire. It cannot be added from inside this site; it has to be earned or requested. This plan lists what to fix first, what to offer, and who to ask, in the order that is most likely to work for a new site.
+Prepared 2 November 2026, extended 10 November 2026 (section 10). A **backlink** is a link from another website to Gradmire. It cannot be added from inside this site; it has to be earned or requested. This plan lists what to fix first, what to offer, and who to ask, in the order that is most likely to work for a new site.
 
 **Principles**
 
@@ -131,8 +131,63 @@ A realistic first goal for a new site is a handful of relevant, trustworthy link
 | 4 to 8 | Build one new data asset with sources. Start expert-platform responses. Contact student societies through ambassadors. |
 | 8 to 12 | Resource-page and broken-link outreach. Pitch one dated policy explainer to education reporters. Review the tracker and drop what is not working. |
 
+## 10. Second round (10 November 2026): local listings, events, tools and rules
+
+Added after the two offices were confirmed (Kanpur and Greater Noida). The searches below were summarised from search snippets; where a claim comes only from blogs or from consultancies' own marketing it is marked **unverified**. Check each point on the organisation's own site before acting.
+
+### 10.1 Local listings for the two offices
+
+The one rule that matters: **the same name, address and phone number, word for word, everywhere** (the Contact page is the master copy). Before any listing, replace the placeholder-looking Delhi phone number on the Contact page with a real business number, or leave the phone field out of listings.
+
+| Target | What to do | Notes |
+|---|---|---|
+| [Google Business Profile guidelines](https://support.google.com/business/answer/3038177) | Read them first. One profile per office, only if the office is staffed and can receive visitors during the hours you list | The address must be accurate and precise, with no P.O. boxes or mail-forwarding addresses. A secondary report says Google changed its service-area rules in June 2025 (no countries or states as areas, a drive-time limit): **unverified**, so read the live page |
+| [Justdial free listing](https://www.justdial.com/Free-Listing) and Sulekha | Free listings exist alongside paid tiers. Use the free tier only | Blogs suggest Google first, then Justdial. I found no Kanpur-specific directory. Never buy a "ranking" package |
+| Dun & Bradstreet and GlobalLinker (Noida education categories) | Optional, low priority | They list education-support businesses in Noida. Little value beyond confirming the business exists |
+| Greater Noida and Kanpur business associations | Ask the Confederation of Indian Industry or FICCI regional offices, and local chambers, whether member directories exist | I found no dedicated Greater Noida chamber directory in the results, so this is a question to ask, not a known listing |
+
+### 10.2 Memberships and credentials (verify before mentioning anywhere)
+
+Several Indian consultancies advertise membership of AAERI, AIRC, ICEF and NAFSA, and a Gold membership of the British Council India. Those are the firms' own claims in marketing pages and listicles (**unverified**). Find each body's official site, read the join criteria, and apply only if Gradmire genuinely qualifies. **Never show a badge or a "member of" line on the site until it is earned and checkable.** ICEF's agent training (section 3) remains the most concrete step.
+
+### 10.3 Events, local press and partners
+
+- **Education fairs.** Recent examples near the two offices: the Educatus Expo in [Kanpur](https://www.kanpurwants.com/events/educatus-expo-kanpur-2026-explore-top-education-career-opportunities) (May 2026), an Education and Career Fair in Kanpur (May 2026), and MetaApply IE's fair in Noida (June 2025). I found no 2027 dates, so contact the organisers and ask. Exhibiting or presenting can earn a listing on the event's site (sponsor pages usually carry `rel="sponsored"`, which is fine) and local news coverage.
+- **Local press.** The founder story on the About page is the hook for Kanpur and Greater Noida outlets: a new, fee-only counselling company with two local offices. Offer a free scholarship or cost-planning workshop for students and parents, and a named person to quote. Do not make claims you cannot source.
+- **Universities and schools nearby.** Offer to run a free session for a school or college careers cell and ask whether their resources page can list the grade converter or the scholarship pages.
+
+### 10.4 Free tools: how to earn links honestly
+
+The evidence is thin. Practitioner guides say a tool earns links only if it is genuinely useful, works on phones, and has an explanation page; I found **no controlled study** of how many links a tool brings, and the tactic is often oversold. Forum reports say a widget loaded in an iframe links back to the owner's own site rather than counting as a link from the site that embeds it. So:
+
+- Prefer a plain text link over an iframe. Every tool page now has a **"Link to this tool"** box (a ready-made HTML link and a one-line citation) that people can paste into a resource page, a blog or a university's pre-arrival guide.
+- Test it small: track referring domains in Search Console for the four tool pages for 90 days before building more tools.
+- Each tool page keeps its plain statement that results are estimates and that universities set their own rules. That honesty is what makes it safe for others to cite.
+
+### 10.5 Google's rules to stay inside
+
+Google's [spam policies](https://developers.google.com/search/docs/essentials/spam-policies) treat links made mainly to manipulate rankings as link spam. Paid or sponsored links are acceptable only when tagged `rel="sponsored"` (or `nofollow`), and user-generated links with `rel="ugc"`. Google's [link tagging guidance](https://developers.google.com/search/blog/2021/07/link-tagging-and-link-spam-update) warns that excessive untagged sponsored or guest-post links can bring manual or algorithmic action. In practice: no paid links without `rel="sponsored"`, no link swaps, no mass directory submissions, no comment or forum link drops.
+
+### 10.6 What on the site now supports this
+
+- Two offices on one consistent address (footer, Contact, About, structured data), ready for matching listings.
+- A named founder with a photo and `Person` markup (About), and `sameAs` ready for each profile once the URLs exist (`scripts/social.mjs`).
+- A public [Photo credits](https://www.gradmire.com/photo-credits) page that credits every photo, which journalists and editors look for.
+- A "Free tools" strip on the MBBS, student-service and scholarship pages, and a "Link to this tool" box on each tool, so related pages link to each other.
+
+### 10.7 Added to the 90-day order
+
+| Weeks | Do |
+|---|---|
+| 1 to 2 | Replace the placeholder phone number. Create Google Business Profiles for each staffed office after reading the guidelines. Free Justdial listing with the exact same details |
+| 2 to 6 | Ask the Kanpur and Noida fair organisers about 2027 dates. Look up AAERI, AIRC, ICEF and NAFSA on their own sites and note what Gradmire qualifies for |
+| 4 to 12 | Pitch the founder story and a free workshop to two local outlets. Offer one school or college careers cell a free session. Review referring domains for the four tools |
+
 ## Sources checked
 
+- [Google: guidelines for representing your business](https://support.google.com/business/answer/3038177), [spam policies](https://developers.google.com/search/docs/essentials/spam-policies), [link tagging and link spam update](https://developers.google.com/search/blog/2021/07/link-tagging-and-link-spam-update)
+- [Justdial free listing](https://www.justdial.com/Free-Listing) (reached through blog guides to free listings in India; Kanpur-specific details not found)
+- [Educatus Expo, Kanpur 2026](https://www.kanpurwants.com/events/educatus-expo-kanpur-2026-explore-top-education-career-opportunities), [MetaApply IE fair, Noida 2025](https://www.tribuneindia.com/news/business/metaapply-ie-is-set-to-host-international-education-fair-2025-across-major-indian-cities), [Edwise World Education Fair](https://www.edwiseinternational.com/blogs/world-education-fair-April-May-2026.html)
 - [ICEF Agent Training Course](https://icef.com/agent-training/icef-agent-training-course-iatc) and [ITAC list](https://www.icef.com/icef-agent-training/iatc/itac-finder/itac-list/)
 - [British Council: agents' training programme in India](https://opportunities-insight.britishcouncil.org/news/reports/agents-training-programme-india)
 - [Indiastudychannel](https://www.indiastudychannel.com/business/category-1-study-abroad-consultants), [Ternrise](https://ternrise.com/), [Careers360](https://studyabroad.careers360.com/articles/study-abroad-consultants-in-india)

@@ -1174,6 +1174,10 @@ a.gm-social-link:active { transform: scale(.94); }
 .logo-card > a:focus-visible { outline: 3px solid #3C8FD9; outline-offset: 4px; }
 
 /* "Log in" link beside the consultation button (desktop nav). */
+/* Header call-to-action fallback: a page whose own CSS does not style .nav-btn (the grade converter did not) still gets the green pill
+   instead of a bare underlined link. :where() keeps this at the lowest specificity, so any page that does style it keeps its own look. */
+:where(.nav-inner) > .nav-btn { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; min-height: 42px; padding: .5rem 1.15rem; border-radius: 999px; background: var(--accent, #007A5A); color: #fff; font-family: var(--sans, system-ui, sans-serif); font-size: .84rem; font-weight: 700; text-decoration: none; white-space: nowrap; transition: background .2s; }
+:where(.nav-inner) > .nav-btn:hover { background: var(--accent-hover, #006649); }
 .nav-login { flex: 0 0 auto; display: inline-flex; align-items: center; min-height: 42px; padding: .4rem .7rem; border-radius: 999px; color: var(--text-p); font-size: .8rem; font-weight: 700; text-decoration: none; white-space: nowrap; }
 .nav-login:hover { background: var(--surface-tint); }
 .nav-login:focus-visible { outline: 3px solid #3C8FD9; outline-offset: 2px; }
@@ -1232,3 +1236,17 @@ a.gm-social-link:active { transform: scale(.94); }
 .nav-mobile a.btn.btn-primary { background: var(--accent, #007A5A); border: 1px solid var(--accent, #007A5A); border-radius: 999px; font-weight: 700; text-decoration: none; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .nav-mobile a.btn.btn-primary { background: #007A5A; border-color: #007A5A; } }
 :root[data-theme="dark"] .nav-mobile a.btn.btn-primary { background: #007A5A; border-color: #007A5A; }
+
+/* "Link to this tool" box at the end of each tool page (site.js, setupToolShare) */
+.gm-share { max-width: 760px; margin: 2.5rem auto 0; padding: 1.25rem 1.35rem; border: 1px solid var(--border, rgba(14, 20, 32, .1)); border-radius: 18px; background: var(--surface, #fff); color: var(--text-p, #0E1420); }
+.gm-share h2 { margin: 0 0 .3rem; font-size: 1.15rem; font-weight: 800; letter-spacing: -.01em; }
+.gm-share p { margin: 0 0 .8rem; color: var(--text-s, #556270); font-size: .9rem; line-height: 1.55; }
+.gm-share-label { display: block; margin: 0 0 .3rem; font: 700 .7rem var(--mono, monospace); letter-spacing: .08em; text-transform: uppercase; color: var(--text-s, #556270); }
+.gm-share-row { display: flex; gap: .6rem; align-items: stretch; margin-bottom: .8rem; }
+.gm-share-row textarea { flex: 1 1 auto; min-width: 0; padding: .6rem .75rem; border: 1.5px solid var(--border, rgba(14, 20, 32, .12)); border-radius: 12px; background: var(--bg, #F0F2F7); color: var(--text-p, #0E1420); font: 500 .82rem/1.45 var(--mono, monospace); resize: none; }
+.gm-share-copy { flex: 0 0 auto; align-self: flex-start; min-height: 44px; padding: .6rem 1.1rem; border: 0; border-radius: 999px; background: var(--accent, #007A5A); color: #fff; font: 700 .88rem var(--sans, system-ui, sans-serif); cursor: pointer; }
+.gm-share-copy:hover { background: var(--accent-hover, #006649); }
+.gm-share-copy:focus-visible, .gm-share-row textarea:focus-visible { outline: 3px solid var(--accent, #007A5A); outline-offset: 2px; }
+.gm-share-cite { overflow-wrap: anywhere; }
+.gm-share-status { min-height: 1.2em; margin: 0 !important; font-weight: 700; color: var(--accent-text, #005C44) !important; }
+@media (max-width: 560px) { .gm-share-row { flex-direction: column; } .gm-share-copy { align-self: stretch; } }

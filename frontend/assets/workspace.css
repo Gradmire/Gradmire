@@ -127,3 +127,8 @@ a.crm-stat { display: block; text-decoration: none; }
     .sd-stage::before { top: 11px; left: calc(-50% + 14px); right: calc(50% + 14px); width: auto; height: 3px; }
     .sd-stage:first-child::before { display: none; }
 }
+
+/* "Visit an office" panel on the student dashboard */
+.sd-offices li { display: grid; gap: .1rem; }
+.sd-offices strong { font-size: .95rem; }
+.sd-offices span { color: var(--text-s); font-size: .86rem; line-height: 1.4; }

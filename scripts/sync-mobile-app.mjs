@@ -11,8 +11,8 @@ import path from 'node:path';
 
 const pagesRoot = path.resolve('frontend/pages');
 const SKIP = new Set(['404', 'login', 'signup', 'reset-password']);
-const CSS = 'mobile-app.css?v=20';
-const JS = 'mobile-app.js?v=7';
+const CSS = 'mobile-app.css?v=21';
+const JS = 'mobile-app.js?v=8';
 
 const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true })
     .flatMap((e) => (e.isDirectory() ? walk(path.join(dir, e.name)) : [path.join(dir, e.name)]));

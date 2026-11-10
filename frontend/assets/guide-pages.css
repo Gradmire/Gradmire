@@ -377,3 +377,24 @@ body.guide-page { margin: 0; background: var(--bg); color: var(--text-p); font: 
 .as-form h3 { margin: 0 0 .8rem; }
 .as-form textarea, .as-form input, .as-form select { width: 100%; }
 @media (max-width: 860px) { .as-layout { grid-template-columns: 1fr; } }
+
+/* Photos on the MBBS, student-service and scholarship pages (built by scripts/page-shell.mjs, credited on /photo-credits). */
+.gp-photo { margin: 0; overflow: hidden; border: 1px solid var(--border); border-radius: 22px; background: var(--surface-tint, #E8EBF4); }
+.gp-photo img { display: block; width: 100%; height: auto; object-fit: cover; }
+.gp-photo figcaption { padding: .65rem 1rem .8rem; color: var(--text-s); font-size: .8rem; line-height: 1.45; }
+.gp-photo figcaption a { color: inherit; text-underline-offset: 2px; }
+.gp-photo--band { margin: 1.6rem 0 .4rem; }
+.gp-photo--band img { aspect-ratio: 21 / 9; }
+.gp-photo--side { max-width: 760px; margin: 1.6rem auto 0; }
+.gp-photo--side img { aspect-ratio: 16 / 9; }
+@media (max-width: 640px) {
+    .gp-photo { border-radius: 18px; }
+    .gp-photo--band img { aspect-ratio: 16 / 10; }
+}
+
+/* "Free tools" strip before the closing call to action (scripts/page-shell.mjs, toolsStrip) */
+.gp-tools { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin-top: 1.4rem; }
+.gp-tools .gp-card { display: flex; flex-direction: column; gap: .35rem; }
+.gp-tools .gp-card p { margin: 0; }
+.gp-tools .gp-uni-cta { margin-top: auto; padding-top: .6rem; }
+@media (max-width: 960px) { .gp-tools { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
