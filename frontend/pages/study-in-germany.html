@@ -173,7 +173,7 @@ footer{background:#0E1420;color:rgba(255,255,255,.7);padding:clamp(2rem,4vw,3.5r
 .image-attribution a{color:var(--brand);text-underline-offset:2px;}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px;}
 </style>
-<link rel="stylesheet" href="../assets/site.css?v=28">
+<link rel="stylesheet" href="../assets/site.css?v=30">
 <!-- mobile-app -->
 <meta name="theme-color" content="#F0F2F7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0A0D16" media="(prefers-color-scheme: dark)">
@@ -183,7 +183,8 @@ footer{background:#0E1420;color:rgba(255,255,255,.7);padding:clamp(2rem,4vw,3.5r
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Gradmire">
 <style>.gm-tabbar{display:none}</style>
-<link rel="stylesheet" href="../assets/mobile-app.css?v=4" media="(max-width: 760px)">
+<script>try{var n=navigator.connection;if((n&&(n.saveData||/(^|-)2g$/.test(n.effectiveType)))||matchMedia("(prefers-reduced-data: reduce)").matches)document.documentElement.classList.add("gm-lite")}catch(e){}</script>
+<link rel="stylesheet" href="../assets/mobile-app.css?v=12" media="(max-width: 760px)">
 <script src="../assets/mobile-app.js?v=5" defer></script>
 <!-- /mobile-app -->
 </head>
@@ -636,7 +637,7 @@ footer{background:#0E1420;color:rgba(255,255,255,.7);padding:clamp(2rem,4vw,3.5r
       </ul>
     </nav>
   </div>
-  <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">© 2026 Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · Email: <a href="mailto:info@gradmire.com">info@gradmire.com</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy">Privacy</a><a href="terms">Terms</a><a href="refund-policy">Refunds &amp; fees</a><a href="cookie-policy">Cookies</a><a href="data-request">Your data rights</a><a href="grievance">Grievance</a><a href="photo-credits">Photo credits</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
+  <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">© 2026 Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · Email: <a href="mailto:info@gradmire.com">info@gradmire.com</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy">Privacy</a><a href="terms">Terms</a><a class="gm-legal-more" href="refund-policy">Refunds &amp; fees</a><a class="gm-legal-more" href="cookie-policy">Cookies</a><a class="gm-legal-more" href="data-request">Your data rights</a><a class="gm-legal-more" href="grievance">Grievance</a><a class="gm-legal-more" href="photo-credits">Photo credits</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
 </footer>
 
 <script>
@@ -691,6 +692,6 @@ sections.forEach(s => so.observe(s));
 <a class="gm-tab" href="/about" data-gm-menu><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span class="gm-tab-label">Menu</span></a>
 </nav>
 <!-- /gm-tabbar -->
-<script src="../assets/site.js?v=37" defer></script>
+<script src="../assets/site.js?v=39" defer></script>
 </body>
 </html>

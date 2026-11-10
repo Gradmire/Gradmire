@@ -26,9 +26,10 @@ const columns = [
     ]]
 ];
 
+/* The third value marks links that phones hide in the footer (they are in the phone menu instead). */
 const legal = [
-    ['Privacy', 'privacy'], ['Terms', 'terms'], ['Refunds &amp; fees', 'refund-policy'],
-    ['Cookies', 'cookie-policy'], ['Your data rights', 'data-request'], ['Grievance', 'grievance'], ['Photo credits', 'photo-credits']
+    ['Privacy', 'privacy'], ['Terms', 'terms'], ['Refunds &amp; fees', 'refund-policy', true],
+    ['Cookies', 'cookie-policy', true], ['Your data rights', 'data-request', true], ['Grievance', 'grievance', true], ['Photo credits', 'photo-credits', true]
 ];
 
 export function footerHtml(prefix = '') {
@@ -48,6 +49,6 @@ ${links.map(([label, path]) => `        <li><a href="${href(path)}">${label}</a>
     </div>
 ${cols}
   </div>
-  <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">© 2026 Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · Email: <a href="mailto:info@gradmire.com">info@gradmire.com</a></p><nav class="gm-legal-links" aria-label="Legal">${legal.map(([label, path]) => `<a href="${href(path)}">${label}</a>`).join('')}<button type="button" data-cookie-settings>Cookie settings</button></nav></div>
+  <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">© 2026 Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · Email: <a href="mailto:info@gradmire.com">info@gradmire.com</a></p><nav class="gm-legal-links" aria-label="Legal">${legal.map(([label, path, more]) => `<a${more ? ' class="gm-legal-more"' : ''} href="${href(path)}">${label}</a>`).join('')}<button type="button" data-cookie-settings>Cookie settings</button></nav></div>
 </footer>`;
 }

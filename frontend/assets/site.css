@@ -209,6 +209,18 @@
     padding-left: 0;
 }
 
+/* Footer information inside the phone menu: company and legal links, office, e-mail and social icons. */
+.nav-mobile .nav-mobile-info { margin-top: 1.1rem; padding-top: 1rem; border-top: 1px solid var(--border); list-style: none; }
+.nav-mobile-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.nav-mobile-h { margin: 0 0 .3rem; font: 700 .68rem var(--mono, monospace); letter-spacing: .1em; text-transform: uppercase; color: var(--text-s); }
+.nav-mobile-info ul { list-style: none; margin: 0; padding: 0; }
+.nav-mobile-info ul a, .nav-mobile-linkbtn { display: flex; align-items: center; min-height: 36px; padding: 0; border: 0; background: none; color: var(--text-p); font: 500 .9rem var(--sans, system-ui, sans-serif); text-align: left; text-decoration: none; cursor: pointer; }
+.nav-mobile-info ul a:focus-visible, .nav-mobile-linkbtn:focus-visible, .nav-mobile-social-link:focus-visible { outline: 3px solid #3C8FD9; outline-offset: 2px; border-radius: 4px; }
+.nav-mobile-contact { margin: .9rem 0 .7rem; color: var(--text-s); font-size: .8rem; line-height: 1.5; }
+.nav-mobile-social { display: flex; flex-wrap: wrap; gap: .6rem; padding-bottom: 1rem; }
+.nav-mobile .nav-mobile-social-link { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 1px solid var(--border); border-radius: 50%; color: var(--text-p); background: var(--surface, transparent); }
+.nav-mobile-social-link svg { display: block; width: 22px; height: 22px; }
+
 @media (max-width: 640px) {
     .nav-inner {
         gap: .75rem;
@@ -216,6 +228,9 @@
     .nav-inner>.site-theme-toggle {
         margin-left: auto;
     }
+    /* Toggle and menu button sit together on the right. Both carried an auto left margin on most pages, which
+       split the free space between them and left the toggle floating in the middle of the bar. */
+    .nav-inner>.site-theme-toggle~.nav-ham { margin-left: 0 !important; }
     .nav-mobile .site-theme-toggle {
         display: none;
     }

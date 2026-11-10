@@ -172,9 +172,36 @@
             ['IELTS, TOEFL, GRE and GMAT plan', 'study-abroad-tests-2027'], ['2027 documents checklist', 'study-abroad-checklist-2027'],
             ['MBBS abroad in 2027', 'mbbs-abroad-2027']
         ].map(([label, slug]) => link(page(slug), label)).join('')}${link(page('blog'), 'All guides')}`);
+        /* What the footer shows on a desktop, so the phone footer can stay small: company and legal links,
+           the registered office, e-mail and social icons. */
+        const socialIcon = (paths) => `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>`;
+        const socialSet = {
+            email: ['Email Gradmire', '<rect x="3.5" y="5.5" width="17" height="13" rx="2.5"/><path d="m4.5 7.5 7.5 5.8 7.5-5.8"/>'],
+            instagram: ['Gradmire on Instagram', '<rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".7" fill="currentColor"/>'],
+            facebook: ['Gradmire on Facebook', '<path d="M14.5 4.5h-2A3.5 3.5 0 0 0 9 8v2H6.5v3.2H9V20h3.4v-6.8h2.4l.5-3.2h-2.9V8.4c0-.5.4-.9.9-.9h1.7z"/>'],
+            linkedin: ['Gradmire on LinkedIn', '<rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="M8 10.5v6M8 7.6v.01M12 16.5v-6m0 3c0-1.7 1-3 2.6-3s2.4 1.1 2.4 3v3"/>'],
+            youtube: ['Gradmire on YouTube', '<rect x="3" y="6" width="18" height="12" rx="3.5"/><path d="m10.5 9.5 4 2.5-4 2.5z"/>'],
+            x: ['Gradmire on X', '<path d="M5 5l14 14M19 5 5 19"/>'],
+            whatsapp: ['Chat with Gradmire on WhatsApp', '<path d="M4 20l1.2-4.2A8 8 0 1 1 8.3 18.9z"/><path d="M9.2 9.3c.3 2.5 2.4 4.6 5.1 5.2l.9-1.1-1.7-.9-.8.6a4 4 0 0 1-1.9-1.9l.7-.8-.9-1.7z"/>']
+        };
+        /* Add the real profile address for each account Gradmire runs, for example
+           instagram: 'https://www.instagram.com/<handle>'. A network left empty shows no icon. */
+        const socialLinks = { instagram: '', facebook: '', linkedin: '', youtube: '', x: '', whatsapp: '' };
+        const socialRow = [['email', 'mailto:info@gradmire.com'], ...Object.entries(socialLinks).filter(([, url]) => url)]
+            .map(([key, url]) => `<a class="nav-mobile-social-link" href="${url}" aria-label="${socialSet[key][0]}"${key === 'email' ? '' : ' target="_blank" rel="noopener"'}>${socialIcon(socialSet[key][1])}</a>`).join('');
+        const infoList = (items) => items.map(([label, slug]) => `<li><a href="${page(slug)}">${label}</a></li>`).join('');
+        const mobileInfo = `<li class="nav-mobile-info">
+            <div class="nav-mobile-cols">
+              <div><p class="nav-mobile-h">Company</p><ul role="list">${infoList([['About us', 'about'], ['Blog', 'blog'], ['Careers', 'career'], ['FAQs', 'faq'], ['Contact', 'contact']])}</ul></div>
+              <div><p class="nav-mobile-h">Legal</p><ul role="list">${infoList([['Privacy', 'privacy'], ['Terms', 'terms'], ['Refunds &amp; fees', 'refund-policy'], ['Cookies', 'cookie-policy'], ['Your data rights', 'data-request'], ['Grievance', 'grievance'], ['Photo credits', 'photo-credits']])}<li><button type="button" class="nav-mobile-linkbtn" data-cookie-settings>Cookie settings</button></li></ul></div>
+            </div>
+            <p class="nav-mobile-contact">Gradmire Education Pvt. Ltd.<br>World Trade Tower, Barakhamba Lane, New Delhi 110001, India</p>
+            <div class="nav-mobile-social" role="group" aria-label="Contact and social links">${socialRow}</div>
+          </li>`;
         mobile.innerHTML = `<ul class="nav-mobile-links" role="list">${navItems.join('')}${guides2027}
           <li><a href="${page('login')}" class="nav-login-mobile">Login</a></li>
           <li><a href="${page('free-consultation')}" class="btn btn-primary">Book free consultation</a></li>
+          ${mobileInfo}
         </ul>`;
         mobile.id = mobile.id || 'mobile-nav';
         mobile.setAttribute('role', 'navigation');
@@ -621,7 +648,9 @@
         }).catch((error) => { console.warn('[Gradmire] Strobi fell back to the inline SVG:', error.message); });
         const whenIdle = (fn) => ('requestIdleCallback' in window ? window.requestIdleCallback(fn, { timeout: 6000 }) : window.setTimeout(fn, 3000));
         const afterLoad = (fn) => (document.readyState === 'complete' ? fn() : window.addEventListener('load', fn, { once: true }));
-        if (window.matchMedia('(max-width: 760px)').matches) {
+        if (document.documentElement.classList.contains('gm-lite')) {
+            /* Data Saver or a 2G connection: keep the inline SVG mascot and skip the third-party module. */
+        } else if (window.matchMedia('(max-width: 760px)').matches) {
             let started = false;
             const go = () => { if (started) return; started = true; ['pointerdown', 'scroll', 'keydown'].forEach((type) => window.removeEventListener(type, go)); afterLoad(() => whenIdle(startAvatar)); };
             ['pointerdown', 'scroll', 'keydown'].forEach((type) => window.addEventListener(type, go, { once: true, passive: true }));

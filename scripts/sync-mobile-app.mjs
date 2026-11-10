@@ -11,7 +11,7 @@ import path from 'node:path';
 
 const pagesRoot = path.resolve('frontend/pages');
 const SKIP = new Set(['404', 'login', 'signup', 'reset-password']);
-const CSS = 'mobile-app.css?v=4';
+const CSS = 'mobile-app.css?v=12';
 const JS = 'mobile-app.js?v=5';
 
 const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true })
@@ -56,6 +56,8 @@ const head = (slug) => {
     '<meta name="apple-mobile-web-app-capable" content="yes">',
     '<meta name="apple-mobile-web-app-title" content="Gradmire">',
     '<style>.gm-tabbar{display:none}</style>',
+    /* Low-data mode: Data Saver on, a 2G connection, or the prefers-reduced-data setting. Pages and mobile-app.css then skip decorative weight. */
+    '<script>try{var n=navigator.connection;if((n&&(n.saveData||/(^|-)2g$/.test(n.effectiveType)))||matchMedia("(prefers-reduced-data: reduce)").matches)document.documentElement.classList.add("gm-lite")}catch(e){}</script>',
     `<link rel="stylesheet" href="${up}assets/${CSS}" media="(max-width: 760px)">`,
     `<script src="${up}assets/${JS}" defer></script>`,
     '<!-- /mobile-app -->'
