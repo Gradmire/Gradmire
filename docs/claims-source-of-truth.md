@@ -19,6 +19,22 @@ Last updated 2 November 2026.
 | 4 free planning tools | `tools/` (comparator, deadline tracker, cost calculator, grade converter) |
 | 68 universities and 171 example courses in the Course Finder, 8 universities per country (4 for Finland) | `scripts/course-data.mjs`. The hero stats on the UK, USA, Canada and Australia guides and the "68" on `gradmire.html` are typed in by hand, so update them when this file changes. |
 
+## 2027 guides (added 10 November 2026)
+
+Seven articles generated from `scripts/blog-data.mjs`: `study-abroad-2027`, `study-abroad-intakes-2027`, `best-countries-to-study-abroad-2027`, `study-abroad-scholarships-2027`, `study-abroad-checklist-2027`, `study-abroad-tests-2027` and `mbbs-abroad-2027`. They carry no statistics, fees, salaries, testimonials or named authors (`author` in the Article schema is the organisation). Every claim comes from one of these:
+
+| Statement | Source |
+|---|---|
+| UCAS main deadline for 2027 entry is 18:00 UK time on 13 January 2027; Oxford, Cambridge, medicine, dentistry and veterinary courses had 15 October 2026 | [UCAS event page](https://www.ucas.com/events/2027-entry-deadline-for-all-undergraduate-courses-except-those-with-a-15-october-deadline-475546), read 10 November 2026 |
+| Typical intake months by country (September, January, February, July and so on) | The intake calendars on the `study-in-*` pages, plus well-known academic calendars for Germany, Ireland, New Zealand, Italy and Finland. Every article says the months are typical and to confirm on the university page. **Owner to verify** the Germany, Ireland, Italy, Finland and New Zealand rows. |
+| IELTS usually valid 2 years, TOEFL 2 years, GRE and GMAT 5 years; TOEFL 1 to 6 scale since 21 January 2026 | `test-prep-*.html` and `scripts/build-service-pages.mjs` |
+| Scholarship names by country | `scripts/scholarship-data.mjs` (names only; amounts and deadlines stay on the scholarship pages) |
+| MBBS programme length and teaching language by country; NEET needed; about 6 years with 54 months of study plus a 12-month internship at the same university; recognition via the World Directory of Medical Schools | `scripts/mbbs-data.mjs`, which cites the NMC Foreign Medical Graduate Licentiate Regulations 2021 |
+| Germany: Indian applicants are normally asked for an APS certificate, which can take months | General knowledge, hedged in the text ("normally", "confirm with DAAD"). **Owner to verify.** |
+| "Gradmire does not earn commission from universities" (in the FAQ of three articles) | Owner confirmation recorded above |
+
+Not stated anywhere in the guides, on purpose: Canadian study permit caps for 2027 (not confirmed when written), any fee, visa charge, proof-of-funds amount or exchange rate. Re-review before 10 May 2027.
+
 ## Removed because there was no evidence
 
 - "47,000+ students placed", "47k+", the per-country "students placed" counts (47k, 15k, 12k, 10k), and "4,200+ placed this year".

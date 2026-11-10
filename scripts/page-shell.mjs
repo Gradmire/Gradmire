@@ -19,20 +19,21 @@ export const consultHref = (interest, country = '') => `free-consultation?intere
 
 const themeBoot = '<script>try{var c=JSON.parse(localStorage.getItem("gm-consent")||"null"),t=(c&&c.preferences&&localStorage.getItem("gradmire-theme"))||sessionStorage.getItem("gradmire-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>';
 
-export function shell({ title, description, body, bodyClass = '' }) {
+/* `head` is extra markup for <head> (for example JSON-LD) and `css` lists extra stylesheets under assets/. */
+export function shell({ title, description, body, bodyClass = '', head = '', css = [] }) {
     return `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 ${themeBoot}
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
 <link rel="icon" href="/assets/favicon-light.ico" sizes="any">
 <link rel="icon" href="/assets/favicon-light.ico" media="(prefers-color-scheme: light)">
 <link rel="icon" href="/assets/favicon-dark.ico" media="(prefers-color-scheme: dark)">
 <link rel="stylesheet" href="../assets/${siteCss}">
-<link rel="stylesheet" href="../assets/${GUIDE_CSS}">
+<link rel="stylesheet" href="../assets/${GUIDE_CSS}">${css.map((href) => `\n<link rel="stylesheet" href="../assets/${href}">`).join('')}${head ? `\n${head}` : ''}
 </head>
 <body class="destination-page guide-page${bodyClass ? ` ${bodyClass}` : ''}">
 ${navHtml}

@@ -17,9 +17,11 @@ const walk = (dir) => readdirSync(dir).flatMap((name) => {
     return statSync(path).isDirectory() ? walk(path) : name.endsWith('.html') ? [path] : [];
 });
 
+/* Last commit date; a page that has not been committed yet falls back to the file's own modified date. */
 const lastCommitDate = (file) => {
     try {
-        return execFileSync('git', ['log', '-1', '--format=%cs', '--', file], { encoding: 'utf8' }).trim() || null;
+        const committed = execFileSync('git', ['log', '-1', '--format=%cs', '--', file], { encoding: 'utf8' }).trim();
+        return committed || statSync(file).mtime.toISOString().slice(0, 10);
     } catch {
         return null;
     }

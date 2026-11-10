@@ -21,8 +21,11 @@ const PARENTS = [
     [/^study-in-/, 'destinations'],
     [/^mbbs-in-/, 'mbbs-abroad'],
     [/^scholarships-in-/, 'scholarships'],
-    [/^test-prep-/, 'test-preparation']
+    [/^test-prep-/, 'test-preparation'],
+    [/-2027$/, 'blog']
 ];
+/* The 2027 guides from build-blog-pages.mjs are articles; every other page is a plain website page. */
+const isArticle = (slug) => /-2027$/.test(slug);
 
 const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true })
     .flatMap((e) => (e.isDirectory() ? walk(path.join(dir, e.name)) : [path.join(dir, e.name)]));
@@ -62,7 +65,7 @@ function seoBlock(slug, html) {
     const lines = [
         '<!-- seo -->',
         `<link rel="canonical" href="${url}">`,
-        '<meta property="og:type" content="website">',
+        `<meta property="og:type" content="${isArticle(slug) ? 'article' : 'website'}">`,
         '<meta property="og:site_name" content="Gradmire">',
         '<meta property="og:locale" content="en_IN">',
         `<meta property="og:url" content="${url}">`,

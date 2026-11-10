@@ -1,0 +1,21 @@
+{
+  "name": "Gradmire: study abroad guidance",
+  "short_name": "Gradmire",
+  "description": "Compare courses, universities, scholarships and 2027 intakes, and book a free study-abroad consultation.",
+  "lang": "en-IN",
+  "start_url": "/?source=app",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F0F2F7",
+  "theme_color": "#1A4870",
+  "categories": ["education"],
+  "icons": [
+    { "src": "/assets/favicon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ],
+  "shortcuts": [
+    { "name": "Book a free consultation", "short_name": "Book", "url": "/free-consultation" },
+    { "name": "Study abroad in 2027", "short_name": "2027 plan", "url": "/study-abroad-2027" },
+    { "name": "Find courses", "short_name": "Courses", "url": "/find-courses" }
+  ]
+}

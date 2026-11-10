@@ -14,10 +14,11 @@ const columns = [
         ['Visa assistance', 'visa-assistance'], ['Application assistance', 'application-assistance'],
         ['Course selection guidance', 'course-selection-guidance'], ['Scholarships', 'scholarships']
     ]],
-    ['Tools', [
+    ['Tools and guides', [
         ['Course finder', 'find-courses'], ['Study cost calculator', 'tools/roi-calculator'],
         ['Course comparator', 'tools/comparator'], ['Deadline tracker', 'tools/deadline-tracker'],
-        ['GPA / CGPA / SGPA converter', 'tools/grade-converter']
+        ['GPA / CGPA / SGPA converter', 'tools/grade-converter'],
+        ['Study abroad 2027 plan', 'study-abroad-2027'], ['2027 intakes by country', 'study-abroad-intakes-2027']
     ]],
     ['Company', [
         ['About us', 'about'], ['Blog', 'blog'], ['Careers', 'career'],
@@ -41,7 +42,7 @@ ${links.map(([label, path]) => `        <li><a href="${href(path)}">${label}</a>
     return `<footer class="gm-footer" aria-label="Site footer">
   <div class="gm-footer-inner">
     <div class="gm-footer-brand">
-      <a class="gm-footer-logo" href="${prefix || './'}" aria-label="Gradmire home"><img src="${prefix}../assets/gradmire-logo-white.png" alt="Gradmire" width="200" height="54" loading="lazy" decoding="async"></a>
+      <a class="gm-footer-logo" href="${prefix || './'}" aria-label="Gradmire home"><img src="${prefix}../assets/gradmire-logo-white-sm.png" alt="Gradmire" width="200" height="54" loading="lazy" decoding="async"></a>
       <p class="gm-footer-tagline">Study abroad, organized by subject — not by flag.</p>
       <form class="footer-subscribe" novalidate><label class="sr-only" for="footer-email">Email address for study-abroad updates</label><input id="footer-email" type="email" name="email" autocomplete="email" placeholder="you@email.com" required><button type="submit" aria-label="Subscribe to updates"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><p class="footer-subscribe-msg" role="status" hidden></p></form>
     </div>
