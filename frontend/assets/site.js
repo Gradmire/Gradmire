@@ -188,7 +188,7 @@
         const infoList = (items) => items.map(([label, slug]) => `<li><a href="${page(slug)}">${label}</a></li>`).join('');
         const mobileInfo = `<li class="nav-mobile-info">
             <div class="nav-mobile-cols">
-              <div><p class="nav-mobile-h">Company</p><ul role="list">${infoList([['About us', 'about'], ['Blog', 'blog'], ['Careers', 'career'], ['FAQs', 'faq'], ['Contact', 'contact']])}</ul></div>
+              <div><p class="nav-mobile-h">Company</p><ul role="list">${infoList([['About us', 'about'], ['Blog', 'blog'], ['Careers', 'career'], ['FAQs', 'faq'], ['Contact', 'contact'], ['Press kit', 'press']])}</ul></div>
               <div><p class="nav-mobile-h">Legal</p><ul role="list">${infoList([['Privacy', 'privacy'], ['Terms', 'terms'], ['Refunds &amp; fees', 'refund-policy'], ['Cookies', 'cookie-policy'], ['Your data rights', 'data-request'], ['Grievance', 'grievance'], ['Photo credits', 'photo-credits']])}<li><button type="button" class="nav-mobile-linkbtn" data-cookie-settings>Cookie settings</button></li></ul></div>
             </div>
             <p class="nav-mobile-contact">Gradmire Education Pvt. Ltd.<br>Kanpur: Near Halim College, Prem Nagar<br>Greater Noida: N2 Tower, Supertech Ecovillage 1</p>

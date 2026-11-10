@@ -5,6 +5,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { footerHtml } from './footer.mjs';
+import { syncHomepageProfiles } from './same-as.mjs';
 
 const pagesRoot = path.resolve('frontend/pages');
 const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true })
@@ -28,3 +29,5 @@ for (const file of walk(pagesRoot).filter((f) => f.endsWith('.html'))) {
     if (next !== html) { fs.writeFileSync(file, next); changed += 1; }
 }
 console.log(`Footer synced: ${changed} page(s) updated.`);
+/* Social profiles (scripts/social.mjs) also feed the homepage sameAs list; verification tags come from scripts/site-verification.json. */
+console.log(syncHomepageProfiles());

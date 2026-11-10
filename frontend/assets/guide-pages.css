@@ -398,3 +398,7 @@ body.guide-page { margin: 0; background: var(--bg); color: var(--text-p); font: 
 .gp-tools .gp-card p { margin: 0; }
 .gp-tools .gp-uni-cta { margin-top: auto; padding-top: .6rem; }
 @media (max-width: 960px) { .gp-tools { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* Copy-and-paste link snippets on the Press kit page */
+.gp-code { margin: .7rem 0 0; padding: .7rem .9rem; overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-tint, #E8EBF4); font: 500 .78rem/1.55 var(--mono, monospace); white-space: pre-wrap; overflow-wrap: anywhere; }
+.gp-code code { font: inherit; }

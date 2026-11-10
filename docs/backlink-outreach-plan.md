@@ -183,6 +183,29 @@ Google's [spam policies](https://developers.google.com/search/docs/essentials/sp
 | 2 to 6 | Ask the Kanpur and Noida fair organisers about 2027 dates. Look up AAERI, AIRC, ICEF and NAFSA on their own sites and note what Gradmire qualifies for |
 | 4 to 12 | Pitch the founder story and a free workshop to two local outlets. Offer one school or college careers cell a free session. Review referring domains for the four tools |
 
+## 11. Implementation status (10 November 2026)
+
+What was built in the repository, what is ready for you to use, and what only you can do (accounts, submissions and emails cannot be done from here). Re-check the repository side at any time with `node scripts/check-backlink-readiness.mjs`.
+
+| Plan item | Status | Where |
+|---|---|---|
+| §0 Confirm or soften "no commission" | Done earlier (owner confirmed) | `docs/claims-source-of-truth.md` |
+| §0 One story for address and founding | **Done.** Two offices everywhere; the checker fails if an old address returns | footer, Contact, About, `llms.txt`, structured data |
+| §0 Real business phone number | **Needs you.** The Contact page still shows a placeholder-looking number | Contact page |
+| §0 Profiles and `sameAs` | `sameAs` is now **automatic**: add a profile's address to `scripts/social.mjs`, run `node scripts/sync-footer.mjs`, and it appears in every footer, the phone menu and the homepage structured data. Creating the accounts needs you | `scripts/same-as.mjs` |
+| §0 Named counsellors with consent | **Needs you** | About page |
+| §1 Pages worth linking to | **Done.** A Press kit page gives journalists and editors facts, logos, the founder portrait and copy-paste links to the four tools and four guides. Each tool page has a "Link to this tool" box | `/press`, `scripts/build-press-page.mjs` |
+| §1 Assets to build next (cost comparison, visa checklists, intake calendar) | **Not built.** They need sourced, dated figures (`rules.md` §3.3), and nothing should be invented. The 2027 intake and checklist guides and the visa page already cover parts of this | |
+| §2 Foundation profiles | Listing kit ready. **Creating and verifying the accounts needs you.** Search Console and Bing verification tags are wired: paste each token into `scripts/site-verification.json` and run the sync | `docs/business-listing-kit.md`, `scripts/site-verification.json` |
+| §3 Credentials (ICEF, British Council) | **Needs you.** Eligibility email drafted | `docs/outreach-drafts.md` draft 7 |
+| §4 Directories | Records and descriptions ready; **submissions need you** | `docs/business-listing-kit.md` |
+| §5 Expert commentary | Draft ready; needs a named counsellor | draft 10 |
+| §6 Universities, societies, schools, fairs, local press | Drafts ready; **sending needs you** | drafts 1 to 6 |
+| §7 Templates | Expanded to ten drafts with a before-you-send checklist | `docs/outreach-drafts.md` |
+| §8 Tracking | Pre-filled tracker with 31 targets | `docs/backlink-tracker.csv` |
+
+**Order for you, shortest first:** (1) give the real phone number, postcodes and office photos; (2) create Google Business Profiles and verify Search Console, pasting the token into `scripts/site-verification.json`; (3) create the LinkedIn page and the social accounts and paste their addresses into `scripts/social.mjs`; (4) send drafts 4 to 6 locally, then 1 to 3.
+
 ## Sources checked
 
 - [Google: guidelines for representing your business](https://support.google.com/business/answer/3038177), [spam policies](https://developers.google.com/search/docs/essentials/spam-policies), [link tagging and link spam update](https://developers.google.com/search/blog/2021/07/link-tagging-and-link-spam-update)

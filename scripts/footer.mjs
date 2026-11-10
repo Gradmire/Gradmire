@@ -24,7 +24,7 @@ const columns = [
     ]],
     ['Company', [
         ['About us', 'about'], ['Blog', 'blog'], ['Careers', 'career'],
-        ['FAQs', 'faq'], ['Contact', 'contact'], ['Student login', 'login']
+        ['FAQs', 'faq'], ['Contact', 'contact'], ['Press kit', 'press'], ['Student login', 'login']
     ]]
 ];
 
