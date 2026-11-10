@@ -50,6 +50,8 @@ Do not put any of these back without evidence recorded in this file. Named testi
 
 | Item | Status |
 |---|---|
-| "Founded in 2026 in Noida by Aquib Jamal", branches in Delhi/NCR, Greater Noida, Lucknow and Kanpur ("Opening soon") | Stated by the owner on the About page. No separate evidence in the repository. |
+| "Founded in 2026 in Noida by Aquib Jamal" | Stated by the owner on the About page. No separate evidence in the repository. |
+| Two offices only: Kanpur (Near Halim College, Prem Nagar) and Greater Noida (N2 Tower, Supertech Ecovillage 1). Replaced the earlier New Delhi registered office, the invented Mumbai, Hyderabad, Bengaluru, Pune and Chennai branches, and the "Opening soon" branches | Given by the owner on 10 Nov 2026. No postcodes were supplied, so none are published. The terms and grievance pages still name the courts in New Delhi as the jurisdiction: that is a legal choice, not an address, and was not changed. Owner to confirm which office, if either, is the registered office on the company records. |
+| The founder story on the About page (Aquib Jamal, photo, "Meet the founder") | Written only from statements already on the site: founded in 2026, believes the advice should be clear, honest and built around the student, fee-only with no university commissions, counsellors who specialise by destination, new company that would rather earn trust than claim it. It contains no personal history, qualifications or quotes. Owner to add real details (why he started, background) if he wants them. The photo was supplied by the owner. |
 | Response time: the consultation popup and page say "within 24 hours", the homepage says "one working day", and `gradmire.html` says "24 business hours" | Align all wording with the 24 business hour SLA in `docs/rules.md` §4.2 |
 | University and employer logos on the homepage | 15 are public-domain files that are still trademarks, used only to name the organisation. See `docs/logo-sources.md`. |

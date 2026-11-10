@@ -82,6 +82,12 @@ html.nav-open .gm-tab[aria-current="page"]:not([data-gm-menu])::before { display
 
 /* The floating consultation button duplicates the Book tab, so it steps aside. */
 .gm-consult-fab { display: none !important; }
+/* Home sliders: the first card lines up with the text (not against the screen edge) and the next one peeks in whole.
+   The "Why us?" row (.evidence-inner) lost its side padding to a later rule, so its "Free / First consultation" card sat at x = 0. */
+body .m-slider:not(.journey-stack) { padding-inline: var(--gutter, 1.25rem); scroll-padding-inline: var(--gutter, 1.25rem); }
+/* Promo card: full width, above Strobi (52 px) and the tab bar, so it covers neither. */
+body .gm-promo { left: 12px; right: 12px; width: auto; bottom: calc(var(--gm-tab-h) + 78px + env(safe-area-inset-bottom, 0px)); padding: .85rem 2.6rem .85rem .85rem; gap: .7rem; }
+body .gm-promo-text { margin-bottom: .55rem; font-size: .8rem; }
 /* The Strobi buddy lifts above the bar. */
 body:has(.gm-tabbar) .gm-buddy:not(.is-placed) { bottom: calc(var(--gm-tab-h) + 14px + env(safe-area-inset-bottom, 0px)); }
 body:has(.gm-tabbar) .gm-buddy-avatar { width: 52px; height: 52px; }
@@ -145,12 +151,20 @@ body:has(.gm-tabbar) .gm-buddy-avatar { width: 52px; height: 52px; }
 .globe-box { width: 100%; height: 100%; margin-inline: auto; }
 .hero-stage { gap: .6rem; }
 /* Destination picker under the globe: one swipeable row instead of three rows of pills. */
-.globe-dests { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; padding: .2rem .1rem .4rem; scrollbar-width: none; scroll-snap-type: x proximity; }
+/* width + min-width: the row sat in a centred flex column, so its no-wrap content made it 600px wide and pushed it 112px off the left edge: the first countries were unreachable. */
+body .globe-dests { flex-wrap: nowrap; justify-content: flex-start; align-self: stretch; width: auto; max-width: none; min-width: 0; box-sizing: border-box; margin-inline: calc(var(--gutter, 1.25rem) * -1); overflow-x: auto; overscroll-behavior-x: contain; padding: .2rem var(--gutter, 1.25rem) .4rem; scroll-padding-inline: var(--gutter, 1.25rem); scrollbar-width: none; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; }
 .globe-dests::-webkit-scrollbar { display: none; }
 .globe-dests button { flex: 0 0 auto; scroll-snap-align: start; }
 .logo-band { padding-block: 1.6rem; }
 .home-faq, .cta-sec, .scholarships, .journey, .tools-promo, .why-evidence, .destinations { padding-block: 2.25rem; }
 .cta-wrap { padding: 1.6rem 1.15rem; }
+/* "A counsellor replies within 24 business hours": the dot sat at the far left while the wrapped text centred. Dot above, text centred under it. */
+body .cta-avail { flex-direction: column; gap: .45rem; text-align: center; }
+body .cta-avail span:last-child { max-width: 26ch; }
+/* No "magnetic" drift on the main call-to-action buttons in the phone layout, whatever the pointer (also in a narrow desktop window). */
+body .magnetic-cta:not(:active) { transform: none !important; }
+/* A button never stays shifted or tilted after a tap: only a small press-down. */
+body .btn:active, body .magnetic-cta:active { transform: scale(.98) !important; transition: transform .12s; }
 .why-evidence .evidence-card ul { display: none; }
 .why-evidence .evidence-card { padding: 1rem; }
 /* "body" in front of these: the page's own phone rules use longer selectors and would otherwise win. */
@@ -210,6 +224,7 @@ body .home-faq h2 { font-size: 1.5rem; }
 .gm-footer-logo img { width: 124px; }
 .gm-footer-tagline { max-width: none; margin: .5rem 0 .8rem; font-size: .85rem; line-height: 1.45; }
 .gm-footer .footer-subscribe { gap: .5rem; }
+.gm-footer-social { margin-top: .8rem; }
 .gm-footer .footer-subscribe input { height: 44px; border-radius: 12px; font-size: 16px; }
 .gm-footer .footer-subscribe button { width: 44px; height: 44px; }
 .gm-footer-col { display: none; }
@@ -227,13 +242,21 @@ body .gm-legal-links a, body .gm-legal-links button { min-height: 36px; font-siz
 /* Country guides: long stacks of cards become swipeable rows (a hint of the next card shows), like the home page sliders.
    A 20,000 px page becomes a short one without removing any content. */
 :root { --sec: 2.5rem; }
-body :is(.course-grid, .cities-grid, .intakes-grid, .elig-grid, .exam-cards, .careers-grid, .scholarship-cards, .deadline-grid, .overview-grid, .uni-scroll) {
-    display: grid; grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 82%;
+body :is(.gp-tile-grid, .course-grid, .cities-grid, .intakes-grid, .elig-grid, .exam-cards, .careers-grid, .scholarship-cards, .deadline-grid, .overview-grid, .uni-scroll) {
+    display: grid; grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: min(82%, 320px);
     gap: .75rem; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory;
-    padding-bottom: .6rem; scrollbar-width: none; margin-top: 1.1rem;
+    /* Run to the screen edge (so the next card peeks out whole) while the first card still lines up with the text. */
+    margin: 1.1rem calc(var(--gutter, 1.25rem) * -1) 0; padding: .2rem var(--gutter, 1.25rem) .6rem; scroll-padding-inline: var(--gutter, 1.25rem);
+    scrollbar-width: none; -webkit-overflow-scrolling: touch;
 }
-body :is(.course-grid, .cities-grid, .intakes-grid, .elig-grid, .exam-cards, .careers-grid, .scholarship-cards, .deadline-grid, .overview-grid, .uni-scroll)::-webkit-scrollbar { display: none; }
-body :is(.course-grid, .cities-grid, .intakes-grid, .elig-grid, .exam-cards, .careers-grid, .scholarship-cards, .deadline-grid, .overview-grid, .uni-scroll) > * { min-width: 0; scroll-snap-align: start; }
+/* Position dots under a swipe row (added by mobile-app.js). */
+.gm-dots { display: flex; justify-content: center; flex-wrap: wrap; gap: .05rem; margin: 0 0 .4rem; }
+.gm-dot { box-sizing: border-box; width: 24px; height: 24px; padding: 8px; border: 0; border-radius: 999px; background: color-mix(in srgb, var(--text-s, #5B6472) 35%, transparent); background-clip: content-box; cursor: pointer; transition: width .3s cubic-bezier(.16, 1, .3, 1), background .3s; }
+.gm-dot[aria-current="true"] { width: 38px; background-color: var(--accent, #007A5A); }
+.gm-dot:focus-visible { outline: 2px solid var(--accent, #007A5A); outline-offset: 2px; }
+.gm-swipe:focus-visible { outline: 2px solid var(--accent, #007A5A); outline-offset: -2px; border-radius: 12px; }
+body :is(.gp-tile-grid, .course-grid, .cities-grid, .intakes-grid, .elig-grid, .exam-cards, .careers-grid, .scholarship-cards, .deadline-grid, .overview-grid, .uni-scroll)::-webkit-scrollbar { display: none; }
+body :is(.gp-tile-grid, .course-grid, .cities-grid, .intakes-grid, .elig-grid, .exam-cards, .careers-grid, .scholarship-cards, .deadline-grid, .overview-grid, .uni-scroll) > * { min-width: 0; scroll-snap-align: start; }
 body .section { padding-block: 2.25rem; }
 body .section-title { font-size: 1.6rem; }
 body .section-sub { font-size: .95rem; margin-bottom: 1rem; }

@@ -67,3 +67,63 @@ a.crm-stat { display: block; text-decoration: none; }
 @media (prefers-reduced-motion: reduce) {
     .ws-meter span { transition: none; }
 }
+
+/* ── Phones (760 px and under): an app-style bottom bar and a "More" sheet replace the sidebar strip, and the student
+      dashboard puts what matters first. The bar and sheet are built by workspace.js (renderTabs). ── */
+.ws-tabbar, .ws-sheet { display: none; }
+@media (max-width: 760px) {
+    :root { --ws-tab-h: 62px; }
+    .ws-nav { display: none; }
+    .ws-tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 1200; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2px; padding: 6px 6px calc(6px + env(safe-area-inset-bottom, 0px)); box-sizing: border-box; border-top: 1px solid var(--border); background: color-mix(in srgb, var(--surface) 94%, transparent); -webkit-backdrop-filter: saturate(1.5) blur(14px); backdrop-filter: saturate(1.5) blur(14px); }
+    .ws-tab { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 50px; padding: 4px 2px; border: 0; border-radius: 12px; background: transparent; color: var(--text-s); font: 700 .64rem var(--sans); letter-spacing: -.005em; text-decoration: none; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: background .2s, color .2s, transform .15s; }
+    .ws-tab svg { width: 24px; height: 24px; }
+    .ws-tab[aria-current="page"] { background: var(--accent-dim); color: var(--accent-text, var(--accent)); }
+    .ws-tab:active { transform: scale(.94); }
+    .ws-tab:focus-visible { outline: 3px solid var(--accent); outline-offset: -2px; }
+    .ws-tab-count { position: absolute; top: 2px; left: calc(50% + 6px); min-width: 17px; padding: 0 4px; border-radius: 999px; background: #C62828; color: #fff; font: 800 .62rem/17px var(--mono); text-align: center; }
+    body:has(.ws-tabbar) { padding-bottom: calc(var(--ws-tab-h) + env(safe-area-inset-bottom, 0px)); }
+    body:has(.ws-tabbar) .gm-buddy:not(.is-placed) { bottom: calc(var(--ws-tab-h) + 14px + env(safe-area-inset-bottom, 0px)); }
+
+    html.ws-sheet-open { overflow: hidden; }
+    .ws-sheet { position: fixed; inset: 0; z-index: 1190; display: block; background: rgba(8, 16, 28, .45); }
+    .ws-sheet[hidden] { display: none; }
+    .ws-sheet-card { position: absolute; left: 0; right: 0; bottom: calc(var(--ws-tab-h) + env(safe-area-inset-bottom, 0px)); max-height: calc(100dvh - var(--ws-tab-h) - 3.5rem); overflow-y: auto; box-sizing: border-box; padding: .9rem 1rem 1rem; border: 1px solid var(--border); border-radius: 22px 22px 0 0; background: var(--surface); box-shadow: 0 -18px 50px rgba(8, 16, 28, .25); }
+    /* the 900 px rules above hide these for the sidebar; the sheet shows them */
+    .ws-sheet .ws-nav-who, .ws-sheet .ws-nav-group { display: block; }
+    .ws-sheet ul { display: grid; gap: .15rem; margin: 0; padding: 0; list-style: none; }
+    .ws-sheet a { display: flex; align-items: center; justify-content: space-between; gap: .5rem; min-height: 46px; padding: .5rem .7rem; border-radius: 12px; color: var(--text-p); font-weight: 600; font-size: .95rem; text-decoration: none; }
+    .ws-sheet a:active, .ws-sheet a[aria-current="page"] { background: var(--accent-dim); color: var(--accent-text, var(--accent)); }
+    .ws-sheet a:focus-visible { outline: 3px solid var(--accent); outline-offset: 1px; }
+    .ws-sheet-logout { width: 100%; margin-top: .8rem; }
+    .ws-sheet-close { display: block; width: 100%; min-height: 44px; margin-top: .4rem; border: 0; background: transparent; color: var(--text-s); font: 700 .9rem var(--sans); cursor: pointer; }
+
+    /* Student dashboard: summary, then application status (where a course you applied for appears), then the rest. */
+    .ws-main:has(#sd-stats) { display: flex; flex-direction: column; gap: 1rem; }
+    .ws-main:has(#sd-stats) > * { margin-block: 0; }
+    .ws-main:has(#sd-stats) > .crm-stats { order: 1; }
+    .ws-main:has(#sd-stats) > .sd-grid { order: 2; }
+    .ws-main:has(#sd-stats) > .ws-grid { order: 3; }
+    .ws-main:has(#sd-stats) > .sd-journey { order: 4; }
+    .ws-main:has(#sd-stats) .crm-head { gap: .7rem; }
+    .ws-main:has(#sd-stats) .crm-head .bk-actions { width: 100%; margin-top: 0; justify-content: flex-start; }
+    #sd-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    #sd-stats .crm-stat { padding: .75rem .9rem; border-radius: 16px; }
+    #sd-stats .crm-stat span { font-size: .66rem; line-height: 1.25; }
+    #sd-stats .crm-stat strong { font-size: 1.7rem; }
+    #sd-stats .crm-stat:last-child:nth-child(odd) { grid-column: 1 / -1; }
+
+    /* The signed-in footer is short on phones: the link directory is already in the "More" sheet. */
+    body:has(.ws-layout) .gm-footer { padding: 1.5rem 1rem 0; }
+    body:has(.ws-layout) .gm-footer-inner { display: block; }
+    body:has(.ws-layout) .gm-footer-col { display: none; }
+    body:has(.ws-layout) .gm-footer-logo img { width: 124px; }
+    body:has(.ws-layout) .gm-footer-tagline { max-width: none; margin: .5rem 0 .8rem; font-size: .85rem; line-height: 1.45; }
+    body:has(.ws-layout) .gm-footer-social { margin-top: .8rem; }
+
+    /* The seven journey steps become one swipeable row (the current step is centred by student-dashboard.js). */
+    .sd-stages { display: flex; gap: 0; margin: .4rem -.4rem 0; padding: .4rem .4rem .7rem; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; scrollbar-width: none; }
+    .sd-stages::-webkit-scrollbar { display: none; }
+    .sd-stage { flex: 0 0 92px; display: grid; grid-template-columns: none; justify-items: center; align-items: start; gap: .45rem; text-align: center; font-size: .74rem; line-height: 1.25; scroll-snap-align: center; }
+    .sd-stage::before { top: 11px; left: calc(-50% + 14px); right: calc(50% + 14px); width: auto; height: 3px; }
+    .sd-stage:first-child::before { display: none; }
+}

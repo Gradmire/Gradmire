@@ -58,6 +58,22 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 .story-badge{position:absolute;bottom:1.5rem;left:1.5rem;background:rgba(240,242,247,.92);backdrop-filter:blur(12px);border-radius:var(--r-md);padding:1rem 1.25rem;}
 .story-badge-num{font-family:var(--mono);font-size:1.6rem;font-weight:700;color:var(--brand);letter-spacing:-.03em;line-height:1;}
 .story-badge-lbl{font-size:.78rem;color:var(--text-s);margin-top:.2rem;}
+/* Founder */
+.founder-section{max-width:var(--w);margin:0 auto;padding:clamp(1rem,3vw,2rem) var(--gutter) clamp(3.5rem,7vw,6rem);display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);gap:clamp(2rem,6vw,5.5rem);align-items:center;}
+.founder-photo{position:relative;margin:0;border-radius:var(--r-lg);overflow:hidden;aspect-ratio:4/5;background:var(--surface-tint,#E7EBF4);}
+.founder-photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 20%;}
+.founder-plate{position:absolute;left:1rem;right:1rem;bottom:1rem;padding:.9rem 1.1rem;border-radius:var(--r-md);background:rgba(240,242,247,.92);backdrop-filter:blur(12px);color:#0E1420;}
+.founder-name{font-size:1.2rem;font-weight:800;letter-spacing:-.02em;line-height:1.15;}
+.founder-role{margin-top:.25rem;font-family:var(--mono);font-size:.72rem;letter-spacing:.03em;color:#005C44;}
+.founder-title{font-size:clamp(1.8rem,3.4vw,2.9rem);font-weight:800;letter-spacing:-.03em;line-height:1.04;text-wrap:balance;margin-bottom:1.25rem;}
+.founder-body p{color:var(--text-s);font-size:1rem;line-height:1.75;margin-bottom:1.1rem;}
+.founder-points{list-style:none;display:flex;flex-wrap:wrap;gap:.6rem;margin:1.5rem 0 0;padding:0;}
+.founder-points li{padding:.5rem .95rem;border:1px solid var(--border);border-radius:999px;background:var(--surface);font-size:.85rem;font-weight:600;}
+.founder-cta{margin:1.5rem 0 0;}
+.founder-link{display:inline-flex;align-items:center;gap:.4rem;min-height:44px;padding:.6rem 1.3rem;border-radius:999px;background:var(--accent);color:#fff;font-weight:700;font-size:.95rem;text-decoration:none;transition:background .2s,transform .15s;}
+.founder-link:hover{background:var(--accent-hover);}
+.founder-link:active{transform:scale(.97);}
+@media(max-width:960px){.founder-section{grid-template-columns:1fr;}.founder-photo{max-width:440px;width:100%;}}
 /* Mission */
 .mission{background:#1A4870;padding:var(--sec) var(--gutter);}
 .mission-inner{max-width:var(--w);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(3rem,7vw,7rem);align-items:center;}
@@ -92,7 +108,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 /* Branches */
 .branches-section{padding:var(--sec) var(--gutter);}
 .branches-inner{max-width:var(--w);margin:0 auto;}
-.branches-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:3rem;}
+.branches-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-top:3rem;max-width:820px;}
 .branch-card{background:var(--surface);border-radius:var(--r-md);border:1px solid var(--border);padding:1.25rem;transition:transform .35s var(--ease),box-shadow .35s var(--ease);}
 .branch-card:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(10,14,26,.08);}
 .branch-city{font-size:1rem;font-weight:800;letter-spacing:-.01em;margin-bottom:.25rem;}
@@ -137,7 +153,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 @media(max-width:960px){.team-grid{grid-template-columns:1fr 1fr;}}
 @media(max-width:640px){.team-grid{grid-template-columns:1fr;}}
 </style>
-<link rel="stylesheet" href="../assets/site.css?v=30">
+<link rel="stylesheet" href="../assets/site.css?v=33">
 
 <!-- mobile-app -->
 <meta name="theme-color" content="#F0F2F7" media="(prefers-color-scheme: light)">
@@ -149,8 +165,8 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 <meta name="apple-mobile-web-app-title" content="Gradmire">
 <style>.gm-tabbar{display:none}</style>
 <script>try{var n=navigator.connection;if((n&&(n.saveData||/(^|-)2g$/.test(n.effectiveType)))||matchMedia("(prefers-reduced-data: reduce)").matches)document.documentElement.classList.add("gm-lite")}catch(e){}</script>
-<link rel="stylesheet" href="../assets/mobile-app.css?v=13" media="(max-width: 760px)">
-<script src="../assets/mobile-app.js?v=6" defer></script>
+<link rel="stylesheet" href="../assets/mobile-app.css?v=20" media="(max-width: 760px)">
+<script src="../assets/mobile-app.js?v=7" defer></script>
 <!-- /mobile-app -->
 <nav class="nav" aria-label="Main navigation">
   <div class="nav-inner">
@@ -180,7 +196,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
     <div class="story-body">
       <p>Gradmire was founded in 2026 in Noida by Aquib Jamal, who believes that choosing where to study abroad is one of the biggest decisions a student and their family will ever make. The advice behind it should be clear, honest and built around the student.</p>
       <p>For too many families, the process is confusing and expensive: scattered information, unclear costs, and advice that doesn't always put the student first. Gradmire brings university search, course matching, scholarships and one-to-one counselling into one place, so you can compare your options and apply with confidence.</p>
-      <p>Today we guide students online, wherever they are in India, with branches across Delhi/NCR, Greater Noida, Lucknow and Kanpur. We're a new company, and we'd rather earn your trust than claim it. Every recommendation is based on your goals, your budget and your profile.</p>
+      <p>Today we guide students online, wherever they are in India, with offices in Kanpur and Greater Noida. We're a new company, and we'd rather earn your trust than claim it. Every recommendation is based on your goals, your budget and your profile.</p>
     </div>
   </div>
   <div class="story-visual reveal" style="transition-delay:.08s">
@@ -191,6 +207,33 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
     </div>
   </div>
 </div>
+
+<!-- Founder -->
+<section class="founder-section" aria-labelledby="founder-title">
+  <figure class="founder-photo reveal">
+    <img src="../assets/team/aquib-jamal.webp" alt="Portrait of Aquib Jamal, founder of Gradmire" width="1254" height="1254" loading="lazy" decoding="async">
+    <figcaption class="founder-plate">
+      <div class="founder-name">Aquib Jamal</div>
+      <div class="founder-role">Founder · Gradmire Education Pvt. Ltd.</div>
+    </figcaption>
+  </figure>
+  <div class="reveal" style="transition-delay:.08s">
+    <div class="story-tag">Meet the founder</div>
+    <h2 class="founder-title" id="founder-title">Where you study is a big decision. Aquib Jamal built Gradmire to make it a clear one.</h2>
+    <div class="founder-body">
+      <p>Choosing where to study abroad is one of the biggest decisions a student and their family will ever make. Aquib Jamal founded Gradmire in 2026 on one belief: the advice behind that decision should be clear, honest and built around the student.</p>
+      <p>For too many families, the process is confusing and expensive: scattered information, unclear costs, and advice that doesn't always put the student first. Gradmire exists to change that, by bringing university search, course matching, scholarships and one-to-one counselling into one place.</p>
+      <p>So Gradmire works differently. It is fee-only, with no commissions from universities, which means the only person a counsellor works for is you. Each counsellor focuses on a set of destinations and goes deep on them, and every recommendation is checked against your goals, your budget and your profile.</p>
+      <p>Gradmire is a new company, and it would rather earn your trust than claim it. Come and meet the team at our offices in Kanpur and Greater Noida, or book a free first consultation online from anywhere in India.</p>
+    </div>
+    <ul class="founder-points" role="list">
+      <li>Fee-only, no university commissions</li>
+      <li>Counsellors who specialise by destination</li>
+      <li>Free first consultation, no obligation</li>
+    </ul>
+    <p class="founder-cta"><a class="founder-link" href="free-consultation">Book a free consultation <span aria-hidden="true">→</span></a></p>
+  </div>
+</section>
 
 <!-- Mission -->
 <section class="mission" aria-labelledby="mission-title">
@@ -226,7 +269,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
     <div class="reveal"><h2 class="sec-title">The numbers speak for themselves.</h2></div>
     <div class="stats-grid">
       <div class="stat-card reveal"><div class="stat-num">2026</div><div class="stat-lbl">Founded in Noida</div></div>
-      <div class="stat-card reveal" style="transition-delay:.06s"><div class="stat-num">4</div><div class="stat-lbl">Cities served: Delhi/NCR, Greater Noida, Lucknow, Kanpur</div></div>
+      <div class="stat-card reveal" style="transition-delay:.06s"><div class="stat-num">2</div><div class="stat-lbl">Offices: Kanpur and Greater Noida</div></div>
       <div class="stat-card reveal" style="transition-delay:.12s"><div class="stat-num">9</div><div class="stat-lbl">Study destinations covered</div></div>
       <div class="stat-card reveal" style="transition-delay:.18s"><div class="stat-num">Free</div><div class="stat-lbl">First consultation, no obligation</div></div>
     </div>
@@ -252,12 +295,10 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
 <!-- Branches -->
 <section class="branches-section" aria-labelledby="branches-title">
   <div class="branches-inner">
-    <div class="reveal"><h2 class="sec-title" id="branches-title">Online today. Rooted in North India.</h2><p class="sec-sub" style="margin-top:.75rem;">Book a free consultation from anywhere in India. Our branches serve students across Delhi/NCR, Greater Noida, Lucknow and Kanpur.</p></div>
+    <div class="reveal"><h2 class="sec-title" id="branches-title">Online anywhere in India. Two offices in Uttar Pradesh.</h2><p class="sec-sub" style="margin-top:.75rem;">Book a free consultation from anywhere in India, or visit us at one of our two offices.</p></div>
     <div class="branches-grid">
-      <div class="branch-card reveal"><div class="branch-city">Delhi / NCR</div><div class="branch-addr">Free consultations available online</div><div class="branch-counsellors">Opening soon</div></div>
-      <div class="branch-card reveal" style="transition-delay:.04s"><div class="branch-city">Greater Noida</div><div class="branch-addr">Free consultations available online</div><div class="branch-counsellors">Opening soon</div></div>
-      <div class="branch-card reveal" style="transition-delay:.08s"><div class="branch-city">Lucknow</div><div class="branch-addr">Free consultations available online</div><div class="branch-counsellors">Opening soon</div></div>
-      <div class="branch-card reveal" style="transition-delay:.12s"><div class="branch-city">Kanpur</div><div class="branch-addr">Free consultations available online</div><div class="branch-counsellors">Opening soon</div></div>
+      <div class="branch-card reveal"><div class="branch-city">Kanpur</div><div class="branch-addr">Near Halim College, Prem Nagar, Kanpur, Uttar Pradesh</div><div class="branch-counsellors"><a href="contact">Contact this office</a></div></div>
+      <div class="branch-card reveal" style="transition-delay:.06s"><div class="branch-city">Greater Noida</div><div class="branch-addr">N2 Tower, Supertech Ecovillage 1, Greater Noida, Uttar Pradesh</div><div class="branch-counsellors"><a href="contact">Contact this office</a></div></div>
     </div>
   </div>
 </section>
@@ -292,6 +333,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
       <a class="gm-footer-logo" href="./" aria-label="Gradmire home"><img src="../assets/gradmire-logo-white-sm.png" alt="Gradmire" width="200" height="54" loading="lazy" decoding="async"></a>
       <p class="gm-footer-tagline">Study abroad, organized by subject — not by flag.</p>
       <form class="footer-subscribe" novalidate><label class="sr-only" for="footer-email">Email address for study-abroad updates</label><input id="footer-email" type="email" name="email" autocomplete="email" placeholder="you@email.com" required><button type="submit" aria-label="Subscribe to updates"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><p class="footer-subscribe-msg" role="status" hidden></p></form>
+      <div class="gm-footer-social" role="group" aria-label="Contact and social links"><a class="gm-social-link" href="mailto:info@gradmire.com" aria-label="Email Gradmire"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="17" height="13" rx="2.5"/><path d="m4.5 7.5 7.5 5.8 7.5-5.8"/></svg></a><a class="gm-social-link" href="https://wa.me/918577909702?text=Hi+Gradmire%2C+I+have+a+query+about+studying+abroad." aria-label="Chat with Gradmire on WhatsApp" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1.2-4.2A8 8 0 1 1 8.3 18.9z"/><path d="M9.2 9.3c.3 2.5 2.4 4.6 5.1 5.2l.9-1.1-1.7-.9-.8.6a4 4 0 0 1-1.9-1.9l.7-.8-.9-1.7z"/></svg></a><span class="gm-social-link is-soon" title="Instagram: coming soon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".7" fill="currentColor"/></svg></span><span class="gm-social-link is-soon" title="Facebook: coming soon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4.5h-2A3.5 3.5 0 0 0 9 8v2H6.5v3.2H9V20h3.4v-6.8h2.4l.5-3.2h-2.9V8.4c0-.5.4-.9.9-.9h1.7z"/></svg></span><span class="gm-social-link is-soon" title="LinkedIn: coming soon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="M8 10.5v6M8 7.6v.01M12 16.5v-6m0 3c0-1.7 1-3 2.6-3s2.4 1.1 2.4 3v3"/></svg></span><span class="gm-social-link is-soon" title="YouTube: coming soon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="3.5"/><path d="m10.5 9.5 4 2.5-4 2.5z"/></svg></span><span class="gm-social-link is-soon" title="X: coming soon" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5l14 14M19 5 5 19"/></svg></span></div>
     </div>
     <nav class="gm-footer-col" aria-label="Destinations">
       <h2 class="gm-footer-title">Destinations</h2>
@@ -343,7 +385,7 @@ img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}
       </ul>
     </nav>
   </div>
-  <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">© 2026 Gradmire Education Pvt. Ltd. · Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001, India · Email: <a href="mailto:info@gradmire.com">info@gradmire.com</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy">Privacy</a><a href="terms">Terms</a><a class="gm-legal-more" href="refund-policy">Refunds &amp; fees</a><a class="gm-legal-more" href="cookie-policy">Cookies</a><a class="gm-legal-more" href="data-request">Your data rights</a><a class="gm-legal-more" href="grievance">Grievance</a><a class="gm-legal-more" href="photo-credits">Photo credits</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
+  <div class="gm-legal-bar gm-legal-bar--dark"><p class="gm-legal-entity">© 2026 Gradmire Education Pvt. Ltd. · Offices: Kanpur (Near Halim College, Prem Nagar) and Greater Noida (N2 Tower, Supertech Ecovillage 1) · Email: <a href="mailto:info@gradmire.com">info@gradmire.com</a></p><nav class="gm-legal-links" aria-label="Legal"><a href="privacy">Privacy</a><a href="terms">Terms</a><a class="gm-legal-more" href="refund-policy">Refunds &amp; fees</a><a class="gm-legal-more" href="cookie-policy">Cookies</a><a class="gm-legal-more" href="data-request">Your data rights</a><a class="gm-legal-more" href="grievance">Grievance</a><a class="gm-legal-more" href="photo-credits">Photo credits</a><button type="button" data-cookie-settings>Cookie settings</button></nav></div>
 </footer>
 
 <script>
@@ -364,4 +406,4 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 <a class="gm-tab" href="/about" aria-current="page" data-gm-menu><svg class="gm-ico-open" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="4" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.6"/></svg><svg class="gm-ico-close" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg><span class="gm-tab-label">Menu</span></a>
 </nav>
 <!-- /gm-tabbar -->
-<script src="../assets/site.js?v=39" defer></script>
+<script src="../assets/site.js?v=42" defer></script>

@@ -900,6 +900,13 @@
 .gm-popup-eyebrow span { width: .45rem; height: .45rem; border-radius: 50%; background: currentColor; }
 .gm-popup-title { margin: 0 2rem .5rem 0; font-size: clamp(1.4rem, 2.4vw, 1.85rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.1; }
 .gm-popup-sub { margin: 0 0 1.1rem; color: var(--text-s, #556270); font-size: .9rem; line-height: 1.55; }
+/* "You chose ... where it goes" box (course, scholarship or test that opened the popup) */
+.gm-popup-chosen { margin: 0 0 1rem; padding: .8rem .9rem; border: 1px solid color-mix(in srgb, var(--accent, #007A5A) 35%, var(--border, rgba(14, 20, 32, .12))); border-radius: 12px; background: var(--accent-dim, rgba(0, 122, 90, .12)); }
+.gm-popup-chosen[hidden] { display: none; }
+.gm-popup-chosen-label { margin: 0 0 .15rem; color: var(--accent-text, #005C44); font: 700 .64rem var(--mono, monospace); letter-spacing: .1em; text-transform: uppercase; }
+.gm-popup-chosen-name { margin: 0 0 .35rem; font-size: .98rem; font-weight: 800; letter-spacing: -.01em; line-height: 1.3; }
+.gm-popup-chosen-where { margin: 0; color: var(--text-s, #556270); font-size: .82rem; line-height: 1.5; }
+.gm-popup-chosen-where a { color: var(--accent-text, #005C44); font-weight: 700; }
 .gm-popup-form { display: grid; gap: .7rem; }
 .gm-popup-field { display: grid; gap: .3rem; margin: 0; font-size: .8rem; font-weight: 600; }
 .gm-popup-field em { color: var(--text-s, #556270); font-style: normal; font-weight: 500; }
@@ -921,6 +928,25 @@ html.gm-popup-open { overflow: hidden; }
 html.gm-popup-open .gm-consult-fab { visibility: hidden; }
 @keyframes gm-fab-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 
+/* Promo cards: a small closable offer for Gradmire's own tools and guides (built in site.js, setupPromoCards).
+   Not a blocker: it sits in the corner above the "Free counselling" button, and above the tab bar on phones. */
+.gm-promo { position: fixed; right: max(1rem, env(safe-area-inset-right)); bottom: calc(max(1rem, env(safe-area-inset-bottom)) + 64px); z-index: 1090; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .85rem; width: min(350px, calc(100vw - 2rem)); box-sizing: border-box; padding: 1rem 2.7rem 1rem 1rem; border: 1px solid var(--border, rgba(14, 20, 32, .1)); border-radius: 18px; background: var(--surface, #fff); color: var(--text-p, #0E1420); box-shadow: 0 18px 44px rgba(14, 20, 32, .2); opacity: 0; transform: translateY(18px) scale(.98); transition: opacity .3s, transform .4s cubic-bezier(.16, 1, .3, 1); }
+.gm-promo.is-visible { opacity: 1; transform: none; }
+.gm-promo-close { position: absolute; top: .4rem; right: .4rem; display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--text-s, #5B6472); cursor: pointer; }
+.gm-promo-close:hover { background: var(--accent-dim, rgba(0, 122, 90, .12)); color: var(--text-p, #0E1420); }
+.gm-promo-icon { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 12px; background: var(--accent-dim, rgba(0, 122, 90, .12)); color: var(--accent-text, #005C44); }
+.gm-promo-icon svg { width: 22px; height: 22px; }
+.gm-promo-eyebrow { margin: 0 0 .15rem; color: var(--accent-text, #005C44); font: 700 .64rem var(--mono, monospace); letter-spacing: .1em; text-transform: uppercase; }
+.gm-promo-title { margin: 0 0 .25rem; font-size: .98rem; font-weight: 800; letter-spacing: -.01em; line-height: 1.25; }
+.gm-promo-text { margin: 0 0 .7rem; color: var(--text-s, #556270); font-size: .84rem; line-height: 1.5; }
+.gm-promo-cta { display: inline-flex; align-items: center; gap: .4rem; min-height: 40px; padding: .5rem 1rem; border-radius: 999px; background: var(--accent, #007A5A); color: #fff; font: 700 .85rem var(--sans, system-ui, sans-serif); text-decoration: none; transition: background .2s, transform .15s; }
+.gm-promo-cta:hover { background: var(--accent-hover, #006649); }
+.gm-promo-cta:active { transform: scale(.97); }
+.gm-promo-close:focus-visible, .gm-promo-cta:focus-visible { outline: 3px solid var(--accent, #007A5A); outline-offset: 2px; }
+/* Out of the way of everything that already asks for attention. */
+html.gm-popup-open .gm-promo, html.gm-consent-open .gm-promo, html.nav-open .gm-promo, html.gm-kb .gm-promo { visibility: hidden; }
+@media (prefers-reduced-motion: reduce) { .gm-promo { transition: opacity .2s; transform: none; } }
+
 /* The destination nav is sticky (in flow), so the old 68px offset for a fixed nav left an empty band above the hero. */
 .destination-page .dest-hero { margin-top: 0; }
 
@@ -938,8 +964,9 @@ html:has(.subnav, .page-nav) { scroll-padding-top: 128px; }
 .gm-buddy-live, .gm-buddy-fallback { display: block; width: 100%; height: 100%; }
 .gm-buddy-live .bs-avatar { width: 100% !important; height: 100% !important; }
 .gm-buddy-eye { transform-box: fill-box; transform-origin: center; }
-.gm-buddy[data-mood="happy"] .gm-buddy-fallback, .gm-buddy[data-mood="celebrate"] .gm-buddy-fallback { animation: gm-buddy-hop .5s ease-out; }
-.gm-buddy[data-mood="confused"] .gm-buddy-fallback, .gm-buddy[data-mood="sad"] .gm-buddy-fallback { animation: gm-buddy-shake .45s ease-in-out; }
+/* The plain SVG fallback (shown only if the animated avatar cannot load) copies the new faces with a hop or a shake. */
+.gm-buddy[data-mood="happy"] .gm-buddy-fallback, .gm-buddy[data-mood="celebrate"] .gm-buddy-fallback, .gm-buddy[data-mood="wink"] .gm-buddy-fallback, .gm-buddy[data-mood="love"] .gm-buddy-fallback, .gm-buddy[data-mood="smug"] .gm-buddy-fallback, .gm-buddy[data-mood="waking"] .gm-buddy-fallback { animation: gm-buddy-hop .5s ease-out; }
+.gm-buddy[data-mood="confused"] .gm-buddy-fallback, .gm-buddy[data-mood="sad"] .gm-buddy-fallback, .gm-buddy[data-mood="dizzy"] .gm-buddy-fallback, .gm-buddy[data-mood="nervous"] .gm-buddy-fallback { animation: gm-buddy-shake .45s ease-in-out; }
 @keyframes gm-buddy-in { from { opacity: 0; transform: translateY(18px) scale(.8); } to { opacity: 1; transform: none; } }
 @keyframes gm-buddy-hop { 40% { transform: translateY(-6px); } }
 @keyframes gm-buddy-shake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
@@ -1090,6 +1117,17 @@ footer .footer-tagline { max-width: 27ch; margin: 1rem 0 1.35rem; color: rgba(25
 .gm-footer-logo { display: inline-block; border-radius: 8px; }
 .gm-footer-logo img { display: block; width: clamp(160px, 16vw, 210px); max-width: 100%; height: auto; }
 .gm-footer-logo:focus-visible { outline: 3px solid #3C8FD9; outline-offset: 4px; }
+/* Contact and social icons (scripts/social.mjs): each opens that profile's page in a new tab. */
+.gm-footer-social { display: flex; flex-wrap: wrap; gap: .6rem; margin: 1.15rem 0 0; }
+.gm-footer-social:empty { display: none; }
+.gm-social-link { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid rgba(255, 255, 255, .24); border-radius: 50%; color: #fff; text-decoration: none; transition: background .2s, border-color .2s, transform .15s; }
+.gm-social-link svg { display: block; width: 22px; height: 22px; }
+a.gm-social-link:hover { border-color: rgba(255, 255, 255, .55); background: rgba(255, 255, 255, .12); }
+a.gm-social-link:active { transform: scale(.94); }
+/* Not set up yet: the icon is there, but it is plainly not a button. */
+.gm-social-link.is-soon { opacity: .4; cursor: default; border-style: dashed; }
+.nav-mobile-social-link.is-soon { opacity: .4; cursor: default; border-style: dashed; }
+.gm-social-link:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
 .gm-footer-tagline { max-width: 28ch; margin: 1rem 0 1.35rem; color: rgba(255, 255, 255, .74); font-size: 1rem; line-height: 1.55; }
 .gm-footer-title { margin: 0 0 .9rem; color: #fff; font-size: .78rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .gm-footer-links { list-style: none; margin: 0; padding: 0; display: grid; gap: .55rem; }

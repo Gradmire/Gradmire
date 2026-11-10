@@ -57,6 +57,43 @@
         window.addEventListener('orientationchange', function () { setTimeout(function () { base = window.innerHeight; check(); }, 400); });
     }
 
+    /* ── Swipe rows: the card grids that mobile-app.css turns into one sideways row (MBBS and study country tiles, courses,
+          cities and so on) get position dots, so it is clear there are more cards and how far along you are.
+          Done at once, not when idle, so the dots never pop in late and move the page. ── */
+    var ROWS = '.gp-tile-grid, .course-grid, .cities-grid, .intakes-grid, .elig-grid, .exam-cards, .careers-grid, .scholarship-cards, .deadline-grid, .overview-grid, .uni-scroll';
+    document.querySelectorAll(ROWS).forEach(function (row) {
+        var items = Array.prototype.slice.call(row.children);
+        if (items.length < 2 || row.getAttribute('data-gm-dots')) return;
+        row.setAttribute('data-gm-dots', '1');
+        row.classList.add('gm-swipe');
+        var name = row.getAttribute('aria-label') || (row.closest('section, .section') && row.closest('section, .section').id) || 'cards';
+        row.tabIndex = 0;
+        row.setAttribute('role', 'region');
+        if (!row.getAttribute('aria-label')) row.setAttribute('aria-label', name + ' (swipe sideways)');
+        var dots = document.createElement('div');
+        dots.className = 'gm-dots';
+        var step = function () { return items[1].offsetLeft - items[0].offsetLeft || 1; };
+        var buttons = items.map(function (item, index) {
+            var b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'gm-dot';
+            b.setAttribute('aria-label', 'Show card ' + (index + 1) + ' of ' + items.length);
+            b.addEventListener('click', function () { row.scrollTo({ left: index * step(), behavior: reduce ? 'auto' : 'smooth' }); });
+            dots.appendChild(b);
+            return b;
+        });
+        row.parentNode.insertBefore(dots, row.nextSibling);
+        var frame = 0;
+        var sync = function () {
+            frame = 0;
+            var atEnd = row.scrollLeft + row.clientWidth >= row.scrollWidth - 4;
+            var current = atEnd ? items.length - 1 : Math.min(items.length - 1, Math.round(row.scrollLeft / step()));
+            buttons.forEach(function (b, index) { b.setAttribute('aria-current', index === current ? 'true' : 'false'); });
+        };
+        row.addEventListener('scroll', function () { if (!frame) frame = requestAnimationFrame(sync); }, { passive: true });
+        sync();
+    });
+
     idle(function () {
         /* ── Spotlight Card: a soft glow under the finger ── */
         document.querySelectorAll('.gp-card, .bl-card, .gp-tile, .uni-card').forEach(function (el) { el.classList.add('gm-spot'); });
@@ -100,6 +137,7 @@
                 }
             });
         }, { rootMargin: '0px 0px -8% 0px' });
-        document.querySelectorAll('.bl-card, .gp-card, .gp-tile, .gp-steps > li').forEach(function (el) { seen.observe(el); });
+        /* Cards inside a swipe row are skipped: off-screen to the side they would stay hidden until swiped into view. */
+        document.querySelectorAll('.bl-card, .gp-card, .gp-tile, .gp-steps > li').forEach(function (el) { if (!el.closest('.gm-swipe')) seen.observe(el); });
     });
 })();

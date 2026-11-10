@@ -14,8 +14,8 @@ Prepared 2 November 2026. A **backlink** is a link from another website to Gradm
 |---|---|---|
 | Confirm the "no commission" promise or soften it | Editors and universities will read the homepage and About page | `index.html`, `about.html`, `faq.html` |
 | Add a real business phone number | Directory and Google profiles need Name, Address and Phone to match the website exactly | Contact page, footer |
-| Settle one story for address and founding | The site says founded in Noida in 2026, registered office in New Delhi. Profiles must say the same thing everywhere | `about.html`, footer |
-| Do not list branches yet | Delhi/NCR, Greater Noida, Lucknow and Kanpur are "Opening soon" on the About page | Directory listings |
+| Settle one story for address and founding | The site says founded in Noida in 2026, with two offices: Kanpur (Near Halim College, Prem Nagar) and Greater Noida (N2 Tower, Supertech Ecovillage 1). Profiles must say the same thing everywhere | `about.html`, footer, `contact.html` |
+| List only the two real offices | Kanpur and Greater Noida. Do not list any other branch in directories | Directory listings |
 | Create the real profiles, then add them to the schema | The homepage structured data has no `sameAs` links. Add each profile URL once it exists | `index.html` JSON-LD |
 | Put real counsellors on the About page, with consent | Journalists and credential programmes need named, real people. The placeholder team was removed | `about.html` |
 

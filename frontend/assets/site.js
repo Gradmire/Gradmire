@@ -3,13 +3,16 @@
     /* Strobi, the study buddy: @bible-strong/avatar-web (AGPL-3.0) renders the definition below. */
     const AVATAR_WEB_URL = 'https://cdn.jsdelivr.net/npm/@bible-strong/avatar-web@0.1.0/+esm';
     const ASSETS_URL = new URL('./', document.currentScript?.src || window.location.href).href;
-    const AVATAR_DEFINITION_URL = new URL('avatar/strobi.avatar.json', ASSETS_URL).href;
+    /* ?v= changes whenever the avatar file does (new faces were added in v2), so cached copies never miss an animation. */
+    const AVATAR_DEFINITION_URL = new URL('avatar/strobi.avatar.json?v=2', ASSETS_URL).href;
 
     /* ── Consent: essential storage always; "preferences" and "analytics" only with opt-in.
        The choice itself is essential (it has to be remembered to be respected). ── */
     const CONSENT_KEY = 'gm-consent';
     const CONSENT_VERSION = 1;
-    const PREF_KEYS = ['gradmire-theme', 'gm-consult-popup-dismissed'];
+    /* One remembered "closed" timestamp per promo card (see setupPromoCards); cleared when preferences are refused. */
+    const PROMO_IDS = ['plan', 'cost', 'schol', 'courses', 'deadlines', 'visa', 'tests', 'mbbs', 'counsel'];
+    const PREF_KEYS = ['gradmire-theme', 'gm-consult-popup-dismissed', ...PROMO_IDS.map((id) => `gm-promo-${id}`)];
     function readConsent() {
         try {
             const c = JSON.parse(localStorage.getItem(CONSENT_KEY) || 'null');
@@ -175,27 +178,20 @@
         /* What the footer shows on a desktop, so the phone footer can stay small: company and legal links,
            the registered office, e-mail and social icons. */
         const socialIcon = (paths) => `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>`;
-        const socialSet = {
-            email: ['Email Gradmire', '<rect x="3.5" y="5.5" width="17" height="13" rx="2.5"/><path d="m4.5 7.5 7.5 5.8 7.5-5.8"/>'],
-            instagram: ['Gradmire on Instagram', '<rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".7" fill="currentColor"/>'],
-            facebook: ['Gradmire on Facebook', '<path d="M14.5 4.5h-2A3.5 3.5 0 0 0 9 8v2H6.5v3.2H9V20h3.4v-6.8h2.4l.5-3.2h-2.9V8.4c0-.5.4-.9.9-.9h1.7z"/>'],
-            linkedin: ['Gradmire on LinkedIn', '<rect x="3.5" y="3.5" width="17" height="17" rx="3"/><path d="M8 10.5v6M8 7.6v.01M12 16.5v-6m0 3c0-1.7 1-3 2.6-3s2.4 1.1 2.4 3v3"/>'],
-            youtube: ['Gradmire on YouTube', '<rect x="3" y="6" width="18" height="12" rx="3.5"/><path d="m10.5 9.5 4 2.5-4 2.5z"/>'],
-            x: ['Gradmire on X', '<path d="M5 5l14 14M19 5 5 19"/>'],
-            whatsapp: ['Chat with Gradmire on WhatsApp', '<path d="M4 20l1.2-4.2A8 8 0 1 1 8.3 18.9z"/><path d="M9.2 9.3c.3 2.5 2.4 4.6 5.1 5.2l.9-1.1-1.7-.9-.8.6a4 4 0 0 1-1.9-1.9l.7-.8-.9-1.7z"/>']
-        };
-        /* Add the real profile address for each account Gradmire runs, for example
-           instagram: 'https://www.instagram.com/<handle>'. A network left empty shows no icon. */
-        const socialLinks = { instagram: '', facebook: '', linkedin: '', youtube: '', x: '', whatsapp: '' };
-        const socialRow = [['email', 'mailto:info@gradmire.com'], ...Object.entries(socialLinks).filter(([, url]) => url)]
-            .map(([key, url]) => `<a class="nav-mobile-social-link" href="${url}" aria-label="${socialSet[key][0]}"${key === 'email' ? '' : ' target="_blank" rel="noopener"'}>${socialIcon(socialSet[key][1])}</a>`).join('');
+        /* The icons are copied from the footer, whose list lives in scripts/social.mjs (the one place to add a profile),
+           so the menu and the footer never disagree. Each one opens the real profile page in a new tab. */
+        const emailIcon = '<rect x="3.5" y="5.5" width="17" height="13" rx="2.5"/><path d="m4.5 7.5 7.5 5.8 7.5-5.8"/>';
+        const socialRow = [...document.querySelectorAll('.gm-footer-social > *')].map((el) => (el.tagName === 'A'
+            ? `<a class="nav-mobile-social-link" href="${el.getAttribute('href')}" aria-label="${el.getAttribute('aria-label')}"${el.target ? ' target="_blank" rel="noopener noreferrer"' : ''}>${el.innerHTML}</a>`
+            : `<span class="nav-mobile-social-link is-soon" title="${el.getAttribute('title') || ''}" aria-hidden="true">${el.innerHTML}</span>`)).join('')
+            || `<a class="nav-mobile-social-link" href="mailto:info@gradmire.com" aria-label="Email Gradmire">${socialIcon(emailIcon)}</a>`;
         const infoList = (items) => items.map(([label, slug]) => `<li><a href="${page(slug)}">${label}</a></li>`).join('');
         const mobileInfo = `<li class="nav-mobile-info">
             <div class="nav-mobile-cols">
               <div><p class="nav-mobile-h">Company</p><ul role="list">${infoList([['About us', 'about'], ['Blog', 'blog'], ['Careers', 'career'], ['FAQs', 'faq'], ['Contact', 'contact']])}</ul></div>
               <div><p class="nav-mobile-h">Legal</p><ul role="list">${infoList([['Privacy', 'privacy'], ['Terms', 'terms'], ['Refunds &amp; fees', 'refund-policy'], ['Cookies', 'cookie-policy'], ['Your data rights', 'data-request'], ['Grievance', 'grievance'], ['Photo credits', 'photo-credits']])}<li><button type="button" class="nav-mobile-linkbtn" data-cookie-settings>Cookie settings</button></li></ul></div>
             </div>
-            <p class="nav-mobile-contact">Gradmire Education Pvt. Ltd.<br>World Trade Tower, Barakhamba Lane, New Delhi 110001, India</p>
+            <p class="nav-mobile-contact">Gradmire Education Pvt. Ltd.<br>Kanpur: Near Halim College, Prem Nagar<br>Greater Noida: N2 Tower, Supertech Ecovillage 1</p>
             <div class="nav-mobile-social" role="group" aria-label="Contact and social links">${socialRow}</div>
           </li>`;
         mobile.innerHTML = `<ul class="nav-mobile-links" role="list">${navItems.join('')}${guides2027}
@@ -406,7 +402,8 @@
     function setupConsultPopup() {
         const pageName = (window.location.pathname.split('/').pop() || 'index').replace(/\.html$/i, '').toLowerCase();
         const skip = ['login', 'signup', 'free-consultation', 'dashboard', 'contact', '404', 'grievance', 'privacy', 'terms'];
-        if (skip.includes(pageName)) return;
+        /* Signed-in workspaces (student, consultant, admin) are not sales pages: no popup and no floating button there. */
+        if (skip.includes(pageName) || document.querySelector('.ws-layout')) return;
 
         const store = (kind) => { try { return window[kind]; } catch (_) { return null; } };
         const session = store('sessionStorage');
@@ -435,6 +432,11 @@
               <p class="gm-popup-eyebrow"><span aria-hidden="true"></span>Free 1:1 counselling</p>
               <h2 class="gm-popup-title" id="gm-popup-title">Plan your study-abroad journey with an expert.</h2>
               <p class="gm-popup-sub" id="gm-popup-sub">Share a few details and a Gradmire counsellor will call you within 24 hours. No fees, no obligation.</p>
+              <div class="gm-popup-chosen" hidden>
+                <p class="gm-popup-chosen-label"></p>
+                <p class="gm-popup-chosen-name"></p>
+                <p class="gm-popup-chosen-where"></p>
+              </div>
               <form class="gm-popup-form" novalidate>
                 <label class="gm-popup-field"><span>Full name</span><input name="name" type="text" autocomplete="name" placeholder="Your name" required></label>
                 <label class="gm-popup-field"><span>Phone number</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+91 98765 43210" required></label>
@@ -462,6 +464,31 @@
         let autoDone = false;
 
         const focusables = () => [...card.querySelectorAll('button, input, select, a[href]')].filter((el) => !el.disabled && el.offsetParent !== null);
+        /* When "Apply" (or a scholarship or test button) opened the popup, say what was chosen and where it goes,
+           so the visitor is never left wondering what happened to it. */
+        const chosenBox = popup.querySelector('.gm-popup-chosen');
+        function showChosen() {
+            const [label, name, where] = context.course
+                ? ['Course you chose', context.course, 'Where it goes: after your free consultation, your counsellor adds this course to Application status on your Gradmire dashboard, so you can follow every step there.']
+                : context.scholarship
+                    ? ['Scholarship you chose', context.scholarship, 'Your counsellor will cover it in your free consultation and plan its deadline with you.']
+                    : context.exam
+                        ? ['Test you chose', String(context.exam).toUpperCase(), 'Your counsellor will cover it in your free consultation.']
+                        : [];
+            chosenBox.hidden = !name;
+            if (!name) return;
+            chosenBox.querySelector('.gm-popup-chosen-label').textContent = label;
+            chosenBox.querySelector('.gm-popup-chosen-name').textContent = name;
+            const whereEl = chosenBox.querySelector('.gm-popup-chosen-where');
+            whereEl.textContent = `${where} `;
+            if (context.course) {
+                const dashboardLink = document.createElement('a');
+                dashboardLink.href = page('dashboard');
+                dashboardLink.textContent = 'Open my dashboard';
+                whereEl.append(dashboardLink, ' (sign in to see it).');
+                window.dispatchEvent(new CustomEvent('gm:saved'));
+            }
+        }
         function open(auto) {
             if (!popup.hidden || (auto && autoDone)) return;
             if (auto) {
@@ -470,7 +497,9 @@
                 if (document.querySelector('.nav-mobile.is-open, .nav-mobile[aria-hidden="false"]')) return;
             }
             autoDone = true;
+            window.__gmPopupAt = Date.now();
             write(session, 'gm-consult-popup-shown', '1');
+            showChosen();
             lastFocus = document.activeElement;
             popup.hidden = false;
             document.documentElement.classList.add('gm-popup-open');
@@ -479,6 +508,7 @@
         }
         function close() {
             if (popup.hidden) return;
+            window.__gmPopupAt = Date.now();
             savePref('gm-consult-popup-dismissed', String(Date.now()));
             popup.classList.remove('is-visible');
             document.documentElement.classList.remove('gm-popup-open');
@@ -544,6 +574,117 @@
         armAutoOpen();
     }
 
+    /* Promo cards: small, closable offers for Gradmire's own free tools, guides and counselling. First-party only: no ad
+       network and no tracking. They are never a full-screen blocker. One card slides in from the corner (above the tab bar on
+       phones) once the visitor has spent a while on the page, at most twice per session and once per page view, never over the
+       cookie banner, the consultation popup, the menu or the keyboard. Closing one keeps that card away for 7 days (remembered
+       only if the visitor allowed preferences; otherwise for this tab). The card picked depends on the page being read. */
+    function setupPromoCards() {
+        const slug = (window.location.pathname.split('/').filter(Boolean).pop() || 'index').replace(/\.html$/i, '').toLowerCase();
+        const skip = ['login', 'signup', 'free-consultation', 'book-consultation', 'dashboard', 'contact', '404', 'grievance', 'privacy', 'terms', 'cookie-policy'];
+        if (skip.includes(slug) || document.querySelector('.ws-layout')) return;
+
+        const DAY = 864e5, DISMISS_DAYS = 7, MAX_PER_SESSION = 2;
+        const session = (fn) => { try { return fn(window.sessionStorage); } catch (_) { return null; } };
+        const shownCount = () => Number(session((s) => s.getItem('gm-promo-count')) || 0);
+        if (shownCount() >= MAX_PER_SESSION) return;
+        const dismissed = (id) => Number(readPref(`gm-promo-${id}`) || 0) > Date.now() - DISMISS_DAYS * DAY;
+
+        const match = slug.match(/^(study-in|mbbs-in|scholarships-in)-(.+)$/);
+        const place = match ? [...destinations, ...mbbsCountries].find(([, code]) => code === match[2]) : null;
+        const isMbbs = /^mbbs/.test(slug);
+        const withThe = (name) => (/^United /.test(name) ? `the ${name}` : name);
+
+        const cards = {
+            plan: { eyebrow: '2027 guide', title: 'Planning for the 2027 intake?', text: 'Choose your intake and follow a month-by-month plan, with sources listed.', href: page('study-abroad-2027'), cta: 'Open the 2027 plan', icon: 'calendar' },
+            cost: { eyebrow: 'Free tool', title: 'What will your degree really cost?', text: 'Add tuition, living and test costs, then see your break-even against expected salary.', href: page('tools/roi-calculator'), cta: 'Use the cost calculator', icon: 'calc' },
+            schol: { eyebrow: 'Funding', title: 'Find scholarships that fit', text: 'Compare awards by country, degree level and eligibility, with official sources.', href: page('scholarships'), cta: 'Browse scholarships', icon: 'award' },
+            courses: { eyebrow: 'Free tool', title: 'Start with the course', text: 'Search bachelor’s and master’s courses by subject, country and level.', href: page('find-courses'), cta: 'Open the Course Finder', icon: 'search' },
+            deadlines: { eyebrow: 'Free tool', title: 'Never miss a deadline', text: 'Track university application deadlines and see which are urgent.', href: page('tools/deadline-tracker'), cta: 'Track deadlines', icon: 'clock' },
+            visa: { eyebrow: 'Visa help', title: 'Student visa paperwork', text: 'Eligibility, document checklists, financial evidence and interview preparation.', href: page('visa-assistance'), cta: 'See visa help', icon: 'file' },
+            tests: { eyebrow: 'Test prep', title: 'IELTS, TOEFL, GRE or GMAT?', text: 'Practice tests, study plans and feedback from Gradmire for the 2027 intake.', href: page('test-preparation'), cta: 'See test prep', icon: 'pencil' },
+            mbbs: { eyebrow: 'MBBS abroad', title: 'Compare MBBS countries', text: 'Fees, course length and recognition for nine countries, side by side.', href: `${page('mbbs-abroad')}#compare`, cta: 'Compare countries', icon: 'cross' },
+            counsel: place
+                ? { eyebrow: 'Free 1:1 counselling', title: `Questions about ${isMbbs ? 'MBBS in ' : ''}${withThe(place[0])}?`, text: 'Free first consultation, no obligation. A counsellor replies within 24 business hours.', href: consultationPage(isMbbs ? 'mbbs-abroad' : 'counselling', place[1]), cta: 'Talk to a counsellor', icon: 'chat', open: true, country: place[1] }
+                : { eyebrow: 'Free 1:1 counselling', title: 'Talk to a counsellor', text: 'Free first consultation, no obligation. A counsellor replies within 24 business hours.', href: consultationPage('counselling'), cta: 'Book free consultation', icon: 'chat', open: true }
+        };
+        const order = isMbbs ? (slug === 'mbbs-abroad' ? ['counsel', 'visa', 'deadlines'] : ['mbbs', 'counsel', 'deadlines'])
+            : /^(study-in|scholarships-in)-/.test(slug) ? ['counsel', 'cost', 'schol', 'tests']
+            : /^test-prep|tests/.test(slug) ? ['counsel', 'plan', 'schol']
+            : isToolPage ? ['counsel', 'courses', 'plan']
+            : slug === 'index' ? ['plan', 'cost', 'schol']
+            : ['plan', 'cost', 'courses', 'counsel'];
+        const here = window.location.pathname.replace(/\.html$/i, '').replace(/\/$/, '');
+        const samePage = (card) => { try { return new URL(card.href, window.location.href).pathname.replace(/\.html$/i, '').replace(/\/$/, '') === here; } catch (_) { return false; } };
+        const id = order.find((key) => !dismissed(key) && !samePage(cards[key]));
+        if (!id) return;
+        const card = cards[id];
+
+        const icons = {
+            calc: '<rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M8.5 7.5h7M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 16h.01M12 16h.01M15.5 16h.01"/>',
+            calendar: '<rect x="4" y="5.5" width="16" height="14.5" rx="3"/><path d="M8.5 3.5v4M15.5 3.5v4M4 10h16"/>',
+            award: '<circle cx="12" cy="9" r="5"/><path d="M9 13.5 7.5 21l4.5-2.5 4.5 2.5-1.5-7.5"/>',
+            search: '<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/>',
+            clock: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+            file: '<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M9.5 12h5M9.5 16h5"/>',
+            pencil: '<path d="M4 20l1-4L16.5 4.5a2 2 0 0 1 3 3L8 19z"/><path d="M14.5 6.5l3 3"/>',
+            cross: '<rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M12 7.5v9M7.5 12h9"/>',
+            chat: '<path d="M4.5 6.5A2.5 2.5 0 0 1 7 4h10a2.5 2.5 0 0 1 2.5 2.5v7A2.5 2.5 0 0 1 17 16h-6l-4.5 4v-4H7a2.5 2.5 0 0 1-2.5-2.5z"/>'
+        };
+        const el = document.createElement('aside');
+        el.className = 'gm-promo';
+        el.setAttribute('aria-label', 'Gradmire offer');
+        const consultAttrs = card.open ? ` data-open-consult${card.country ? ` data-country="${card.country}"` : ''}` : '';
+        el.innerHTML = `
+          <button type="button" class="gm-promo-close" aria-label="Close offer"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+          <span class="gm-promo-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${icons[card.icon]}</svg></span>
+          <div class="gm-promo-body">
+            <p class="gm-promo-eyebrow">${card.eyebrow}</p>
+            <p class="gm-promo-title">${card.title}</p>
+            <p class="gm-promo-text">${card.text}</p>
+            <a class="gm-promo-cta" href="${card.href}"${consultAttrs}>${card.cta} <span aria-hidden="true">→</span></a>
+          </div>`;
+
+        const started = Date.now();
+        let timer = 0, hideTimer = 0, shown = false;
+        const quiet = () => {
+            const active = document.activeElement;
+            return !['gm-popup-open', 'gm-consent-open', 'nav-open', 'gm-kb'].some((name) => root.classList.contains(name))
+                && document.visibilityState === 'visible'
+                && !(active && /^(INPUT|TEXTAREA|SELECT)$/.test(active.tagName))
+                && Date.now() - (window.__gmPopupAt || 0) > 20000;
+        };
+        function hide(close) {
+            clearTimeout(hideTimer);
+            if (close) savePref(`gm-promo-${id}`, String(Date.now()));
+            el.classList.remove('is-visible');
+            setTimeout(() => el.remove(), 320);
+        }
+        function show() {
+            shown = true;
+            session((s) => s.setItem('gm-promo-count', String(shownCount() + 1)));
+            document.body.appendChild(el);
+            requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('is-visible')));
+            window.dispatchEvent(new CustomEvent('gm:promo'));
+            /* Fades away by itself after a while, but never while it is being read (pointer, touch or keyboard focus on it). */
+            hideTimer = setTimeout(() => hide(false), 24000);
+            ['mouseenter', 'focusin', 'touchstart'].forEach((type) => el.addEventListener(type, () => clearTimeout(hideTimer), { passive: true }));
+        }
+        el.querySelector('.gm-promo-close').addEventListener('click', () => hide(true));
+        el.querySelector('.gm-promo-cta').addEventListener('click', () => hide(true));
+        el.addEventListener('keydown', (event) => { if (event.key === 'Escape') hide(true); });
+
+        /* Not before 20 s on the page, and then once the visitor has scrolled a third of it (or after 45 s). */
+        const check = () => {
+            if (shown) return;
+            const age = Date.now() - started;
+            const depth = (window.scrollY + window.innerHeight) / Math.max(1, document.documentElement.scrollHeight);
+            if (age > 20000 && (depth > 0.3 || age > 45000) && quiet()) { show(); return; }
+            if (age < 240000) timer = setTimeout(check, 3000);
+        };
+        timer = setTimeout(check, 20000);
+    }
+
     /* Strobi, the study buddy: a standalone companion (bottom-left) rendered by
        @bible-strong/avatar-web from avatar/strobi.avatar.json. It reacts to what the visitor
        does: clicks, typing, a field filled in right or wrong, form submits, idling, reaching
@@ -592,7 +733,7 @@
         const show = (animation) => {
             current = animation;
             wrap.dataset.mood = animation;
-            live?.play(animation);
+            try { live?.play(animation); } catch (_) { /* an animation the loaded file does not know: keep the current face */ }
         };
         function setBase(animation) {
             base = animation;
@@ -895,9 +1036,13 @@
             'Our counsellors can review your SOP for free.'
         ];
         let tipIndex = 0;
+        /* Poking Strobi pulls a different face each time (a step of 1 to 3 along the list, so never the same one twice running). */
+        const pokeFaces = [['laughing', 2200], ['wink', 2400], ['love', 2600], ['surprised', 1800], ['shy', 2400], ['dizzy', 2000], ['smug', 2400], ['playful', 2000], ['proud', 2200]];
+        let pokeIndex = Math.floor(Math.random() * pokeFaces.length);
         button.addEventListener('click', () => {
             if (justDragged) return;
-            react('laughing', 2200);
+            pokeIndex = (pokeIndex + 1 + Math.floor(Math.random() * 3)) % pokeFaces.length;
+            react(...pokeFaces[pokeIndex]);
             say(tips[tipIndex++ % tips.length], { ms: 7000, cta: true });
         });
         button.addEventListener('pointerenter', () => { if (!reactionTimer) react('playful', 1800); });
@@ -906,8 +1051,11 @@
         const isField = (el) => el && el.matches?.('input:not([type=hidden]):not([type=checkbox]):not([type=radio]):not([type=submit]):not([type=button]), textarea, select');
         const ownField = (el) => el.closest?.('.gm-buddy');
         let typingTimer = 0;
+        /* Each kind of field gets its own face: a password makes Strobi look away, a search makes it scan, a long message makes it concentrate. */
+        const isSearch = (el) => el.type === 'search' || Boolean(el.closest?.('[role="search"]')) || /search/i.test(`${el.name || ''} ${el.id || ''} ${el.className || ''} ${el.getAttribute?.('aria-label') || ''}`);
+        const fieldMood = (el) => (el.type === 'password' ? 'shy' : isSearch(el) ? 'searching' : el.tagName === 'TEXTAREA' ? 'focused' : 'listening');
         document.addEventListener('focusin', (event) => {
-            if (isField(event.target) && !ownField(event.target)) setBase('listening');
+            if (isField(event.target) && !ownField(event.target)) setBase(fieldMood(event.target));
         });
         document.addEventListener('focusout', (event) => {
             if (!isField(event.target) || ownField(event.target)) return;
@@ -917,7 +1065,10 @@
         document.addEventListener('input', (event) => {
             if (!isField(event.target) || ownField(event.target)) return;
             clearTimeout(typingTimer);
-            if (current !== 'working') show('working');
+            /* Plain fields: "working" while typing. Password, search and long-message fields keep their own face. */
+            const mood = fieldMood(event.target);
+            const typing = mood === 'listening' ? 'working' : mood;
+            if (current !== typing) show(typing);
             typingTimer = setTimeout(() => { if (!reactionTimer) show(base); }, 900);
         });
 
@@ -987,25 +1138,67 @@
         document.addEventListener('click', (event) => {
             const target = event.target.closest?.('a, button, [role="button"], summary, label');
             if (!target || ownField(target) || target.closest('form')) return;
-            if (target.matches('.site-theme-toggle, [data-theme-toggle]')) { react('surprised', 1400); return; }
+            if (target.matches('.site-theme-toggle, [data-theme-toggle]')) {
+                /* The page has already switched theme by now: night mode makes Strobi yawn, day mode earns a wink. */
+                const night = root.dataset.theme ? root.dataset.theme === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+                react(night ? 'yawn' : 'wink', night ? 2800 : 2000);
+                return;
+            }
             if (target.matches('.btn-primary, .nav-btn, .gm-consult-fab, [class*="cta"]')) { react('excited', 1800); return; }
             if (target.matches('summary, .faq-q, [aria-expanded]')) { react('curious', 1500); return; }
             react(Math.random() < .5 ? 'happy' : 'curious', 1200);
         });
 
-        /* ── Idle: bored after 40s, drowsy after 90s; any activity wakes it with a start. ── */
+        /* ── Idle: bored after 40s, a yawn at 65s, drowsy after 90s, asleep after 2.5 minutes.
+              Any activity wakes it: a start from a doze, a stretch and blink from real sleep. ── */
         let idleTimer = 0;
+        let yawnTimer = 0;
         let drowsyTimer = 0;
+        let sleepTimer = 0;
         let resting = false;
+        let asleep = false;
         function wake() {
             clearTimeout(idleTimer);
+            clearTimeout(yawnTimer);
             clearTimeout(drowsyTimer);
-            if (resting) { resting = false; setBase(pageName === '404' ? 'sad' : 'idle'); react('surprised', 1200); }
+            clearTimeout(sleepTimer);
+            if (resting) {
+                const wasAsleep = asleep;
+                resting = false;
+                asleep = false;
+                setBase(pageName === '404' ? 'sad' : 'idle');
+                react(wasAsleep ? 'waking' : 'surprised', wasAsleep ? 2000 : 1200);
+            }
             idleTimer = setTimeout(() => { resting = true; setBase('bored'); }, 40000);
+            yawnTimer = setTimeout(() => { if (resting) react('yawn', 3000); }, 65000);
             drowsyTimer = setTimeout(() => { resting = true; setBase('drowsy'); }, 90000);
+            sleepTimer = setTimeout(() => { resting = true; asleep = true; setBase('sleeping'); }, 150000);
         }
         ['pointerdown', 'keydown', 'scroll', 'touchstart'].forEach((type) => window.addEventListener(type, wake, { passive: true }));
         wake();
+
+        /* ── Scrolling very fast (about five screens in a second) makes Strobi dizzy; at most once every 15 s. ── */
+        let lastY = window.scrollY;
+        let dist = 0;
+        let distSince = 0;
+        let dizzyAt = 0;
+        window.addEventListener('scroll', () => {
+            const now = performance.now();
+            const y = window.scrollY;
+            if (now - distSince > 1200) { distSince = now; dist = 0; }
+            dist += Math.abs(y - lastY);
+            lastY = y;
+            if (dist > window.innerHeight * 5 && now - dizzyAt > 15000) { dizzyAt = now; dist = 0; react('dizzy', 2000); }
+        }, { passive: true });
+
+        /* ── Mouse heading out of the top of the window (about to leave): a nervous look. Desktop only. ── */
+        document.addEventListener('mouseout', (event) => {
+            if (!event.relatedTarget && event.clientY <= 0 && window.matchMedia('(pointer: fine)').matches && !reactionTimer) react('nervous', 1800);
+        });
+
+        /* ── Events from other parts of the site: a promo card slides in (wink), something was saved (love). ── */
+        window.addEventListener('gm:promo', () => react('wink', 2400));
+        window.addEventListener('gm:saved', () => react('love', 2800));
 
         /* ── Reaching the footer once: point at the newsletter box. ── */
         const footer = document.querySelector('footer.gm-footer, footer.footer, .footer');
@@ -1247,6 +1440,7 @@
     setupMobileSliders();
     setupConsentBanner();
     setupConsultPopup();
+    setupPromoCards();
     setupBuddy();
     setupFooterSubscribe();
     setupInlineConsultForms();

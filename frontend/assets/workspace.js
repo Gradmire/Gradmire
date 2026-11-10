@@ -33,21 +33,94 @@
 
     const currentPage = () => (location.pathname.split('/').pop() || 'index').replace(/\.html$/, '');
 
-    function renderNav(user, unread) {
-        const nav = $('ws-nav');
-        if (!nav) return;
+    /* The four pages each role uses most, shown as tabs in the bottom bar on phones (the rest are under "More"). */
+    const TAB_ICONS = {
+        home: '<path d="M3.5 11.2 12 4l8.5 7.2V19a1.5 1.5 0 0 1-1.5 1.5h-4v-5.5h-6v5.5H5A1.5 1.5 0 0 1 3.5 19z"/>',
+        calendar: '<rect x="4" y="5.5" width="16" height="14.5" rx="3"/><path d="M8.5 3.5v4M15.5 3.5v4M4 10h16"/>',
+        clipboard: '<rect x="5" y="4.5" width="14" height="16" rx="2.5"/><path d="M9 4.5h6M9 11l2 2 4-4M9 16.5h6"/>',
+        bell: '<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>',
+        users: '<circle cx="9" cy="8.5" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0M16 5.8a3.2 3.2 0 0 1 0 5.4M18 14.5a5.5 5.5 0 0 1 2.5 4.5"/>',
+        inbox: '<path d="M4 13l2.2-7.5h11.6L20 13v5.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5z"/><path d="M4 13h4.5l1 2.5h5l1-2.5H20"/>',
+        clock: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+        more: '<circle cx="6" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="18" cy="12" r="1.2"/>'
+    };
+    const TABS = {
+        student: [['dashboard', 'Overview', 'home'], ['dashboard-consultations', 'Meetings', 'calendar'], ['dashboard#applications', 'Applications', 'clipboard'], ['dashboard-notifications', 'Alerts', 'bell', 'unread']],
+        counsellor: [['consultant-dashboard', 'Workspace', 'home'], ['consultant-students', 'Students', 'users'], ['consultant-leads', 'Enquiries', 'inbox'], ['consultant-follow-ups', 'Follow-ups', 'clock']],
+        admin: [['admin', 'Overview', 'home'], ['admin-users', 'Users', 'users'], ['admin-leads', 'Enquiries', 'inbox'], ['admin-consultations', 'Meetings', 'calendar']]
+    };
+    const tabsFor = (role) => TABS[role] || TABS.admin;
+    const tabIcon = (name) => `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${TAB_ICONS[name]}</svg>`;
+
+    /* The sidebar's links, shared by the sidebar (laptops and tablets) and the "More" sheet (phones). */
+    function navGroups(user, unread) {
         const here = currentPage();
-        const groups = navFor(user.role).map(([title, links]) => `${title ? `<p class="ws-nav-group">${esc(title)}</p>` : ''}<ul>${links.map(([href, label, badge]) => {
+        return navFor(user.role).map(([title, links]) => `${title ? `<p class="ws-nav-group">${esc(title)}</p>` : ''}<ul>${links.map(([href, label, badge]) => {
             const active = href === here || (href.split('#')[0] === here && !href.includes('#'));
             const count = badge === 'unread' && unread ? `<span class="ws-count" aria-label="${unread} unread">${unread}</span>` : '';
             return `<li><a href="${esc(href)}"${active ? ' aria-current="page"' : ''}>${esc(label)}${count}</a></li>`;
         }).join('')}</ul>`).join('');
-        nav.innerHTML = `<div class="ws-nav-who"><strong>${esc([user.firstName, user.lastName].filter(Boolean).join(' '))}</strong><span>${esc(ROLE_LABELS[user.role] || user.role)}</span></div>${groups}
+    }
+
+    async function logOut() {
+        await GradmireAPI.logout().catch(() => {});
+        location.href = 'login';
+    }
+
+    /* Phones: a bottom tab bar (the four main pages and "More") plus a sheet with every link and Log out.
+       The sidebar is hidden there (workspace.css). */
+    let tabState = null;
+    function renderTabs(user, unread) {
+        tabState = { user, unread };
+        const who =`<div class="ws-nav-who"><strong>${esc([user.firstName, user.lastName].filter(Boolean).join(' '))}</strong><span>${esc(ROLE_LABELS[user.role] || user.role)}</span></div>`;
+        let bar = $('ws-tabbar');
+        let sheet = $('ws-sheet');
+        if (!bar) {
+            bar = document.createElement('nav');
+            bar.id = 'ws-tabbar';
+            bar.className = 'ws-tabbar';
+            bar.setAttribute('aria-label', 'Workspace tabs');
+            document.body.appendChild(bar);
+            sheet = document.createElement('div');
+            sheet.id = 'ws-sheet';
+            sheet.className = 'ws-sheet';
+            sheet.hidden = true;
+            document.body.appendChild(sheet);
+            const setSheet = (open) => {
+                sheet.hidden = !open;
+                $('ws-more')?.setAttribute('aria-expanded', String(open));
+                document.documentElement.classList.toggle('ws-sheet-open', open);
+                if (open) sheet.querySelector('a, button')?.focus();
+            };
+            bar.addEventListener('click', (event) => {
+                if (event.target.closest('#ws-more')) setSheet(sheet.hidden);
+            });
+            sheet.addEventListener('click', (event) => {
+                if (event.target === sheet || event.target.closest('[data-ws-close]') || event.target.closest('a')) setSheet(false);
+                if (event.target.closest('#ws-sheet-logout')) logOut();
+            });
+            document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && !sheet.hidden) { setSheet(false); $('ws-more')?.focus(); } });
+            /* "Overview" and "Applications" are the same page with and without #applications. */
+            window.addEventListener('hashchange', () => { if (tabState) renderTabs(tabState.user, tabState.unread); });
+        }
+        const here = currentPage();
+        const hash = location.hash;
+        bar.innerHTML = `${tabsFor(user.role).map(([href, label, icon, badge]) => {
+            const [path, anchor] = href.split('#');
+            const active = path === here && (anchor ? hash === `#${anchor}` : !hash || hash !== '#applications');
+            const count = badge === 'unread' && unread ? `<span class="ws-tab-count" aria-label="${unread} unread">${unread > 9 ? '9+' : unread}</span>` : '';
+            return `<a class="ws-tab" href="${esc(href)}"${active ? ' aria-current="page"' : ''}>${tabIcon(icon)}<span>${esc(label)}</span>${count}</a>`;
+        }).join('')}<button type="button" class="ws-tab" id="ws-more" aria-expanded="${sheet.hidden ? 'false' : 'true'}" aria-controls="ws-sheet">${tabIcon('more')}<span>More</span></button>`;
+        sheet.innerHTML = `<div class="ws-sheet-card" role="dialog" aria-label="All pages">${who}${navGroups(user, unread)}<button type="button" class="gp-btn gp-btn-outline gp-btn-sm ws-sheet-logout" id="ws-sheet-logout">Log out</button><button type="button" class="ws-sheet-close" data-ws-close aria-label="Close menu">Close</button></div>`;
+    }
+
+    function renderNav(user, unread) {
+        renderTabs(user, unread);
+        const nav = $('ws-nav');
+        if (!nav) return;
+        nav.innerHTML = `<div class="ws-nav-who"><strong>${esc([user.firstName, user.lastName].filter(Boolean).join(' '))}</strong><span>${esc(ROLE_LABELS[user.role] || user.role)}</span></div>${navGroups(user, unread)}
             <button type="button" class="gp-btn gp-btn-outline gp-btn-sm ws-nav-logout" id="ws-logout">Log out</button>`;
-        $('ws-logout').addEventListener('click', async () => {
-            await GradmireAPI.logout().catch(() => {});
-            location.href = 'login';
-        });
+        $('ws-logout').addEventListener('click', logOut);
     }
 
     function say(message, tone) {
