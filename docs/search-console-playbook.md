@@ -56,6 +56,8 @@ Changes made:
 - **Accessibility fixes**: valid list roles on the "why us" cards, accessible names that match the visible text on the destination tiles, 24 px touch targets for the slider dots, and a descriptive name for the Menu tab.
 - **`viewport-fit=cover`, `theme-color`, a web app manifest** and Apple home-screen tags, so the site can be added to a phone's home screen and looks like an app when opened.
 
+Compression, checked on the live site on 10 November 2026: Vercel already sends **Brotli** (`Content-Encoding: br`, which beats gzip and falls back to gzip for old browsers) for HTML, CSS and JavaScript. Measured sizes with Brotli: home page 25 KB, `site.js` 18 KB, `site.css` 10 KB, mobile layer 6 KB. Images and `.woff2` fonts are already compressed formats, so the real weight on a slow connection is photos and the globe libraries, not text. That is why the phone layer has a low-data mode (see `docs/mobile-app-layer.md`) and why photo sizes were cut.
+
 Still worth doing later (not done here, each needs a decision or a tool):
 
 1. **Convert photos to WebP or AVIF.** Needs an image tool in your build; Vercel can also do this with its Image Optimization product.

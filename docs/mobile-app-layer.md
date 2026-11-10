@@ -14,6 +14,16 @@ Phones (screens 760 px wide or narrower) get an app-style layer on every public 
 
 Skipped pages: sign-in and sign-up, 404, anything `noindex` (signed-in workspaces, invitations).
 
+## Compact phone layout (added after the first release)
+
+- **Footer:** on phones it shows the logo, one line of pitch, the sign-up field, one row of company links and a short legal line. The full link directory moved into the phone menu (`mobileInfo` in `site.js`): company and legal links, registered office, e-mail and social icons. Legal links marked in `scripts/footer.mjs` (third value `true`) are hidden in the phone footer only.
+- **Social icons:** `socialLinks` in `frontend/assets/site.js` is empty on purpose, because the repository has no real profile addresses. Fill in the URL for each account Gradmire actually runs and the icon appears; networks left empty show nothing. The e-mail icon is always shown.
+- **Header:** logo left, theme toggle right. There is **no three-line menu button on phones** (hidden with `.nav-ham { display: none }` in `mobile-app.css`); the **Menu** tab in the bottom bar opens and closes the same menu, turns into a cross while it is open, and the bar stays visible so it can be closed. Tablets between 761 and 1180 px still show the three-line button.
+- **Home hero:** the three trust points are an equal three-tile row; the globe and its destination picker are smaller, and the picker is one swipeable row.
+- **Country guides:** the long card grids (courses, universities, cities, intakes and so on) become swipeable rows on phones. The UK guide went from about 19,800 px to about 11,200 px tall. Any new grid class on those pages needs adding to the `:is(...)` list in `mobile-app.css`.
+- **Destinations filter:** each card carries `data-region` (`popular`, `europe`, `asia-pacific`, `americas`, space separated). "Most popular" is an editorial group (UK, USA, Canada, Australia, Germany): change it by editing those attributes.
+- **Low-data mode:** a tiny script in the head adds `gm-lite` to `<html>` when Data Saver is on, the connection is 2G, or `prefers-reduced-data` is set. The home page then skips the globe libraries (about 190 KB), the mascot module is not loaded, decorative photos become plain colour and animations stop.
+
 ## React Bits patterns, ported without React
 
 The site is static HTML and `agent.md` says not to add a framework or build step unless asked, so the [React Bits](https://reactbits.dev) ideas are re-implemented in CSS and a few lines of JavaScript. No dependency, no hydration cost.

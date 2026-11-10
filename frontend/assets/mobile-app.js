@@ -32,6 +32,19 @@
         });
     }
 
+    /* The Menu tab shows an open/closed state, because the header has no menu button on phones. */
+    var menuTab = bar && bar.querySelector('[data-gm-menu]');
+    if (menuTab && 'MutationObserver' in window) {
+        var syncMenuTab = function () {
+            var open = root.classList.contains('nav-open');
+            menuTab.classList.toggle('is-open', open);
+            menuTab.setAttribute('aria-expanded', String(open));
+            menuTab.setAttribute('aria-label', open ? 'Close menu' : 'Menu');
+        };
+        new MutationObserver(syncMenuTab).observe(root, { attributes: true, attributeFilter: ['class'] });
+        syncMenuTab();
+    }
+
     /* ── Keyboard: hide the tab bar while a field is being typed in, so it never floats over the keyboard ── */
     if (window.visualViewport) {
         var base = window.innerHeight;

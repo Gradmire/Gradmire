@@ -65,9 +65,20 @@ body:has(.gm-tabbar) { padding-bottom: calc(var(--gm-tab-h) + env(safe-area-inse
 }
 @keyframes gm-shine { 0%, 55% { background-position: 160% 0; } 100% { background-position: -60% 0; } }
 
-/* Hide the bar while the keyboard is open, a menu is open or a sheet covers the page. */
-html.gm-kb .gm-tabbar, html.nav-open .gm-tabbar { transform: translateY(calc(100% + 36px)); opacity: 0; pointer-events: none; }
+/* Hide the bar while the keyboard is open or a sheet covers the page. It stays while the menu is open, because it is the only way to close it. */
+html.gm-kb .gm-tabbar { transform: translateY(calc(100% + 36px)); opacity: 0; pointer-events: none; }
 html.gm-popup-open .gm-tabbar { opacity: .0; pointer-events: none; }
+
+/* No three-line button in the header on phones: the Menu tab opens and closes the menu. */
+.nav-ham { display: none !important; }
+.nav-mobile { padding-bottom: calc(var(--gm-tab-h) + 1.5rem + env(safe-area-inset-bottom, 0px)); }
+.gm-tab[data-gm-menu] .gm-ico-close, .gm-tab[data-gm-menu].is-open .gm-ico-open { display: none; }
+.gm-tab[data-gm-menu].is-open .gm-ico-close { display: block; }
+.gm-tab[data-gm-menu].is-open { color: var(--accent-text, var(--accent, #007A5A)); }
+:root:not([data-theme="dark"]) .gm-tab[data-gm-menu].is-open { color: #005C44; }
+.gm-tab[data-gm-menu].is-open::before { content: ""; position: absolute; top: 11px; left: 50%; width: 46px; height: 28px; margin-left: -23px; border-radius: 999px; background: var(--accent-dim, rgba(0, 122, 90, .12)); z-index: -1; }
+/* While the menu is open the current page's tab stops looking selected. */
+html.nav-open .gm-tab[aria-current="page"]:not([data-gm-menu])::before { display: none; }
 
 /* The floating consultation button duplicates the Book tab, so it steps aside. */
 .gm-consult-fab { display: none !important; }
@@ -115,6 +126,123 @@ body:has(.gm-tabbar) .gm-buddy-avatar { width: 52px; height: 52px; }
     .gm-quick-new span { background: linear-gradient(110deg, #fff 35%, #7FE0BE 50%, #fff 65%); background-size: 250% 100%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: gm-text-shine 3.6s ease-in-out 1.4s infinite; }
 }
 @keyframes gm-text-shine { 0%, 55% { background-position: 160% 0; } 100% { background-position: -60% 0; } }
+
+/* ══ Phone density: the same content in less scrolling ══════════════════════════ */
+
+/* Header: logo on the left, theme toggle and menu button together on the right (site.css handles the margins). */
+.nav-inner { padding-inline: max(1rem, env(safe-area-inset-left, 0px)) max(1rem, env(safe-area-inset-right, 0px)); }
+
+/* Home hero: the three trust points sit in one aligned row of equal tiles instead of three ragged pills. */
+.hero-trust-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .4rem; margin-top: 1rem; }
+.hero-trust-pill { justify-content: center; align-items: center; min-height: 44px; padding: .4rem .35rem; border-radius: 12px; font-size: .68rem; line-height: 1.2; text-align: center; letter-spacing: 0; }
+.hero-trust-pill::before { flex: 0 0 auto; }
+.hero-actions .btn-lg { padding: .85em 1.2em; }
+.gm-quick { margin-top: 1.1rem; }
+.gm-quick a { min-height: 78px; padding: .65rem .3rem; }
+
+/* Home: tighter sections and smaller visuals. */
+.orbit-wrap { width: min(100%, 290px); height: 290px; aspect-ratio: auto; margin-inline: auto; }
+.globe-box { width: 100%; height: 100%; margin-inline: auto; }
+.hero-stage { gap: .6rem; }
+/* Destination picker under the globe: one swipeable row instead of three rows of pills. */
+.globe-dests { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; padding: .2rem .1rem .4rem; scrollbar-width: none; scroll-snap-type: x proximity; }
+.globe-dests::-webkit-scrollbar { display: none; }
+.globe-dests button { flex: 0 0 auto; scroll-snap-align: start; }
+.logo-band { padding-block: 1.6rem; }
+.home-faq, .cta-sec, .scholarships, .journey, .tools-promo, .why-evidence, .destinations { padding-block: 2.25rem; }
+.cta-wrap { padding: 1.6rem 1.15rem; }
+.why-evidence .evidence-card ul { display: none; }
+.why-evidence .evidence-card { padding: 1rem; }
+/* "body" in front of these: the page's own phone rules use longer selectors and would otherwise win. */
+body .journey-stack .journey-visual { max-height: 110px; aspect-ratio: auto; height: 110px; overflow: hidden; }
+body .journey-stack .journey-photo { height: 110px; object-fit: cover; }
+body .journey-stack .journey-inner { padding-block: 1.1rem; gap: .9rem; }
+body .bento-cell { min-height: 0; }
+body .bento-hero-inner { padding: 1.1rem; }
+body .bento-hero .s-amount, body .bento-a .s-amount, body .bento-b .s-amount { font-size: 1.35rem; line-height: 1.15; }
+body .dest-grid .dest-cell { aspect-ratio: 6 / 5; }
+body .destinations .sec-head { margin-bottom: 1rem; gap: .9rem; }
+body .sec-title { font-size: 1.6rem; }
+body .sec-body { margin-top: .5rem; font-size: .95rem; }
+body .home-faq-list details { padding-block: .7rem; }
+body .home-faq h2 { font-size: 1.5rem; }
+
+/* 2027 band on the home page */
+.y27 { padding-block: .5rem 1.5rem; }
+.y27-card { gap: 1rem; padding: 1.25rem; border-radius: 20px; }
+.y27-title { font-size: 1.45rem; }
+.y27-text { margin: .7rem 0 1rem; font-size: .9rem; line-height: 1.5; }
+.y27-links { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .45rem; }
+.y27-links a { min-height: 50px; padding: .55rem .7rem; font-size: .8rem; line-height: 1.2; }
+.y27-links a span[aria-hidden] { display: none; }
+
+/* Destinations page: two small cards across instead of one tall card per country. */
+.dest-grid-big { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .7rem; }
+.dest-card { border-radius: 18px; }
+.dest-feat { grid-column: 1 / -1; aspect-ratio: 16 / 10; }
+.dest-card-body { padding: .85rem; }
+.dest-card-country { font-size: 1.1rem; }
+.dest-card-meta { gap: .2rem .6rem; margin-top: .4rem; }
+.dest-card:not(.dest-feat) .dest-card-tag:nth-child(n+2) { display: none; }
+.dest-card-arrow { display: none; }
+.dest-section { padding-top: 1.25rem; }
+.page-hero { padding-top: 1.75rem; }
+/* The four headline numbers sat between the filter and the results; phones go straight to the cards. */
+.stats-strip { display: none; }
+
+/* Guide pages (country, scholarship, MBBS, test prep, 2027 articles) */
+.gp-hero { padding-block: 1.6rem 2.4rem; }
+.gp-hero h1 { font-size: 1.95rem; margin: .5rem 0 .75rem; }
+.gp-crumbs { margin-bottom: .9rem; }
+.gp-section { padding-block: 1.9rem; scroll-margin-top: 7rem; }
+.gp-section h2 { font-size: 1.5rem; margin: .35rem 0 .7rem; }
+.gp-lead-text { margin-bottom: 1rem; }
+.gp-card { padding: 1rem; }
+.gp-grid-2, .gp-grid-3 { gap: .7rem; margin-top: 1rem; }
+.gp-cta { margin: 1.75rem 0; padding: 1.25rem; border-radius: 18px; }
+.gp-check { gap: .5rem; }
+.gp-faq details { padding: .75rem 0; }
+
+/* Footer: logo, one line of pitch, the sign-up field, a single row of company links and the legal line.
+   The full directory (services, tools, 2027 guides, legal, contact, social) now lives in the menu. */
+.gm-footer { padding: 1.5rem 1rem 0; }
+.gm-footer-inner { display: block; }
+.gm-footer-logo img { width: 124px; }
+.gm-footer-tagline { max-width: none; margin: .5rem 0 .8rem; font-size: .85rem; line-height: 1.45; }
+.gm-footer .footer-subscribe { gap: .5rem; }
+.gm-footer .footer-subscribe input { height: 44px; border-radius: 12px; font-size: 16px; }
+.gm-footer .footer-subscribe button { width: 44px; height: 44px; }
+.gm-footer-col { display: none; }
+.gm-footer-col[aria-label="Company"] { display: block; margin-top: 1rem; }
+.gm-footer-col[aria-label="Company"] .gm-footer-title { display: none; }
+.gm-footer-col[aria-label="Company"] .gm-footer-links { display: flex; flex-wrap: wrap; gap: .15rem 1.1rem; }
+.gm-footer-col[aria-label="Company"] .gm-footer-links a { display: inline-flex; align-items: center; min-height: 36px; font-size: .85rem; }
+.gm-footer-col[aria-label="Company"] .gm-footer-links li:last-child { display: none; }
+.gm-footer .gm-legal-bar { margin-top: .9rem; padding: .8rem 0 .9rem; }
+.gm-legal-entity { margin: 0 0 .3rem; font-size: .7rem; line-height: 1.45; }
+.gm-legal-links { gap: 0 1rem; }
+body .gm-legal-links a, body .gm-legal-links button { min-height: 36px; font-size: .74rem; }
+.gm-legal-more { display: none !important; }
+
+/* Country guides: long stacks of cards become swipeable rows (a hint of the next card shows), like the home page sliders.
+   A 20,000 px page becomes a short one without removing any content. */
+:root { --sec: 2.5rem; }
+body :is(.course-grid, .cities-grid, .intakes-grid, .elig-grid, .exam-cards, .careers-grid, .scholarship-cards, .deadline-grid, .overview-grid, .uni-scroll) {
+    display: grid; grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 82%;
+    gap: .75rem; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory;
+    padding-bottom: .6rem; scrollbar-width: none; margin-top: 1.1rem;
+}
+body :is(.course-grid, .cities-grid, .intakes-grid, .elig-grid, .exam-cards, .careers-grid, .scholarship-cards, .deadline-grid, .overview-grid, .uni-scroll)::-webkit-scrollbar { display: none; }
+body :is(.course-grid, .cities-grid, .intakes-grid, .elig-grid, .exam-cards, .careers-grid, .scholarship-cards, .deadline-grid, .overview-grid, .uni-scroll) > * { min-width: 0; scroll-snap-align: start; }
+body .section { padding-block: 2.25rem; }
+body .section-title { font-size: 1.6rem; }
+body .section-sub { font-size: .95rem; margin-bottom: 1rem; }
+
+/* Low-data mode (class set in the head on Data Saver, 2G or prefers-reduced-data): plain colour instead of decorative photos. */
+.gm-lite .dest-cell-bg { background-image: none !important; background-color: #123F5C; }
+.gm-lite .dest-card-img, .gm-lite .journey-visual, .gm-lite .bento-hero img { display: none; }
+.gm-lite .globe-dests, .gm-lite .orbit-wrap .hcard { display: none; }
+.gm-lite * { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 
 /* Cross-document view transition: pages slide like screens, the tab bar stays put. */
 @view-transition { navigation: auto; }
