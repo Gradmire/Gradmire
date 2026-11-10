@@ -2,9 +2,11 @@
    icons from the footer at run time, so the two can never disagree.
 
    HOW TO ADD A PROFILE: paste the full address of the real page into `url` (for example
-   'https://www.instagram.com/yourhandle'), then run:  node scripts/sync-footer.mjs && node scripts/sync-seo-tags.mjs
+   'https://www.instagram.com/yourhandle'), then run:  node scripts/sync-footer.mjs
+   That adds the icon to every footer and the phone menu and the address to `sameAs` in the homepage structured data.
    The icon opens that page in a new tab. A network whose `url` is empty still shows its icon, as a quiet placeholder that
-   is not a link, so nothing ever points at a page that does not exist. Also add each live profile to the `sameAs` list in the homepage JSON-LD (docs/backlink-outreach-plan.md).
+   is not a link, so nothing ever points at a page that does not exist. The homepage `sameAs` list is filled in from this
+   file automatically (scripts/same-as.mjs).
 
    Email and WhatsApp are Gradmire's own contact details, the same as on the Contact page. */
 

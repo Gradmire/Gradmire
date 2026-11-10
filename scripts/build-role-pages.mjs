@@ -9,7 +9,7 @@
 import { esc, shell, write } from './page-shell.mjs';
 
 const BOOKING_CSS = 'booking.css?v=2';
-const WORKSPACE_CSS = 'workspace.css?v=4';
+const WORKSPACE_CSS = 'workspace.css?v=5';
 const API_JS = 'api.js?v=5';
 const COMMON_JS = 'booking-common.js?v=1';
 const WORKSPACE_JS = 'workspace.js?v=5';

@@ -11,7 +11,7 @@
     const CONSENT_KEY = 'gm-consent';
     const CONSENT_VERSION = 1;
     /* One remembered "closed" timestamp per promo card (see setupPromoCards); cleared when preferences are refused. */
-    const PROMO_IDS = ['plan', 'cost', 'schol', 'courses', 'deadlines', 'visa', 'tests', 'mbbs', 'counsel'];
+    const PROMO_IDS = ['plan', 'cost', 'schol', 'courses', 'deadlines', 'visa', 'tests', 'mbbs', 'counsel', 'wa', 'scholc', 'mbbsx', 'office', 'convert', 'compare'];
     const PREF_KEYS = ['gradmire-theme', 'gm-consult-popup-dismissed', ...PROMO_IDS.map((id) => `gm-promo-${id}`)];
     function readConsent() {
         try {
@@ -188,7 +188,7 @@
         const infoList = (items) => items.map(([label, slug]) => `<li><a href="${page(slug)}">${label}</a></li>`).join('');
         const mobileInfo = `<li class="nav-mobile-info">
             <div class="nav-mobile-cols">
-              <div><p class="nav-mobile-h">Company</p><ul role="list">${infoList([['About us', 'about'], ['Blog', 'blog'], ['Careers', 'career'], ['FAQs', 'faq'], ['Contact', 'contact']])}</ul></div>
+              <div><p class="nav-mobile-h">Company</p><ul role="list">${infoList([['About us', 'about'], ['Blog', 'blog'], ['Careers', 'career'], ['FAQs', 'faq'], ['Contact', 'contact'], ['Press kit', 'press']])}</ul></div>
               <div><p class="nav-mobile-h">Legal</p><ul role="list">${infoList([['Privacy', 'privacy'], ['Terms', 'terms'], ['Refunds &amp; fees', 'refund-policy'], ['Cookies', 'cookie-policy'], ['Your data rights', 'data-request'], ['Grievance', 'grievance'], ['Photo credits', 'photo-credits']])}<li><button type="button" class="nav-mobile-linkbtn" data-cookie-settings>Cookie settings</button></li></ul></div>
             </div>
             <p class="nav-mobile-contact">Gradmire Education Pvt. Ltd.<br>Kanpur: Near Halim College, Prem Nagar<br>Greater Noida: N2 Tower, Supertech Ecovillage 1</p>
@@ -584,7 +584,7 @@
         const skip = ['login', 'signup', 'free-consultation', 'book-consultation', 'dashboard', 'contact', '404', 'grievance', 'privacy', 'terms', 'cookie-policy'];
         if (skip.includes(slug) || document.querySelector('.ws-layout')) return;
 
-        const DAY = 864e5, DISMISS_DAYS = 7, MAX_PER_SESSION = 2;
+        const DAY = 864e5, DISMISS_DAYS = 7, MAX_PER_SESSION = 3;
         const session = (fn) => { try { return fn(window.sessionStorage); } catch (_) { return null; } };
         const shownCount = () => Number(session((s) => s.getItem('gm-promo-count')) || 0);
         if (shownCount() >= MAX_PER_SESSION) return;
@@ -604,19 +604,31 @@
             visa: { eyebrow: 'Visa help', title: 'Student visa paperwork', text: 'Eligibility, document checklists, financial evidence and interview preparation.', href: page('visa-assistance'), cta: 'See visa help', icon: 'file' },
             tests: { eyebrow: 'Test prep', title: 'IELTS, TOEFL, GRE or GMAT?', text: 'Practice tests, study plans and feedback from Gradmire for the 2027 intake.', href: page('test-preparation'), cta: 'See test prep', icon: 'pencil' },
             mbbs: { eyebrow: 'MBBS abroad', title: 'Compare MBBS countries', text: 'Fees, course length and recognition for nine countries, side by side.', href: `${page('mbbs-abroad')}#compare`, cta: 'Compare countries', icon: 'cross' },
+            mbbsx: { eyebrow: 'MBBS abroad', title: 'Planning MBBS abroad?', text: 'Compare nine countries on fees, course length and recognition.', href: page('mbbs-abroad'), cta: 'See MBBS destinations', icon: 'cross' },
+            wa: { eyebrow: 'WhatsApp', title: 'Prefer WhatsApp?', text: 'Message a Gradmire counsellor. Replies usually come within 2 hours.', href: 'https://wa.me/918577909702?text=Hi+Gradmire%2C+I+have+a+query+about+studying+abroad.', cta: 'Chat on WhatsApp', icon: 'chat', external: true },
+            office: { eyebrow: 'Visit us', title: 'Kanpur and Greater Noida', text: 'Meet a counsellor in person at one of our two offices, or talk online.', href: page('contact'), cta: 'See our offices', icon: 'pin' },
+            convert: { eyebrow: 'Free tool', title: 'Convert your CGPA or GPA', text: 'Estimate your percentage or GPA on another scale as a starting point.', href: page('tools/grade-converter'), cta: 'Open the converter', icon: 'calc' },
+            compare: { eyebrow: 'Free tool', title: 'Compare courses side by side', text: 'Line courses up on cost, length and entry requirements.', href: page('tools/comparator'), cta: 'Open the comparator', icon: 'search' },
+            scholc: place && !isMbbs
+                ? { eyebrow: 'Funding', title: `Scholarships in ${withThe(place[0])}`, text: 'See the awards, who can apply and what they cover, with official sources.', href: scholarshipPage(place[1]), cta: 'See scholarships', icon: 'award' }
+                : null,
             counsel: place
                 ? { eyebrow: 'Free 1:1 counselling', title: `Questions about ${isMbbs ? 'MBBS in ' : ''}${withThe(place[0])}?`, text: 'Free first consultation, no obligation. A counsellor replies within 24 business hours.', href: consultationPage(isMbbs ? 'mbbs-abroad' : 'counselling', place[1]), cta: 'Talk to a counsellor', icon: 'chat', open: true, country: place[1] }
                 : { eyebrow: 'Free 1:1 counselling', title: 'Talk to a counsellor', text: 'Free first consultation, no obligation. A counsellor replies within 24 business hours.', href: consultationPage('counselling'), cta: 'Book free consultation', icon: 'chat', open: true }
         };
-        const order = isMbbs ? (slug === 'mbbs-abroad' ? ['counsel', 'visa', 'deadlines'] : ['mbbs', 'counsel', 'deadlines'])
-            : /^(study-in|scholarships-in)-/.test(slug) ? ['counsel', 'cost', 'schol', 'tests']
-            : /^test-prep|tests/.test(slug) ? ['counsel', 'plan', 'schol']
-            : isToolPage ? ['counsel', 'courses', 'plan']
-            : slug === 'index' ? ['plan', 'cost', 'schol']
-            : ['plan', 'cost', 'courses', 'counsel'];
+        const order = isMbbs ? (slug === 'mbbs-abroad' ? ['counsel', 'visa', 'deadlines', 'wa'] : ['mbbs', 'counsel', 'deadlines', 'wa'])
+            : /^(study-in|scholarships-in)-/.test(slug) ? ['counsel', 'scholc', 'cost', 'schol', 'tests', 'wa']
+            : /^test-prep|tests/.test(slug) ? ['counsel', 'plan', 'schol', 'wa']
+            : isToolPage ? ['counsel', 'courses', 'compare', 'convert', 'plan', 'office']
+            : slug === 'index' ? ['plan', 'cost', 'schol', 'mbbsx', 'wa']
+            : ['plan', 'cost', 'courses', 'convert', 'mbbsx', 'office', 'counsel'];
         const here = window.location.pathname.replace(/\.html$/i, '').replace(/\/$/, '');
         const samePage = (card) => { try { return new URL(card.href, window.location.href).pathname.replace(/\.html$/i, '').replace(/\/$/, '') === here; } catch (_) { return false; } };
-        const id = order.find((key) => !dismissed(key) && !samePage(cards[key]));
+        /* Cards already shown earlier this session come last, so the next page offers something different. */
+        let seenIds = [];
+        try { seenIds = JSON.parse(session((s) => s.getItem('gm-promo-seen')) || '[]'); } catch (_) { seenIds = []; }
+        const usable = order.filter((key) => cards[key] && !dismissed(key) && !samePage(cards[key]));
+        const id = usable.find((key) => !seenIds.includes(key)) || usable[0];
         if (!id) return;
         const card = cards[id];
 
@@ -629,12 +641,14 @@
             file: '<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M9.5 12h5M9.5 16h5"/>',
             pencil: '<path d="M4 20l1-4L16.5 4.5a2 2 0 0 1 3 3L8 19z"/><path d="M14.5 6.5l3 3"/>',
             cross: '<rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M12 7.5v9M7.5 12h9"/>',
+            pin: '<path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/>',
             chat: '<path d="M4.5 6.5A2.5 2.5 0 0 1 7 4h10a2.5 2.5 0 0 1 2.5 2.5v7A2.5 2.5 0 0 1 17 16h-6l-4.5 4v-4H7a2.5 2.5 0 0 1-2.5-2.5z"/>'
         };
         const el = document.createElement('aside');
         el.className = 'gm-promo';
         el.setAttribute('aria-label', 'Gradmire offer');
-        const consultAttrs = card.open ? ` data-open-consult${card.country ? ` data-country="${card.country}"` : ''}` : '';
+        const consultAttrs = (card.open ? ` data-open-consult${card.country ? ` data-country="${card.country}"` : ''}` : '')
+            + (card.external ? ' target="_blank" rel="noopener noreferrer"' : '');
         el.innerHTML = `
           <button type="button" class="gm-promo-close" aria-label="Close offer"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
           <span class="gm-promo-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${icons[card.icon]}</svg></span>
@@ -663,6 +677,8 @@
         function show() {
             shown = true;
             session((s) => s.setItem('gm-promo-count', String(shownCount() + 1)));
+            seenIds.push(id);
+            session((s) => s.setItem('gm-promo-seen', JSON.stringify(seenIds)));
             document.body.appendChild(el);
             requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('is-visible')));
             window.dispatchEvent(new CustomEvent('gm:promo'));
@@ -683,6 +699,14 @@
             if (age < 240000) timer = setTimeout(check, 3000);
         };
         timer = setTimeout(check, 20000);
+
+        /* Desktop only: when the mouse heads out of the top of the window, show the card once (after 8 s on the page).
+           The consultation popup gets the first exit-intent of a session, so this only runs once that has had its turn. */
+        document.addEventListener('mouseout', (event) => {
+            if (shown || event.relatedTarget || event.clientY > 0 || !window.matchMedia('(pointer: fine)').matches) return;
+            if (!session((s) => s.getItem('gm-consult-popup-shown'))) return;
+            if (Date.now() - started > 8000 && quiet()) show();
+        });
     }
 
     /* Strobi, the study buddy: a standalone companion (bottom-left) rendered by
@@ -1233,6 +1257,45 @@
         }
     }
 
+    /* "Link to this tool": on each tool page, a ready-made plain HTML link and a citation line that other sites can paste into
+       a resource page or blog post. A plain link (not an iframe) so the page that adds it really links to us. */
+    function setupToolShare() {
+        if (!isToolPage) return;
+        const host = document.querySelector('main') || document.body;
+        if (host.querySelector('.gm-share')) return;
+        const url = document.querySelector('link[rel="canonical"]')?.href || window.location.href.split(/[?#]/)[0];
+        const name = document.title.replace(/\s*[—|–-]\s*Gradmire.*$/i, '').trim() || 'Gradmire tool';
+        const snippet = `<a href="${url}">${name} by Gradmire</a>`;
+        const box = document.createElement('section');
+        box.className = 'gm-share';
+        box.setAttribute('aria-labelledby', 'gm-share-title');
+        box.innerHTML = `
+          <h2 id="gm-share-title">Link to this tool</h2>
+          <p>Found it useful? Add it to a resource page, a blog post or a pre-arrival guide for students.</p>
+          <label class="gm-share-label" for="gm-share-html">HTML link</label>
+          <div class="gm-share-row">
+            <textarea id="gm-share-html" readonly rows="2"></textarea>
+            <button type="button" class="gm-share-copy">Copy link</button>
+          </div>
+          <p class="gm-share-note">Or cite it as: <span class="gm-share-cite"></span></p>
+          <p class="gm-share-status" role="status" aria-live="polite"></p>`;
+        box.querySelector('textarea').value = snippet;
+        box.querySelector('.gm-share-cite').textContent = `“${name}”, Gradmire, ${url}`;
+        const status = box.querySelector('.gm-share-status');
+        box.querySelector('.gm-share-copy').addEventListener('click', async () => {
+            const area = box.querySelector('textarea');
+            try {
+                await navigator.clipboard.writeText(area.value);
+                status.textContent = 'Link copied.';
+            } catch (_) {
+                area.select();
+                status.textContent = 'Press Ctrl+C (or Cmd+C) to copy the selected link.';
+            }
+        });
+        box.querySelector('textarea').addEventListener('focus', (event) => event.target.select());
+        host.appendChild(box);
+    }
+
     /* Footer email box: subscribes the address as a "newsletter" lead. The leads client
        (api.js) is only on some pages, so it is loaded on first use. */
     function loadApi() {
@@ -1441,6 +1504,7 @@
     setupConsentBanner();
     setupConsultPopup();
     setupPromoCards();
+    setupToolShare();
     setupBuddy();
     setupFooterSubscribe();
     setupInlineConsultForms();

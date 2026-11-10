@@ -14,13 +14,15 @@ const rowsOf = (file) => fs.readFileSync(file, 'utf8').split(/\r?\n/)
 
 const germany = rowsOf('docs/germany-image-attributions.md').map(([use, , creator, licence, source]) => ['Germany', use, creator, licence, source]);
 const others = rowsOf('docs/destination-image-attributions.md').map(([country, use, , creator, licence, source]) => [country, use, creator, licence, source]);
-const rows = [...others, ...germany];
+/* MBBS, student-service and scholarship photos: same 6-column table, kept in its own file. */
+const extra = rowsOf('docs/mbbs-service-image-attributions.md').map(([group, use, , creator, licence, source]) => [group, use, creator, licence, source]);
+const rows = [...others, ...germany, ...extra];
 
 const body = `${hero({
     crumbs: [['Home', './'], ['Photo credits']],
     eyebrow: 'Photo credits',
-    title: 'Who took the photos on our country guides.',
-    intro: 'The university and city photos on the UK, USA, Canada, Australia, Ireland, Italy, New Zealand and Germany guides are freely licensed files from Wikimedia Commons. We resized them for the web and changed nothing else. Thank you to the photographers.',
+    title: 'Who took the photos on our guides.',
+    intro: 'The university, city and campus photos on our country guides, MBBS Abroad, Student Services and Scholarships pages are freely licensed files from Wikimedia Commons. We resized them for the web and changed nothing else. Thank you to the photographers.',
     actions: '',
     form: ''
 })}
@@ -38,7 +40,7 @@ ${rows.map((r) => `      <tr>${r.map((c) => `<td>${link(c)}</td>`).join('')}</tr
 
 const html = shell({
     title: 'Photo credits | Gradmire',
-    description: 'Credits and licences for the university and city photos on the Gradmire country guides.',
+    description: 'Credits and licences for the photos on the Gradmire country guides, MBBS Abroad, Student Services and Scholarships pages.',
     body
 }).replace('<link rel="icon"', '<meta name="robots" content="noindex, follow">\n<link rel="icon"');
 write('photo-credits.html', html);

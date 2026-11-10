@@ -2,7 +2,7 @@
    Run from the repository root:  node scripts/build-mbbs-pages.mjs
    Country copy lives in mbbs-data.mjs; shared layout pieces in page-shell.mjs. */
 import { countries, REVIEWED } from './mbbs-data.mjs';
-import { esc, consultHref, shell, leadForm, hero, section, cards, steps, checklist, faq, cta, write } from './page-shell.mjs';
+import { esc, consultHref, shell, leadForm, hero, section, cards, steps, checklist, faq, cta, write, photo , toolsStrip } from './page-shell.mjs';
 
 const NMC_REGS = 'https://www.nmc.org.in/rules-regulations/foreign-medical-graduate-licentiate-regulations-2021/';
 const WDOMS = 'https://www.wdoms.org/';
@@ -76,6 +76,7 @@ function countryPage(c) {
   <a href="#overview">Overview</a><a href="#universities">Universities</a><a href="#eligibility">Eligibility</a><a href="#admission">Admission</a><a href="#fees">Fees</a><a href="#visa">Visa</a><a href="#student-life">Student life</a><a href="#licensing">After MBBS</a><a href="#faq">FAQs</a>
 </div></nav>
 <main id="main">
+${photo(`mbbs-${c.slug}`)}
 ${section({ id: 'overview', tag: `Why ${c.name}`, title: `What makes ${c.name} worth considering`, body: `${cards(c.why)}
   <p class="gp-note"><strong>Know before you go:</strong> ${esc(c.caution)}</p>` })}
 
@@ -112,7 +113,8 @@ ${section({ id: 'visa', tag: 'Student visa', title: `Getting your ${c.name} stud
   </div>
   <p class="gp-note">Visa rules depend on your nationality and change often. This is a planning summary, not legal advice. Always follow the current checklist from the embassy and your university. <a href="visa-assistance">See how we help with visas</a>.</p>` })}
 
-${section({ id: 'student-life', tag: 'Student life', title: `Living in ${c.name} as an international student`, body: cards(c.life) })}
+${section({ id: 'student-life', tag: 'Student life', title: `Living in ${c.name} as an international student`, body: `${cards(c.life)}
+  ${photo(countries.indexOf(c) % 2 ? 'med-lecture-theatre' : 'med-nurse-laptop', 'side')}` })}
 
 ${section({ id: 'licensing', tag: 'After your MBBS', title: 'Clinical training and careers after graduation', body: cards([
         ['Practise at home', 'Most countries ask foreign medical graduates to pass a licensing exam and a period of supervised practice. Check your home regulator’s rules early.'],
@@ -134,6 +136,8 @@ ${section({ id: 'faq', tag: 'FAQs', title: `MBBS in ${c.name}: common questions`
 
 ${section({ id: 'other-countries', tag: 'Other MBBS destinations', title: 'Explore more countries', body: `<div class="gp-pill-links">${others.map((o) => `<a href="mbbs-in-${o.slug}">MBBS in ${esc(o.name)}</a>`).join('')}</div>` })}
 
+${toolsStrip()}
+
 ${cta({ title: `Not sure ${c.name} is the right fit?`, text: 'Talk through your marks, budget and goals with a Gradmire counsellor. Counselling is free and there’s no obligation.', href: mbbsConsult(c.slug), label: 'Book a free consultation', country: c.slug })}
 </main>`;
     return shell({
@@ -154,6 +158,7 @@ function hubPage() {
         form: leadForm({ id: 'hub', interest: 'mbbs-abroad', eyebrow: 'Free MBBS counselling', title: 'Find the right country for your MBBS' })
     })}
 <main id="main">
+${photo('med-lecture-theatre')}
 ${section({ id: 'countries', tag: 'Destinations', title: 'Choose a country to explore', body: `<div class="gp-tile-grid">
 ${countries.map((c) => `    <a class="gp-tile" href="mbbs-in-${c.slug}">
       <span class="gp-tile-name">${esc(c.name)}</span>
@@ -179,7 +184,8 @@ ${section({ id: 'recognition', tag: 'Recognition', title: 'Make sure your degree
     <article class="gp-card"><h3>Checks before you apply</h3>${licenceChecks}</article>
     <article class="gp-card"><h3>Typical entry requirements</h3>${eligibility}</article>
   </div>
-  ${indiaPanel}` })}
+  ${indiaPanel}
+  ${photo('med-nurse-laptop', 'side')}` })}
 
 ${section({ id: 'admission', tag: 'How we help', title: 'From application to your first lecture', body: steps(admissionSteps) })}
 
@@ -187,6 +193,8 @@ ${section({ id: 'faq', tag: 'FAQs', title: 'MBBS abroad: common questions', cls:
         ['Which country is best for MBBS abroad?', 'There is no single best country. The right choice depends on your marks, budget, where you want to practise, how comfortable you are learning a new language for patient care, and climate. Counselling helps you weigh these for your situation.'],
         ...commonFaq
     ]) })}
+
+${toolsStrip()}
 
 ${cta({ title: 'Talk to an MBBS counsellor', text: 'Get a shortlist that fits your marks, budget and career plans. Counselling is free and there’s no obligation.', href: mbbsConsult(), label: 'Book a free consultation' })}
 </main>`;

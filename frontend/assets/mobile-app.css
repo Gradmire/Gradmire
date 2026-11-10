@@ -242,7 +242,7 @@ body .gm-legal-links a, body .gm-legal-links button { min-height: 36px; font-siz
 /* Country guides: long stacks of cards become swipeable rows (a hint of the next card shows), like the home page sliders.
    A 20,000 px page becomes a short one without removing any content. */
 :root { --sec: 2.5rem; }
-body :is(.gp-tile-grid, .course-grid, .cities-grid, .intakes-grid, .elig-grid, .exam-cards, .careers-grid, .scholarship-cards, .deadline-grid, .overview-grid, .uni-scroll) {
+body :is(.gp-tile-grid, .gp-tools, .course-grid, .cities-grid, .intakes-grid, .elig-grid, .exam-cards, .careers-grid, .scholarship-cards, .deadline-grid, .overview-grid, .uni-scroll) {
     display: grid; grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: min(82%, 320px);
     gap: .75rem; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory;
     /* Run to the screen edge (so the next card peeks out whole) while the first card still lines up with the text. */
@@ -255,8 +255,8 @@ body :is(.gp-tile-grid, .course-grid, .cities-grid, .intakes-grid, .elig-grid, .
 .gm-dot[aria-current="true"] { width: 38px; background-color: var(--accent, #007A5A); }
 .gm-dot:focus-visible { outline: 2px solid var(--accent, #007A5A); outline-offset: 2px; }
 .gm-swipe:focus-visible { outline: 2px solid var(--accent, #007A5A); outline-offset: -2px; border-radius: 12px; }
-body :is(.gp-tile-grid, .course-grid, .cities-grid, .intakes-grid, .elig-grid, .exam-cards, .careers-grid, .scholarship-cards, .deadline-grid, .overview-grid, .uni-scroll)::-webkit-scrollbar { display: none; }
-body :is(.gp-tile-grid, .course-grid, .cities-grid, .intakes-grid, .elig-grid, .exam-cards, .careers-grid, .scholarship-cards, .deadline-grid, .overview-grid, .uni-scroll) > * { min-width: 0; scroll-snap-align: start; }
+body :is(.gp-tile-grid, .gp-tools, .course-grid, .cities-grid, .intakes-grid, .elig-grid, .exam-cards, .careers-grid, .scholarship-cards, .deadline-grid, .overview-grid, .uni-scroll)::-webkit-scrollbar { display: none; }
+body :is(.gp-tile-grid, .gp-tools, .course-grid, .cities-grid, .intakes-grid, .elig-grid, .exam-cards, .careers-grid, .scholarship-cards, .deadline-grid, .overview-grid, .uni-scroll) > * { min-width: 0; scroll-snap-align: start; }
 body .section { padding-block: 2.25rem; }
 body .section-title { font-size: 1.6rem; }
 body .section-sub { font-size: .95rem; margin-bottom: 1rem; }

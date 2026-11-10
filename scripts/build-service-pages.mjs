@@ -4,7 +4,7 @@
    Run from the repository root:  node scripts/build-service-pages.mjs
    Exam formats and visa summaries are planning guides; re-check them against the
    official links on each page when you update REVIEWED. */
-import { esc, consultHref, shell, leadForm, hero, section, cards, steps, checklist, faq, cta, write } from './page-shell.mjs';
+import { esc, consultHref, shell, leadForm, hero, section, cards, steps, checklist, faq, cta, write, photo , toolsStrip } from './page-shell.mjs';
 
 const REVIEWED = 'October 2026';
 const ext = (href, label) => `<a href="${href}" target="_blank" rel="noopener noreferrer">${label}</a>`;
@@ -136,6 +136,7 @@ function testPrepOverview() {
         form: leadForm({ id: 'test-prep', interest: 'test-preparation', eyebrow: 'Free counselling', title: 'Get a study plan for your test' })
     })}
 <main id="main">
+${photo('svc-tests')}
 ${section({ id: 'exams', tag: 'Tests we coach', title: 'Choose your test', body: `<div class="gp-exam-grid">
 ${exams.map((e) => `    <a class="gp-exam" href="test-prep-${e.slug}">
       <span class="gp-exam-icon">${icons[e.slug]}</span>
@@ -169,6 +170,8 @@ ${section({ id: 'faq', tag: 'FAQs', title: 'Test preparation: common questions',
         ['Where do I book the exam?', 'You book directly with the test provider. Each test page links to the official booking site.']
     ]) })}
 
+${toolsStrip()}
+
 ${cta({ title: 'Not sure where to start?', text: 'Tell us your universities and timeline, and we’ll recommend the right test and a realistic study plan.', href: consultHref('test-preparation'), label: 'Book a free consultation' })}
 </main>`;
     return shell({
@@ -192,6 +195,7 @@ function examPage(e) {
 ${e.facts.map(([k, v]) => `  <div><span>${esc(k)}</span><strong>${esc(v)}</strong></div>`).join('\n')}
 </div>
 <main id="main">
+${photo('svc-tests')}
 ${section({ id: 'format', tag: 'Test format', title: `What the ${e.name} tests`, lead: e.full, body: `<div class="gp-table-wrap" tabindex="0" role="region" aria-label="${e.name} sections">
     <table class="gp-table gp-table--compact">
       <thead><tr><th scope="col">Section</th><th scope="col">Time</th><th scope="col">What it covers</th></tr></thead>
@@ -209,6 +213,8 @@ ${section({ id: 'faq', tag: 'FAQs', title: `${e.name}: common questions`, cls: '
   <p class="gp-note">Formats, fees and timings change. This summary was last reviewed in ${REVIEWED}; always confirm the current details at ${e.book} before you book.</p>` })}
 
 ${section({ id: 'other-tests', tag: 'Other tests', title: 'Preparing for another test?', body: examPills(e.slug) })}
+
+${toolsStrip()}
 
 ${cta({ title: `Ready to crack ${e.name}?`, text: 'Book a free session: we’ll assess your level and build a plan around your target score and test date.', href: `${consultHref('test-preparation')}`.replace('#book', `&amp;exam=${e.slug}#book`), label: 'Book a free session', exam: e.name })}
 </main>`;
@@ -243,6 +249,7 @@ function visaPage() {
         form: leadForm({ id: 'visa', interest: 'visa-assistance', eyebrow: 'Free visa consultation', title: 'Get your visa file checked' })
     })}
 <main id="main">
+${photo('svc-visa')}
 ${section({ id: 'what-we-do', tag: 'What we do', title: 'How we support your visa application', body: cards([
         ['Eligibility check', 'We review your admission, finances and history, and flag risks before you apply.'],
         ['Document checklist', 'A checklist for your destination and situation, so nothing is missing or out of date.'],
@@ -284,6 +291,8 @@ ${section({ id: 'faq', tag: 'FAQs', title: 'Visa assistance: common questions', 
         ['I had a visa refused before. Can you help?', 'Yes. We review the refusal reasons and help you address them before you reapply.']
     ]) })}
 
+${toolsStrip()}
+
 ${cta({ title: 'Get your visa application right first time', text: 'Talk to a Gradmire counsellor about your destination, documents and timeline.', href: consultHref('visa-assistance'), label: 'Book a free visa consultation' })}
 </main>`;
     return shell({
@@ -305,6 +314,7 @@ function applicationPage() {
         form: leadForm({ id: 'application', interest: 'application-support', eyebrow: 'Free application review', title: 'Start your application with an expert' })
     })}
 <main id="main">
+${photo('svc-application')}
 ${section({ id: 'what-we-do', tag: 'What we help with', title: 'Every part of your application', body: cards([
         ['University shortlist', 'A balanced list of ambitious, target and safer choices that match your profile, budget and goals.'],
         ['Statement of purpose', 'We help you plan, structure and refine your SOP or personal statement. The story and the words stay yours.'],
@@ -335,6 +345,8 @@ ${section({ id: 'faq', tag: 'FAQs', title: 'Application assistance: common quest
         ['When should I start?', 'Ideally 9–12 months before your intended start date, so there is time for tests, documents and early deadlines.']
     ]) })}
 
+${toolsStrip()}
+
 ${cta({ title: 'Ready to start your applications?', text: 'Book a free session to review your profile and build your application plan.', href: consultHref('application-support'), label: 'Book a free consultation' })}
 </main>`;
     return shell({
@@ -356,6 +368,7 @@ function courseSelectionPage() {
         form: leadForm({ id: 'course-selection', interest: 'course-selection', eyebrow: 'Free course guidance', title: 'Find the right course for you' })
     })}
 <main id="main">
+${photo('svc-courses')}
 ${section({ id: 'factors', tag: 'What we look at', title: 'The factors behind a good course choice', body: cards([
         ['Your interests and strengths', 'Subjects you enjoy and do well in, from your academic record and experience.'],
         ['Career goals', 'Where the course leads: typical roles, accreditation and the industries that hire graduates.'],
@@ -384,6 +397,8 @@ ${section({ id: 'faq', tag: 'FAQs', title: 'Course selection: common questions',
         ['Are rankings important?', 'They are one signal. Course content, accreditation, location, cost and graduate outcomes often matter more for your career.'],
         ['Can I switch fields for a master’s?', 'Often, yes. Some master’s programmes are designed for career changers, while others need a related degree. We help you find realistic options.']
     ]) })}
+
+${toolsStrip()}
 
 ${cta({ title: 'Not sure which course is right?', text: 'Book a free session and leave with a shortlist that fits your goals and budget.', href: consultHref('course-selection'), label: 'Book a free consultation' })}
 </main>`;

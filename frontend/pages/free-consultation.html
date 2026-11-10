@@ -73,7 +73,9 @@ img{max-width:100%;display:block;}a{color:inherit;}
 .dest-check input{accent-color:var(--accent);}
 .form-check{display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.75rem;}
 .form-check input{margin-top:.2rem;accent-color:var(--accent);flex-shrink:0;}
-.form-check-label{font-size:.82rem;color:var(--text-s);line-height:1.4;}
+.form-check-label{flex:1 1 0;min-width:0;font-size:.86rem;color:var(--text-s);line-height:1.5;}
+.consent-group{margin:1.4rem 0 .7rem;font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-s);}
+.consent-group--first{margin-top:0;}
 .step-nav{display:flex;align-items:center;gap:1rem;margin-top:2rem;}
 .btn-next,.btn-back,.btn-submit{padding:.75em 2em;border-radius:100px;font-family:var(--sans);font-size:.95rem;font-weight:600;border:none;cursor:pointer;transition:background .2s,transform .15s,border-color .2s,color .2s;}
 .btn-next:active,.btn-back:active,.btn-submit:active{transform:scale(.97);}
@@ -83,13 +85,6 @@ img{max-width:100%;display:block;}a{color:inherit;}
 .submit-status{margin-top:1rem;font-size:.85rem;color:#D94040;line-height:1.5;}
 .btn-back{background:transparent;border:1.5px solid var(--border);color:var(--text-p);}
 .btn-back:hover{border-color:var(--text-p);}
-/* Branch cards */
-.branch-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
-.branch-card{padding:1rem;border:1.5px solid var(--border);border-radius:var(--r-md);cursor:pointer;transition:border-color .2s,background .2s;}
-.branch-card:has(input:checked){border-color:var(--accent);background:var(--accent-dim);}
-.branch-card input{display:none;}
-.branch-name{font-weight:700;font-size:.9rem;margin-bottom:.2rem;}
-.branch-addr{font-size:.78rem;color:var(--text-s);line-height:1.4;}
 /* Trust panel */
 .trust-side{display:flex;flex-direction:column;gap:1.5rem;padding-top:.5rem;}
 .trust-header{font-size:.78rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--text-s);margin-bottom:.25rem;}
@@ -159,7 +154,7 @@ img{max-width:100%;display:block;}a{color:inherit;}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .field-error{color:#FF8A7A;}}
 :root[data-theme="dark"] .field-error{color:#FF8A7A;}
 </style>
-<link rel="stylesheet" href="../assets/site.css?v=33">
+<link rel="stylesheet" href="../assets/site.css?v=35">
 
 <!-- mobile-app -->
 <meta name="theme-color" content="#F0F2F7" media="(prefers-color-scheme: light)">
@@ -171,8 +166,8 @@ img{max-width:100%;display:block;}a{color:inherit;}
 <meta name="apple-mobile-web-app-title" content="Gradmire">
 <style>.gm-tabbar{display:none}</style>
 <script>try{var n=navigator.connection;if((n&&(n.saveData||/(^|-)2g$/.test(n.effectiveType)))||matchMedia("(prefers-reduced-data: reduce)").matches)document.documentElement.classList.add("gm-lite")}catch(e){}</script>
-<link rel="stylesheet" href="../assets/mobile-app.css?v=20" media="(max-width: 760px)">
-<script src="../assets/mobile-app.js?v=7" defer></script>
+<link rel="stylesheet" href="../assets/mobile-app.css?v=21" media="(max-width: 760px)">
+<script src="../assets/mobile-app.js?v=8" defer></script>
 <!-- /mobile-app -->
 <nav class="nav" aria-label="Main navigation">
   <div class="nav-inner">
@@ -222,9 +217,7 @@ img{max-width:100%;display:block;}a{color:inherit;}
       <div class="step-dot active" id="sd1"></div>
       <div class="step-line"><div class="step-line-fill" id="sl1"></div></div>
       <div class="step-dot" id="sd2"></div>
-      <div class="step-line"><div class="step-line-fill" id="sl2"></div></div>
-      <div class="step-dot" id="sd3"></div>
-      <span class="step-label" id="step-label" style="margin-left:.5rem" aria-live="polite">Step 1 of 3 · About you</span>
+      <span class="step-label" id="step-label" style="margin-left:.5rem" aria-live="polite">Step 1 of 2 · About you</span>
     </div>
 
     <!-- Step 1 -->
@@ -261,10 +254,12 @@ img{max-width:100%;display:block;}a{color:inherit;}
           <div class="form-field">
             <label class="form-label" for="s1-intake">Intended intake</label>
             <select class="form-select" id="s1-intake">
-              <option>Sep 2026</option>
+              <option value="">Not sure yet</option>
               <option>Jan 2027</option>
+              <option>May 2027</option>
               <option>Sep 2027</option>
               <option>Jan 2028</option>
+              <option>Sep 2028</option>
             </select>
           </div>
           <div class="form-field">
@@ -338,6 +333,25 @@ img{max-width:100%;display:block;}a{color:inherit;}
           <label class="form-label" for="s1-scholarship">Which scholarship are you interested in? <span style="font-weight:400">(optional)</span></label>
           <input class="form-input" type="text" id="s1-scholarship" maxlength="200" placeholder="e.g. Chevening, DAAD, or not sure yet">
         </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label class="form-label" for="s1-country">Where do you live?</label>
+            <select class="form-select" id="s1-country" autocomplete="country-name">
+              <option>India</option>
+              <option>Nepal</option>
+              <option>Sri Lanka</option>
+              <option>Bangladesh</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="s1-office">Nearest office <span style="font-weight:400">(optional)</span></label>
+            <select class="form-select" id="s1-office">
+              <option value="">No preference</option>
+              <option value="kanpur">Kanpur (Prem Nagar)</option>
+              <option value="greater-noida">Greater Noida (Supertech Ecovillage 1)</option>
+            </select>
+          </div>
+        </div>
         <div class="form-field">
           <label class="form-label">Also interested in (select all that apply)</label>
           <div class="dest-checks">
@@ -361,40 +375,9 @@ img{max-width:100%;display:block;}a{color:inherit;}
 
     <!-- Step 2 -->
     <div class="form-step" id="step2">
-      <h2 class="step-title">Choose your nearest office.</h2>
-      <p class="step-subtitle">Your counsellor will contact you from this branch to schedule your session.</p>
-      <div class="form-field">
-        <label class="form-label" for="s2-country">Country</label>
-        <select class="form-select" id="s2-country">
-          <option>India</option>
-          <option>Nepal</option>
-          <option>Sri Lanka</option>
-          <option>Bangladesh</option>
-        </select>
-      </div>
-      <div class="form-field">
-        <label class="form-label">Select a branch</label>
-        <div class="branch-grid">
-          <label class="branch-card"><input type="radio" name="branch" value="kanpur" checked>
-            <div class="branch-name">Kanpur — Prem Nagar</div>
-            <div class="branch-addr">Near Halim College, Prem Nagar, Kanpur</div>
-          </label>
-          <label class="branch-card"><input type="radio" name="branch" value="greater-noida">
-            <div class="branch-name">Greater Noida — Supertech Ecovillage 1</div>
-            <div class="branch-addr">N2 Tower, Supertech Ecovillage 1, Greater Noida</div>
-          </label>
-        </div>
-      </div>
-      <div class="step-nav">
-        <button type="button" class="btn-back" onclick="goStep(1)">← Back</button>
-        <button type="button" class="btn-next" onclick="goStep(3)">Continue →</button>
-      </div>
-    </div>
-
-    <!-- Step 3 -->
-    <div class="form-step" id="step3">
       <h2 class="step-title">Almost done.</h2>
       <p class="step-subtitle">A couple of quick details, then we'll match you with a counsellor.</p>
+      <p class="consent-group consent-group--first">Needed to book your call</p>
       <div class="form-check" style="margin-bottom:1rem;">
         <input type="checkbox" id="consent-contact" name="contact_consent" required>
         <label class="form-check-label" for="consent-contact">Gradmire may call, email or WhatsApp me about this consultation request. (Required)</label>
@@ -403,6 +386,7 @@ img{max-width:100%;display:block;}a{color:inherit;}
         <input type="checkbox" id="consent-age" name="age_confirmation" required>
         <label class="form-check-label" for="consent-age">I am 18 or older, or my parent or guardian has agreed to me sharing these details. (Required)</label>
       </div>
+      <p class="consent-group">Optional: stay in touch</p>
       <div class="form-check" style="margin-bottom:1rem;">
         <input type="checkbox" id="consent-comms" name="marketing_opt_in">
         <label class="form-check-label" for="consent-comms">Send me scholarship alerts, event invitations and study-abroad tips. (Optional)</label>
@@ -435,7 +419,7 @@ img{max-width:100%;display:block;}a{color:inherit;}
         </select>
       </div>
       <div class="step-nav">
-        <button type="button" class="btn-back" onclick="goStep(2)">← Back</button>
+        <button type="button" class="btn-back" onclick="goStep(1)">← Back</button>
         <button type="button" class="btn-submit" onclick="submitForm()">Book free consultation</button>
       </div>
       <p class="submit-status" id="submit-status" role="alert" hidden></p>
@@ -445,7 +429,7 @@ img{max-width:100%;display:block;}a{color:inherit;}
     <div class="thankyou" id="thankyou">
       <div class="ty-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><polyline points="4,14 10,20 24,8" stroke="#00A878" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <h2 class="ty-title">You're booked in!</h2>
-      <p class="ty-sub">Your counsellor from our <span id="ty-branch">Kanpur</span> branch will call within 24 hours to schedule your free session.</p>
+      <p class="ty-sub">Your counsellor<span id="ty-office-wrap" hidden> from our <span id="ty-office"></span> office</span> will call within 24 hours to schedule your free session.</p>
       <p class="ty-course" id="ty-course" hidden></p>
       <div class="ty-next">
         <div style="font-size:.8rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--text-s);margin-bottom:.75rem;">What happens next</div>
@@ -491,6 +475,25 @@ img{max-width:100%;display:block;}a{color:inherit;}
     </div>
 
     <div class="trust-card">
+      <div style="font-size:.82rem;font-weight:700;margin-bottom:1rem;">Our offices</div>
+      <div class="trust-counsellors">
+        <div class="counsel-row">
+          <div>
+            <div class="counsel-name">Kanpur</div>
+            <div class="counsel-spec">Near Halim College, Prem Nagar</div>
+          </div>
+        </div>
+        <div class="counsel-row">
+          <div>
+            <div class="counsel-name">Greater Noida</div>
+            <div class="counsel-spec">N2 Tower, Supertech Ecovillage 1</div>
+          </div>
+        </div>
+      </div>
+      <p style="margin:.9rem 0 0;font-size:.8rem;color:var(--text-s);">Free consultations are also available online, wherever you are in India.</p>
+    </div>
+
+    <div class="trust-card">
       <div style="font-size:.82rem;font-weight:700;margin-bottom:1rem;">Destinations we guide</div>
       <div class="trust-counsellors">
         <div class="counsel-row">
@@ -517,7 +520,7 @@ img{max-width:100%;display:block;}a{color:inherit;}
 </div>
 
 <script>
-const STEP_NAMES = ['About you', 'Your office', 'Confirm'];
+const STEP_NAMES = ['About you', 'Almost done'];
 let currentStep = 1;
 
 function setFieldError(field, message) {
@@ -548,7 +551,7 @@ function validateStep(n) {
       ['s1-email', (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) ? '' : 'Please enter a valid email address.'],
       ['s1-destination', (v) => v ? '' : 'Please choose a destination.']
     ],
-    3: [
+    2: [
       ['consent-contact', (v, el) => el.checked ? '' : 'Please allow us to contact you so a counsellor can call you back.'],
       ['consent-age', (v, el) => el.checked ? '' : 'Please confirm your age, or ask a parent or guardian to complete this form with you.']
     ]
@@ -569,13 +572,13 @@ function showStep(n) {
   document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
   const target = document.getElementById('step' + n);
   if (target) target.classList.add('active');
-  const dots = [document.getElementById('sd1'),document.getElementById('sd2'),document.getElementById('sd3')];
-  const lines = [document.getElementById('sl1'),document.getElementById('sl2')];
+  const dots = [document.getElementById('sd1'),document.getElementById('sd2')];
+  const lines = [document.getElementById('sl1')];
   dots.forEach(d => { d.classList.remove('active','done'); });
   lines.forEach(l => l.style.width='0');
   for (let i=0;i<n-1;i++) { dots[i].classList.add('done'); if(lines[i]) lines[i].style.width='100%'; }
   dots[n-1].classList.add('active');
-  document.getElementById('step-label').textContent = 'Step ' + n + ' of 3 · ' + STEP_NAMES[n - 1];
+  document.getElementById('step-label').textContent = 'Step ' + n + ' of 2 · ' + STEP_NAMES[n - 1];
   document.getElementById('book').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
 }
 
@@ -587,12 +590,13 @@ function goStep(n) {
 let submitting = false;
 
 function submitForm() {
-  if (submitting || !validateStep(3)) return;
-  const branch = document.querySelector('input[name="branch"]:checked');
-  const branchName = branch ? branch.closest('.branch-card').querySelector('.branch-name').textContent.split('—')[0].trim() : '';
+  if (submitting || !validateStep(2)) return;
+  /* The office is an optional choice in step 1; the thank-you screen names it only if one was picked. */
+  const office = document.getElementById('s1-office');
+  const branchName = office.value ? office.options[office.selectedIndex].text.split(' (')[0] : '';
   const value = (id) => document.getElementById(id).value.trim();
   const checked = (id) => document.getElementById(id).checked;
-  const btn = document.querySelector('#step3 .btn-submit');
+  const btn = document.querySelector('#step2 .btn-submit');
   const status = document.getElementById('submit-status');
   submitting = true;
   btn.disabled = true;
@@ -609,8 +613,8 @@ function submitForm() {
     studyLevel: value('s1-level'),
     serviceInterest: value('s1-interest'),
     message: enquiryDetails(),
-    country: value('s2-country'),
-    branch: branch ? branch.value : '',
+    country: value('s1-country'),
+    branch: office.value,
     passportStatus: value('s3-passport'),
     referralSource: value('s3-source'),
     contactConsent: checked('consent-contact'),
@@ -640,7 +644,7 @@ function enquiryDetails() {
 }
 
 function showThankYou(branchName) {
-  if (branchName) document.getElementById('ty-branch').textContent = branchName;
+  if (branchName) { document.getElementById('ty-office').textContent = branchName; document.getElementById('ty-office-wrap').hidden = false; }
   /* Say where a chosen course goes: kept with the request now, then on the dashboard once the counsellor adds it. */
   const chosenCourse = document.getElementById('s1-course').value.trim();
   if (chosenCourse && document.getElementById('s1-interest').value === 'course-selection') {
@@ -654,8 +658,8 @@ function showThankYou(branchName) {
   try { sessionStorage.removeItem('gradmire-consult-prefill'); } catch (_) {}
   document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
   document.getElementById('thankyou').style.display = 'block';
-  [document.getElementById('sd1'),document.getElementById('sd2'),document.getElementById('sd3')].forEach(d => { d.classList.remove('active'); d.classList.add('done'); });
-  [document.getElementById('sl1'),document.getElementById('sl2')].forEach(l => l.style.width='100%');
+  [document.getElementById('sd1'),document.getElementById('sd2')].forEach(d => { d.classList.remove('active'); d.classList.add('done'); });
+  [document.getElementById('sl1')].forEach(l => l.style.width='100%');
   document.getElementById('step-label').textContent = 'Completed';
   document.getElementById('book').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
@@ -798,6 +802,7 @@ document.querySelectorAll('#step1 .form-input, #step1 .form-select, #consent-con
         <li><a href="career">Careers</a></li>
         <li><a href="faq">FAQs</a></li>
         <li><a href="contact">Contact</a></li>
+        <li><a href="press">Press kit</a></li>
         <li><a href="login">Student login</a></li>
       </ul>
     </nav>
@@ -815,4 +820,4 @@ document.querySelectorAll('#step1 .form-input, #step1 .form-select, #consent-con
 <a class="gm-tab" href="/about" data-gm-menu><svg class="gm-ico-open" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="4" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.6"/></svg><svg class="gm-ico-close" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg><span class="gm-tab-label">Menu</span></a>
 </nav>
 <!-- /gm-tabbar -->
-<script src="../assets/site.js?v=42" defer></script>
+<script src="../assets/site.js?v=44" defer></script>

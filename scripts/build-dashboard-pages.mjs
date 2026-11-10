@@ -8,7 +8,7 @@ import { shell, write } from './page-shell.mjs';
 const BOOKING_CSS = 'booking.css?v=2';
 const API_JS = 'api.js?v=5';
 const COMMON_JS = 'booking-common.js?v=1';
-const WORKSPACE_CSS = 'workspace.css?v=4';
+const WORKSPACE_CSS = 'workspace.css?v=5';
 const WORKSPACE_JS = 'workspace.js?v=5';
 
 function page({ name, title, description, body, script, workspace = false }) {
@@ -80,6 +80,14 @@ ${STAGES.map(([key, label]) => `      <li class="sd-stage" data-stage="${key}"><
           <li><a href="tools/roi-calculator">Study cost calculator</a></li>
           <li><a href="tools/comparator">Course comparator</a></li>
         </ul>
+      </section>
+      <section class="bk-panel" aria-labelledby="sd-offices-title">
+        <h2 id="sd-offices-title" class="bk-step-title">Visit an office</h2>
+        <ul class="sd-links sd-offices">
+          <li><strong>Kanpur</strong><span>Near Halim College, Prem Nagar</span></li>
+          <li><strong>Greater Noida</strong><span>N2 Tower, Supertech Ecovillage 1</span></li>
+        </ul>
+        <p class="bk-fine">Consultations are also available online. <a href="contact">Contact us</a></p>
       </section>
     </aside>
   </div>

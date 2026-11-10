@@ -27,7 +27,7 @@
 <link rel="icon" href="/assets/favicon-light.ico" media="(prefers-color-scheme: light)">
 <link rel="icon" href="/assets/favicon-dark.ico" media="(prefers-color-scheme: dark)">
 <meta name="description" content="Convert GPA, CGPA, SGPA and percentage estimates for study planning. Always confirm the official conversion method with your institution.">
-<link rel="stylesheet" href="../../assets/site.css?v=33">
+<link rel="stylesheet" href="../../assets/site.css?v=35">
 <style>
 :root{--bg:#F0F2F7;--surface:#fff;--surface-tint:#E8EBF4;--text-p:#0E1420;--text-s:#556270;--brand:#1A4870;--accent:#007A5A;--accent-hover:#006649;--border:rgba(14,20,32,.1);--sans:'Bricolage Grotesque',system-ui,sans-serif;--mono:'JetBrains Mono',monospace;--w:960px;--gutter:clamp(1rem,5vw,3rem);--ease:cubic-bezier(.16,1,.3,1)}
 *,*::before,*::after{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text-p);font:16px/1.6 var(--sans)}.nav{position:sticky;top:0;z-index:100;height:68px;background:rgba(240,242,247,.92);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}.nav-inner{max-width:1200px;margin:auto;padding:0 var(--gutter);height:100%;display:flex;align-items:center;gap:2rem}.nav-logo img{display:block;max-width:150px;height:34px}.nav-links{display:flex;gap:1.3rem;list-style:none;padding:0;margin:0;flex:1}.nav-links a{font-size:.85rem;text-decoration:none;color:var(--text-s)}.nav-ham{display:none}.converter{max-width:var(--w);margin:clamp(3rem,8vw,6rem) auto;padding:0 var(--gutter)}.eyebrow{font:700 .72rem var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--accent)}h1{font-size:clamp(2.2rem,6vw,4rem);letter-spacing:-.04em;line-height:1.02;margin:.7rem 0 1rem}.lede{max-width:58ch;color:var(--text-s)}.card{margin-top:2rem;padding:clamp(1.2rem,4vw,2.5rem);background:var(--surface);border:1px solid var(--border);border-radius:24px;box-shadow:0 18px 50px rgba(14,20,32,.06)}.fields{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.field{display:grid;gap:.4rem}.field label{font-size:.82rem;font-weight:700}.field input,.field select{width:100%;min-height:48px;border:1px solid var(--border);border-radius:10px;padding:.7rem .8rem;background:var(--surface);color:var(--text-p);font:inherit}.result{margin-top:1.25rem;padding:1.25rem;border-radius:14px;background:var(--surface-tint)}.result strong{display:block;font-size:1.5rem}.note{margin-top:1rem;color:var(--text-s);font-size:.88rem}.actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.3rem}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:.65rem 1.1rem;border-radius:100px;border:1px solid var(--border);background:var(--surface);color:var(--text-p);font:600 .9rem var(--sans);text-decoration:none;cursor:pointer}.btn-primary{border-color:var(--accent);background:var(--accent);color:#fff}.btn-primary:hover{background:var(--accent-hover)}@media(max-width:640px){.nav-links{display:none}.nav-ham{display:flex;margin-left:auto}.fields{grid-template-columns:1fr}}
@@ -42,12 +42,12 @@
 <meta name="apple-mobile-web-app-title" content="Gradmire">
 <style>.gm-tabbar{display:none}</style>
 <script>try{var n=navigator.connection;if((n&&(n.saveData||/(^|-)2g$/.test(n.effectiveType)))||matchMedia("(prefers-reduced-data: reduce)").matches)document.documentElement.classList.add("gm-lite")}catch(e){}</script>
-<link rel="stylesheet" href="../../assets/mobile-app.css?v=20" media="(max-width: 760px)">
-<script src="../../assets/mobile-app.js?v=7" defer></script>
+<link rel="stylesheet" href="../../assets/mobile-app.css?v=21" media="(max-width: 760px)">
+<script src="../../assets/mobile-app.js?v=8" defer></script>
 <!-- /mobile-app -->
 </head>
 <body>
-<nav class="nav" aria-label="Main navigation"><div class="nav-inner"><a href="../" class="nav-logo"><img src="../../assets/gradmire-logo.png" alt="Gradmire"></a><ul class="nav-links" role="list"></ul><a href="../free-consultation" class="nav-btn">Book free consultation</a><button class="nav-ham" type="button" aria-label="Open menu" aria-expanded="false"></button></div></nav>
+<nav class="nav" aria-label="Main navigation"><div class="nav-inner"><a href="../" class="nav-logo"><img src="../../assets/gradmire-logo.png" alt="Gradmire"></a><ul class="nav-links" role="list"></ul><a href="../free-consultation" class="nav-btn">Free consultation</a><button class="nav-ham" type="button" aria-label="Open menu" aria-expanded="false"></button></div></nav>
 <main class="converter">
   <p class="eyebrow">Student tools</p>
   <h1>Make your grades easier to compare.</h1>
@@ -122,6 +122,7 @@ scale.addEventListener('change',convert);value.addEventListener('input',convert)
         <li><a href="../career">Careers</a></li>
         <li><a href="../faq">FAQs</a></li>
         <li><a href="../contact">Contact</a></li>
+        <li><a href="../press">Press kit</a></li>
         <li><a href="../login">Student login</a></li>
       </ul>
     </nav>
@@ -138,6 +139,6 @@ scale.addEventListener('change',convert);value.addEventListener('input',convert)
 <a class="gm-tab" href="/about" data-gm-menu><svg class="gm-ico-open" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="4" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.6"/></svg><svg class="gm-ico-close" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg><span class="gm-tab-label">Menu</span></a>
 </nav>
 <!-- /gm-tabbar -->
-<script src="../../assets/site.js?v=42" defer></script>
+<script src="../../assets/site.js?v=44" defer></script>
 </body>
 </html>

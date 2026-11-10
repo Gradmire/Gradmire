@@ -3,7 +3,7 @@
    Run from the repository root:  node scripts/build-scholarship-pages.mjs
    Scholarship content lives in scholarship-data.mjs. */
 import { destinations, multiCountry, REVIEWED } from './scholarship-data.mjs';
-import { esc, consultHref, shell, leadForm, hero, section, steps, faq, cta, write } from './page-shell.mjs';
+import { esc, consultHref, shell, leadForm, hero, section, steps, faq, cta, write, photo, countryPhoto , toolsStrip } from './page-shell.mjs';
 
 const levelName = { ug: 'Bachelor’s', pg: 'Master’s' };
 const scholarshipConsult = (country = '') => consultHref('scholarship', country);
@@ -63,6 +63,7 @@ function countryPage(d) {
         form: leadForm({ id: `schol-${d.slug}`, interest: 'scholarship', country: d.slug, eyebrow: 'Free scholarship guidance', title: `Find scholarships you can win in ${d.name}` })
     })}
 <main id="main">
+${countryPhoto(d.slug) || photo('sch-graduation')}
 ${section({ id: 'scholarships', tag: 'Bachelor’s & master’s', title: `Scholarships in ${d.name}`, lead: 'A summary of each scholarship. Values and dates change every year, so always confirm on the official page before you apply.', body: `${levelFilter(`Filter ${d.name} scholarships by study level`)}
   <div class="gp-schol-list">
 ${d.scholarships.map((s) => card(s, d.slug)).join('\n')}
@@ -74,6 +75,8 @@ ${section({ id: 'how-we-help', tag: 'How we help', title: 'Apply for scholarship
 ${section({ id: 'faq', tag: 'FAQs', title: `Scholarships in ${d.name}: common questions`, cls: 'gp-faq', body: faq(commonFaq) })}
 
 ${section({ id: 'other-countries', tag: 'Other destinations', title: 'Scholarships in other countries', body: `<div class="gp-pill-links">${others.map((o) => `<a href="scholarships-in-${o.slug}">Scholarships in ${esc(o.name)}</a>`).join('')}<a href="scholarships">All scholarships</a></div>` })}
+
+${toolsStrip()}
 
 ${cta({ title: 'Want help finding funding?', text: `Tell us your course and budget and we’ll shortlist scholarships in ${d.fullName} you can apply for.`, href: scholarshipConsult(d.slug), label: 'Book free scholarship guidance', country: d.slug })}
 </main>`;
@@ -98,6 +101,7 @@ ${hero({
         form: leadForm({ id: 'schol-hub', interest: 'scholarship', eyebrow: 'Free scholarship guidance', title: 'Find scholarships that fit your profile' })
     })}
 <main id="main">
+${photo('sch-graduation')}
 ${section({ id: 'countries', tag: 'By country', title: 'Scholarships by destination', body: `<div class="gp-tile-grid">
 ${destinations.map((d) => `    <a class="gp-tile" href="scholarships-in-${d.slug}">
       <span class="gp-tile-name">Scholarships in ${esc(d.name)}</span>
@@ -114,6 +118,8 @@ ${multiCountry.map((s) => card(s)).join('\n')}
 ${section({ id: 'how-we-help', tag: 'How we help', title: 'Apply for scholarships with Gradmire', body: steps(helpSteps) })}
 
 ${section({ id: 'faq', tag: 'FAQs', title: 'Scholarships: common questions', cls: 'gp-faq', body: faq(commonFaq) })}
+
+${toolsStrip()}
 
 ${cta({ title: 'Not sure which scholarships you qualify for?', text: 'Book a free session and we’ll shortlist scholarships that match your profile, course and budget.', href: scholarshipConsult(), label: 'Book free scholarship guidance' })}
 </main>`;

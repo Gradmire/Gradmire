@@ -60,7 +60,7 @@
     /* ── Swipe rows: the card grids that mobile-app.css turns into one sideways row (MBBS and study country tiles, courses,
           cities and so on) get position dots, so it is clear there are more cards and how far along you are.
           Done at once, not when idle, so the dots never pop in late and move the page. ── */
-    var ROWS = '.gp-tile-grid, .course-grid, .cities-grid, .intakes-grid, .elig-grid, .exam-cards, .careers-grid, .scholarship-cards, .deadline-grid, .overview-grid, .uni-scroll';
+    var ROWS = '.gp-tile-grid, .gp-tools, .course-grid, .cities-grid, .intakes-grid, .elig-grid, .exam-cards, .careers-grid, .scholarship-cards, .deadline-grid, .overview-grid, .uni-scroll';
     document.querySelectorAll(ROWS).forEach(function (row) {
         var items = Array.prototype.slice.call(row.children);
         if (items.length < 2 || row.getAttribute('data-gm-dots')) return;
