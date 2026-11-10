@@ -1,0 +1,132 @@
+/* Mobile "app" layer for phones (<= 760px). Loaded by <link media="(max-width: 760px)">, so desktop never downloads or applies it.
+   Added to every public page by scripts/sync-mobile-app.mjs. Pure CSS first; mobile-app.js only adds touch polish.
+   Patterns are ported from React Bits (reactbits.dev) to dependency-free CSS/JS:
+     Dock (tab bar magnification), Shiny Text (Book orb), Spotlight Card (press glow), Animated List (staggered cards). */
+
+:root { --gm-tab-h: 62px; --gm-ease: cubic-bezier(.34, 1.56, .64, 1); }
+
+/* ── App-like page behaviour ─────────────────────────────── */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-padding-top: 76px; }
+body { overflow-x: clip; -webkit-tap-highlight-color: transparent; }
+a, button, summary, label, [role="button"], input, select, textarea { touch-action: manipulation; }
+/* 16px fields stop iOS from zooming the page when a field is focused. */
+input:not([type="checkbox"]):not([type="radio"]), select, textarea { font-size: max(16px, 1em); }
+img, video, canvas, svg { max-width: 100%; }
+table { max-width: 100%; }
+
+/* Room for the tab bar so it never covers the footer or the last button. */
+body:has(.gm-tabbar) { padding-bottom: calc(var(--gm-tab-h) + env(safe-area-inset-bottom, 0px)); }
+
+/* Press feedback on everything tappable. */
+:is(a.btn, .btn, .gp-btn, .nav-btn, .cat-chip, .bl-chip, .filter-chip, .chip, .country-pill, button[type="submit"]):active { transform: scale(.97); }
+:is(.gp-card, .bl-card, .gp-tile, .uni-card, .dest-cell, .bl-feature-card):active { transform: scale(.985); }
+:is(.gp-card, .bl-card, .gp-tile, .uni-card, .dest-cell, .bl-feature-card, .btn, .gp-btn) { transition-property: transform, box-shadow, background-color, border-color, filter; transition-duration: .18s; }
+
+/* ── Bottom tab bar (React Bits "Dock" pattern: the pressed tab grows and its neighbours lean in) ── */
+.gm-tabbar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 1200;
+    display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: end;
+    height: calc(var(--gm-tab-h) + env(safe-area-inset-bottom, 0px));
+    padding: 6px max(6px, env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) max(6px, env(safe-area-inset-left, 0px));
+    background: color-mix(in srgb, var(--surface, #fff) 84%, transparent);
+    -webkit-backdrop-filter: saturate(180%) blur(22px); backdrop-filter: saturate(180%) blur(22px);
+    border-top: 1px solid var(--border, rgba(14, 20, 32, .1));
+    box-shadow: 0 -8px 28px rgba(10, 14, 26, .06);
+    transition: transform .3s var(--ease, ease), opacity .2s;
+    view-transition-name: gm-tabbar;
+}
+.gm-tab {
+    position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 2px;
+    min-height: 54px; padding: 4px 2px 3px; border-radius: 14px;
+    color: var(--text-s, #556270); font: 600 .68rem/1.1 var(--sans, system-ui, sans-serif); letter-spacing: .01em; text-decoration: none;
+    transition: color .2s, transform .35s var(--gm-ease);
+}
+.gm-tab svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: transform .35s var(--gm-ease); }
+.gm-tab[aria-current="page"] { color: var(--accent-text, var(--accent, #007A5A)); }
+:root:not([data-theme="dark"]) .gm-tab[aria-current="page"] { color: #005C44; }
+.gm-tab[aria-current="page"]::before { content: ""; position: absolute; top: 11px; left: 50%; width: 46px; height: 28px; margin-left: -23px; border-radius: 999px; background: var(--accent-dim, rgba(0, 122, 90, .12)); z-index: -1; }
+.gm-tab[aria-current="page"] svg { stroke-width: 2.2; }
+.gm-tab:focus-visible { outline: 3px solid #3C8FD9; outline-offset: -2px; }
+/* Dock magnification */
+.gm-tab:active svg { transform: scale(1.28) translateY(-3px); }
+.gm-tab:active { transform: scale(1.06); }
+.gm-tab:active + .gm-tab, .gm-tab:has(+ .gm-tab:active) { transform: scale(1.025); }
+
+/* Centre "Book" tab: raised orb with a Shiny Text sweep */
+.gm-tab--book { color: #fff !important; font-weight: 700; }
+.gm-tab--book::before { display: none; }
+.gm-tab-orb { position: relative; display: grid; place-items: center; width: 52px; height: 52px; margin-top: -22px; border-radius: 50%; overflow: hidden; background: linear-gradient(145deg, #00916B, #006649); box-shadow: 0 10px 22px rgba(0, 90, 66, .38), 0 0 0 5px var(--surface, #fff); }
+.gm-tab-orb svg { width: 25px; height: 25px; stroke: #fff; }
+.gm-tab--book .gm-tab-label { color: var(--accent-text, #005C44); }
+:root[data-theme="dark"] .gm-tab--book .gm-tab-label { color: #2DB88C; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .gm-tab--book .gm-tab-label { color: #2DB88C; } }
+@media (prefers-reduced-motion: no-preference) {
+    .gm-tab-orb::after { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, .55) 50%, transparent 65%); background-size: 250% 100%; background-position: 160% 0; animation: gm-shine 3.6s ease-in-out 1.2s infinite; }
+}
+@keyframes gm-shine { 0%, 55% { background-position: 160% 0; } 100% { background-position: -60% 0; } }
+
+/* Hide the bar while the keyboard is open, a menu is open or a sheet covers the page. */
+html.gm-kb .gm-tabbar, html.nav-open .gm-tabbar { transform: translateY(calc(100% + 36px)); opacity: 0; pointer-events: none; }
+html.gm-popup-open .gm-tabbar { opacity: .0; pointer-events: none; }
+
+/* The floating consultation button duplicates the Book tab, so it steps aside. */
+.gm-consult-fab { display: none !important; }
+/* The Strobi buddy lifts above the bar. */
+body:has(.gm-tabbar) .gm-buddy:not(.is-placed) { bottom: calc(var(--gm-tab-h) + 14px + env(safe-area-inset-bottom, 0px)); }
+body:has(.gm-tabbar) .gm-buddy-avatar { width: 52px; height: 52px; }
+
+/* ── Consent sheet: compact, equal-weight Reject and Accept side by side ── */
+.gm-consent { gap: .6rem; padding: .9rem 1rem calc(.8rem + env(safe-area-inset-bottom, 0px)); }
+.gm-consent-title { font-size: .95rem; margin-bottom: .15rem; }
+.gm-consent-text { font-size: .78rem; line-height: 1.45; }
+/* The banner copy is the largest block of text on a phone's first screen, so it is kept short there: the sentence
+   below is also covered by the Analytics line under "Customise". Otherwise it, not the headline, becomes the page's
+   Largest Contentful Paint and arrives late. */
+.gm-consent-more { display: none; }
+.gm-consent-actions { display: flex; flex-wrap: wrap; gap: .45rem; }
+.gm-consent-btn { flex: 1 1 calc(50% - .25rem); min-height: 44px; padding: .5rem .6rem; font-size: .84rem; }
+.gm-consent-btn[data-consent="reject"] { order: 1; }
+.gm-consent-btn[data-consent="accept"] { order: 2; }
+.gm-consent-btn[data-consent="customise"] { order: 3; flex: 1 1 100%; min-height: 40px; border-color: transparent; text-decoration: underline; text-underline-offset: 3px; }
+
+/* ── Spotlight Card (React Bits): a soft glow follows the finger ── */
+.gm-spot { position: relative; isolation: isolate; }
+.gm-spot::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 1; opacity: 0; transition: opacity .3s; background: radial-gradient(190px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--accent, #007A5A) 24%, transparent), transparent 70%); }
+.gm-spot.is-lit::after { opacity: 1; }
+
+/* ── Animated List (React Bits): cards below the fold rise in one after another ── */
+.gm-pre { opacity: 0; transform: translateY(16px); }
+.gm-in { opacity: 1; transform: none; transition: opacity .5s var(--ease, ease), transform .5s var(--ease, ease); transition-delay: calc(var(--i, 0) * 55ms); }
+
+/* ── App-style sections ── */
+:root { --sec: clamp(3rem, 9vw, 4rem); }
+/* Homepage quick actions: a 3 x 2 grid of app-style tiles under the hero buttons. */
+.gm-quick { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .6rem; margin: 1.4rem 0 .2rem; }
+.gm-quick a { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .45rem; min-height: 88px; padding: .8rem .4rem; border: 1px solid var(--border, rgba(14, 20, 32, .1)); border-radius: 18px; background: var(--surface, #fff); color: var(--text-p, #0E1420); font-size: .78rem; font-weight: 700; line-height: 1.2; text-align: center; text-decoration: none; box-shadow: 0 6px 18px rgba(10, 14, 26, .05); }
+.gm-quick a:active { transform: scale(.95); }
+.gm-quick a:focus-visible { outline: 3px solid #3C8FD9; outline-offset: 2px; }
+.gm-quick svg { width: 26px; height: 26px; padding: 6px; box-sizing: content-box; border-radius: 12px; background: var(--accent-dim, rgba(0, 122, 90, .12)); fill: none; stroke: var(--accent-text, #005C44); stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+:root[data-theme="dark"] .gm-quick svg { stroke: #2DB88C; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .gm-quick svg { stroke: #2DB88C; } }
+.gm-quick-new { background: linear-gradient(150deg, #0F2D4A, #123F5C) !important; border-color: transparent !important; color: #fff !important; }
+.gm-quick-new svg { background: rgba(127, 224, 190, .16); stroke: #7FE0BE !important; }
+.gm-quick-new i { position: absolute; top: 6px; right: 6px; padding: 1px 6px; border-radius: 999px; background: #007A5A; color: #fff; font: 700 .58rem/1.5 var(--mono, monospace); font-style: normal; letter-spacing: .06em; text-transform: uppercase; }
+@media (prefers-reduced-motion: no-preference) {
+    .gm-quick-new span { background: linear-gradient(110deg, #fff 35%, #7FE0BE 50%, #fff 65%); background-size: 250% 100%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: gm-text-shine 3.6s ease-in-out 1.4s infinite; }
+}
+@keyframes gm-text-shine { 0%, 55% { background-position: 160% 0; } 100% { background-position: -60% 0; } }
+
+/* Cross-document view transition: pages slide like screens, the tab bar stays put. */
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: gm-fade-out .16s ease both; }
+::view-transition-new(root) { animation: gm-fade-in .22s ease both; }
+@keyframes gm-fade-out { to { opacity: 0; } }
+@keyframes gm-fade-in { from { opacity: 0; transform: translateY(6px); } }
+
+@media (prefers-reduced-motion: reduce) {
+    .gm-tab, .gm-tab svg, .gm-tabbar, .gm-pre, .gm-in, .gm-spot::after { transition: none !important; animation: none !important; }
+    .gm-pre { opacity: 1; transform: none; }
+    .gm-tab:active, .gm-tab:active svg { transform: none; }
+    :is(a.btn, .btn, .gp-btn, .nav-btn, .gp-card, .bl-card, .dest-cell):active { transform: none; }
+    @view-transition { navigation: none; }
+}

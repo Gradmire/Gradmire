@@ -165,7 +165,14 @@
             mobile.setAttribute('aria-label', 'Mobile navigation');
             nav.insertAdjacentElement('afterend', mobile);
         }
-        mobile.innerHTML = `<ul class="nav-mobile-links" role="list">${navItems.join('')}
+        /* The 2027 guides sit in the phone menu only: the desktop bar is already full. */
+        const guides2027 = dropdown('2027 Guides', `<span class="nav-dropdown-label">Study abroad in 2027</span>${[
+            ['Study abroad in 2027: the plan', 'study-abroad-2027'], ['2027 intakes by country', 'study-abroad-intakes-2027'],
+            ['Best countries for 2027', 'best-countries-to-study-abroad-2027'], ['Scholarships for 2027', 'study-abroad-scholarships-2027'],
+            ['IELTS, TOEFL, GRE and GMAT plan', 'study-abroad-tests-2027'], ['2027 documents checklist', 'study-abroad-checklist-2027'],
+            ['MBBS abroad in 2027', 'mbbs-abroad-2027']
+        ].map(([label, slug]) => link(page(slug), label)).join('')}${link(page('blog'), 'All guides')}`);
+        mobile.innerHTML = `<ul class="nav-mobile-links" role="list">${navItems.join('')}${guides2027}
           <li><a href="${page('login')}" class="nav-login-mobile">Login</a></li>
           <li><a href="${page('free-consultation')}" class="btn btn-primary">Book free consultation</a></li>
         </ul>`;
@@ -597,8 +604,11 @@
             else window.location.href = page('free-consultation');
         });
 
-        /* ── Load the real avatar; keep the SVG if the CDN or JSON is unavailable. ── */
-        Promise.all([
+        /* ── Load the real avatar; keep the SVG if the CDN or JSON is unavailable.
+              The third-party module is kept off the critical path: it starts when the browser is idle after the
+              page has loaded, and on phones only after the first touch, scroll or key press (about 650 ms of script
+              on a mid-range phone). The inline SVG shows meanwhile. ── */
+        const startAvatar = () => Promise.all([
             import(AVATAR_WEB_URL),
             fetch(AVATAR_DEFINITION_URL).then((res) => { if (!res.ok) throw new Error(`HTTP ${res.status}`); return res.json(); })
         ]).then(([{ createAvatar }, definition]) => {
@@ -609,6 +619,15 @@
             mount.querySelector('.bs-avatar')?.removeAttribute('role');
             button.querySelector('.gm-buddy-fallback')?.replaceWith(mount);
         }).catch((error) => { console.warn('[Gradmire] Strobi fell back to the inline SVG:', error.message); });
+        const whenIdle = (fn) => ('requestIdleCallback' in window ? window.requestIdleCallback(fn, { timeout: 6000 }) : window.setTimeout(fn, 3000));
+        const afterLoad = (fn) => (document.readyState === 'complete' ? fn() : window.addEventListener('load', fn, { once: true }));
+        if (window.matchMedia('(max-width: 760px)').matches) {
+            let started = false;
+            const go = () => { if (started) return; started = true; ['pointerdown', 'scroll', 'keydown'].forEach((type) => window.removeEventListener(type, go)); afterLoad(() => whenIdle(startAvatar)); };
+            ['pointerdown', 'scroll', 'keydown'].forEach((type) => window.addEventListener(type, go, { once: true, passive: true }));
+        } else {
+            afterLoad(() => whenIdle(startAvatar));
+        }
 
         /* ── Drag me anywhere: drop Strobi on any part of the page and it explains that part,
            using avatar/strobi-knowledge.json plus what the page itself says. Arrow keys move
@@ -1124,7 +1143,7 @@
         banner.innerHTML = `
           <div class="gm-consent-main">
             <p class="gm-consent-title">Your privacy choices</p>
-            <p class="gm-consent-text">We use essential storage to run this site. With your permission we'll also remember preferences, such as night mode and dismissed pop-ups. We don't use advertising cookies, and no analytics run unless you allow them. <a href="${policy}">Cookie policy</a></p>
+            <p class="gm-consent-text">We use essential storage to run this site. With your permission we'll also remember preferences, such as night mode and dismissed pop-ups. <span class="gm-consent-more">We don't use advertising cookies, and no analytics run unless you allow them.</span> <a href="${policy}">Cookie policy</a></p>
             <div class="gm-consent-options" hidden>
               <label class="gm-consent-option"><input type="checkbox" checked disabled><span><strong>Essential</strong>Needed for the site to work and to remember this choice. Always on.</span></label>
               <label class="gm-consent-option"><input type="checkbox" name="preferences"><span><strong>Preferences</strong>Remember night mode and pop-ups you have closed.</span></label>
