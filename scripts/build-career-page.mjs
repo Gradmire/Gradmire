@@ -94,7 +94,7 @@ ${section({ id: 'hiring', tag: 'Hiring', title: 'How hiring works', body: steps(
 
 ${section({ id: 'faq', tag: 'FAQs', title: 'Careers: common questions', cls: 'gp-faq', body: faq([
     ['Do I have to pay to apply or to join?', `No. Neither role has an application fee. If anyone asks you for money in Gradmire’s name, please tell us at ${MAIL}.`],
-    ['Where is the work based?', 'Gradmire guides students online across India, with branches in Delhi/NCR, Greater Noida, Lucknow and Kanpur. Tell us where you are based and what availability you can offer.'],
+    ['Where is the work based?', 'Gradmire guides students online across India, with offices in Greater Noida and Kanpur. Tell us where you are based and what availability you can offer.'],
     ['What happens after I apply?', 'We use the details you give us to assess your application and to contact you about it. Counsellor applications are tracked in our hiring system and reviewed by staff.'],
     ['I do not see a role that fits. Can I still write to you?', `Yes. Send your CV and a few lines about the work you would like to do to ${MAIL}.`]
 ]) })}

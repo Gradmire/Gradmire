@@ -9,10 +9,10 @@
 import { esc, shell, write } from './page-shell.mjs';
 
 const BOOKING_CSS = 'booking.css?v=2';
-const WORKSPACE_CSS = 'workspace.css?v=2';
+const WORKSPACE_CSS = 'workspace.css?v=4';
 const API_JS = 'api.js?v=5';
 const COMMON_JS = 'booking-common.js?v=1';
-const WORKSPACE_JS = 'workspace.js?v=4';
+const WORKSPACE_JS = 'workspace.js?v=5';
 
 function page({ name, title, description, body, script, area, workspace = true }) {
     let html = shell({ title, description, body: workspace ? `<div class="ws-layout"><nav class="ws-nav" id="ws-nav" aria-label="Workspace"></nav>${body}</div>` : body, bodyClass: 'bk-page crm-page ws-page' });

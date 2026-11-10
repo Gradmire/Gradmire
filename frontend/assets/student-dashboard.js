@@ -55,6 +55,13 @@
             enrolled: 'You are enrolled. Wishing you a great start to your studies.'
         }[stage];
         $('sd-journey-summary').textContent = next;
+        /* On phones the steps are one swipeable row: bring the current step to the middle. Only the row scrolls, never the page. */
+        const row = $('sd-stages');
+        const here = row.querySelector('.sd-stage[data-state="current"]');
+        if (here && row.scrollWidth > row.clientWidth + 2) {
+            const left = row.scrollLeft + here.getBoundingClientRect().left - row.getBoundingClientRect().left - (row.clientWidth - here.offsetWidth) / 2;
+            row.scrollTo({ left: Math.max(0, left), behavior: 'auto' });
+        }
     }
 
     function daysLeft(date) {
@@ -65,7 +72,7 @@
     function renderApplications(applications) {
         const box = $('sd-apps');
         if (!applications.length) {
-            box.innerHTML = `<div class="bk-empty-state"><h3>No applications yet</h3><p>After your consultation, your counsellor adds the universities you apply to here, so you can follow each one’s status.</p><a class="gp-btn gp-btn-primary" href="find-courses">Explore courses</a></div>`;
+            box.innerHTML = `<div class="bk-empty-state"><h3>No applications yet</h3><p>Pick a course in the Course Finder and tap <strong>Apply</strong>. After your free consultation, your counsellor adds it here, so you can follow its status and deadline.</p><a class="gp-btn gp-btn-primary" href="find-courses">Explore courses</a></div>`;
             return;
         }
         box.innerHTML = applications.map((a) => {

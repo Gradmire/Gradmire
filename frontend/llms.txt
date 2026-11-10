@@ -1,6 +1,6 @@
 # Gradmire
 
-> Gradmire is a study-abroad counselling company for students in India. It helps students compare courses, universities, scholarships and destinations, prepare for tests, apply and plan their visas, and offers a free consultation. Registered office: World Trade Tower, Barakhamba Lane, New Delhi 110001. Email: info@gradmire.com.
+> Gradmire is a study-abroad counselling company for students in India. It helps students compare courses, universities, scholarships and destinations, prepare for tests, apply and plan their visas, and offers a free consultation. Offices: Kanpur (Near Halim College, Prem Nagar) and Greater Noida (N2 Tower, Supertech Ecovillage 1). Email: info@gradmire.com.
 
 ## 2027 intake guides (reviewed 10 November 2026)
 - [Study abroad in 2027](https://www.gradmire.com/study-abroad-2027): which intake to aim for and a month-by-month plan from November 2026
