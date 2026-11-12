@@ -8,6 +8,7 @@ import { addMinutes, dayBounds, zonedParts } from '../lib/time.js';
 import { audit, recordConsultationEvent } from './audit.js';
 import { ACTIVE_STATUSES } from './availability-service.js';
 import { CONSULTATION_SELECT, cancelInTransaction, loadConsultation, settle, typeView } from './booking-service.js';
+import { assertConsultationTransition } from './consultation-state.js';
 import { enqueueCalendarJob, needsCalendar, retryCalendarSync } from './calendar-sync.js';
 import { enqueueNotification, queueConfirmationMessages } from './notification-service.js';
 import { isAdminRole } from './permissions.js';
@@ -138,15 +139,6 @@ export async function getConsultationDetail(staff, id) {
 
 /* ── Update ───────────────────────────────────────────────────────────────── */
 
-const TRANSITIONS = {
-    reserved: ['confirmed', 'cancelled'],
-    confirmed: ['completed', 'no_show', 'cancelled'],
-    completed: ['no_show'],
-    no_show: ['completed'],
-    cancelled: [],
-    rescheduled: [],
-};
-
 export async function updateConsultation(staff, id, patch) {
     if (patch.counsellorId && !isAdmin(staff)) throw forbidden('Only administrators can reassign consultations.');
     const updatedId = await withTransaction(async (client) => {
@@ -155,9 +147,7 @@ export async function updateConsultation(staff, id, patch) {
         const changes = {};
 
         if (patch.status && patch.status !== c.status) {
-            if (!TRANSITIONS[c.status].includes(patch.status)) {
-                throw conflict(`A ${c.status} consultation cannot be marked ${patch.status}.`, 'INVALID_TRANSITION');
-            }
+            assertConsultationTransition(c.status, patch.status);
             if (['completed', 'no_show'].includes(patch.status) && new Date(c.scheduled_start) > now()) {
                 throw conflict('A consultation can be marked completed or no-show only after it has started.', 'TOO_EARLY');
             }

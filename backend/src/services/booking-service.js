@@ -19,6 +19,7 @@ import { ACTIVE_STATUSES, findSlots } from './availability-service.js';
 import { enqueueCalendarJob, needsCalendar, processCalendarJobs } from './calendar-sync.js';
 import { manageTokenHash, newManageToken } from './manage-token.js';
 import { enqueueNotification, processNotifications, queueCancellationMessages, queueConfirmationMessages } from './notification-service.js';
+import { assertConsultationTransition } from './consultation-state.js';
 
 /* ── Consultation types ───────────────────────────────────────────────────── */
 
@@ -385,6 +386,7 @@ const actorFor = (scope, userId) => (scope.manageToken ? { actorType: 'guest', a
 /* ── Cancel ───────────────────────────────────────────────────────────────── */
 
 export async function cancelInTransaction(client, c, { scope, userId = null, reason = null }) {
+    assertConsultationTransition(c.status, 'cancelled');
     const isStaff = !scope.studentUserId && !scope.manageToken;
     if (isStaff) {
         if (!ACTIVE_STATUSES.includes(c.status)) throw conflict('Only reserved or confirmed consultations can be cancelled.', 'NOT_ACTIVE');
@@ -428,6 +430,7 @@ export async function rescheduleConsultation({ id = null, scope, userId = null, 
         } else {
             assertStudentMayChange(old, 'reschedule');
         }
+        assertConsultationTransition(old.status, 'rescheduled');
         if (new Date(old.scheduled_start).getTime() === start.getTime()) throw badRequest('Choose a different time from the current booking.', { fields: { start: 'Choose a different time' } });
 
         const type = await loadType(client, old.consultation_type_id, { lock: true });
