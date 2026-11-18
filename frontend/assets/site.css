@@ -1252,19 +1252,23 @@ a.gm-social-link:active { transform: scale(.94); }
 @media (max-width: 560px) { .gm-share-row { flex-direction: column; } .gm-share-copy { align-self: stretch; } }
 
 /* ── Live bar: the scrolling "new and live now" ticker under the header (text in scripts/live-bar.mjs, written into pages by
-   scripts/sync-live-bar.mjs). It runs on CSS alone: the track holds the list twice and slides left by one list's width, so
-   the loop has no seam. It is always one row, 44px high, so it never shifts the page. It pauses on hover and keyboard focus,
-   and has a pause button and a close button (site.js, setupLiveBar, also sets the speed). ── */
+   scripts/sync-live-bar.mjs, which also sets --gm-live-dur, the seconds one loop takes). It runs on CSS alone: the track holds
+   the list twice and slides left by one list's width, so the loop has no seam. It is always one row, 44px high, so it never
+   shifts the page. Kept cheap on purpose: only transform and opacity are animated (the compositor does the work, no
+   repaint), the edge fade is two static overlays instead of a mask, and `contain` keeps the bar's layout and paint
+   away from the rest of the page. It pauses on hover and keyboard focus, while scrolled out of view (site.js), and
+   with the pause button, which also gives visitors the WCAG "pause moving content" control on phones. ── */
 .gm-live {
+    --gm-live-bg: color-mix(in srgb, var(--accent, #007A5A) 9%, var(--surface, #fff));
     position: relative;
     z-index: 1;
-    background: color-mix(in srgb, var(--accent, #007A5A) 9%, var(--surface, #fff));
+    contain: layout paint style;
+    background: var(--gm-live-bg);
     border-bottom: 1px solid var(--border, rgba(14, 20, 32, .1));
     color: var(--text-p, #0E1420);
     font-size: .84rem;
     line-height: 1;
 }
-.gm-live[hidden] { display: none; }
 .gm-live-inner {
     display: flex;
     align-items: center;
@@ -1286,34 +1290,32 @@ a.gm-social-link:active { transform: scale(.94); }
     letter-spacing: .08em;
     text-transform: uppercase;
 }
-.gm-live-dot {
-    width: .5rem;
-    height: .5rem;
+.gm-live-dot { position: relative; width: .5rem; height: .5rem; border-radius: 50%; background: var(--accent, #007A5A); }
+.gm-live-dot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
     border-radius: 50%;
     background: var(--accent, #007A5A);
-    animation: gm-live-pulse 2s ease-out infinite;
+    opacity: 0;
+    animation: gm-live-ping 2s ease-out infinite;
 }
-@keyframes gm-live-pulse {
-    0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent, #007A5A) 55%, transparent); }
-    70%, 100% { box-shadow: 0 0 0 .45rem transparent; }
+@keyframes gm-live-ping {
+    0% { transform: scale(1); opacity: .55; }
+    70%, 100% { transform: scale(3); opacity: 0; }
 }
-.gm-live-view {
-    flex: 1 1 auto;
-    min-width: 0;
-    overflow: hidden;
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 1.25rem, #000 calc(100% - 1.25rem), transparent);
-    mask-image: linear-gradient(90deg, transparent, #000 1.25rem, #000 calc(100% - 1.25rem), transparent);
-}
-.gm-live-track {
-    display: flex;
-    width: max-content;
-    will-change: transform;
-    animation: gm-live-run var(--gm-live-dur, 50s) linear infinite;
-}
+.gm-live-view { position: relative; flex: 1 1 auto; min-width: 0; overflow: hidden; }
+.gm-live-view::before,
+.gm-live-view::after { content: ''; position: absolute; top: 0; bottom: 0; z-index: 1; width: 1.25rem; pointer-events: none; }
+.gm-live-view::before { left: 0; background: linear-gradient(90deg, var(--gm-live-bg), transparent); }
+.gm-live-view::after { right: 0; background: linear-gradient(270deg, var(--gm-live-bg), transparent); }
+.gm-live-track { display: flex; width: max-content; animation: gm-live-run var(--gm-live-dur, 44s) linear infinite; }
 @keyframes gm-live-run { to { transform: translateX(-50%); } }
 .gm-live:hover .gm-live-track,
 .gm-live:focus-within .gm-live-track,
-.gm-live.is-paused .gm-live-track { animation-play-state: paused; }
+.gm-live.is-paused .gm-live-track,
+.gm-live.is-offscreen .gm-live-track,
+.gm-live.is-offscreen .gm-live-dot::after { animation-play-state: paused; }
 .gm-live-group {
     display: flex;
     flex: 0 0 auto;
@@ -1341,15 +1343,13 @@ a.gm-social-link:active { transform: scale(.94); }
 .gm-live-item a:hover .gm-live-cta,
 .gm-live-item a:focus-visible .gm-live-cta { text-decoration-color: currentColor; }
 .gm-live-item a:focus-visible,
-.gm-live-pause:focus-visible,
-.gm-live-close:focus-visible { outline: 2px solid var(--brand, #1A4870); outline-offset: -2px; border-radius: 6px; }
-.gm-live-pause,
-.gm-live-close {
+.gm-live-pause:focus-visible { outline: 2px solid var(--brand, #1A4870); outline-offset: -2px; border-radius: 6px; }
+.gm-live-pause {
     display: inline-flex;
     flex: 0 0 auto;
     align-items: center;
     justify-content: center;
-    width: 40px;
+    width: 44px;
     height: 44px;
     margin: 0;
     padding: 0;
@@ -1360,26 +1360,21 @@ a.gm-social-link:active { transform: scale(.94); }
     cursor: pointer;
     transition: background .2s, color .2s;
 }
-.gm-live-pause:hover,
-.gm-live-close:hover { background: color-mix(in srgb, var(--text-p, #0E1420) 8%, transparent); color: var(--text-p, #0E1420); }
-.gm-live-pause svg,
-.gm-live-close svg { width: 1rem; height: 1rem; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.gm-live-pause:hover { background: color-mix(in srgb, var(--text-p, #0E1420) 8%, transparent); color: var(--text-p, #0E1420); }
+.gm-live-pause svg { width: 1.05rem; height: 1.05rem; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
 .gm-live-pause .gm-ico-play { display: none; fill: currentColor; }
 .gm-live.is-paused .gm-live-pause .gm-ico-pause { display: none; }
 .gm-live.is-paused .gm-live-pause .gm-ico-play { display: inline; }
-@media (max-width: 760px) {
-    .gm-live { font-size: .8rem; }
-    /* The close button is the "stop" control on phones, where there is no hover and the bar is already tight. */
-    .gm-live-pause { display: none; }
-}
+/* On phones the badge says just "Live", which gives the scrolling text about 30px more room. */
+@media (max-width: 760px) { .gm-live { font-size: .8rem; } .gm-live-more { display: none; } }
 /* Visitors who asked for less motion get a still row they can swipe or tab through, with no second copy of the list. */
 @media (prefers-reduced-motion: reduce) {
-    .gm-live-dot { animation: none; }
+    .gm-live-dot::after { animation: none; }
     .gm-live-track { animation: none; }
     .gm-live-group { min-width: 0; }
-    .gm-live-group[aria-hidden="true"], .gm-live-pause { display: none; }
-    .gm-live-view { overflow-x: auto; scrollbar-width: none; -webkit-mask-image: none; mask-image: none; }
+    .gm-live-group[aria-hidden="true"], .gm-live-pause, .gm-live-view::before, .gm-live-view::after { display: none; }
+    .gm-live-view { overflow-x: auto; scrollbar-width: none; }
     .gm-live-view::-webkit-scrollbar { display: none; }
 }
-html.gm-lite .gm-live-dot { animation: none; }
+html.gm-lite .gm-live-dot::after { animation: none; }
 @media print { .gm-live { display: none; } }

@@ -729,7 +729,7 @@
 .gm-notes-card p{color:var(--text-s);font-size:.92rem;line-height:1.6;margin:0;}
 .gm-notes a{color:var(--brand);font-weight:700;text-underline-offset:2px;}
 </style>
-<link rel="stylesheet" href="../../assets/site.css?v=37">
+<link rel="stylesheet" href="../../assets/site.css?v=39">
 
 <!-- mobile-app -->
 <meta name="theme-color" content="#F0F2F7" media="(prefers-color-scheme: light)">
@@ -758,9 +758,9 @@
     </div>
 </nav>
 <!-- live-bar -->
-<div class="gm-live" id="gm-live" role="region" aria-label="New and live on Gradmire" data-gm-live data-edition="2026-11-18">
+<div class="gm-live" role="region" aria-label="New and live on Gradmire" data-gm-live style="--gm-live-dur:43s">
   <div class="gm-live-inner">
-    <span class="gm-live-badge"><i class="gm-live-dot" aria-hidden="true"></i>Live now</span>
+    <span class="gm-live-badge"><i class="gm-live-dot" aria-hidden="true"></i>Live<span class="gm-live-more"> now</span></span>
     <div class="gm-live-view">
       <div class="gm-live-track">
         <ul class="gm-live-group" role="list">
@@ -778,10 +778,8 @@
       </div>
     </div>
     <button type="button" class="gm-live-pause" aria-label="Pause moving notices" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="gm-ico-pause" d="M9 6v12M15 6v12"/><path class="gm-ico-play" d="M8.5 6.5v11l9-5.5z"/></svg></button>
-    <button type="button" class="gm-live-close" aria-label="Hide this notice"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
   </div>
 </div>
-<script>try{var b=document.getElementById("gm-live"),k="gm-live-closed",c=JSON.parse(localStorage.getItem("gm-consent")||"null"),v=(c&&c.v===1&&c.preferences&&localStorage.getItem(k))||sessionStorage.getItem(k);if(b&&v===b.dataset.edition)b.hidden=true}catch(e){}</script>
 <!-- /live-bar -->
 
 <div class="tools-nav">
@@ -1161,4 +1159,4 @@
 <a class="gm-tab" href="/about" data-gm-menu><svg class="gm-ico-open" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="4" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.6"/></svg><svg class="gm-ico-close" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg><span class="gm-tab-label">Menu</span></a>
 </nav>
 <!-- /gm-tabbar -->
-<script src="../../assets/site.js?v=46" defer></script>
+<script src="../../assets/site.js?v=47" defer></script>
