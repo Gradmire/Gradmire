@@ -12,7 +12,10 @@
     const CONSENT_VERSION = 1;
     /* One remembered "closed" timestamp per promo card (see setupPromoCards); cleared when preferences are refused. */
     const PROMO_IDS = ['plan', 'cost', 'schol', 'courses', 'deadlines', 'visa', 'tests', 'mbbs', 'counsel', 'wa', 'scholc', 'mbbsx', 'office', 'convert', 'compare'];
-    const PREF_KEYS = ['gradmire-theme', 'gm-consult-popup-dismissed', ...PROMO_IDS.map((id) => `gm-promo-${id}`)];
+    /* The live bar remembers which edition of its text the visitor closed (see setupLiveBar); the inline script that
+       sync-live-bar.mjs writes after the bar reads the same key. */
+    const LIVE_BAR_KEY = 'gm-live-closed';
+    const PREF_KEYS = ['gradmire-theme', 'gm-consult-popup-dismissed', LIVE_BAR_KEY, ...PROMO_IDS.map((id) => `gm-promo-${id}`)];
     function readConsent() {
         try {
             const c = JSON.parse(localStorage.getItem(CONSENT_KEY) || 'null');
@@ -572,6 +575,44 @@
             return;
         }
         armAutoOpen();
+    }
+
+    /* Live bar: the scrolling "new and live now" ticker under the header (written into pages by scripts/sync-live-bar.mjs
+       from scripts/live-bar.mjs). The scrolling itself is CSS (.gm-live-track), so it runs even before this code does. This
+       adds what CSS cannot: the pause button, the close button, and a scroll speed that stays the same however long the list
+       is (about 60px a second). Hovering or tabbing into the bar pauses it in CSS. The close button hides it and remembers the
+       bar's edition (so a new edition shows again), kept like any other preference: for the visit only, unless the visitor
+       allowed preferences. */
+    function setupLiveBar() {
+        const bar = document.querySelector('[data-gm-live]');
+        if (!bar || bar.hidden) return;
+        const edition = bar.dataset.edition || '1';
+        bar.querySelector('.gm-live-close')?.addEventListener('click', () => {
+            bar.hidden = true;
+            savePref(LIVE_BAR_KEY, edition);
+        });
+
+        const pause = bar.querySelector('.gm-live-pause');
+        pause?.addEventListener('click', () => {
+            const paused = bar.classList.toggle('is-paused');
+            pause.setAttribute('aria-pressed', String(paused));
+            pause.setAttribute('aria-label', paused ? 'Play moving notices' : 'Pause moving notices');
+        });
+
+        /* Seconds for one full loop = the width of one copy of the list / speed. Only re-set when the width really changed
+           (a web font arriving, a rotated phone), so the ticker does not jump for a pixel or two. */
+        const group = bar.querySelector('.gm-live-group');
+        if (!group) return;
+        let measured = 0;
+        const setSpeed = () => {
+            const width = group.getBoundingClientRect().width;
+            if (!width || Math.abs(width - measured) < measured * 0.05) return;
+            measured = width;
+            bar.style.setProperty('--gm-live-dur', `${Math.max(20, Math.round(width / 60))}s`);
+        };
+        setSpeed();
+        window.addEventListener('resize', setSpeed, { passive: true });
+        document.fonts?.ready.then(setSpeed);
     }
 
     /* Promo cards: small, closable offers for Gradmire's own free tools, guides and counselling. First-party only: no ad
@@ -1503,6 +1544,7 @@
     setupMobileSliders();
     setupConsentBanner();
     setupConsultPopup();
+    setupLiveBar();
     setupPromoCards();
     setupToolShare();
     setupBuddy();
